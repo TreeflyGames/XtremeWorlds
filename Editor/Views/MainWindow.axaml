@@ -4,8 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="768" WindowState="Maximized"
         x:Class="Editor.Views.MainWindow"
-        xmlns:controls="using:RectPainter.Controls"
-        xmlns:viewModels1="clr-namespace:RectPainter.ViewModels"
+        xmlns:controls="clr-namespace:Editor.Controls"
         xmlns:viewModels="clr-namespace:Editor.ViewModels"
         Icon="/Assets/logo.ico"
         Title="XtremeWorlds Editor"
@@ -121,12 +120,11 @@
                 <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF">
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"
                                   VerticalScrollBarVisibility="Visible">
-                        <Canvas x:Name="MapEditorCanvas"
-                                Width="1024"
-                                Height="768"
-                                Background="#FFEFEFEF"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"/>
+                        <controls:MapEditorCanvasControl DataContext="{Binding Vm}" x:Name="MapEditorCanvas"
+                                                  Width="1024"
+                                                  Height="768"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Top"/>
                     </ScrollViewer>
                 </Border>
             </Grid>

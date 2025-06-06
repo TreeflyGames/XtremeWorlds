@@ -3,7 +3,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using System.ComponentModel;
 
-namespace RectPainter.ViewModels
+namespace Editor.ViewModels
 {
     public class PaintControlViewModel: INotifyPropertyChanged
     {

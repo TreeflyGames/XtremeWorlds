@@ -1,7 +1,4 @@
 using System;
-using System.IO;
-using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -12,13 +9,12 @@ namespace Editor.Views
     {
         public MainWindow()
         {
-            int i = 0;
             InitializeComponent();
- 
+
+            int i = 0;
             while (true)
             {
                 i++;
-                
                 if (CanLoadBitmap("avares://Editor/Content/Graphics/Tilesets/" + i + ".png"))
                 {
                     tilesetComboBox.Items.Add(i);
@@ -28,13 +24,13 @@ namespace Editor.Views
                     break;
                 }
             }
-            
+
             if (tilesetComboBox.Items.Count > 0)
             {
                 tilesetComboBox.SelectedIndex = 0;
             }
         }
-        
+
         public bool CanLoadBitmap(string uri)
         {
             try
@@ -48,6 +44,5 @@ namespace Editor.Views
                 return false;
             }
         }
-
     }
 }

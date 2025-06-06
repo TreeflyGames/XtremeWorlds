@@ -2,10 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Platform;
-using RectPainter.ViewModels;
+using Editor.ViewModels;
 
-namespace RectPainter.Controls
+namespace Editor.Controls
 {
     /// <summary>
     /// A control that responds to mouse and keyboard, to edit and render an image

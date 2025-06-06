@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Collections.ObjectModel;
 using Avalonia.Media.Imaging;
-using RectPainter.ViewModels;
 using System;
 using Avalonia.Platform;
 
@@ -8,6 +8,10 @@ namespace Editor.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        public Bitmap? TilesetBitmap { get; set; }
+        public ObservableCollection<PlacedTileViewModel> PlacedTiles { get; set; } = new();
+        public int TileSize { get; set; } = 32;
+        
         private string _mousePosition = string.Empty;
         private string _rect = string.Empty;
         private PaintControlViewModel? _vm = null;
@@ -35,6 +39,7 @@ namespace Editor.ViewModels
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -128,7 +133,8 @@ namespace Editor.ViewModels
             get
             {
                 using var stream = AssetLoader.Open(new Uri($"avares://Editor/Content/Graphics/Tilesets/{_selectedTilesetIndex + 1}.png"));
-                return new Bitmap(stream);
+                TilesetBitmap = new Bitmap(stream);
+                return TilesetBitmap;
             }
         }
         
