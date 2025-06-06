@@ -3,14 +3,17 @@ using System.Collections.ObjectModel;
 using Avalonia.Media.Imaging;
 using System;
 using Avalonia.Platform;
+using Editor.Controls;
+using MonoGame.Extended.BitmapFonts;
 
 namespace Editor.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        public MapCanvasControl MapEditorCanvasViewModel { get; set; } = new 
+();
         public Bitmap? TilesetBitmap { get; set; }
-        public ObservableCollection<PlacedTileViewModel> PlacedTiles { get; set; } = new();
-        public int TileSize { get; set; } = 32;
+        public ObservableCollection<TileViewModel> PlacedTiles { get; set; } = new();
         
         private string _mousePosition = string.Empty;
         private string _rect = string.Empty;
@@ -127,7 +130,7 @@ namespace Editor.ViewModels
                 }
             }
         }
-        
+
         public Bitmap SelectedTilesetImage
         {
             get

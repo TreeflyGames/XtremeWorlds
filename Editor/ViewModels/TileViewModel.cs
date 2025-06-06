@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Editor.ViewModels;
 
-public class PlacedTileViewModel : INotifyPropertyChanged
+public class TileViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
