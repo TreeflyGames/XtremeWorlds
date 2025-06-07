@@ -9,11 +9,11 @@
         Icon="/Assets/logo.ico"
         Title="XtremeWorlds Editor"
         x:DataType="viewModels:MainWindowViewModel">
-    
+
     <Design.DataContext>
         <viewModels:MainWindowViewModel/>
     </Design.DataContext>
-    
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -101,28 +101,26 @@
                 <ColumnDefinition Width="512"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid RowDefinitions="auto, *, auto">
+            <Grid RowDefinitions="auto, *, auto" Name="Grid0">
                 <Grid Grid.Row="1">
-                    <controls:PaintControl DataContext="{Binding Vm}" />
+                    <controls:TilePaintControl DataContext="{Binding Vm}" />
                     <Border BorderBrush="Black" BorderThickness="2" CornerRadius="2" Margin="0,10,0,0">
                         <Image Source="{Binding SelectedTilesetImage}"
                                Stretch="Uniform"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"/>
-                    </Border>                                
+                    </Border>
                 </Grid>
             <StackPanel Grid.Row="2" Margin="20">
               <ComboBox x:Name="tilesetComboBox" SelectedIndex="{Binding SelectedTilesetIndex, Mode=TwoWay}">
               </ComboBox>
             </StackPanel>
             </Grid>
-            <Grid Grid.Column="1" Margin="10">
-                <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF">
+            <Grid Grid.Column="1" Margin="10" Name="Grid1">
+                <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF" Width="1920" Height="1080">
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"
                                   VerticalScrollBarVisibility="Visible">
-                        <controls:MapCanvasControl DataContext="{Binding MapEditorCanvasViewModel}" x:Name="MapEditorCanvas"
-                                                  Width="1024"
-                                                  Height="768"
+                        <controls:MapPaintControl DataContext="{Binding Vm}" x:Name="MapEditorCanvas"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top"/>
                     </ScrollViewer>

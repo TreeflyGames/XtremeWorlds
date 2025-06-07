@@ -10,10 +10,7 @@ namespace Editor.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public MapCanvasControl MapEditorCanvasViewModel { get; set; } = new 
-();
         public Bitmap? TilesetBitmap { get; set; }
-        public ObservableCollection<TileViewModel> PlacedTiles { get; set; } = new();
         
         private string _mousePosition = string.Empty;
         private string _rect = string.Empty;
