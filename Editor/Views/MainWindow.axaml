@@ -117,12 +117,14 @@
             </StackPanel>
             </Grid>
             <Grid Grid.Column="1" Margin="10" Name="Grid1">
+                <controls:MapPaintControl DataContext="{Binding Vm}"
+                                          Width="1920"
+                                          Height="1080"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Top"/>
                 <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF" Width="1920" Height="1080">
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"
                                   VerticalScrollBarVisibility="Visible">
-                        <controls:MapPaintControl DataContext="{Binding Vm}" x:Name="MapEditorCanvas"
-                                                  HorizontalAlignment="Left"
-                                                  VerticalAlignment="Top"/>
                     </ScrollViewer>
                 </Border>
             </Grid>

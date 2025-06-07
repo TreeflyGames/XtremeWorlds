@@ -16,8 +16,7 @@ namespace Editor.Controls
 
         public PaintControl()
         {
-            KeyDownEvent.AddClassHandler<TopLevel>(OnKeyDown, handledEventsToo: true);
-            KeyUpEvent.AddClassHandler<TopLevel>(OnKeyUp, handledEventsToo: true);
+
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -33,62 +32,10 @@ namespace Editor.Controls
                 InvalidateVisual();
             }
         }
-
-        private void OnKeyUp(object? sender, KeyEventArgs e)
-        {
-            if (Vm != null)
-            {
-                // Change rectangle color
-                // Request the updated image be rendered, in case there is a marquee
-                switch (e.Key)
-                {
-                    case Key.LeftShift:
-                        Vm.Red = 0;
-                        InvalidateVisual();
-                        break;
-
-                    case Key.LeftCtrl:
-                        Vm.Green = 0;
-                        InvalidateVisual();
-                        break;
-
-                    case Key.LeftAlt:
-                        Vm.Blue = 0;
-                        InvalidateVisual();
-                        break;
-                }
-            }
-        }
         
-        private void OnKeyDown(object? sender, KeyEventArgs e)
+        private void OnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (Vm != null)
-            {
-                // Change rectangle color or cancel dragging
-                // Request the updated image be rendered, in case there is a marquee
-                switch (e.Key)
-                {
-                    case Key.LeftShift:
-                        Vm.Red = 255;
-                        InvalidateVisual();
-                        break;
-
-                    case Key.LeftCtrl:
-                        Vm.Green = 255;
-                        InvalidateVisual();
-                        break;
-
-                    case Key.LeftAlt:
-                        Vm.Blue = 255;
-                        InvalidateVisual();
-                        break;
-
-                    case Key.Escape:
-                        Vm.Dragging = false;
-                        InvalidateVisual();
-                        break;
-                }
-            }
+            InvalidateVisual();
         }
     }
 }
