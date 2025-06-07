@@ -1,23 +1,6 @@
-[submodule "Source/NLua"]
-	path = Source/NLua
-	url = https://github.com/NLua/NLua.git
-[submodule "Source/DarkUI"]
-	path = Source/DarkUI
-	url = https://github.com/RobinPerris/DarkUI.git
-[submodule "Source/CSFML"]
-	path = Source/CSFML
-	url = https://github.com/SFML/CSFML.git
-[submodule "Source/SFML.Net"]
-	path = Source/SFML.Net
-	url = https://github.com/SFML/SFML.Net.git
-[submodule "Source/Sanford.Multimedia.Midi"]
-	path = Source/Sanford.Multimedia.Midi
-	url = https://github.com/tebjan/Sanford.Multimedia.Midi.git
-[submodule "Source/DarkUI"]
-	path = Source/DarkUI
-	url = https://github.com/RobinPerris/DarkUI.git
 [submodule "Source/Modules/Reoria.Engine"]
 	path = Source/Modules/Reoria.Engine
 	url = https://github.com/XerShade/Reoria.Engine.git
-[submodule "Source/Modules/Reoria.Engine"]
-	ignore = dirty
+[submodule "Source/Modules/DarkUI"]
+	path = Source/Modules/DarkUI
+	url = https://github.com/TreeflyStudios/DarkUI.git
