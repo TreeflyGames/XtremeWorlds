@@ -943,10 +943,9 @@ namespace Client
         {
             int i;
             var buffer = new ByteStream(data);
-            string[] mapNames = new string[Constant.MAX_MAPS];
 
             for (i = 0; i < Constant.MAX_MAPS; i++)
-                mapNames[i] = buffer.ReadString();
+                GameState.MapNames[i] = buffer.ReadString();
 
             GameState.InitMapReport = true;
 

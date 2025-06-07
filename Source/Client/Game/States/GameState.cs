@@ -92,6 +92,8 @@ namespace Client
 
         public static string chatShowLine;
 
+        public static string[] MapNames = new string[Constant.MAX_MAPS];
+
         // chat
         public static bool inSmallChat;
         public static long actChatHeight;
