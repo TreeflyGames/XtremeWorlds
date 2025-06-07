@@ -6,7 +6,7 @@ namespace Client
 
     public class Program
     {
-        private static Timer updateFormsTimer;
+        private static System.Windows.Forms.Timer updateFormsTimer;
 
         public static void Main()
         {
@@ -20,7 +20,7 @@ namespace Client
             gameThread.Start();
 
             // Initialize and start the timer for updating forms
-            updateFormsTimer = new Timer();
+            updateFormsTimer = new System.Windows.Forms.Timer();
             updateFormsTimer.Tick += UpdateForms;
             updateFormsTimer.Interval = 1000; // Adjust the interval as needed
             updateFormsTimer.Start();

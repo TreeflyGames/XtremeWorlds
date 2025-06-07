@@ -19,7 +19,7 @@ namespace Client
             get
             {
                 // Create a new instance if one does not exist or if it has been disposed
-                if (_instance is null || _insta)
+                if (_instance is null || _instance.IsDisposed)
                 {
                     _instance = new frmEditor_Map();
                 }

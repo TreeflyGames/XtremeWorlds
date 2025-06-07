@@ -2,7 +2,6 @@
 using DarkUI.Controls;
 using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct2D1;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using RenderTargetUsage = Microsoft.Xna.Framework.Graphics.RenderTargetUsage;
