@@ -1886,8 +1886,7 @@ namespace Client
                         break;
                     }
 
-                    case (byte)TargetType.NPC
-                        :
+                    case (byte)TargetType.NPC:
                     {
                         x = GameLogic.ConvertMapX(Core.Type.MyMapNPC[withBlock.Target].X * 32) + 16;
                         y = GameLogic.ConvertMapY(Core.Type.MyMapNPC[withBlock.Target].Y * 32) - 32;
@@ -1916,7 +1915,7 @@ namespace Client
                 tmpNum = Information.UBound(theArray);
 
                 var loopTo = tmpNum;
-                for (i = 0L; i < loopTo; i++)
+                for (i = 0L; i <= loopTo; i++)
                 {
                     if (Text.GetTextWidth(theArray[(int)i], FontType.Georgia) > MaxWidth)
                         MaxWidth = Text.GetTextWidth(theArray[(int)i], FontType.Georgia);
@@ -1924,7 +1923,7 @@ namespace Client
 
                 // calculate the new position
                 x2 = x - MaxWidth / 2L;
-                y2 = y - Information.UBound(theArray) * 12;
+                y2 = y - (Information.UBound(theArray) + 1) * 12;
 
                 // render bubble - top left
                 string argpath = System.IO.Path.Combine(Core.Path.Gui, 33.ToString());
@@ -1958,17 +1957,17 @@ namespace Client
 
                 // left
                 string argpath7 = System.IO.Path.Combine(Core.Path.Gui, 33.ToString());
-                RenderTexture(ref argpath7, (int)(x2 - 9L), (int)y2, 0, 6, 9, Information.UBound(theArray) * 12, 9, 6);
+                RenderTexture(ref argpath7, (int)(x2 - 9L), (int)y2, 0, 6, 9, (Information.UBound(theArray) + 1) * 12, 9, 6);
 
                 // right
                 string argpath8 = System.IO.Path.Combine(Core.Path.Gui, 33.ToString());
-                RenderTexture(ref argpath8, (int)(x2 + MaxWidth), (int)y2, 119, 6, 9, Information.UBound(theArray) * 12,
+                RenderTexture(ref argpath8, (int)(x2 + MaxWidth), (int)y2, 119, 6, 9, (Information.UBound(theArray) + 1) * 12,
                     9,
                     6);
 
                 // center
                 string argpath9 = System.IO.Path.Combine(Core.Path.Gui, 33.ToString());
-                RenderTexture(ref argpath9, (int)x2, (int)y2, 9, 5, (int)MaxWidth, Information.UBound(theArray) * 12, 9,
+                RenderTexture(ref argpath9, (int)x2, (int)y2, 9, 5, (int)MaxWidth, (Information.UBound(theArray) + 1) * 12, 9,
                     5);
 
                 // little pointy bit
@@ -1979,7 +1978,7 @@ namespace Client
                 tmpNum = Information.UBound(theArray);
 
                 var loopTo1 = tmpNum;
-                for (i = 0; i < loopTo1; i++)
+                for (i = 0; i <= loopTo1; i++)
                 {
                     if (theArray[(int)i] == null)
                         break;
