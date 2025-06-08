@@ -366,6 +366,7 @@ namespace Client
             // 
             // tabMapList
             // 
+            tabMapList.BackColor = Color.FromArgb(45, 45, 48);
             tabMapList.Controls.Add(lstMaps);
             tabMapList.Controls.Add(btnMapReport);
             tabMapList.Location = new Point(4, 24);
@@ -375,10 +376,10 @@ namespace Client
             tabMapList.Size = new Size(293, 271);
             tabMapList.TabIndex = 2;
             tabMapList.Text = "Map List";
-            tabMapList.UseVisualStyleBackColor = true;
             // 
             // tabMapTools
             // 
+            tabMapTools.BackColor = Color.FromArgb(45, 45, 48);
             tabMapTools.Controls.Add(btnRespawn);
             tabMapTools.Controls.Add(btnALoc);
             tabMapTools.Location = new Point(4, 24);
@@ -388,10 +389,10 @@ namespace Client
             tabMapTools.Size = new Size(293, 271);
             tabMapTools.TabIndex = 3;
             tabMapTools.Text = "Map Tools";
-            tabMapTools.UseVisualStyleBackColor = true;
             // 
             // tabEditors
             // 
+            tabEditors.BackColor = Color.FromArgb(45, 45, 48);
             tabEditors.Controls.Add(btnMoralEditor);
             tabEditors.Controls.Add(btnPetEditor);
             tabEditors.Controls.Add(btnJobEditor);
@@ -410,7 +411,6 @@ namespace Client
             tabEditors.Size = new Size(293, 271);
             tabEditors.TabIndex = 4;
             tabEditors.Text = "Editors";
-            tabEditors.UseVisualStyleBackColor = true;
             // 
             // btnMoralEditor
             // 
