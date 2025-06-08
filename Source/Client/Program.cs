@@ -131,6 +131,7 @@ namespace Client
             withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
             withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
             withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
+            IsFixedTimeStep = false;
             withBlock.PreferHalfPixelOffset = true;
             withBlock.PreferMultiSampling = true;
             
