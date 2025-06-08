@@ -1946,17 +1946,16 @@ namespace Client
             Event.RequestSwitchesAndVariables();
         }
 
-        #endregion
-
-        #region Move Route
-
         // MoveRoute Commands
         private void LstvwMoveRoute_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstvwMoveRoute.SelectedItems.Count == 0)
+            // DarkListView does not have SelectedItems, but has SelectedIndices (IList<int>)
+            if (lstvwMoveRoute.SelectedIndices == null || lstvwMoveRoute.SelectedIndices.Count == 0)
                 return;
 
-            switch (lstvwMoveRoute.SelectedItems[0].Index + 1)
+            int selectedIndex = lstvwMoveRoute.SelectedIndices[0];
+
+            switch (selectedIndex + 1)
             {
                 // Set Graphic
                 case 43:
@@ -1968,7 +1967,7 @@ namespace Client
 
                 default:
                     {
-                        AddMoveRouteCommand(lstvwMoveRoute.SelectedItems[0].Index);
+                        AddMoveRouteCommand(selectedIndex);
                         break;
                     }
             }

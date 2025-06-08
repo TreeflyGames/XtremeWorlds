@@ -79,8 +79,9 @@ namespace Client
                 {
                     for (int i = 1, loopTo = GameState.MapNames.Length; i < loopTo; i++)
                     {
-                        var item1 = new ListViewItem((i).ToString());
-                        item1.SubItems.Add(GameState.MapNames[i]);
+                        var item1 = new DarkUI.Controls.DarkListItem(i.ToString());
+                        // Set the Text property to include both the index and the map name
+                        item1.Text = $"{i}: {GameState.MapNames[i]}";
                         FrmAdmin.Instance.lstMaps.Items.Add(item1);
                     }
                     GameState.InitMapReport = false;

@@ -330,10 +330,10 @@ namespace Client
                 return;
             }
 
-            if (lstMaps.FocusedItem.Index == 0)
+            if (lstMaps.SelectedIndices.Count == 0 || lstMaps.SelectedIndices[0] == 0)
                 return;
 
-            NetworkSend.WarpTo(lstMaps.FocusedItem.Index + 1);
+            NetworkSend.WarpTo(lstMaps.SelectedIndices[0] + 1);
         }
 
         #endregion

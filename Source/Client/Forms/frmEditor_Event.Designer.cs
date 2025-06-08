@@ -246,7 +246,7 @@ namespace Client
             chkRepeatRoute = new DarkUI.Controls.DarkCheckBox();
             chkIgnoreMove = new DarkUI.Controls.DarkCheckBox();
             DarkGroupBox10 = new DarkUI.Controls.DarkGroupBox();
-            lstvwMoveRoute = new ListView();
+            lstvwMoveRoute = new DarkUI.Controls.DarkListView();
             ColumnHeader3 = new ColumnHeader();
             ColumnHeader4 = new ColumnHeader();
             lstMoveRoute = new ListBox();
@@ -507,12 +507,12 @@ namespace Client
             cmbChangeItemIndex = new DarkUI.Controls.DarkComboBox();
             DarkLabel21 = new DarkUI.Controls.DarkLabel();
             pnlVariableSwitches = new Panel();
-            FraRenaming = new GroupBox();
-            btnRename_Cancel = new Button();
-            btnRename_Ok = new Button();
-            fraRandom10 = new GroupBox();
-            txtRename = new TextBox();
-            lblEditing = new Label();
+            FraRenaming = new DarkUI.Controls.DarkGroupBox();
+            btnRename_Cancel = new DarkUI.Controls.DarkButton();
+            btnRename_Ok = new DarkUI.Controls.DarkButton();
+            fraRandom10 = new DarkUI.Controls.DarkGroupBox();
+            txtRename = new DarkUI.Controls.DarkTextBox();
+            lblEditing = new DarkUI.Controls.DarkLabel();
             fraLabeling = new DarkUI.Controls.DarkGroupBox();
             lstSwitches = new ListBox();
             lstVariables = new ListBox();
@@ -1663,10 +1663,7 @@ namespace Client
             // 
             // lstvwMoveRoute
             // 
-            lstvwMoveRoute.AutoArrange = false;
             lstvwMoveRoute.BackColor = Color.DimGray;
-            lstvwMoveRoute.BorderStyle = BorderStyle.None;
-            lstvwMoveRoute.Columns.AddRange(new ColumnHeader[] { ColumnHeader3, ColumnHeader4 });
             lstvwMoveRoute.Dock = DockStyle.Top;
             lstvwMoveRoute.Font = new Font("Microsoft Sans Serif", 8.25F);
             lstvwMoveRoute.ForeColor = Color.Gainsboro;
@@ -1688,8 +1685,6 @@ namespace Client
             listViewGroup8.Name = "lstVgSetposition";
             listViewGroup9.Header = "Set Graphic";
             listViewGroup9.Name = "lstVgSetGraphic";
-            lstvwMoveRoute.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2, listViewGroup3, listViewGroup4, listViewGroup5, listViewGroup6, listViewGroup7, listViewGroup8, listViewGroup9 });
-            lstvwMoveRoute.HeaderStyle = ColumnHeaderStyle.None;
             listViewItem1.Group = listViewGroup1;
             listViewItem2.Group = listViewGroup1;
             listViewItem2.IndentCount = 1;
@@ -1735,16 +1730,12 @@ namespace Client
             listViewItem41.Group = listViewGroup8;
             listViewItem42.Group = listViewGroup8;
             listViewItem43.Group = listViewGroup9;
-            lstvwMoveRoute.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16, listViewItem17, listViewItem18, listViewItem19, listViewItem20, listViewItem21, listViewItem22, listViewItem23, listViewItem24, listViewItem25, listViewItem26, listViewItem27, listViewItem28, listViewItem29, listViewItem30, listViewItem31, listViewItem32, listViewItem33, listViewItem34, listViewItem35, listViewItem36, listViewItem37, listViewItem38, listViewItem39, listViewItem40, listViewItem41, listViewItem42, listViewItem43 });
-            lstvwMoveRoute.LabelWrap = false;
             lstvwMoveRoute.Location = new Point(4, 19);
             lstvwMoveRoute.Margin = new Padding(4, 3, 4, 3);
             lstvwMoveRoute.MultiSelect = false;
             lstvwMoveRoute.Name = "lstvwMoveRoute";
             lstvwMoveRoute.Size = new Size(686, 458);
             lstvwMoveRoute.TabIndex = 5;
-            lstvwMoveRoute.UseCompatibleStateImageBehavior = false;
-            lstvwMoveRoute.View = View.Tile;
             lstvwMoveRoute.Click += LstvwMoveRoute_SelectedIndexChanged;
             // 
             // ColumnHeader3
@@ -4918,7 +4909,6 @@ namespace Client
             btnRename_Cancel.Size = new Size(88, 27);
             btnRename_Cancel.TabIndex = 2;
             btnRename_Cancel.Text = "Cancel";
-            btnRename_Cancel.UseVisualStyleBackColor = true;
             btnRename_Cancel.Click += BtnRename_Cancel_Click;
             // 
             // btnRename_Ok
@@ -4930,7 +4920,6 @@ namespace Client
             btnRename_Ok.Size = new Size(88, 27);
             btnRename_Ok.TabIndex = 1;
             btnRename_Ok.Text = "Ok";
-            btnRename_Ok.UseVisualStyleBackColor = true;
             btnRename_Ok.Click += BtnRename_Ok_Click;
             // 
             // fraRandom10
@@ -5293,7 +5282,7 @@ namespace Client
         internal DarkUI.Controls.DarkComboBox cmbEvent;
         internal ListBox lstMoveRoute;
         internal DarkUI.Controls.DarkGroupBox DarkGroupBox10;
-        internal ListView lstvwMoveRoute;
+        internal DarkUI.Controls.DarkListView lstvwMoveRoute;
         internal ColumnHeader ColumnHeader3;
         internal ColumnHeader ColumnHeader4;
         internal DarkUI.Controls.DarkCheckBox chkRepeatRoute;
@@ -5556,12 +5545,12 @@ namespace Client
         internal DarkUI.Controls.DarkGroupBox fraLabeling;
         internal ListBox lstSwitches;
         internal ListBox lstVariables;
-        internal GroupBox FraRenaming;
-        internal Button btnRename_Cancel;
-        internal Button btnRename_Ok;
-        internal GroupBox fraRandom10;
-        internal TextBox txtRename;
-        internal Label lblEditing;
+        internal DarkUI.Controls.DarkGroupBox FraRenaming;
+        internal DarkUI.Controls.DarkButton btnRename_Cancel;
+        internal DarkUI.Controls.DarkButton btnRename_Ok;
+        internal DarkUI.Controls.DarkGroupBox fraRandom10;
+        internal DarkUI.Controls.DarkTextBox txtRename;
+        internal DarkUI.Controls.DarkLabel lblEditing;
         internal Panel pnlGraphicSel;
         internal DarkUI.Controls.DarkComboBox cmbCondition_Time;
         internal DarkUI.Controls.DarkRadioButton optCondition9;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DarkUI.Controls;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -54,65 +55,65 @@ namespace Client
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditor_Map));
-            btnClearAttribute = new Button();
-            optTrap = new RadioButton();
-            optHeal = new RadioButton();
-            optBank = new RadioButton();
-            optShop = new RadioButton();
-            optNPCSpawn = new RadioButton();
-            optResource = new RadioButton();
-            optNPCAvoid = new RadioButton();
-            optItem = new RadioButton();
-            optWarp = new RadioButton();
-            optBlocked = new RadioButton();
+            btnClearAttribute = new DarkButton();
+            optTrap = new DarkRadioButton();
+            optHeal = new DarkRadioButton();
+            optBank = new DarkRadioButton();
+            optShop = new DarkRadioButton();
+            optNPCSpawn = new DarkRadioButton();
+            optResource = new DarkRadioButton();
+            optNPCAvoid = new DarkRadioButton();
+            optItem = new DarkRadioButton();
+            optWarp = new DarkRadioButton();
+            optBlocked = new DarkRadioButton();
             pnlBack = new Panel();
             picBackSelect = new PictureBox();
-            Label1 = new Label();
+            Label1 = new DarkLabel();
             pnlAttributes = new Panel();
-            fraMapLight = new GroupBox();
-            lblRadius = new Label();
+            fraMapLight = new DarkGroupBox();
+            lblRadius = new DarkLabel();
             scrlLight = new HScrollBar();
-            chkShadow = new CheckBox();
-            chkFlicker = new CheckBox();
-            btnLight = new Button();
-            fraAnimation = new GroupBox();
-            cmbAnimation = new ComboBox();
-            brnAnimation = new Button();
-            fraMapWarp = new GroupBox();
-            btnMapWarp = new Button();
+            chkShadow = new DarkCheckBox();
+            chkFlicker = new DarkCheckBox();
+            btnLight = new DarkButton();
+            fraAnimation = new DarkGroupBox();
+            cmbAnimation = new DarkComboBox();
+            brnAnimation = new DarkButton();
+            fraMapWarp = new DarkGroupBox();
+            btnMapWarp = new DarkButton();
             scrlMapWarpY = new HScrollBar();
             scrlMapWarpX = new HScrollBar();
             scrlMapWarpMap = new HScrollBar();
-            lblMapWarpY = new Label();
-            lblMapWarpX = new Label();
-            lblMapWarpMap = new Label();
-            fraNPCSpawn = new GroupBox();
-            lstNPC = new ComboBox();
-            btnNPCSpawn = new Button();
+            lblMapWarpY = new DarkLabel();
+            lblMapWarpX = new DarkLabel();
+            lblMapWarpMap = new DarkLabel();
+            fraNPCSpawn = new DarkGroupBox();
+            lstNPC = new DarkComboBox();
+            btnNPCSpawn = new DarkButton();
             scrlNPCDir = new HScrollBar();
-            lblNPCDir = new Label();
-            fraHeal = new GroupBox();
+            lblNPCDir = new DarkLabel();
+            fraHeal = new DarkGroupBox();
             scrlHeal = new HScrollBar();
-            lblHeal = new Label();
-            cmbHeal = new ComboBox();
-            btnHeal = new Button();
-            fraShop = new GroupBox();
-            cmbShop = new ComboBox();
-            btnShop = new Button();
-            fraResource = new GroupBox();
-            btnResourceOk = new Button();
+            lblHeal = new DarkLabel();
+            cmbHeal = new DarkComboBox();
+            btnHeal = new DarkButton();
+            fraShop = new DarkGroupBox();
+            cmbShop = new DarkComboBox();
+            btnShop = new DarkButton();
+            fraResource = new DarkGroupBox();
+            btnResourceOk = new DarkButton();
             scrlResource = new HScrollBar();
-            lblResource = new Label();
-            fraMapItem = new GroupBox();
+            lblResource = new DarkLabel();
+            fraMapItem = new DarkGroupBox();
             picMapItem = new PictureBox();
-            btnMapItem = new Button();
+            btnMapItem = new DarkButton();
             scrlMapItemValue = new HScrollBar();
             scrlMapItem = new HScrollBar();
-            lblMapItem = new Label();
-            fraTrap = new GroupBox();
-            btnTrap = new Button();
+            lblMapItem = new DarkLabel();
+            fraTrap = new DarkGroupBox();
+            btnTrap = new DarkButton();
             scrlTrap = new HScrollBar();
-            lblTrap = new Label();
+            lblTrap = new DarkLabel();
             ToolStrip = new ToolStrip();
             tsbSave = new ToolStripButton();
             tsbDiscard = new ToolStripButton();
@@ -130,95 +131,95 @@ namespace Client
             tsbScreenshot = new ToolStripButton();
             tabpages = new TabControl();
             tpTiles = new TabPage();
-            cmbAutoTile = new ComboBox();
-            Label11 = new Label();
-            Label10 = new Label();
-            cmbLayers = new ComboBox();
-            Label9 = new Label();
-            cmbTileSets = new ComboBox();
+            cmbAutoTile = new DarkComboBox();
+            Label11 = new DarkLabel();
+            Label10 = new DarkLabel();
+            cmbLayers = new DarkComboBox();
+            Label9 = new DarkLabel();
+            cmbTileSets = new DarkComboBox();
             tpAttributes = new TabPage();
-            optNoXing = new RadioButton();
-            btnFillAttributes = new Button();
-            optInfo = new RadioButton();
-            Label23 = new Label();
-            cmbAttribute = new ComboBox();
-            optAnimation = new RadioButton();
+            optNoXing = new DarkRadioButton();
+            btnFillAttributes = new DarkButton();
+            optInfo = new DarkRadioButton();
+            Label23 = new DarkLabel();
+            cmbAttribute = new DarkComboBox();
+            optAnimation = new DarkRadioButton();
             tpNPCs = new TabPage();
-            fraNPCs = new GroupBox();
-            Label18 = new Label();
-            Label17 = new Label();
-            cmbNPCList = new ComboBox();
+            fraNPCs = new DarkGroupBox();
+            Label18 = new DarkLabel();
+            Label17 = new DarkLabel();
+            cmbNPCList = new DarkComboBox();
             lstMapNPC = new ListBox();
-            ComboBox23 = new ComboBox();
+            ComboBox23 = new DarkComboBox();
             tpSettings = new TabPage();
-            fraMapSettings = new GroupBox();
-            Label22 = new Label();
-            lstShop = new ComboBox();
-            Label8 = new Label();
-            lstMoral = new ComboBox();
-            fraMapLinks = new GroupBox();
-            txtDown = new TextBox();
-            txtLeft = new TextBox();
-            lblMap = new Label();
-            txtRight = new TextBox();
-            txtUp = new TextBox();
-            fraBootSettings = new GroupBox();
-            chkIndoors = new CheckBox();
-            chkNoMapRespawn = new CheckBox();
-            txtBootMap = new TextBox();
-            Label5 = new Label();
-            txtBootY = new TextBox();
-            Label3 = new Label();
-            txtBootX = new TextBox();
-            Label4 = new Label();
-            fraMaxSizes = new GroupBox();
-            txtMaxY = new TextBox();
-            Label2 = new Label();
-            txtMaxX = new TextBox();
-            Label7 = new Label();
-            GroupBox2 = new GroupBox();
-            btnPreview = new Button();
+            fraMapSettings = new DarkGroupBox();
+            Label22 = new DarkLabel();
+            lstShop = new DarkComboBox();
+            Label8 = new DarkLabel();
+            lstMoral = new DarkComboBox();
+            fraMapLinks = new DarkGroupBox();
+            txtDown = new DarkTextBox();
+            txtLeft = new DarkTextBox();
+            lblMap = new DarkLabel();
+            txtRight = new DarkTextBox();
+            txtUp = new DarkTextBox();
+            fraBootSettings = new DarkGroupBox();
+            chkIndoors = new DarkCheckBox();
+            chkNoMapRespawn = new DarkCheckBox();
+            txtBootMap = new DarkTextBox();
+            Label5 = new DarkLabel();
+            txtBootY = new DarkTextBox();
+            Label3 = new DarkLabel();
+            txtBootX = new DarkTextBox();
+            Label4 = new DarkLabel();
+            fraMaxSizes = new DarkGroupBox();
+            txtMaxY = new DarkTextBox();
+            Label2 = new DarkLabel();
+            txtMaxX = new DarkTextBox();
+            Label7 = new DarkLabel();
+            GroupBox2 = new DarkGroupBox();
+            btnPreview = new DarkButton();
             lstMusic = new ListBox();
-            txtName = new TextBox();
-            Label6 = new Label();
+            txtName = new DarkTextBox();
+            Label6 = new DarkLabel();
             tpDirBlock = new TabPage();
-            Label12 = new Label();
+            Label12 = new DarkLabel();
             tpEvents = new TabPage();
-            lblPasteMode = new Label();
-            lblCopyMode = new Label();
-            btnPasteEvent = new Button();
-            Label16 = new Label();
-            btnCopyEvent = new Button();
-            Label15 = new Label();
-            Label13 = new Label();
+            lblPasteMode = new DarkLabel();
+            lblCopyMode = new DarkLabel();
+            btnPasteEvent = new DarkButton();
+            Label16 = new DarkLabel();
+            btnCopyEvent = new DarkButton();
+            Label15 = new DarkLabel();
+            Label13 = new DarkLabel();
             tpEffects = new TabPage();
-            GroupBox6 = new GroupBox();
+            GroupBox6 = new DarkGroupBox();
             scrlMapBrightness = new HScrollBar();
-            GroupBox5 = new GroupBox();
-            cmbParallax = new ComboBox();
-            GroupBox4 = new GroupBox();
-            cmbPanorama = new ComboBox();
-            GroupBox3 = new GroupBox();
-            chkTint = new CheckBox();
-            lblMapAlpha = new Label();
-            lblMapBlue = new Label();
-            lblMapGreen = new Label();
-            lblMapRed = new Label();
+            GroupBox5 = new DarkGroupBox();
+            cmbParallax = new DarkComboBox();
+            GroupBox4 = new DarkGroupBox();
+            cmbPanorama = new DarkComboBox();
+            GroupBox3 = new DarkGroupBox();
+            chkTint = new DarkCheckBox();
+            lblMapAlpha = new DarkLabel();
+            lblMapBlue = new DarkLabel();
+            lblMapGreen = new DarkLabel();
+            lblMapRed = new DarkLabel();
             scrlMapAlpha = new HScrollBar();
             scrlMapBlue = new HScrollBar();
             scrlMapGreen = new HScrollBar();
             scrlMapRed = new HScrollBar();
-            GroupBox1 = new GroupBox();
+            GroupBox1 = new DarkGroupBox();
             scrlFogOpacity = new HScrollBar();
-            lblFogOpacity = new Label();
+            lblFogOpacity = new DarkLabel();
             scrlFogSpeed = new HScrollBar();
-            lblFogSpeed = new Label();
+            lblFogSpeed = new DarkLabel();
             scrlIntensity = new HScrollBar();
-            lblIntensity = new Label();
+            lblIntensity = new DarkLabel();
             scrlFog = new HScrollBar();
-            lblFogIndex = new Label();
-            Label14 = new Label();
-            cmbWeather = new ComboBox();
+            lblFogIndex = new DarkLabel();
+            Label14 = new DarkLabel();
+            cmbWeather = new DarkComboBox();
             pnlBack.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picBackSelect).BeginInit();
             pnlAttributes.SuspendLayout();
@@ -262,7 +263,6 @@ namespace Client
             btnClearAttribute.Size = new Size(136, 29);
             btnClearAttribute.TabIndex = 14;
             btnClearAttribute.Text = "Clear Attributes";
-            btnClearAttribute.UseVisualStyleBackColor = true;
             btnClearAttribute.Click += BtnClearAttribute_Click;
             // 
             // optTrap
@@ -274,7 +274,6 @@ namespace Client
             optTrap.Size = new Size(47, 19);
             optTrap.TabIndex = 12;
             optTrap.Text = "Trap";
-            optTrap.UseVisualStyleBackColor = true;
             optTrap.CheckedChanged += OptTrap_CheckedChanged;
             // 
             // optHeal
@@ -286,7 +285,6 @@ namespace Client
             optHeal.Size = new Size(49, 19);
             optHeal.TabIndex = 11;
             optHeal.Text = "Heal";
-            optHeal.UseVisualStyleBackColor = true;
             optHeal.CheckedChanged += OptHeal_CheckedChanged;
             // 
             // optBank
@@ -298,7 +296,6 @@ namespace Client
             optBank.Size = new Size(51, 19);
             optBank.TabIndex = 10;
             optBank.Text = "Bank";
-            optBank.UseVisualStyleBackColor = true;
             // 
             // optShop
             // 
@@ -309,7 +306,6 @@ namespace Client
             optShop.Size = new Size(52, 19);
             optShop.TabIndex = 9;
             optShop.Text = "Shop";
-            optShop.UseVisualStyleBackColor = true;
             optShop.CheckedChanged += OptShop_CheckedChanged;
             // 
             // optNPCSpawn
@@ -321,7 +317,6 @@ namespace Client
             optNPCSpawn.Size = new Size(87, 19);
             optNPCSpawn.TabIndex = 8;
             optNPCSpawn.Text = "NPC Spawn";
-            optNPCSpawn.UseVisualStyleBackColor = true;
             optNPCSpawn.CheckedChanged += OptNPCSpawn_CheckedChanged;
             // 
             // optResource
@@ -333,7 +328,6 @@ namespace Client
             optResource.Size = new Size(73, 19);
             optResource.TabIndex = 6;
             optResource.Text = "Resource";
-            optResource.UseVisualStyleBackColor = true;
             optResource.CheckedChanged += OptResource_CheckedChanged;
             // 
             // optNPCAvoid
@@ -345,7 +339,6 @@ namespace Client
             optNPCAvoid.Size = new Size(83, 19);
             optNPCAvoid.TabIndex = 3;
             optNPCAvoid.Text = "NPC Avoid";
-            optNPCAvoid.UseVisualStyleBackColor = true;
             // 
             // optItem
             // 
@@ -356,7 +349,6 @@ namespace Client
             optItem.Size = new Size(49, 19);
             optItem.TabIndex = 2;
             optItem.Text = "Item";
-            optItem.UseVisualStyleBackColor = true;
             optItem.CheckedChanged += OptItem_CheckedChanged;
             // 
             // optWarp
@@ -368,7 +360,6 @@ namespace Client
             optWarp.Size = new Size(53, 19);
             optWarp.TabIndex = 1;
             optWarp.Text = "Warp";
-            optWarp.UseVisualStyleBackColor = true;
             optWarp.CheckedChanged += OptWarp_CheckedChanged;
             // 
             // optBlocked
@@ -382,7 +373,6 @@ namespace Client
             optBlocked.TabIndex = 0;
             optBlocked.TabStop = true;
             optBlocked.Text = "Blocked";
-            optBlocked.UseVisualStyleBackColor = true;
             optBlocked.CheckedChanged += OptBlocked_CheckedChanged;
             // 
             // pnlBack
@@ -478,7 +468,6 @@ namespace Client
             chkShadow.Size = new Size(73, 19);
             chkShadow.TabIndex = 39;
             chkShadow.Text = "Shadows";
-            chkShadow.UseVisualStyleBackColor = true;
             // 
             // chkFlicker
             // 
@@ -488,7 +477,6 @@ namespace Client
             chkFlicker.Size = new Size(60, 19);
             chkFlicker.TabIndex = 38;
             chkFlicker.Text = "Flicker";
-            chkFlicker.UseVisualStyleBackColor = true;
             // 
             // btnLight
             // 
@@ -530,7 +518,6 @@ namespace Client
             brnAnimation.Size = new Size(105, 32);
             brnAnimation.TabIndex = 6;
             brnAnimation.Text = "Accept";
-            brnAnimation.UseVisualStyleBackColor = true;
             brnAnimation.Click += brnAnimation_Click;
             // 
             // fraMapWarp
@@ -559,7 +546,6 @@ namespace Client
             btnMapWarp.Size = new Size(105, 32);
             btnMapWarp.TabIndex = 6;
             btnMapWarp.Text = "Accept";
-            btnMapWarp.UseVisualStyleBackColor = true;
             btnMapWarp.Click += BtnMapWarp_Click;
             // 
             // scrlMapWarpY
@@ -649,7 +635,6 @@ namespace Client
             btnNPCSpawn.Size = new Size(105, 32);
             btnNPCSpawn.TabIndex = 6;
             btnNPCSpawn.Text = "Accept";
-            btnNPCSpawn.UseVisualStyleBackColor = true;
             btnNPCSpawn.Click += BtnNPCSpawn_Click;
             // 
             // scrlNPCDir
@@ -724,7 +709,6 @@ namespace Client
             btnHeal.Size = new Size(105, 32);
             btnHeal.TabIndex = 6;
             btnHeal.Text = "Accept";
-            btnHeal.UseVisualStyleBackColor = true;
             btnHeal.Click += BtnHeal_Click;
             // 
             // fraShop
@@ -758,7 +742,6 @@ namespace Client
             btnShop.Size = new Size(105, 32);
             btnShop.TabIndex = 6;
             btnShop.Text = "Accept";
-            btnShop.UseVisualStyleBackColor = true;
             btnShop.Click += BtnShop_Click;
             // 
             // fraResource
@@ -783,7 +766,6 @@ namespace Client
             btnResourceOk.Size = new Size(105, 32);
             btnResourceOk.TabIndex = 6;
             btnResourceOk.Text = "Accept";
-            btnResourceOk.UseVisualStyleBackColor = true;
             btnResourceOk.Click += BtnResourceOk_Click;
             // 
             // scrlResource
@@ -838,7 +820,6 @@ namespace Client
             btnMapItem.Size = new Size(105, 32);
             btnMapItem.TabIndex = 6;
             btnMapItem.Text = "Accept";
-            btnMapItem.UseVisualStyleBackColor = true;
             btnMapItem.Click += BtnMapItem_Click;
             // 
             // scrlMapItemValue
@@ -889,7 +870,6 @@ namespace Client
             btnTrap.Size = new Size(105, 32);
             btnTrap.TabIndex = 42;
             btnTrap.Text = "Accept";
-            btnTrap.UseVisualStyleBackColor = true;
             btnTrap.Click += BtnTrap_Click;
             // 
             // scrlTrap
@@ -1185,7 +1165,6 @@ namespace Client
             optNoXing.Size = new Size(68, 19);
             optNoXing.TabIndex = 25;
             optNoXing.Text = "No Xing";
-            optNoXing.UseVisualStyleBackColor = true;
             // 
             // btnFillAttributes
             // 
@@ -1195,7 +1174,6 @@ namespace Client
             btnFillAttributes.Size = new Size(136, 29);
             btnFillAttributes.TabIndex = 24;
             btnFillAttributes.Text = "Fill Attributes";
-            btnFillAttributes.UseVisualStyleBackColor = true;
             btnFillAttributes.Click += btnFillAttributes_Click;
             // 
             // optInfo
@@ -1207,7 +1185,6 @@ namespace Client
             optInfo.Size = new Size(46, 19);
             optInfo.TabIndex = 22;
             optInfo.Text = "Info";
-            optInfo.UseVisualStyleBackColor = true;
             // 
             // Label23
             // 
@@ -1240,7 +1217,6 @@ namespace Client
             optAnimation.Size = new Size(81, 19);
             optAnimation.TabIndex = 19;
             optAnimation.Text = "Animation";
-            optAnimation.UseVisualStyleBackColor = true;
             optAnimation.CheckedChanged += optAnimation_CheckedChanged;
             // 
             // tpNPCs
@@ -1483,7 +1459,6 @@ namespace Client
             chkIndoors.Size = new Size(66, 19);
             chkIndoors.TabIndex = 42;
             chkIndoors.Text = "Indoors";
-            chkIndoors.UseVisualStyleBackColor = true;
             chkIndoors.CheckedChanged += chkIndoors_CheckedChanged;
             // 
             // chkNoMapRespawn
@@ -1495,7 +1470,6 @@ namespace Client
             chkNoMapRespawn.Size = new Size(119, 19);
             chkNoMapRespawn.TabIndex = 19;
             chkNoMapRespawn.Text = "No Map Respawn";
-            chkNoMapRespawn.UseVisualStyleBackColor = true;
             chkNoMapRespawn.CheckedChanged += chkRespawn_CheckedChanged;
             // 
             // txtBootMap
@@ -1624,14 +1598,12 @@ namespace Client
             // btnPreview
             // 
             btnPreview.Image = (Image)resources.GetObject("btnPreview.Image");
-            btnPreview.ImageAlign = ContentAlignment.MiddleLeft;
             btnPreview.Location = new Point(57, 208);
             btnPreview.Margin = new Padding(4, 3, 4, 3);
             btnPreview.Name = "btnPreview";
             btnPreview.Size = new Size(162, 33);
             btnPreview.TabIndex = 4;
             btnPreview.Text = "Preview Music";
-            btnPreview.UseVisualStyleBackColor = true;
             btnPreview.Click += BtnPreview_Click;
             // 
             // lstMusic
@@ -1731,7 +1703,6 @@ namespace Client
             btnPasteEvent.Size = new Size(88, 27);
             btnPasteEvent.TabIndex = 4;
             btnPasteEvent.Text = "Paste Event";
-            btnPasteEvent.UseVisualStyleBackColor = true;
             btnPasteEvent.Click += BtnPasteEvent_Click;
             // 
             // Label16
@@ -1752,7 +1723,6 @@ namespace Client
             btnCopyEvent.Size = new Size(88, 27);
             btnCopyEvent.TabIndex = 2;
             btnCopyEvent.Text = "Copy Event";
-            btnCopyEvent.UseVisualStyleBackColor = true;
             btnCopyEvent.Click += BtnCopyEvent_Click;
             // 
             // Label15
@@ -1886,7 +1856,6 @@ namespace Client
             chkTint.Size = new Size(61, 19);
             chkTint.TabIndex = 18;
             chkTint.Text = "Enable";
-            chkTint.UseVisualStyleBackColor = true;
             chkTint.CheckedChanged += ChkUseTint_CheckedChanged;
             // 
             // lblMapAlpha
@@ -2165,54 +2134,54 @@ namespace Client
         }
 
         internal Panel pnlBack;
-        internal RadioButton optTrap;
-        internal RadioButton optHeal;
-        internal RadioButton optBank;
-        internal RadioButton optShop;
-        internal RadioButton optNPCSpawn;
-        internal RadioButton optResource;
-        internal RadioButton optNPCAvoid;
-        internal RadioButton optItem;
-        internal RadioButton optWarp;
-        internal RadioButton optBlocked;
-        internal Label Label1;
-        internal Button btnClearAttribute;
+        internal DarkRadioButton optTrap;
+        internal DarkRadioButton optHeal;
+        internal DarkRadioButton optBank;
+        internal DarkRadioButton optShop;
+        internal DarkRadioButton optNPCSpawn;
+        internal DarkRadioButton optResource;
+        internal DarkRadioButton optNPCAvoid;
+        internal DarkRadioButton optItem;
+        internal DarkRadioButton optWarp;
+        internal DarkRadioButton optBlocked;
+        internal DarkLabel Label1;
+        internal DarkButton btnClearAttribute;
         internal Panel pnlAttributes;
-        internal GroupBox fraMapWarp;
-        internal Label lblMapWarpY;
-        internal Label lblMapWarpX;
-        internal Label lblMapWarpMap;
+        internal DarkGroupBox fraMapWarp;
+        internal DarkLabel lblMapWarpY;
+        internal DarkLabel lblMapWarpX;
+        internal DarkLabel lblMapWarpMap;
         internal HScrollBar scrlMapWarpY;
         internal HScrollBar scrlMapWarpX;
         internal HScrollBar scrlMapWarpMap;
-        internal Button btnMapWarp;
-        internal GroupBox fraMapItem;
-        internal Button btnMapItem;
+        internal DarkButton btnMapWarp;
+        internal DarkGroupBox fraMapItem;
+        internal DarkButton btnMapItem;
         internal HScrollBar scrlMapItemValue;
         internal HScrollBar scrlMapItem;
-        internal Label lblMapItem;
+        internal DarkLabel lblMapItem;
         internal PictureBox picMapItem;
-        internal GroupBox fraResource;
-        internal Button btnResourceOk;
+        internal DarkGroupBox fraResource;
+        internal DarkButton btnResourceOk;
         internal HScrollBar scrlResource;
-        internal Label lblResource;
-        internal GroupBox fraNPCSpawn;
-        internal Button btnNPCSpawn;
+        internal DarkLabel lblResource;
+        internal DarkGroupBox fraNPCSpawn;
+        internal DarkButton btnNPCSpawn;
         internal HScrollBar scrlNPCDir;
-        internal Label lblNPCDir;
-        internal ComboBox lstNPC;
-        internal GroupBox fraShop;
-        internal ComboBox cmbShop;
-        internal Button btnShop;
-        internal GroupBox fraHeal;
-        internal Label lblHeal;
-        internal ComboBox cmbHeal;
-        internal Button btnHeal;
+        internal DarkLabel lblNPCDir;
+        internal DarkComboBox lstNPC;
+        internal DarkGroupBox fraShop;
+        internal DarkComboBox cmbShop;
+        internal DarkButton btnShop;
+        internal DarkGroupBox fraHeal;
+        internal DarkLabel lblHeal;
+        internal DarkComboBox cmbHeal;
+        internal DarkButton btnHeal;
         internal HScrollBar scrlHeal;
-        internal GroupBox fraTrap;
-        internal Button btnTrap;
+        internal DarkGroupBox fraTrap;
+        internal DarkButton btnTrap;
         internal HScrollBar scrlTrap;
-        internal Label lblTrap;
+        internal DarkLabel lblTrap;
         internal ToolStrip ToolStrip;
         internal ToolStripButton tsbSave;
         internal ToolStripButton tsbDiscard;
@@ -2220,90 +2189,90 @@ namespace Client
         internal TabPage tpTiles;
         internal TabPage tpNPCs;
         internal TabPage tpSettings;
-        internal GroupBox fraNPCs;
-        internal ComboBox ComboBox23;
-        internal TextBox txtName;
-        internal Label Label6;
-        internal GroupBox fraMapLinks;
-        internal TextBox txtDown;
-        internal TextBox txtLeft;
-        internal Label lblMap;
-        internal TextBox txtRight;
-        internal TextBox txtUp;
-        internal GroupBox fraBootSettings;
-        internal TextBox txtBootMap;
-        internal Label Label5;
-        internal TextBox txtBootY;
-        internal Label Label3;
-        internal TextBox txtBootX;
-        internal Label Label4;
-        internal GroupBox fraMaxSizes;
-        internal TextBox txtMaxY;
-        internal Label Label2;
-        internal TextBox txtMaxX;
-        internal Label Label7;
-        internal GroupBox GroupBox2;
+        internal DarkGroupBox fraNPCs;
+        internal DarkComboBox ComboBox23;
+        internal DarkTextBox txtName;
+        internal DarkLabel Label6;
+        internal DarkGroupBox fraMapLinks;
+        internal DarkTextBox txtDown;
+        internal DarkTextBox txtLeft;
+        internal DarkLabel lblMap;
+        internal DarkTextBox txtRight;
+        internal DarkTextBox txtUp;
+        internal DarkGroupBox fraBootSettings;
+        internal DarkTextBox txtBootMap;
+        internal DarkLabel Label5;
+        internal DarkTextBox txtBootY;
+        internal DarkLabel Label3;
+        internal DarkTextBox txtBootX;
+        internal DarkLabel Label4;
+        internal DarkGroupBox fraMaxSizes;
+        internal DarkTextBox txtMaxY;
+        internal DarkLabel Label2;
+        internal DarkTextBox txtMaxX;
+        internal DarkLabel Label7;
+        internal DarkGroupBox GroupBox2;
         internal ListBox lstMusic;
-        internal GroupBox fraMapSettings;
-        internal Label Label8;
-        internal ComboBox lstMoral;
+        internal DarkGroupBox fraMapSettings;
+        internal DarkLabel Label8;
+        internal DarkComboBox lstMoral;
         internal ToolStripSeparator ToolStripSeparator1;
-        internal ComboBox cmbNPCList;
+        internal DarkComboBox cmbNPCList;
         internal ListBox lstMapNPC;
         internal TabPage tpAttributes;
-        internal ComboBox cmbTileSets;
-        internal ComboBox cmbAutoTile;
-        internal Label Label11;
-        internal Label Label10;
-        internal ComboBox cmbLayers;
-        internal Label Label9;
+        internal DarkComboBox cmbTileSets;
+        internal DarkComboBox cmbAutoTile;
+        internal DarkLabel Label11;
+        internal DarkLabel Label10;
+        internal DarkComboBox cmbLayers;
+        internal DarkLabel Label9;
         internal TabPage tpDirBlock;
         internal TabPage tpEvents;
-        internal Label Label12;
-        internal Label Label13;
+        internal DarkLabel Label12;
+        internal DarkLabel Label13;
         internal ToolStripButton tsbMapGrid;
-        internal Button btnPreview;
+        internal DarkButton btnPreview;
         internal ToolStripButton tsbFill;
         internal ToolStripButton tsbEyeDropper;
         internal ToolStripSeparator ToolStripSeparator2;
-        internal Button btnPasteEvent;
-        internal Label Label16;
-        internal Button btnCopyEvent;
-        internal Label Label15;
-        internal Label lblPasteMode;
-        internal Label lblCopyMode;
+        internal DarkButton btnPasteEvent;
+        internal DarkLabel Label16;
+        internal DarkButton btnCopyEvent;
+        internal DarkLabel Label15;
+        internal DarkLabel lblPasteMode;
+        internal DarkLabel lblCopyMode;
         internal TabPage tpEffects;
-        internal GroupBox GroupBox3;
-        internal CheckBox chkTint;
-        internal Label lblMapAlpha;
-        internal Label lblMapBlue;
-        internal Label lblMapGreen;
-        internal Label lblMapRed;
+        internal DarkGroupBox GroupBox3;
+        internal DarkCheckBox chkTint;
+        internal DarkLabel lblMapAlpha;
+        internal DarkLabel lblMapBlue;
+        internal DarkLabel lblMapGreen;
+        internal DarkLabel lblMapRed;
         internal HScrollBar scrlMapAlpha;
         internal HScrollBar scrlMapBlue;
         internal HScrollBar scrlMapGreen;
         internal HScrollBar scrlMapRed;
-        internal GroupBox GroupBox1;
+        internal DarkGroupBox GroupBox1;
         internal HScrollBar scrlFogOpacity;
-        internal Label lblFogOpacity;
+        internal DarkLabel lblFogOpacity;
         internal HScrollBar scrlFogSpeed;
-        internal Label lblFogSpeed;
+        internal DarkLabel lblFogSpeed;
         internal HScrollBar scrlIntensity;
-        internal Label lblIntensity;
+        internal DarkLabel lblIntensity;
         internal HScrollBar scrlFog;
-        internal Label lblFogIndex;
-        internal Label Label14;
-        internal ComboBox cmbWeather;
-        internal Label Label18;
-        internal Label Label17;
-        internal GroupBox GroupBox5;
-        internal Label Label20;
-        internal ComboBox cmbParallax;
-        internal GroupBox GroupBox4;
-        internal Label Label19;
-        internal ComboBox cmbPanorama;
-        internal GroupBox GroupBox6;
-        internal Label lblMapBrightness;
+        internal DarkLabel lblFogIndex;
+        internal DarkLabel Label14;
+        internal DarkComboBox cmbWeather;
+        internal DarkLabel Label18;
+        internal DarkLabel Label17;
+        internal DarkGroupBox GroupBox5;
+        internal DarkLabel Label20;
+        internal DarkComboBox cmbParallax;
+        internal DarkGroupBox GroupBox4;
+        internal DarkLabel Label19;
+        internal DarkComboBox cmbPanorama;
+        internal DarkGroupBox GroupBox6;
+        internal DarkLabel lblMapBrightness;
         internal HScrollBar scrlMapBrightness;
         internal PictureBox picBackSelect;
         internal ToolStripButton tsbClear;
@@ -2312,26 +2281,26 @@ namespace Client
         internal ToolStripButton tsbRedo;
         internal ToolStripButton tsbOpacity;
         internal ToolStripButton tsbScreenshot;
-        internal RadioButton optAnimation;
-        internal GroupBox fraAnimation;
-        internal ComboBox cmbAnimation;
-        internal Button brnAnimation;
-        internal GroupBox fraMapLight;
-        internal Button btnLight;
+        internal DarkRadioButton optAnimation;
+        internal DarkGroupBox fraAnimation;
+        internal DarkComboBox cmbAnimation;
+        internal DarkButton brnAnimation;
+        internal DarkGroupBox fraMapLight;
+        internal DarkButton btnLight;
         internal HScrollBar scrlLight;
-        internal CheckBox chkShadow;
-        internal CheckBox chkFlicker;
-        internal Label Label21;
-        internal Label lblRadius;
-        internal Label Label22;
-        internal ComboBox lstShop;
-        internal CheckBox chkNoMapRespawn;
-        internal CheckBox chkIndoors;
-        internal Label Label23;
-        internal ComboBox cmbAttribute;
+        internal DarkCheckBox chkShadow;
+        internal DarkCheckBox chkFlicker;
+        internal DarkLabel Label21;
+        internal DarkLabel lblRadius;
+        internal DarkLabel Label22;
+        internal DarkComboBox lstShop;
+        internal DarkCheckBox chkNoMapRespawn;
+        internal DarkCheckBox chkIndoors;
+        internal DarkLabel Label23;
+        internal DarkComboBox cmbAttribute;
         internal ToolStripButton tsbDeleteMap;
-        internal RadioButton optInfo;
-        internal Button btnFillAttributes;
-        internal RadioButton optNoXing;
+        internal DarkRadioButton optInfo;
+        internal DarkButton btnFillAttributes;
+        internal DarkRadioButton optNoXing;
     }
 }
