@@ -260,6 +260,7 @@ namespace Client
             btnClearAttribute.Location = new Point(400, 569);
             btnClearAttribute.Margin = new Padding(4, 3, 4, 3);
             btnClearAttribute.Name = "btnClearAttribute";
+            btnClearAttribute.Padding = new Padding(5);
             btnClearAttribute.Size = new Size(136, 29);
             btnClearAttribute.TabIndex = 14;
             btnClearAttribute.Text = "Clear Attributes";
@@ -400,6 +401,7 @@ namespace Client
             // Label1
             // 
             Label1.AutoSize = true;
+            Label1.ForeColor = Color.FromArgb(220, 220, 220);
             Label1.Location = new Point(8, 544);
             Label1.Margin = new Padding(4, 0, 4, 0);
             Label1.Name = "Label1";
@@ -427,6 +429,7 @@ namespace Client
             // 
             // fraMapLight
             // 
+            fraMapLight.BorderColor = Color.FromArgb(51, 51, 51);
             fraMapLight.Controls.Add(lblRadius);
             fraMapLight.Controls.Add(scrlLight);
             fraMapLight.Controls.Add(chkShadow);
@@ -445,6 +448,7 @@ namespace Client
             // lblRadius
             // 
             lblRadius.AutoSize = true;
+            lblRadius.ForeColor = Color.FromArgb(220, 220, 220);
             lblRadius.Location = new Point(8, 16);
             lblRadius.Margin = new Padding(4, 0, 4, 0);
             lblRadius.Name = "lblRadius";
@@ -482,11 +486,13 @@ namespace Client
             // 
             btnLight.Location = new Point(0, 0);
             btnLight.Name = "btnLight";
+            btnLight.Padding = new Padding(5);
             btnLight.Size = new Size(75, 23);
             btnLight.TabIndex = 42;
             // 
             // fraAnimation
             // 
+            fraAnimation.BorderColor = Color.FromArgb(51, 51, 51);
             fraAnimation.Controls.Add(cmbAnimation);
             fraAnimation.Controls.Add(brnAnimation);
             fraAnimation.Location = new Point(214, 291);
@@ -501,13 +507,13 @@ namespace Client
             // 
             // cmbAnimation
             // 
-            cmbAnimation.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbAnimation.DrawMode = DrawMode.OwnerDrawVariable;
             cmbAnimation.FormattingEnabled = true;
             cmbAnimation.Items.AddRange(new object[] { "Heal HP", "Heal MP" });
             cmbAnimation.Location = new Point(7, 22);
             cmbAnimation.Margin = new Padding(4, 3, 4, 3);
             cmbAnimation.Name = "cmbAnimation";
-            cmbAnimation.Size = new Size(180, 23);
+            cmbAnimation.Size = new Size(180, 24);
             cmbAnimation.TabIndex = 37;
             // 
             // brnAnimation
@@ -515,6 +521,7 @@ namespace Client
             brnAnimation.Location = new Point(43, 88);
             brnAnimation.Margin = new Padding(4, 3, 4, 3);
             brnAnimation.Name = "brnAnimation";
+            brnAnimation.Padding = new Padding(5);
             brnAnimation.Size = new Size(105, 32);
             brnAnimation.TabIndex = 6;
             brnAnimation.Text = "Accept";
@@ -522,6 +529,7 @@ namespace Client
             // 
             // fraMapWarp
             // 
+            fraMapWarp.BorderColor = Color.FromArgb(51, 51, 51);
             fraMapWarp.Controls.Add(btnMapWarp);
             fraMapWarp.Controls.Add(scrlMapWarpY);
             fraMapWarp.Controls.Add(scrlMapWarpX);
@@ -543,6 +551,7 @@ namespace Client
             btnMapWarp.Location = new Point(93, 102);
             btnMapWarp.Margin = new Padding(4, 3, 4, 3);
             btnMapWarp.Name = "btnMapWarp";
+            btnMapWarp.Padding = new Padding(5);
             btnMapWarp.Size = new Size(105, 32);
             btnMapWarp.TabIndex = 6;
             btnMapWarp.Text = "Accept";
@@ -575,6 +584,7 @@ namespace Client
             // lblMapWarpY
             // 
             lblMapWarpY.AutoSize = true;
+            lblMapWarpY.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapWarpY.Location = new Point(8, 77);
             lblMapWarpY.Margin = new Padding(4, 0, 4, 0);
             lblMapWarpY.Name = "lblMapWarpY";
@@ -585,6 +595,7 @@ namespace Client
             // lblMapWarpX
             // 
             lblMapWarpX.AutoSize = true;
+            lblMapWarpX.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapWarpX.Location = new Point(8, 53);
             lblMapWarpX.Margin = new Padding(4, 0, 4, 0);
             lblMapWarpX.Name = "lblMapWarpX";
@@ -595,6 +606,7 @@ namespace Client
             // lblMapWarpMap
             // 
             lblMapWarpMap.AutoSize = true;
+            lblMapWarpMap.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapWarpMap.Location = new Point(7, 29);
             lblMapWarpMap.Margin = new Padding(4, 0, 4, 0);
             lblMapWarpMap.Name = "lblMapWarpMap";
@@ -604,6 +616,7 @@ namespace Client
             // 
             // fraNPCSpawn
             // 
+            fraNPCSpawn.BorderColor = Color.FromArgb(51, 51, 51);
             fraNPCSpawn.Controls.Add(lstNPC);
             fraNPCSpawn.Controls.Add(btnNPCSpawn);
             fraNPCSpawn.Controls.Add(scrlNPCDir);
@@ -619,12 +632,12 @@ namespace Client
             // 
             // lstNPC
             // 
-            lstNPC.DropDownStyle = ComboBoxStyle.DropDownList;
+            lstNPC.DrawMode = DrawMode.OwnerDrawVariable;
             lstNPC.FormattingEnabled = true;
             lstNPC.Location = new Point(7, 18);
             lstNPC.Margin = new Padding(4, 3, 4, 3);
             lstNPC.Name = "lstNPC";
-            lstNPC.Size = new Size(180, 23);
+            lstNPC.Size = new Size(180, 24);
             lstNPC.TabIndex = 37;
             // 
             // btnNPCSpawn
@@ -632,6 +645,7 @@ namespace Client
             btnNPCSpawn.Location = new Point(46, 88);
             btnNPCSpawn.Margin = new Padding(4, 3, 4, 3);
             btnNPCSpawn.Name = "btnNPCSpawn";
+            btnNPCSpawn.Padding = new Padding(5);
             btnNPCSpawn.Size = new Size(105, 32);
             btnNPCSpawn.TabIndex = 6;
             btnNPCSpawn.Text = "Accept";
@@ -650,6 +664,7 @@ namespace Client
             // lblNPCDir
             // 
             lblNPCDir.AutoSize = true;
+            lblNPCDir.ForeColor = Color.FromArgb(220, 220, 220);
             lblNPCDir.Location = new Point(6, 46);
             lblNPCDir.Margin = new Padding(4, 0, 4, 0);
             lblNPCDir.Name = "lblNPCDir";
@@ -659,6 +674,7 @@ namespace Client
             // 
             // fraHeal
             // 
+            fraHeal.BorderColor = Color.FromArgb(51, 51, 51);
             fraHeal.Controls.Add(scrlHeal);
             fraHeal.Controls.Add(lblHeal);
             fraHeal.Controls.Add(cmbHeal);
@@ -683,6 +699,7 @@ namespace Client
             // lblHeal
             // 
             lblHeal.AutoSize = true;
+            lblHeal.ForeColor = Color.FromArgb(220, 220, 220);
             lblHeal.Location = new Point(4, 50);
             lblHeal.Margin = new Padding(4, 0, 4, 0);
             lblHeal.Name = "lblHeal";
@@ -692,13 +709,13 @@ namespace Client
             // 
             // cmbHeal
             // 
-            cmbHeal.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbHeal.DrawMode = DrawMode.OwnerDrawVariable;
             cmbHeal.FormattingEnabled = true;
             cmbHeal.Items.AddRange(new object[] { "Heal HP", "Heal MP" });
             cmbHeal.Location = new Point(7, 22);
             cmbHeal.Margin = new Padding(4, 3, 4, 3);
             cmbHeal.Name = "cmbHeal";
-            cmbHeal.Size = new Size(180, 23);
+            cmbHeal.Size = new Size(180, 24);
             cmbHeal.TabIndex = 37;
             // 
             // btnHeal
@@ -706,6 +723,7 @@ namespace Client
             btnHeal.Location = new Point(43, 88);
             btnHeal.Margin = new Padding(4, 3, 4, 3);
             btnHeal.Name = "btnHeal";
+            btnHeal.Padding = new Padding(5);
             btnHeal.Size = new Size(105, 32);
             btnHeal.TabIndex = 6;
             btnHeal.Text = "Accept";
@@ -713,6 +731,7 @@ namespace Client
             // 
             // fraShop
             // 
+            fraShop.BorderColor = Color.FromArgb(51, 51, 51);
             fraShop.Controls.Add(cmbShop);
             fraShop.Controls.Add(btnShop);
             fraShop.Location = new Point(394, 9);
@@ -726,12 +745,12 @@ namespace Client
             // 
             // cmbShop
             // 
-            cmbShop.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbShop.DrawMode = DrawMode.OwnerDrawVariable;
             cmbShop.FormattingEnabled = true;
             cmbShop.Location = new Point(7, 22);
             cmbShop.Margin = new Padding(4, 3, 4, 3);
             cmbShop.Name = "cmbShop";
-            cmbShop.Size = new Size(154, 23);
+            cmbShop.Size = new Size(154, 24);
             cmbShop.TabIndex = 37;
             // 
             // btnShop
@@ -739,6 +758,7 @@ namespace Client
             btnShop.Location = new Point(34, 98);
             btnShop.Margin = new Padding(4, 3, 4, 3);
             btnShop.Name = "btnShop";
+            btnShop.Padding = new Padding(5);
             btnShop.Size = new Size(105, 32);
             btnShop.TabIndex = 6;
             btnShop.Text = "Accept";
@@ -746,6 +766,7 @@ namespace Client
             // 
             // fraResource
             // 
+            fraResource.BorderColor = Color.FromArgb(51, 51, 51);
             fraResource.Controls.Add(btnResourceOk);
             fraResource.Controls.Add(scrlResource);
             fraResource.Controls.Add(lblResource);
@@ -763,6 +784,7 @@ namespace Client
             btnResourceOk.Location = new Point(33, 88);
             btnResourceOk.Margin = new Padding(4, 3, 4, 3);
             btnResourceOk.Name = "btnResourceOk";
+            btnResourceOk.Padding = new Padding(5);
             btnResourceOk.Size = new Size(105, 32);
             btnResourceOk.TabIndex = 6;
             btnResourceOk.Text = "Accept";
@@ -779,6 +801,7 @@ namespace Client
             // lblResource
             // 
             lblResource.AutoSize = true;
+            lblResource.ForeColor = Color.FromArgb(220, 220, 220);
             lblResource.Location = new Point(0, 18);
             lblResource.Margin = new Padding(4, 0, 4, 0);
             lblResource.Name = "lblResource";
@@ -788,6 +811,7 @@ namespace Client
             // 
             // fraMapItem
             // 
+            fraMapItem.BorderColor = Color.FromArgb(51, 51, 51);
             fraMapItem.Controls.Add(picMapItem);
             fraMapItem.Controls.Add(btnMapItem);
             fraMapItem.Controls.Add(scrlMapItemValue);
@@ -817,6 +841,7 @@ namespace Client
             btnMapItem.Location = new Point(46, 97);
             btnMapItem.Margin = new Padding(4, 3, 4, 3);
             btnMapItem.Name = "btnMapItem";
+            btnMapItem.Padding = new Padding(5);
             btnMapItem.Size = new Size(105, 32);
             btnMapItem.TabIndex = 6;
             btnMapItem.Text = "Accept";
@@ -841,6 +866,7 @@ namespace Client
             // lblMapItem
             // 
             lblMapItem.AutoSize = true;
+            lblMapItem.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapItem.Location = new Point(7, 25);
             lblMapItem.Margin = new Padding(4, 0, 4, 0);
             lblMapItem.Name = "lblMapItem";
@@ -850,6 +876,7 @@ namespace Client
             // 
             // fraTrap
             // 
+            fraTrap.BorderColor = Color.FromArgb(51, 51, 51);
             fraTrap.Controls.Add(btnTrap);
             fraTrap.Controls.Add(scrlTrap);
             fraTrap.Controls.Add(lblTrap);
@@ -867,6 +894,7 @@ namespace Client
             btnTrap.Location = new Point(33, 98);
             btnTrap.Margin = new Padding(4, 3, 4, 3);
             btnTrap.Name = "btnTrap";
+            btnTrap.Padding = new Padding(5);
             btnTrap.Size = new Size(105, 32);
             btnTrap.TabIndex = 42;
             btnTrap.Text = "Accept";
@@ -883,6 +911,7 @@ namespace Client
             // lblTrap
             // 
             lblTrap.AutoSize = true;
+            lblTrap.ForeColor = Color.FromArgb(220, 220, 220);
             lblTrap.Location = new Point(7, 18);
             lblTrap.Margin = new Padding(4, 0, 4, 0);
             lblTrap.Name = "lblTrap";
@@ -893,6 +922,7 @@ namespace Client
             // ToolStrip
             // 
             ToolStrip.AutoSize = false;
+            ToolStrip.BackColor = Color.FromArgb(45, 45, 48);
             ToolStrip.ImageScalingSize = new Size(24, 24);
             ToolStrip.Items.AddRange(new ToolStripItem[] { tsbSave, tsbDiscard, ToolStripSeparator1, tsbMapGrid, tsbOpacity, ToolStripSeparator2, tsbFill, tsbClear, tsbEyeDropper, tsbCopyMap, tsbDeleteMap, tsbUndo, tsbRedo, tsbScreenshot });
             ToolStrip.Location = new Point(0, 0);
@@ -1047,6 +1077,7 @@ namespace Client
             // 
             // tpTiles
             // 
+            tpTiles.BackColor = Color.FromArgb(45, 45, 48);
             tpTiles.Controls.Add(cmbAutoTile);
             tpTiles.Controls.Add(Label11);
             tpTiles.Controls.Add(Label10);
@@ -1062,23 +1093,23 @@ namespace Client
             tpTiles.Size = new Size(542, 601);
             tpTiles.TabIndex = 0;
             tpTiles.Text = "Tiles";
-            tpTiles.UseVisualStyleBackColor = true;
             // 
             // cmbAutoTile
             // 
-            cmbAutoTile.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbAutoTile.DrawMode = DrawMode.OwnerDrawVariable;
             cmbAutoTile.FormattingEnabled = true;
             cmbAutoTile.Items.AddRange(new object[] { "Normal", "AutoTile (VX)", "Fake (VX)", "Animated (VX)", "Cliff (VX)", "Waterfall (VX)" });
             cmbAutoTile.Location = new Point(428, 566);
             cmbAutoTile.Margin = new Padding(4, 3, 4, 3);
             cmbAutoTile.Name = "cmbAutoTile";
-            cmbAutoTile.Size = new Size(110, 23);
+            cmbAutoTile.Size = new Size(110, 24);
             cmbAutoTile.TabIndex = 17;
             cmbAutoTile.SelectedIndexChanged += CmbAutoTile_SelectedIndexChanged;
             // 
             // Label11
             // 
             Label11.AutoSize = true;
+            Label11.ForeColor = Color.FromArgb(220, 220, 220);
             Label11.Location = new Point(364, 570);
             Label11.Margin = new Padding(4, 0, 4, 0);
             Label11.Name = "Label11";
@@ -1089,6 +1120,7 @@ namespace Client
             // Label10
             // 
             Label10.AutoSize = true;
+            Label10.ForeColor = Color.FromArgb(220, 220, 220);
             Label10.Location = new Point(167, 570);
             Label10.Margin = new Padding(4, 0, 4, 0);
             Label10.Name = "Label10";
@@ -1098,18 +1130,19 @@ namespace Client
             // 
             // cmbLayers
             // 
-            cmbLayers.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbLayers.DrawMode = DrawMode.OwnerDrawVariable;
             cmbLayers.FormattingEnabled = true;
             cmbLayers.Items.AddRange(new object[] { "Ground", "Mask", "Mask Anim", "Cover", "Cover Anim", "Fringe", "Fringe Anim", "Roof", "Roof Anim" });
             cmbLayers.Location = new Point(216, 566);
             cmbLayers.Margin = new Padding(4, 3, 4, 3);
             cmbLayers.Name = "cmbLayers";
-            cmbLayers.Size = new Size(112, 23);
+            cmbLayers.Size = new Size(112, 24);
             cmbLayers.TabIndex = 14;
             // 
             // Label9
             // 
             Label9.AutoSize = true;
+            Label9.ForeColor = Color.FromArgb(220, 220, 220);
             Label9.Location = new Point(8, 570);
             Label9.Margin = new Padding(4, 0, 4, 0);
             Label9.Name = "Label9";
@@ -1119,12 +1152,12 @@ namespace Client
             // 
             // cmbTileSets
             // 
-            cmbTileSets.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTileSets.DrawMode = DrawMode.OwnerDrawVariable;
             cmbTileSets.FormattingEnabled = true;
             cmbTileSets.Location = new Point(63, 566);
             cmbTileSets.Margin = new Padding(4, 3, 4, 3);
             cmbTileSets.Name = "cmbTileSets";
-            cmbTileSets.Size = new Size(68, 23);
+            cmbTileSets.Size = new Size(68, 24);
             cmbTileSets.TabIndex = 12;
             cmbTileSets.Click += CmbTileSets_Click;
             // 
@@ -1171,6 +1204,7 @@ namespace Client
             btnFillAttributes.Location = new Point(256, 568);
             btnFillAttributes.Margin = new Padding(4, 3, 4, 3);
             btnFillAttributes.Name = "btnFillAttributes";
+            btnFillAttributes.Padding = new Padding(5);
             btnFillAttributes.Size = new Size(136, 29);
             btnFillAttributes.TabIndex = 24;
             btnFillAttributes.Text = "Fill Attributes";
@@ -1189,6 +1223,7 @@ namespace Client
             // Label23
             // 
             Label23.AutoSize = true;
+            Label23.ForeColor = Color.FromArgb(220, 220, 220);
             Label23.Location = new Point(8, 576);
             Label23.Margin = new Padding(4, 0, 4, 0);
             Label23.Name = "Label23";
@@ -1198,13 +1233,13 @@ namespace Client
             // 
             // cmbAttribute
             // 
-            cmbAttribute.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbAttribute.DrawMode = DrawMode.OwnerDrawVariable;
             cmbAttribute.FormattingEnabled = true;
             cmbAttribute.Items.AddRange(new object[] { "Layer 1", "Layer 2" });
             cmbAttribute.Location = new Point(62, 574);
             cmbAttribute.Margin = new Padding(4, 3, 4, 3);
             cmbAttribute.Name = "cmbAttribute";
-            cmbAttribute.Size = new Size(68, 23);
+            cmbAttribute.Size = new Size(68, 24);
             cmbAttribute.TabIndex = 20;
             cmbAttribute.SelectedIndexChanged += cmbAttribute_SelectedIndexChanged;
             // 
@@ -1233,6 +1268,7 @@ namespace Client
             // 
             // fraNPCs
             // 
+            fraNPCs.BorderColor = Color.FromArgb(51, 51, 51);
             fraNPCs.Controls.Add(Label18);
             fraNPCs.Controls.Add(Label17);
             fraNPCs.Controls.Add(cmbNPCList);
@@ -1250,6 +1286,7 @@ namespace Client
             // Label18
             // 
             Label18.AutoSize = true;
+            Label18.ForeColor = Color.FromArgb(220, 220, 220);
             Label18.Location = new Point(228, 33);
             Label18.Margin = new Padding(4, 0, 4, 0);
             Label18.Name = "Label18";
@@ -1260,6 +1297,7 @@ namespace Client
             // Label17
             // 
             Label17.AutoSize = true;
+            Label17.ForeColor = Color.FromArgb(220, 220, 220);
             Label17.Location = new Point(7, 33);
             Label17.Margin = new Padding(4, 0, 4, 0);
             Label17.Name = "Label17";
@@ -1269,11 +1307,12 @@ namespace Client
             // 
             // cmbNPCList
             // 
+            cmbNPCList.DrawMode = DrawMode.OwnerDrawVariable;
             cmbNPCList.FormattingEnabled = true;
             cmbNPCList.Location = new Point(228, 52);
             cmbNPCList.Margin = new Padding(4, 3, 4, 3);
             cmbNPCList.Name = "cmbNPCList";
-            cmbNPCList.Size = new Size(299, 23);
+            cmbNPCList.Size = new Size(299, 24);
             cmbNPCList.TabIndex = 70;
             cmbNPCList.SelectedIndexChanged += CmbNPCList_SelectedIndexChanged;
             // 
@@ -1288,12 +1327,12 @@ namespace Client
             // 
             // ComboBox23
             // 
-            ComboBox23.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox23.DrawMode = DrawMode.OwnerDrawVariable;
             ComboBox23.FormattingEnabled = true;
             ComboBox23.Location = new Point(398, 541);
             ComboBox23.Margin = new Padding(4, 3, 4, 3);
             ComboBox23.Name = "ComboBox23";
-            ComboBox23.Size = new Size(154, 23);
+            ComboBox23.Size = new Size(154, 24);
             ComboBox23.TabIndex = 68;
             // 
             // tpSettings
@@ -1316,6 +1355,7 @@ namespace Client
             // 
             // fraMapSettings
             // 
+            fraMapSettings.BorderColor = Color.FromArgb(51, 51, 51);
             fraMapSettings.Controls.Add(Label22);
             fraMapSettings.Controls.Add(lstShop);
             fraMapSettings.Controls.Add(Label8);
@@ -1332,6 +1372,7 @@ namespace Client
             // Label22
             // 
             Label22.AutoSize = true;
+            Label22.ForeColor = Color.FromArgb(220, 220, 220);
             Label22.Location = new Point(4, 41);
             Label22.Margin = new Padding(4, 0, 4, 0);
             Label22.Name = "Label22";
@@ -1341,17 +1382,18 @@ namespace Client
             // 
             // lstShop
             // 
-            lstShop.DropDownStyle = ComboBoxStyle.DropDownList;
+            lstShop.DrawMode = DrawMode.OwnerDrawVariable;
             lstShop.FormattingEnabled = true;
             lstShop.Location = new Point(52, 40);
             lstShop.Margin = new Padding(4, 3, 4, 3);
             lstShop.Name = "lstShop";
-            lstShop.Size = new Size(210, 23);
+            lstShop.Size = new Size(210, 24);
             lstShop.TabIndex = 39;
             // 
             // Label8
             // 
             Label8.AutoSize = true;
+            Label8.ForeColor = Color.FromArgb(220, 220, 220);
             Label8.Location = new Point(4, 17);
             Label8.Margin = new Padding(4, 0, 4, 0);
             Label8.Name = "Label8";
@@ -1361,16 +1403,17 @@ namespace Client
             // 
             // lstMoral
             // 
-            lstMoral.DropDownStyle = ComboBoxStyle.DropDownList;
+            lstMoral.DrawMode = DrawMode.OwnerDrawVariable;
             lstMoral.FormattingEnabled = true;
             lstMoral.Location = new Point(52, 14);
             lstMoral.Margin = new Padding(4, 3, 4, 3);
             lstMoral.Name = "lstMoral";
-            lstMoral.Size = new Size(210, 23);
+            lstMoral.Size = new Size(210, 24);
             lstMoral.TabIndex = 37;
             // 
             // fraMapLinks
             // 
+            fraMapLinks.BorderColor = Color.FromArgb(51, 51, 51);
             fraMapLinks.Controls.Add(txtDown);
             fraMapLinks.Controls.Add(txtLeft);
             fraMapLinks.Controls.Add(lblMap);
@@ -1387,6 +1430,9 @@ namespace Client
             // 
             // txtDown
             // 
+            txtDown.BackColor = Color.FromArgb(69, 73, 74);
+            txtDown.BorderStyle = BorderStyle.FixedSingle;
+            txtDown.ForeColor = Color.FromArgb(220, 220, 220);
             txtDown.Location = new Point(105, 99);
             txtDown.Margin = new Padding(4, 3, 4, 3);
             txtDown.Name = "txtDown";
@@ -1396,6 +1442,9 @@ namespace Client
             // 
             // txtLeft
             // 
+            txtLeft.BackColor = Color.FromArgb(69, 73, 74);
+            txtLeft.BorderStyle = BorderStyle.FixedSingle;
+            txtLeft.ForeColor = Color.FromArgb(220, 220, 220);
             txtLeft.Location = new Point(8, 54);
             txtLeft.Margin = new Padding(4, 3, 4, 3);
             txtLeft.Name = "txtLeft";
@@ -1406,6 +1455,7 @@ namespace Client
             // lblMap
             // 
             lblMap.AutoSize = true;
+            lblMap.ForeColor = Color.FromArgb(220, 220, 220);
             lblMap.Location = new Point(104, 58);
             lblMap.Margin = new Padding(4, 0, 4, 0);
             lblMap.Name = "lblMap";
@@ -1415,6 +1465,9 @@ namespace Client
             // 
             // txtRight
             // 
+            txtRight.BackColor = Color.FromArgb(69, 73, 74);
+            txtRight.BorderStyle = BorderStyle.FixedSingle;
+            txtRight.ForeColor = Color.FromArgb(220, 220, 220);
             txtRight.Location = new Point(206, 54);
             txtRight.Margin = new Padding(4, 3, 4, 3);
             txtRight.Name = "txtRight";
@@ -1424,6 +1477,9 @@ namespace Client
             // 
             // txtUp
             // 
+            txtUp.BackColor = Color.FromArgb(69, 73, 74);
+            txtUp.BorderStyle = BorderStyle.FixedSingle;
+            txtUp.ForeColor = Color.FromArgb(220, 220, 220);
             txtUp.Location = new Point(104, 12);
             txtUp.Margin = new Padding(4, 3, 4, 3);
             txtUp.Name = "txtUp";
@@ -1433,6 +1489,7 @@ namespace Client
             // 
             // fraBootSettings
             // 
+            fraBootSettings.BorderColor = Color.FromArgb(51, 51, 51);
             fraBootSettings.Controls.Add(chkIndoors);
             fraBootSettings.Controls.Add(chkNoMapRespawn);
             fraBootSettings.Controls.Add(txtBootMap);
@@ -1474,6 +1531,9 @@ namespace Client
             // 
             // txtBootMap
             // 
+            txtBootMap.BackColor = Color.FromArgb(69, 73, 74);
+            txtBootMap.BorderStyle = BorderStyle.FixedSingle;
+            txtBootMap.ForeColor = Color.FromArgb(220, 220, 220);
             txtBootMap.Location = new Point(205, 13);
             txtBootMap.Margin = new Padding(4, 3, 4, 3);
             txtBootMap.Name = "txtBootMap";
@@ -1484,6 +1544,7 @@ namespace Client
             // Label5
             // 
             Label5.AutoSize = true;
+            Label5.ForeColor = Color.FromArgb(220, 220, 220);
             Label5.Location = new Point(7, 18);
             Label5.Margin = new Padding(4, 0, 4, 0);
             Label5.Name = "Label5";
@@ -1493,6 +1554,9 @@ namespace Client
             // 
             // txtBootY
             // 
+            txtBootY.BackColor = Color.FromArgb(69, 73, 74);
+            txtBootY.BorderStyle = BorderStyle.FixedSingle;
+            txtBootY.ForeColor = Color.FromArgb(220, 220, 220);
             txtBootY.Location = new Point(205, 73);
             txtBootY.Margin = new Padding(4, 3, 4, 3);
             txtBootY.Name = "txtBootY";
@@ -1503,6 +1567,7 @@ namespace Client
             // Label3
             // 
             Label3.AutoSize = true;
+            Label3.ForeColor = Color.FromArgb(220, 220, 220);
             Label3.Location = new Point(7, 75);
             Label3.Margin = new Padding(4, 0, 4, 0);
             Label3.Name = "Label3";
@@ -1512,6 +1577,9 @@ namespace Client
             // 
             // txtBootX
             // 
+            txtBootX.BackColor = Color.FromArgb(69, 73, 74);
+            txtBootX.BorderStyle = BorderStyle.FixedSingle;
+            txtBootX.ForeColor = Color.FromArgb(220, 220, 220);
             txtBootX.Location = new Point(205, 43);
             txtBootX.Margin = new Padding(4, 3, 4, 3);
             txtBootX.Name = "txtBootX";
@@ -1522,6 +1590,7 @@ namespace Client
             // Label4
             // 
             Label4.AutoSize = true;
+            Label4.ForeColor = Color.FromArgb(220, 220, 220);
             Label4.Location = new Point(7, 43);
             Label4.Margin = new Padding(4, 0, 4, 0);
             Label4.Name = "Label4";
@@ -1531,6 +1600,7 @@ namespace Client
             // 
             // fraMaxSizes
             // 
+            fraMaxSizes.BorderColor = Color.FromArgb(51, 51, 51);
             fraMaxSizes.Controls.Add(txtMaxY);
             fraMaxSizes.Controls.Add(Label2);
             fraMaxSizes.Controls.Add(txtMaxX);
@@ -1546,6 +1616,9 @@ namespace Client
             // 
             // txtMaxY
             // 
+            txtMaxY.BackColor = Color.FromArgb(69, 73, 74);
+            txtMaxY.BorderStyle = BorderStyle.FixedSingle;
+            txtMaxY.ForeColor = Color.FromArgb(220, 220, 220);
             txtMaxY.Location = new Point(145, 48);
             txtMaxY.Margin = new Padding(4, 3, 4, 3);
             txtMaxY.Name = "txtMaxY";
@@ -1556,6 +1629,7 @@ namespace Client
             // Label2
             // 
             Label2.AutoSize = true;
+            Label2.ForeColor = Color.FromArgb(220, 220, 220);
             Label2.Location = new Point(7, 52);
             Label2.Margin = new Padding(4, 0, 4, 0);
             Label2.Name = "Label2";
@@ -1565,6 +1639,9 @@ namespace Client
             // 
             // txtMaxX
             // 
+            txtMaxX.BackColor = Color.FromArgb(69, 73, 74);
+            txtMaxX.BorderStyle = BorderStyle.FixedSingle;
+            txtMaxX.ForeColor = Color.FromArgb(220, 220, 220);
             txtMaxX.Location = new Point(145, 18);
             txtMaxX.Margin = new Padding(4, 3, 4, 3);
             txtMaxX.Name = "txtMaxX";
@@ -1575,6 +1652,7 @@ namespace Client
             // Label7
             // 
             Label7.AutoSize = true;
+            Label7.ForeColor = Color.FromArgb(220, 220, 220);
             Label7.Location = new Point(7, 22);
             Label7.Margin = new Padding(4, 0, 4, 0);
             Label7.Name = "Label7";
@@ -1584,6 +1662,7 @@ namespace Client
             // 
             // GroupBox2
             // 
+            GroupBox2.BorderColor = Color.FromArgb(51, 51, 51);
             GroupBox2.Controls.Add(btnPreview);
             GroupBox2.Controls.Add(lstMusic);
             GroupBox2.Location = new Point(285, 3);
@@ -1601,6 +1680,7 @@ namespace Client
             btnPreview.Location = new Point(57, 208);
             btnPreview.Margin = new Padding(4, 3, 4, 3);
             btnPreview.Name = "btnPreview";
+            btnPreview.Padding = new Padding(5);
             btnPreview.Size = new Size(162, 33);
             btnPreview.TabIndex = 4;
             btnPreview.Text = "Preview Music";
@@ -1618,6 +1698,9 @@ namespace Client
             // 
             // txtName
             // 
+            txtName.BackColor = Color.FromArgb(69, 73, 74);
+            txtName.BorderStyle = BorderStyle.FixedSingle;
+            txtName.ForeColor = Color.FromArgb(220, 220, 220);
             txtName.Location = new Point(62, 7);
             txtName.Margin = new Padding(4, 3, 4, 3);
             txtName.Name = "txtName";
@@ -1628,6 +1711,7 @@ namespace Client
             // Label6
             // 
             Label6.AutoSize = true;
+            Label6.ForeColor = Color.FromArgb(220, 220, 220);
             Label6.Location = new Point(7, 10);
             Label6.Margin = new Padding(4, 0, 4, 0);
             Label6.Name = "Label6";
@@ -1650,6 +1734,7 @@ namespace Client
             // Label12
             // 
             Label12.AutoSize = true;
+            Label12.ForeColor = Color.FromArgb(220, 220, 220);
             Label12.Location = new Point(26, 27);
             Label12.Margin = new Padding(4, 0, 4, 0);
             Label12.Name = "Label12";
@@ -1678,6 +1763,7 @@ namespace Client
             // lblPasteMode
             // 
             lblPasteMode.AutoSize = true;
+            lblPasteMode.ForeColor = Color.FromArgb(220, 220, 220);
             lblPasteMode.Location = new Point(121, 197);
             lblPasteMode.Margin = new Padding(4, 0, 4, 0);
             lblPasteMode.Name = "lblPasteMode";
@@ -1688,6 +1774,7 @@ namespace Client
             // lblCopyMode
             // 
             lblCopyMode.AutoSize = true;
+            lblCopyMode.ForeColor = Color.FromArgb(220, 220, 220);
             lblCopyMode.Location = new Point(121, 129);
             lblCopyMode.Margin = new Padding(4, 0, 4, 0);
             lblCopyMode.Name = "lblCopyMode";
@@ -1700,6 +1787,7 @@ namespace Client
             btnPasteEvent.Location = new Point(27, 192);
             btnPasteEvent.Margin = new Padding(4, 3, 4, 3);
             btnPasteEvent.Name = "btnPasteEvent";
+            btnPasteEvent.Padding = new Padding(5);
             btnPasteEvent.Size = new Size(88, 27);
             btnPasteEvent.TabIndex = 4;
             btnPasteEvent.Text = "Paste Event";
@@ -1708,6 +1796,7 @@ namespace Client
             // Label16
             // 
             Label16.AutoSize = true;
+            Label16.ForeColor = Color.FromArgb(220, 220, 220);
             Label16.Location = new Point(23, 172);
             Label16.Margin = new Padding(4, 0, 4, 0);
             Label16.Name = "Label16";
@@ -1720,6 +1809,7 @@ namespace Client
             btnCopyEvent.Location = new Point(27, 123);
             btnCopyEvent.Margin = new Padding(4, 3, 4, 3);
             btnCopyEvent.Name = "btnCopyEvent";
+            btnCopyEvent.Padding = new Padding(5);
             btnCopyEvent.Size = new Size(88, 27);
             btnCopyEvent.TabIndex = 2;
             btnCopyEvent.Text = "Copy Event";
@@ -1728,6 +1818,7 @@ namespace Client
             // Label15
             // 
             Label15.AutoSize = true;
+            Label15.ForeColor = Color.FromArgb(220, 220, 220);
             Label15.Location = new Point(23, 100);
             Label15.Margin = new Padding(4, 0, 4, 0);
             Label15.Name = "Label15";
@@ -1738,6 +1829,7 @@ namespace Client
             // Label13
             // 
             Label13.AutoSize = true;
+            Label13.ForeColor = Color.FromArgb(220, 220, 220);
             Label13.Location = new Point(23, 24);
             Label13.Margin = new Padding(4, 0, 4, 0);
             Label13.Name = "Label13";
@@ -1763,6 +1855,7 @@ namespace Client
             // 
             // GroupBox6
             // 
+            GroupBox6.BorderColor = Color.FromArgb(51, 51, 51);
             GroupBox6.Controls.Add(scrlMapBrightness);
             GroupBox6.Location = new Point(13, 259);
             GroupBox6.Margin = new Padding(4, 3, 4, 3);
@@ -1785,6 +1878,7 @@ namespace Client
             // 
             // GroupBox5
             // 
+            GroupBox5.BorderColor = Color.FromArgb(51, 51, 51);
             GroupBox5.Controls.Add(cmbParallax);
             GroupBox5.Location = new Point(295, 192);
             GroupBox5.Margin = new Padding(4, 3, 4, 3);
@@ -1797,16 +1891,18 @@ namespace Client
             // 
             // cmbParallax
             // 
+            cmbParallax.DrawMode = DrawMode.OwnerDrawVariable;
             cmbParallax.FormattingEnabled = true;
             cmbParallax.Location = new Point(9, 21);
             cmbParallax.Margin = new Padding(4, 3, 4, 3);
             cmbParallax.Name = "cmbParallax";
-            cmbParallax.Size = new Size(232, 23);
+            cmbParallax.Size = new Size(232, 24);
             cmbParallax.TabIndex = 0;
             cmbParallax.SelectedIndexChanged += CmbParallax_SelectedIndexChanged;
             // 
             // GroupBox4
             // 
+            GroupBox4.BorderColor = Color.FromArgb(51, 51, 51);
             GroupBox4.Controls.Add(cmbPanorama);
             GroupBox4.Location = new Point(7, 192);
             GroupBox4.Margin = new Padding(4, 3, 4, 3);
@@ -1819,16 +1915,18 @@ namespace Client
             // 
             // cmbPanorama
             // 
+            cmbPanorama.DrawMode = DrawMode.OwnerDrawVariable;
             cmbPanorama.FormattingEnabled = true;
             cmbPanorama.Location = new Point(10, 23);
             cmbPanorama.Margin = new Padding(4, 3, 4, 3);
             cmbPanorama.Name = "cmbPanorama";
-            cmbPanorama.Size = new Size(262, 23);
+            cmbPanorama.Size = new Size(262, 24);
             cmbPanorama.TabIndex = 0;
             cmbPanorama.SelectedIndexChanged += CmbPanorama_SelectedIndexChanged;
             // 
             // GroupBox3
             // 
+            GroupBox3.BorderColor = Color.FromArgb(51, 51, 51);
             GroupBox3.Controls.Add(chkTint);
             GroupBox3.Controls.Add(lblMapAlpha);
             GroupBox3.Controls.Add(lblMapBlue);
@@ -1861,6 +1959,7 @@ namespace Client
             // lblMapAlpha
             // 
             lblMapAlpha.AutoSize = true;
+            lblMapAlpha.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapAlpha.Location = new Point(9, 111);
             lblMapAlpha.Margin = new Padding(4, 0, 4, 0);
             lblMapAlpha.Name = "lblMapAlpha";
@@ -1871,6 +1970,7 @@ namespace Client
             // lblMapBlue
             // 
             lblMapBlue.AutoSize = true;
+            lblMapBlue.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapBlue.Location = new Point(9, 89);
             lblMapBlue.Margin = new Padding(4, 0, 4, 0);
             lblMapBlue.Name = "lblMapBlue";
@@ -1881,6 +1981,7 @@ namespace Client
             // lblMapGreen
             // 
             lblMapGreen.AutoSize = true;
+            lblMapGreen.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapGreen.Location = new Point(9, 67);
             lblMapGreen.Margin = new Padding(4, 0, 4, 0);
             lblMapGreen.Name = "lblMapGreen";
@@ -1891,6 +1992,7 @@ namespace Client
             // lblMapRed
             // 
             lblMapRed.AutoSize = true;
+            lblMapRed.ForeColor = Color.FromArgb(220, 220, 220);
             lblMapRed.Location = new Point(7, 45);
             lblMapRed.Margin = new Padding(4, 0, 4, 0);
             lblMapRed.Name = "lblMapRed";
@@ -1940,6 +2042,7 @@ namespace Client
             // 
             // GroupBox1
             // 
+            GroupBox1.BorderColor = Color.FromArgb(51, 51, 51);
             GroupBox1.Controls.Add(scrlFogOpacity);
             GroupBox1.Controls.Add(lblFogOpacity);
             GroupBox1.Controls.Add(scrlFogSpeed);
@@ -1972,6 +2075,7 @@ namespace Client
             // lblFogOpacity
             // 
             lblFogOpacity.AutoSize = true;
+            lblFogOpacity.ForeColor = Color.FromArgb(220, 220, 220);
             lblFogOpacity.Location = new Point(7, 145);
             lblFogOpacity.Margin = new Padding(4, 0, 4, 0);
             lblFogOpacity.Name = "lblFogOpacity";
@@ -1991,6 +2095,7 @@ namespace Client
             // lblFogSpeed
             // 
             lblFogSpeed.AutoSize = true;
+            lblFogSpeed.ForeColor = Color.FromArgb(220, 220, 220);
             lblFogSpeed.Location = new Point(7, 121);
             lblFogSpeed.Margin = new Padding(4, 0, 4, 0);
             lblFogSpeed.Name = "lblFogSpeed";
@@ -2010,6 +2115,7 @@ namespace Client
             // lblIntensity
             // 
             lblIntensity.AutoSize = true;
+            lblIntensity.ForeColor = Color.FromArgb(220, 220, 220);
             lblIntensity.Location = new Point(7, 61);
             lblIntensity.Margin = new Padding(4, 0, 4, 0);
             lblIntensity.Name = "lblIntensity";
@@ -2029,6 +2135,7 @@ namespace Client
             // lblFogIndex
             // 
             lblFogIndex.AutoSize = true;
+            lblFogIndex.ForeColor = Color.FromArgb(220, 220, 220);
             lblFogIndex.Location = new Point(7, 95);
             lblFogIndex.Margin = new Padding(4, 0, 4, 0);
             lblFogIndex.Name = "lblFogIndex";
@@ -2039,6 +2146,7 @@ namespace Client
             // Label14
             // 
             Label14.AutoSize = true;
+            Label14.ForeColor = Color.FromArgb(220, 220, 220);
             Label14.Location = new Point(7, 29);
             Label14.Margin = new Padding(4, 0, 4, 0);
             Label14.Name = "Label14";
@@ -2048,12 +2156,13 @@ namespace Client
             // 
             // cmbWeather
             // 
+            cmbWeather.DrawMode = DrawMode.OwnerDrawVariable;
             cmbWeather.FormattingEnabled = true;
             cmbWeather.Items.AddRange(new object[] { "None", "Rain", "Snow", "Hail", "Sand Storm", "Storm", "Fog" });
             cmbWeather.Location = new Point(105, 25);
             cmbWeather.Margin = new Padding(4, 3, 4, 3);
             cmbWeather.Name = "cmbWeather";
-            cmbWeather.Size = new Size(168, 23);
+            cmbWeather.Size = new Size(168, 24);
             cmbWeather.TabIndex = 0;
             cmbWeather.SelectedIndexChanged += CmbWeather_SelectedIndexChanged;
             // 
@@ -2063,7 +2172,7 @@ namespace Client
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoSize = true;
-            BackColor = SystemColors.Control;
+            BackColor = Color.FromArgb(45, 45, 48);
             ClientSize = new Size(552, 658);
             Controls.Add(tabpages);
             Controls.Add(ToolStrip);
