@@ -131,17 +131,16 @@ namespace Client
             Graphics = new GraphicsDeviceManager(this);
 
             // Set basic properties for GraphicsDeviceManager
-            {
-                ref var withBlock = ref Graphics;
-                withBlock.GraphicsProfile = GraphicsProfile.Reach;
-                withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
-                withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
-                withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
-                withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
-                withBlock.PreferHalfPixelOffset = true;
-                withBlock.PreferMultiSampling = true;
-            }
-
+            ref var withBlock = ref Graphics;
+            withBlock.GraphicsProfile = GraphicsProfile.Reach;
+            withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
+            withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
+            withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
+            withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
+            IsFixedTimeStep = false;
+            withBlock.PreferHalfPixelOffset = true;
+            withBlock.PreferMultiSampling = true;
+            
             // Add handler for PreparingDeviceSettings
             Graphics.PreparingDeviceSettings += (sender, args) =>
             {
