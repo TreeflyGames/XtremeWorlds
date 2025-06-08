@@ -141,7 +141,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -158,7 +158,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -175,7 +175,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -192,7 +192,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -209,7 +209,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -226,7 +226,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -243,7 +243,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -260,7 +260,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -277,7 +277,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -294,7 +294,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
@@ -376,7 +376,7 @@ namespace Client
         {
             if (GameState.MyEditorType != -1)
             {
-                Interaction.MsgBox("You are already in an Editor. Please close the editor to use another one.");
+                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
                 return;
             }
 
