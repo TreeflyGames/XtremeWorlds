@@ -1163,6 +1163,7 @@ namespace Client
             // 
             // tpAttributes
             // 
+            tpAttributes.BackColor = Color.FromArgb(45, 45, 48);
             tpAttributes.Controls.Add(optNoXing);
             tpAttributes.Controls.Add(btnFillAttributes);
             tpAttributes.Controls.Add(optInfo);
@@ -1187,7 +1188,6 @@ namespace Client
             tpAttributes.Size = new Size(542, 601);
             tpAttributes.TabIndex = 3;
             tpAttributes.Text = "Attributes";
-            tpAttributes.UseVisualStyleBackColor = true;
             // 
             // optNoXing
             // 
@@ -1256,6 +1256,7 @@ namespace Client
             // 
             // tpNPCs
             // 
+            tpNPCs.BackColor = Color.FromArgb(45, 45, 48);
             tpNPCs.Controls.Add(fraNPCs);
             tpNPCs.Location = new Point(4, 24);
             tpNPCs.Margin = new Padding(4, 3, 4, 3);
@@ -1264,10 +1265,10 @@ namespace Client
             tpNPCs.Size = new Size(542, 601);
             tpNPCs.TabIndex = 1;
             tpNPCs.Text = "NPCs";
-            tpNPCs.UseVisualStyleBackColor = true;
             // 
             // fraNPCs
             // 
+            fraNPCs.BackColor = Color.FromArgb(45, 45, 48);
             fraNPCs.BorderColor = Color.FromArgb(51, 51, 51);
             fraNPCs.Controls.Add(Label18);
             fraNPCs.Controls.Add(Label17);
@@ -1318,6 +1319,7 @@ namespace Client
             // 
             // lstMapNPC
             // 
+            lstMapNPC.BackColor = Color.FromArgb(45, 45, 48);
             lstMapNPC.FormattingEnabled = true;
             lstMapNPC.Location = new Point(10, 52);
             lstMapNPC.Margin = new Padding(4, 3, 4, 3);
@@ -1337,6 +1339,7 @@ namespace Client
             // 
             // tpSettings
             // 
+            tpSettings.BackColor = Color.FromArgb(45, 45, 48);
             tpSettings.Controls.Add(fraMapSettings);
             tpSettings.Controls.Add(fraMapLinks);
             tpSettings.Controls.Add(fraBootSettings);
@@ -1351,7 +1354,6 @@ namespace Client
             tpSettings.Size = new Size(542, 601);
             tpSettings.TabIndex = 2;
             tpSettings.Text = "Settings";
-            tpSettings.UseVisualStyleBackColor = true;
             // 
             // fraMapSettings
             // 
@@ -1688,6 +1690,7 @@ namespace Client
             // 
             // lstMusic
             // 
+            lstMusic.BackColor = Color.FromArgb(45, 45, 48);
             lstMusic.FormattingEnabled = true;
             lstMusic.Location = new Point(7, 22);
             lstMusic.Margin = new Padding(4, 3, 4, 3);
@@ -1721,6 +1724,7 @@ namespace Client
             // 
             // tpDirBlock
             // 
+            tpDirBlock.BackColor = Color.FromArgb(45, 45, 48);
             tpDirBlock.Controls.Add(Label12);
             tpDirBlock.Location = new Point(4, 24);
             tpDirBlock.Margin = new Padding(4, 3, 4, 3);
@@ -1729,7 +1733,6 @@ namespace Client
             tpDirBlock.Size = new Size(542, 601);
             tpDirBlock.TabIndex = 4;
             tpDirBlock.Text = "Directional Block";
-            tpDirBlock.UseVisualStyleBackColor = true;
             // 
             // Label12
             // 
@@ -1744,6 +1747,7 @@ namespace Client
             // 
             // tpEvents
             // 
+            tpEvents.BackColor = Color.FromArgb(45, 45, 48);
             tpEvents.Controls.Add(lblPasteMode);
             tpEvents.Controls.Add(lblCopyMode);
             tpEvents.Controls.Add(btnPasteEvent);
@@ -1758,7 +1762,6 @@ namespace Client
             tpEvents.Size = new Size(542, 601);
             tpEvents.TabIndex = 5;
             tpEvents.Text = "Events";
-            tpEvents.UseVisualStyleBackColor = true;
             // 
             // lblPasteMode
             // 
@@ -1839,6 +1842,7 @@ namespace Client
             // 
             // tpEffects
             // 
+            tpEffects.BackColor = Color.FromArgb(45, 45, 48);
             tpEffects.Controls.Add(GroupBox6);
             tpEffects.Controls.Add(GroupBox5);
             tpEffects.Controls.Add(GroupBox4);
@@ -1851,7 +1855,6 @@ namespace Client
             tpEffects.Size = new Size(542, 601);
             tpEffects.TabIndex = 6;
             tpEffects.Text = "Effects";
-            tpEffects.UseVisualStyleBackColor = true;
             // 
             // GroupBox6
             // 

@@ -15,12 +15,11 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using System;
 using System.Reflection;
-using static Client.GameClient;
 
 namespace Client
 {
 
-    public class GameClient : Game
+    public class GameClient : Microsoft.Xna.Framework.Game
     {
 
         public static GraphicsDeviceManager Graphics;

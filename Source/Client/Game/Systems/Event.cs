@@ -251,7 +251,7 @@ namespace Client
         {
             EditorEvent = EventNum;
             TmpEvent = Core.Type.MyMap.Event[EventNum];
-            GameState.InitEventEditorForm = true;
+            GameState.InitEventEditor = true;
             if (TmpEvent.Pages[0].CommandListCount == 0)
             {
                 Array.Resize(ref TmpEvent.Pages[0].CommandList, 1);

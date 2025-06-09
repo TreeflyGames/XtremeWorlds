@@ -134,6 +134,9 @@ namespace Core
             CSaveMoral,
             CRequestEditMoral,
 
+            CSaveScript,
+            CRequestEditScript,
+
             CCloseEditor,
 
             // Make sure COUNT is below everything else
@@ -258,6 +261,8 @@ namespace Core
 
             STime,
             SClock,
+
+            SScript,
 
             // Make sure COUNT is below everything else
             COUNT

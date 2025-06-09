@@ -421,7 +421,8 @@ namespace Core
             Quest,
             Job,
             Projectile,
-            Moral
+            Moral,
+            Script
         }
 
         public enum PictureType

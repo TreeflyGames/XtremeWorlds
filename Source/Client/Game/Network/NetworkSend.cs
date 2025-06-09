@@ -1012,5 +1012,14 @@ namespace Client
             buffer.Dispose();
         }
 
+        public static void SendRequestEditScript()
+        {
+            var buffer = new ByteStream(4);
+
+            buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditScript);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
+            buffer.Dispose();
+        }
+
     }
 }

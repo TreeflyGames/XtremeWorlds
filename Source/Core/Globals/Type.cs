@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Core.Database;
+using MonoGame.Extended.Content.Tiled;
 
 namespace Core
 {
@@ -40,6 +41,7 @@ namespace Core
         public static CharList Char;
         public static PetStruct[] Pet = new PetStruct[Constant.MAX_PETS];
         public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[byte.MaxValue];
+        public static ScriptStruct Script = new ScriptStruct(); 
 
         // New feature arrays
         public static QuestStruct[] Quests = new QuestStruct[Constant.MAX_QUESTS];
@@ -1107,6 +1109,12 @@ namespace Core
             public int Y;
             public int Velocity;
             public int InUse;
+        }
+
+        public struct ScriptStruct
+        {
+            public string Code;
+            public bool Type; // 0 = C#, 1 VB
         }
 
         #endregion

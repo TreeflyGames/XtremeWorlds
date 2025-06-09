@@ -93,6 +93,7 @@ namespace Client
             btnSkillEditor = new DarkButton();
             btnShopEditor = new DarkButton();
             btnAnimationEditor = new DarkButton();
+            btnScriptEditor = new DarkButton();
             TabControl1.SuspendLayout();
             tabModeration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudAdminSprite).BeginInit();
@@ -393,6 +394,7 @@ namespace Client
             // tabEditors
             // 
             tabEditors.BackColor = Color.FromArgb(45, 45, 48);
+            tabEditors.Controls.Add(btnScriptEditor);
             tabEditors.Controls.Add(btnMoralEditor);
             tabEditors.Controls.Add(btnPetEditor);
             tabEditors.Controls.Add(btnJobEditor);
@@ -533,6 +535,17 @@ namespace Client
             btnAnimationEditor.Text = "Animation Editor";
             btnAnimationEditor.Click += btnAnimationEditor_Click;
             // 
+            // btnScriptEditor
+            // 
+            btnScriptEditor.Location = new Point(152, 146);
+            btnScriptEditor.Margin = new Padding(4, 3, 4, 3);
+            btnScriptEditor.Name = "btnScriptEditor";
+            btnScriptEditor.Padding = new Padding(5);
+            btnScriptEditor.Size = new Size(131, 29);
+            btnScriptEditor.TabIndex = 70;
+            btnScriptEditor.Text = "Script Editor";
+            btnScriptEditor.Click += btnScriptEditor_Click;
+            // 
             // FrmAdmin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -598,5 +611,6 @@ namespace Client
         internal DarkButton btnShopEditor;
         internal DarkButton btnAnimationEditor;
         internal DarkButton btnMoralEditor;
+        internal DarkButton btnScriptEditor;
     }
 }

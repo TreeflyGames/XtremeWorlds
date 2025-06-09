@@ -373,8 +373,6 @@ namespace Client
 
         public static int NumProjectiles;
         public static bool InitProjectileEditor;
-        public const byte EditorProjectile = 10;
-        public static bool[] ProjectileChanged = new bool[256];
 
         public static int ResourceIndex;
         public static bool ResourcesInit;
@@ -413,7 +411,8 @@ namespace Client
         public static bool InitMoralEditor;
         public static bool InitAdminForm;
         public static bool InitMapReport;
-        public static bool InitEventEditorForm;
+        public static bool InitEventEditor;
+        public static bool InitScriptEditor;
 
         // Editor edited items array
         public static bool[] Item_Changed = new bool[Constant.MAX_ITEMS];
@@ -425,5 +424,6 @@ namespace Client
         public static bool[] Pet_Changed = new bool[Constant.MAX_PETS];
         public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS)];
         public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS)];
+        public static bool[] ProjectileChanged = new bool[Core.Constant.MAX_PROJECTILES];
     }
 }

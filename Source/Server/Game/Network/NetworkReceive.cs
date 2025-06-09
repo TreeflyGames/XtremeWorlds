@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Xml.Linq;
 using Core;
@@ -153,6 +154,9 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestMoral] = Moral.Packet_RequestMoral;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMoral] = Moral.Packet_RequestEditMoral;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveMoral] = Moral.Packet_SaveMoral;
+
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditScript] = Script.Packet_RequestEditScript;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveScript] = Script.Packet_SaveScript;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseEditor] = Packet_CloseEditor;
 

@@ -762,7 +762,6 @@ namespace Client
 
         #endregion
 
-
         #region Pet Editor
         public static void PetEditorInit()
         {
@@ -898,6 +897,40 @@ namespace Client
             GameState.Pet_Changed = new bool[101];
         }
 
+        #endregion
+
+        #region Script Editor
+        public static void ScriptEditorInit()
+        {
+            ref var withBlock = ref Core.Type.Script;
+            if (!withBlock.Type)
+                frmEditor_Script.Instance.optButton.Checked = true;
+            else
+                frmEditor_Script.Instance.optButton2.Checked = true;
+        }
+
+        public static void ScriptEditorOK()
+        {
+            for (int i = 0; i < Constant.MAX_PROJECTILES; i++)
+            {
+                if (GameState.ProjectileChanged[i])
+                {
+                    Projectile.SendSaveProjectile(i);
+                }
+            }
+
+            GameState.MyEditorType = -1;
+            ClearChanged_Projectile();
+            NetworkSend.SendCloseEditor();
+        }
+
+        public static void ScripteEditorCancel()
+        {
+            GameState.MyEditorType = -1;
+            ClearChanged_Projectile();
+            Projectile.ClearProjectile();
+            NetworkSend.SendCloseEditor();
+        }
         #endregion
 
     }
