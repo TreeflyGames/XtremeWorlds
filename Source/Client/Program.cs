@@ -321,9 +321,7 @@ namespace Client
         protected override void Update(GameTime gameTime)
         {
             var mouseState = Mouse.GetState();
-            if(mouseState.LeftButton == ButtonState.Released)
-                Debug.WriteLine(mouseState.LeftButton);
-            
+
             // Ignore input if the window is minimized or inactive
             if ((!IsActive || Window.ClientBounds.Width == 0) | Window.ClientBounds.Height == 0)
             {
