@@ -12,7 +12,6 @@ namespace Client
 {
     internal partial class frmEditor_Animation
     {
-        int selectedAnim = 0;
 
         protected override void WndProc(ref Message m)
         {
@@ -38,13 +37,11 @@ namespace Client
         private void NudSprite0_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Sprite[0] = (int)Math.Round(nudSprite0.Value);
-            selectedAnim = 0;
         }
 
         private void NudSprite1_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Sprite[1] = (int)Math.Round(nudSprite1.Value);
-            selectedAnim = 1;
         }
 
         private void NudLoopCount0_ValueChanged(object sender, EventArgs e)
@@ -60,13 +57,11 @@ namespace Client
         private void NudFrameCount0_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Frames[0] = (int)Math.Round(nudFrameCount0.Value);
-            picSprite0.Invalidate();
         }
 
         private void NudFrameCount1_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Frames[1] = (int)Math.Round(nudFrameCount1.Value);
-            picSprite1.Invalidate();
         }
 
         private void NudLoopTime0_ValueChanged(object sender, EventArgs e)
