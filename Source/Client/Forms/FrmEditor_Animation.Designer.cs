@@ -246,7 +246,7 @@ namespace Client
             lblLoopTime1.Location = new Point(12, 162);
             lblLoopTime1.Margin = new Padding(4, 0, 4, 0);
             lblLoopTime1.Name = "lblLoopTime1";
-            lblLoopTime1.Size = new Size(67, 15);
+            lblLoopTime1.Size = new Size(66, 15);
             lblLoopTime1.TabIndex = 28;
             lblLoopTime1.Text = "Loop Time:";
             // 
@@ -365,7 +365,7 @@ namespace Client
             lblLoopTime0.Location = new Point(12, 162);
             lblLoopTime0.Margin = new Padding(4, 0, 4, 0);
             lblLoopTime0.Name = "lblLoopTime0";
-            lblLoopTime0.Size = new Size(67, 15);
+            lblLoopTime0.Size = new Size(66, 15);
             lblLoopTime0.TabIndex = 28;
             lblLoopTime0.Text = "Loop Time:";
             // 

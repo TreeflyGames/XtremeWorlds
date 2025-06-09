@@ -60,11 +60,13 @@ namespace Client
         private void NudFrameCount0_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Frames[0] = (int)Math.Round(nudFrameCount0.Value);
+            picSprite0.Invalidate();
         }
 
         private void NudFrameCount1_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Frames[1] = (int)Math.Round(nudFrameCount1.Value);
+            picSprite1.Invalidate();
         }
 
         private void NudLoopTime0_ValueChanged(object sender, EventArgs e)
@@ -152,177 +154,99 @@ namespace Client
         {
             try
             {
-                // Retrieve the animation number and check its validity
                 int animationNum = (int)Math.Round(animationControl.Value);
                 if (animationNum <= 0 || animationNum > GameState.NumAnimations)
                 {
-                    spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
                     if (backgroundColorControl.Image != null)
                         backgroundColorControl.Image = null;
                     return;
                 }
 
-                // Check whether animationDisplay is Texture2D or System.Drawing.Image
-                Texture2D texture;
-                texture = GameClient.GetTexture(System.IO.Path.Combine(Core.Path.Animations, animationNum + GameState.GfxExt));
-                if (texture is null)
+                var imagePath = System.IO.Path.Combine(Core.Path.Animations, animationNum + GameState.GfxExt);
+                if (!System.IO.File.Exists(imagePath))
                 {
+                    backgroundColorControl.Image = null;
                     return;
                 }
 
-                // Get dimensions and column count from controls and graphic info
-                int totalWidth;
-                int totalHeight;
-
-                var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Animations, animationNum + GameState.GfxExt));
-                totalWidth = gfxInfo.Width;
-                totalHeight = gfxInfo.Height;
-
-                int columns = (int)Math.Round(frameCountControl.Value);
-
-                // Validate columns to avoid division by zero
-                if (columns <= 0)
-                    return;
-
-                // Calculate frame dimensions
-                int frameWidth = (int)Math.Round(totalWidth / (double)columns);
-
-                // Assuming square frames for simplicity (adjust if frames are not square)
-                int frameHeight = frameWidth;
-
-                var rows = default(int);
-                if (frameHeight > 0)
+                using (var img = System.Drawing.Image.FromFile(imagePath))
                 {
-                    rows = (int)Math.Round(totalHeight / (double)frameHeight);
-                }
-
-                int frameCount = rows * columns;
-
-                // Retrieve loop timing and check frame rendering necessity
-                int looptime = (int)Math.Round(loopCountControl.Value);
-                if (GameState.AnimEditorTimer[animationTimerIndex] + looptime <= Environment.TickCount)
-                {
-                    if (GameState.AnimEditorFrame[animationTimerIndex] >= frameCount)
+                    int columns = (int)Math.Round(frameCountControl.Value);
+                    if (columns <= 0)
                     {
-                        GameState.AnimEditorFrame[animationTimerIndex] = 1; // Reset to the first frame if it exceeds the count
+                        backgroundColorControl.Image = (System.Drawing.Image)img.Clone();
+                        return;
                     }
-                    else
+
+                    int frameWidth = img.Width / columns;
+                    int frameHeight = img.Height;
+                    int rows = frameHeight > 0 ? img.Height / frameHeight : 1;
+                    int frameCount = rows * columns;
+
+                    int looptime = (int)Math.Round(loopCountControl.Value);
+                    if (GameState.AnimEditorTimer[animationTimerIndex] + looptime <= Environment.TickCount)
                     {
-                        GameState.AnimEditorFrame[animationTimerIndex] += 1;
+                        if (GameState.AnimEditorFrame[animationTimerIndex] >= frameCount)
+                        {
+                            GameState.AnimEditorFrame[animationTimerIndex] = 1;
+                        }
+                        else
+                        {
+                            GameState.AnimEditorFrame[animationTimerIndex] += 1;
+                        }
+                        GameState.AnimEditorTimer[animationTimerIndex] = Environment.TickCount;
                     }
-                    GameState.AnimEditorTimer[animationTimerIndex] = Environment.TickCount;
-                }
 
-                // Render the frame if necessary
-                if (frameCountControl.Value > 0m)
-                {
-                    int frameIndex = GameState.AnimEditorFrame[animationTimerIndex] - 1;
-                    int column = frameIndex % columns;
-                    int row = frameIndex / columns;
-
-                    // Calculate the source rectangle for the texture or image
-                    var sRECT = new Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight);
-
-                    // Clear the background to the specified color
-                    spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
-
-                    GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget);
-
-                    // Draw MonoGame texture
-                    spriteBatch.Begin();
-                    spriteBatch.Draw(texture, new Rectangle(0, 0, frameWidth, frameHeight), sRECT, Color.White);
-                    spriteBatch.End();
-
-                    GameClient.Graphics.GraphicsDevice.SetRenderTarget(null);
-
-                    // Convert the render target to a Texture2D and set it as the PictureBox background
-                    using (var stream = new MemoryStream())
+                    if (frameCountControl.Value > 0m)
                     {
-                        renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
-                        stream.Position = 0L;
-                        backgroundColorControl.Image = System.Drawing.Image.FromStream(stream);
+                        int frameIndex = GameState.AnimEditorFrame[animationTimerIndex] - 1;
+                        int column = frameIndex % columns;
+                        int row = frameIndex / columns;
+
+                        var sRECT = new System.Drawing.Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight);
+                        var bmp = new System.Drawing.Bitmap(frameWidth, frameHeight);
+                        using (var g = System.Drawing.Graphics.FromImage(bmp))
+                        {
+                            g.Clear(backgroundColorControl.BackColor);
+                            g.DrawImage(img, new System.Drawing.Rectangle(0, 0, frameWidth, frameHeight), sRECT, System.Drawing.GraphicsUnit.Pixel);
+                        }
+                        backgroundColorControl.Image = bmp;
                     }
                 }
             }
-
             catch (Exception ex)
             {
-                // Handle exceptions gracefully, possibly logging them
                 Console.WriteLine($"Error processing animation: {ex.Message}");
-
-                // Optionally clear the image if an error occurs
                 backgroundColorControl.Image = null;
             }
         }
 
         private void picSprite0_Paint(object sender, PaintEventArgs e)
         {
-            var withBlock = Instance;
-            if (!General.Client.IsActive && selectedAnim == 0)
-            {         
-                // Ensure spriteBatch is created and disposed properly  
-                using (var spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice))
-                {
-                    using (var renderTarget0 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
-                    {
-                        ProcessAnimation(ref withBlock.nudSprite0, ref withBlock.nudFrameCount0, ref withBlock.nudLoopTime0, 0, renderTarget0, ref withBlock.picSprite0, spriteBatch);
-                    }
-                }
-            }
-
-            picSpriteAnimations(); // Load the image if it quits animating
-        }
-
-        private void picSpriteAnimations()
-        {
-            var withBlock = Instance;
-
-            // Load the image without DirectX if it quits animating
-            if (withBlock.picSprite0.Image == null)
-            {
-                var animationNum = (int)Math.Round(withBlock.nudSprite0.Value);
-                if (animationNum > 0 && animationNum <= GameState.NumAnimations)
-                {
-                    var imagePath = System.IO.Path.Combine(Core.Path.Animations, animationNum + GameState.GfxExt);
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        withBlock.picSprite0.Image = System.Drawing.Image.FromFile(imagePath);
-                    }
-                }
-            }
-
-            // Load the image without DirectX if it quits animating
-            if (withBlock.picSprite1.Image == null)
-            {
-                var animationNum = (int)Math.Round(withBlock.nudSprite1.Value);
-                if (animationNum > 0 && animationNum <= GameState.NumAnimations)
-                {
-                    var imagePath = System.IO.Path.Combine(Core.Path.Animations, animationNum + GameState.GfxExt);
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        withBlock.picSprite1.Image = System.Drawing.Image.FromFile(imagePath);
-                    }
-                }
-            }
+            // Call ProcessAnimation for Sprite0
+            ProcessAnimation(
+                ref nudSprite0,
+                ref nudFrameCount0,
+                ref nudLoopTime0,
+                0,
+                null,
+                ref picSprite0,
+                null
+            );
         }
 
         private void picSprite1_Paint(object sender, PaintEventArgs e)
         {
-            if (!General.Client.IsActive && selectedAnim == 1)
-            {
-                var withBlock = Instance;
-                // Ensure spriteBatch is created and disposed properly  
-                using (var spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice))
-                { 
-                    using (var renderTarget1 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
-                    {
-                        //withBlock.picSprite0.Image = null; // Reset image before drawing
-                        ProcessAnimation(ref withBlock.nudSprite1, ref withBlock.nudFrameCount1, ref withBlock.nudLoopTime1, 1, renderTarget1, ref withBlock.picSprite1, spriteBatch);
-                    }
-                }
-            }
-
-            picSpriteAnimations(); // Load the image if it quits animating
+            // Call ProcessAnimation for Sprite1
+            ProcessAnimation(
+                ref nudSprite1,
+                ref nudFrameCount1,
+                ref nudLoopTime1,
+                1,
+                null,
+                ref picSprite1,
+                null
+            );
         }
     }
 }
