@@ -36,15 +36,6 @@ namespace Core
             }
         }
 
-        /// <summary> Returns scripts directory </summary>
-        public static string Scripts
-        {
-            get
-            {
-                return System.IO.Path.Combine(Local, "Scripting", "Scripts");
-            }
-        }
-
         /// <summary> Returns graphics directory </summary>
         public static string Graphics
         {
@@ -177,6 +168,15 @@ namespace Core
             get
             {
                 return System.IO.Path.Combine(Local, "Database");
+            }
+        }
+
+        /// <summary> Returns scripts directory </summary>
+        public static string Scripts
+        {
+            get
+            {
+                return System.IO.Path.Combine(Database, "Scripts");
             }
         }
 
