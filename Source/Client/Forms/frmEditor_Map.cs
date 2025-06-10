@@ -14,6 +14,7 @@ namespace Client
 
     public partial class frmEditor_Map
     {
+        private System.Windows.Forms.Timer loopTimer;
         public frmEditor_Map()
         {
             InitializeComponent();
@@ -931,14 +932,13 @@ namespace Client
         public static void MapEditorInit()
         {
             // set the scrolly bars
-            if (Core.Type.MyMap.Tileset <= 0)
-                Core.Type.MyMap.Tileset = 1;
-
-            if (Core.Type.MyMap.Tileset > GameState.NumTileSets)
+            if (Core.Type.MyMap.Tileset < 1 || Core.Type.MyMap.Tileset > GameState.NumTileSets)
                 Core.Type.MyMap.Tileset = 1;
 
             GameState.EditorTileSelStart = new Point(0, 0);
             GameState.EditorTileSelEnd = new Point(1, 1);
+
+            GameState.CurTileset = Core.Type.MyMap.Tileset;
 
             // set shops for the shop attribute
             for (int i = 0; i < Constant.MAX_SHOPS; i++)
@@ -955,12 +955,14 @@ namespace Client
                 Instance.cmbTileSets.Items.Add(i + 1);
 
             Instance.cmbTileSets.SelectedIndex = 0;
+            Instance.cmbAutoTile.SelectedIndex = 0;
+            Instance.cmbLayers.SelectedIndex = 0;
+
             GameState.CurLayer = 0;
             GameState.CurAutotileType = 0;
             Instance.scrlMapItemValue.Value = 1;
 
             MapPropertiesInit();
-            DrawTileset();
 
             if (GameState.MapData == true)
                 GameState.GettingMap = false;
@@ -1550,7 +1552,7 @@ namespace Client
                     withBlock.Layer[CurLayer].Tileset = 0;
                 }
                 else
-                {   
+                {
                     withBlock.Layer[CurLayer].Tileset = GameState.CurTileset;
                 }
                 withBlock.Layer[CurLayer].AutoTile = theAutotile;
@@ -1656,14 +1658,7 @@ namespace Client
 
             {
                 ref var withBlock = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
-                if (withBlock.Layer[CurLayer].Tileset > 0)
-                {
-                    Instance.cmbTileSets.SelectedIndex = withBlock.Layer[CurLayer].Tileset - 1;
-                }
-                else
-                {
-                    Instance.cmbTileSets.SelectedIndex = 0;
-                }
+                GameState.CurTileset = withBlock.Layer[CurLayer].Tileset;
                 MapEditorChooseTile((int)MouseButtons.Left, withBlock.Layer[CurLayer].X * GameState.PicX, withBlock.Layer[CurLayer].Y * GameState.PicY);
                 GameState.EyeDropper = !GameState.EyeDropper;
             }
@@ -1966,32 +1961,27 @@ namespace Client
             fraAnimation.Visible = false;
         }
 
-        private void scrlLight_ValueChanged(object sender, EventArgs e)
-        {
-            lblRadius.Text = "Radius: " + scrlLight.Value;
-        }
-
         private void chkRespawn_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkNoMapRespawn.Checked == true)
+            if (chkNoMapRespawn.Checked)
             {
-                Core.Type.MyMap.NoRespawn = Conversions.ToBoolean(1);
+                Core.Type.MyMap.NoRespawn = true;
             }
             else
             {
-                Core.Type.MyMap.NoRespawn = Conversions.ToBoolean(0);
+                Core.Type.MyMap.NoRespawn = false;
             }
         }
 
         private void chkIndoors_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkIndoors.Checked == true)
+            if (chkIndoors.Checked)
             {
-                Core.Type.MyMap.Indoors = Conversions.ToBoolean(1);
+                Core.Type.MyMap.Indoors = true;
             }
             else
             {
-                Core.Type.MyMap.Indoors = Conversions.ToBoolean(0);
+                Core.Type.MyMap.Indoors = false;
             }
         }
 
@@ -2007,11 +1997,9 @@ namespace Client
 
         private void picBackSelect_Paint(object sender, PaintEventArgs e)
         {
-            if (!General.Client.IsActive)
-            {
-                DrawTileset();
-            }
+            DrawTileset();
         }
+
         private void btnFillAttributes_Click(object sender, EventArgs e)
         {
             GameLogic.Dialogue("Map Editor", "Fill Attributes: ", "Are you sure you wish to fill attributes?", (byte)DialogueType.FillAttributes, (byte)DialogueStyle.YesNo);
@@ -2022,21 +2010,21 @@ namespace Client
             Activate();
         }
 
-        #endregion
-
         private void tabpages_SelectedIndexChanged(object sender, EventArgs e)
         {
             GameState.MapTab = Instance.tabpages.SelectedIndex;
         }
 
-        private void cmbLayers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GameState.CurLayer = Instance.cmbLayers.SelectedIndex;
-        }
-
         private void cmbTileSets_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GameState.CurTileset = Instance.cmbTileSets.SelectedIndex + 1;
+            GameState.CurTileset = cmbTileSets.SelectedIndex + 1;
+        }
+
+        #endregion
+
+        private void cmbLayers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GameState.CurLayer = cmbLayers.SelectedIndex;
         }
     }
 }

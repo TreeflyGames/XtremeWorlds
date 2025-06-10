@@ -832,15 +832,15 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (GameState.CurLayer < (int)LayerType.Count)
+                        if (GameState.CurLayer > 0)
                         {
-                            GameState.CurLayer = GameState.CurLayer;
+                            GameState.CurLayer -= 1;
                         }
                     }
 
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
+                    else if (GameState.CurTileset > 0)
                     {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                        GameState.CurTileset -= 1;
                     }
 
                 }
@@ -853,14 +853,14 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (GameState.CurLayer > 0)
+                        if (GameState.CurLayer < (int)Core.Enum.LayerType.Count)
                         {
-                            GameState.CurLayer = GameState.CurLayer - 1;
+                            GameState.CurLayer += 1;
                         }
                     }
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
+                    else if (GameState.CurTileset < GameState.NumTileSets)
                     {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                        GameState.CurTileset += 1;
                     }
                 }
 

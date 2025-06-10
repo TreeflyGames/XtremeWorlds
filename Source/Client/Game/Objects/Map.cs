@@ -150,7 +150,7 @@ namespace Client
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i == GameState.CurLayer)
+                                    if (i != GameState.CurLayer)
                                     {
                                         alpha = 0.5f;
                                     }
