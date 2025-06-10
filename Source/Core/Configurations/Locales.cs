@@ -192,7 +192,7 @@ namespace Core.Localization
                                             /editmap, /edititem, /editresource,
                                             /editskill, /editpet, /editshop
                                             /editprojectile, /editnpc, /editjob
-                                            /editjob, /acp"),
+                                            /editjob, /editscript, /acp"),
                     new LocaleItem("Welcome", "Usage : /welcome [message]"),
                     new LocaleItem("Access", "Usage : /access [player] [access]"),
                     new LocaleItem("Sprite", "Usage : /sprite [index]"),
