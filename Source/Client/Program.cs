@@ -2913,17 +2913,11 @@ namespace Client
 
             if (GameState.MyEditorType == (int)EditorType.Map)
             {
-                if (frmEditor_Map.Instance.InvokeRequired)
+                if (GameState.MapTab == (int)MapTab.Events)
                 {
-
+                    DrawEvents();
                 }
-                else
-                {
-                    if (GameState.MapTab == (int)MapTab.Events)
-                    {
-                        DrawEvents();
-                    }
-                }
+                
             }
 
             DrawBars();
