@@ -6,10 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Game.Objects
+namespace Client
 {
     public class Script
     {
+        public static void Packet_EditScript(ref byte[] data)
+        {
+            GameState.InitScriptEditor = true;
+        }
+
         public static void SendRequestEditScript()
         {
             ByteStream buffer;
@@ -28,7 +33,6 @@ namespace Client.Game.Objects
             buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveScript);
-            buffer.WriteBoolean(Core.Type.Script.Type);
             buffer.WriteString(Core.Type.Script.Code);
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);

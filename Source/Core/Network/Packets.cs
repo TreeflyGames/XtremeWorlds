@@ -262,7 +262,7 @@ namespace Core
             STime,
             SClock,
 
-            SScript,
+            SScriptEditor,
 
             // Make sure COUNT is below everything else
             COUNT

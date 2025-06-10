@@ -82,6 +82,7 @@ namespace Client
             tabMapList = new TabPage();
             tabMapTools = new TabPage();
             tabEditors = new TabPage();
+            btnScriptEditor = new DarkButton();
             btnMoralEditor = new DarkButton();
             btnPetEditor = new DarkButton();
             btnJobEditor = new DarkButton();
@@ -93,7 +94,6 @@ namespace Client
             btnSkillEditor = new DarkButton();
             btnShopEditor = new DarkButton();
             btnAnimationEditor = new DarkButton();
-            btnScriptEditor = new DarkButton();
             TabControl1.SuspendLayout();
             tabModeration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudAdminSprite).BeginInit();
@@ -414,9 +414,20 @@ namespace Client
             tabEditors.TabIndex = 4;
             tabEditors.Text = "Editors";
             // 
+            // btnScriptEditor
+            // 
+            btnScriptEditor.Location = new Point(147, 162);
+            btnScriptEditor.Margin = new Padding(4, 3, 4, 3);
+            btnScriptEditor.Name = "btnScriptEditor";
+            btnScriptEditor.Padding = new Padding(5);
+            btnScriptEditor.Size = new Size(131, 29);
+            btnScriptEditor.TabIndex = 70;
+            btnScriptEditor.Text = "Script Editor";
+            btnScriptEditor.Click += btnScriptEditor_Click;
+            // 
             // btnMoralEditor
             // 
-            btnMoralEditor.Location = new Point(152, 111);
+            btnMoralEditor.Location = new Point(152, 127);
             btnMoralEditor.Margin = new Padding(4, 3, 4, 3);
             btnMoralEditor.Name = "btnMoralEditor";
             btnMoralEditor.Padding = new Padding(5);
@@ -427,7 +438,7 @@ namespace Client
             // 
             // btnPetEditor
             // 
-            btnPetEditor.Location = new Point(152, 6);
+            btnPetEditor.Location = new Point(152, 22);
             btnPetEditor.Margin = new Padding(4, 3, 4, 3);
             btnPetEditor.Name = "btnPetEditor";
             btnPetEditor.Padding = new Padding(5);
@@ -438,7 +449,7 @@ namespace Client
             // 
             // btnJobEditor
             // 
-            btnJobEditor.Location = new Point(7, 41);
+            btnJobEditor.Location = new Point(8, 57);
             btnJobEditor.Margin = new Padding(4, 3, 4, 3);
             btnJobEditor.Name = "btnJobEditor";
             btnJobEditor.Padding = new Padding(5);
@@ -449,7 +460,7 @@ namespace Client
             // 
             // btnProjectiles
             // 
-            btnProjectiles.Location = new Point(152, 41);
+            btnProjectiles.Location = new Point(152, 57);
             btnProjectiles.Margin = new Padding(4, 3, 4, 3);
             btnProjectiles.Name = "btnProjectiles";
             btnProjectiles.Padding = new Padding(5);
@@ -460,7 +471,7 @@ namespace Client
             // 
             // btnMapEditor
             // 
-            btnMapEditor.Location = new Point(8, 181);
+            btnMapEditor.Location = new Point(8, 197);
             btnMapEditor.Margin = new Padding(4, 3, 4, 3);
             btnMapEditor.Name = "btnMapEditor";
             btnMapEditor.Padding = new Padding(5);
@@ -471,7 +482,7 @@ namespace Client
             // 
             // btnItemEditor
             // 
-            btnItemEditor.Location = new Point(8, 111);
+            btnItemEditor.Location = new Point(8, 127);
             btnItemEditor.Margin = new Padding(4, 3, 4, 3);
             btnItemEditor.Name = "btnItemEditor";
             btnItemEditor.Padding = new Padding(5);
@@ -482,7 +493,7 @@ namespace Client
             // 
             // btnResourceEditor
             // 
-            btnResourceEditor.Location = new Point(152, 76);
+            btnResourceEditor.Location = new Point(152, 92);
             btnResourceEditor.Margin = new Padding(4, 3, 4, 3);
             btnResourceEditor.Name = "btnResourceEditor";
             btnResourceEditor.Padding = new Padding(5);
@@ -493,7 +504,7 @@ namespace Client
             // 
             // btnNPCEditor
             // 
-            btnNPCEditor.Location = new Point(8, 76);
+            btnNPCEditor.Location = new Point(8, 92);
             btnNPCEditor.Margin = new Padding(4, 3, 4, 3);
             btnNPCEditor.Name = "btnNPCEditor";
             btnNPCEditor.Padding = new Padding(5);
@@ -504,7 +515,7 @@ namespace Client
             // 
             // btnSkillEditor
             // 
-            btnSkillEditor.Location = new Point(8, 146);
+            btnSkillEditor.Location = new Point(8, 162);
             btnSkillEditor.Margin = new Padding(4, 3, 4, 3);
             btnSkillEditor.Name = "btnSkillEditor";
             btnSkillEditor.Padding = new Padding(5);
@@ -515,7 +526,7 @@ namespace Client
             // 
             // btnShopEditor
             // 
-            btnShopEditor.Location = new Point(8, 216);
+            btnShopEditor.Location = new Point(7, 232);
             btnShopEditor.Margin = new Padding(4, 3, 4, 3);
             btnShopEditor.Name = "btnShopEditor";
             btnShopEditor.Padding = new Padding(5);
@@ -526,7 +537,7 @@ namespace Client
             // 
             // btnAnimationEditor
             // 
-            btnAnimationEditor.Location = new Point(8, 6);
+            btnAnimationEditor.Location = new Point(7, 22);
             btnAnimationEditor.Margin = new Padding(4, 3, 4, 3);
             btnAnimationEditor.Name = "btnAnimationEditor";
             btnAnimationEditor.Padding = new Padding(5);
@@ -534,17 +545,6 @@ namespace Client
             btnAnimationEditor.TabIndex = 61;
             btnAnimationEditor.Text = "Animation Editor";
             btnAnimationEditor.Click += btnAnimationEditor_Click;
-            // 
-            // btnScriptEditor
-            // 
-            btnScriptEditor.Location = new Point(152, 146);
-            btnScriptEditor.Margin = new Padding(4, 3, 4, 3);
-            btnScriptEditor.Name = "btnScriptEditor";
-            btnScriptEditor.Padding = new Padding(5);
-            btnScriptEditor.Size = new Size(131, 29);
-            btnScriptEditor.TabIndex = 70;
-            btnScriptEditor.Text = "Script Editor";
-            btnScriptEditor.Click += btnScriptEditor_Click;
             // 
             // FrmAdmin
             // 

@@ -128,6 +128,7 @@ namespace Client
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClock] = Packet_Clock;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STime] = Packet_Time;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SScriptEditor] = Script.Packet_EditScript;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SItemEditor] = Packet_EditItem;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCEditor] = Packet_NPCEditor;

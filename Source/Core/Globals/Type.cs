@@ -1114,7 +1114,6 @@ namespace Core
         public struct ScriptStruct
         {
             public string Code;
-            public bool Type; // 0 = C#, 1 VB
         }
 
         #endregion

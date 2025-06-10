@@ -398,7 +398,7 @@ namespace Client
                 return;
             }
 
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;

@@ -1,5 +1,4 @@
-﻿using Client.Game.Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,34 +17,14 @@ namespace Client
             InitializeComponent();
         }
 
-        private void optButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (optButton2.Checked)
-            {
-                Core.Type.Script.Type = false;
-            }
-            else
-            {
-                Core.Type.Script.Type = true;
-            }
-
-        }
-
-        private void optButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (optButton.Checked)
-            {
-                Core.Type.Script.Type = true;
-            }
-            else
-            {
-                Core.Type.Script.Type = false;
-            }
-        }
-
         private void btnOpenScript_Click(object sender, EventArgs e)
         {
             Script.SendRequestEditScript();
+        }
+
+        private void buttonSaveScript_Click(object sender, EventArgs e)
+        {
+            Script.SendSaveScript();
         }
     }
 }

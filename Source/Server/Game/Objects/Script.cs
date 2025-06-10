@@ -1,5 +1,6 @@
 ﻿using CSScriptLib;
 using Mirage.Sharp.Asfw;
+using Mirage.Sharp.Asfw.Network;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +15,14 @@ namespace Server
 {
     public class Script
     {
+        public static Task ScriptLoopTask;
+        public static CancellationTokenSource ScriptLoopCts;
+
+        public interface Main
+        {
+            int Loop();
+        }
+
         public static void Packet_RequestEditScript(int index, ref byte[] data)
         {
             var buffer = new ByteStream(4);
@@ -36,8 +45,7 @@ namespace Server
 
             Core.Type.TempPlayer[index].Editor = (byte)EditorType.Script;
 
-            buffer.WriteInt32((int)ServerPackets.SScript);
-            buffer.WriteBoolean(Core.Type.Script.Type);
+            buffer.WriteInt32((int)ServerPackets.SScriptEditor);
             buffer.WriteString(Core.Type.Script.Code);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -54,58 +62,77 @@ namespace Server
             if (Core.Global.Command.GetPlayerAccess(index) < (byte)AccessType.Owner)
                 return;
 
-            ref var withBlock = ref Core.Type.Script;
-            withBlock.Type = buffer.ReadBoolean();
-            withBlock.Code = buffer.ReadString();
+            // Save ith the new script code
+            File.WriteAllText(Core.Path.Scripts, buffer.ReadString(), Encoding.UTF8);
 
-            // Save it: encode Type at the top, then Code
-            var sb = new StringBuilder();
-            sb.AppendLine(withBlock.Type.ToString());
-            sb.Append(withBlock.Code);
-            File.WriteAllText(Core.Path.Scripts, sb.ToString(), Encoding.UTF8);
+            Task.Run(async () =>
+            {
+                await LoadScriptAsync(index);
+            });
         }
 
-        public static async Task LoadScriptAsync()
+        public static async Task LoadScriptAsync(int index)
         {
             try
             {
                 // Load the script file
                 if (File.Exists(Core.Path.Scripts))
                 {
-                    var lines = File.ReadAllLines(Core.Path.Scripts, Encoding.UTF8);
-                    if (lines.Length > 0)
+                    var text = File.ReadAllText(Core.Path.Scripts, Encoding.UTF8);
+                    if (!string.IsNullOrEmpty(text))
                     {
-                        // First line is the type
-                        if (bool.TryParse(lines[0], out bool type))
-                        {
-                            Core.Type.Script.Type = type;
-                        }
-                        else
-                        {
-                            Core.Type.Script.Type = false;
-                        }
-
-                        // Remaining lines are the code
-                        Core.Type.Script.Code = string.Join(Environment.NewLine, lines.Skip(1));
+                        Core.Type.Script.Code = text;
                     }
                     else
                     {
-                        Core.Type.Script.Type = false;
                         Core.Type.Script.Code = string.Empty;
                     }
                 }
                 else
                 {
-                    Core.Type.Script.Type = false;
                     Core.Type.Script.Code = string.Empty;
+                }
+
+                // Cancel previous loop if running
+                ScriptLoopCts?.Cancel();
+                if (ScriptLoopTask != null)
+                {
+                    try { await ScriptLoopTask; } catch { /* ignore */ }
                 }
 
                 // Compile the script
                 var script = CSScript.Evaluator.CompileMethod(Core.Type.Script.Code);
 
+                if (script != null)
+                {
+                    Main main = CSScript.Evaluator
+                                         .LoadCode<Main>(Core.Type.Script.Code);
+                    // Call the Main loop if available
+                    if (main != null)
+                    {
+                        ScriptLoopCts = new CancellationTokenSource();
+                        var token = ScriptLoopCts.Token;
+                        ScriptLoopTask = Task.Run(async () =>
+                        {
+                            while (!token.IsCancellationRequested)
+                            {
+                                // Assuming Main has a method called Loop to be called repeatedly
+                                main.Loop();
+                                await Task.Delay(1, token); // Prevents tight infinite loop, adjust as needed
+                            }
+                        }, token);
+                    }
+                }
+                else
+                {
+                    NetworkSend.PlayerMsg(index, "Script compilation failed.", (int)ColorType.BrightRed);
+                    Debug.WriteLine("Script compilation failed.");
+                }
+
             }
             catch (Exception ex)
             {
+                NetworkSend.PlayerMsg(index, "Error loading scripts: " + ex.Message, (int)ColorType.BrightRed);
                 Debug.WriteLine("Error loading scripts: " + ex.Message);
             }
         }

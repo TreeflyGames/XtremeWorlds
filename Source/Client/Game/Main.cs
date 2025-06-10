@@ -239,6 +239,8 @@ namespace Client
                     withBlock12.Show();
                     Editors.ScriptEditorInit();
 
+                    GameState.InitScriptEditor = false;
+
                 }
 
                 frmEditor_Map.Instance.picBackSelect.Invalidate();
