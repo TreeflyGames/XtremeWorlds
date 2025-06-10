@@ -56,7 +56,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CBanDestroy] = Packet_DestroyBans;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CBanPlayer] = Packet_BanPlayer;
 
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMap] = Packet_EditMapRequest;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMap] = Packet_RequestEditMap;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetAccess] = Packet_SetAccess;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CWhosOnline] = Packet_WhosOnline;
@@ -131,17 +131,17 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetUseStatPoint] = Pet.Packet_UsePetStatPoint;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPet] = Pet.Packet_RequestPet;
 
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_EditItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_RequestEditItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveItem] = Item.Packet_SaveItem;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNPC] = NPC.Packet_EditNPC;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNPC] = NPC.Packet_RequestEditNPC;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveNPC] = NPC.Packet_SaveNPC;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditShop] = Packet_EditShop;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditShop] = Packet_RequestEditShop;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveShop] = Packet_SaveShop;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditSkill] = Packet_EditSkill;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditSkill] = Packet_RequestEditSkill;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveSkill] = Packet_SaveSkill;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditResource] = Resource.Packet_EditResource;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditResource] = Resource.Packet_RequestEditResource;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveResource] = Resource.Packet_SaveResource;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditAnimation] = Animation.Packet_EditAnimation;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditAnimation] = Animation.Packet_RequestEditAnimation;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveAnimation] = Animation.Packet_SaveAnimation;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditProjectile] = Projectile.HandleRequestEditProjectile;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveProjectile] = Projectile.HandleSaveProjectile;
@@ -1479,13 +1479,10 @@ namespace Server
 
         }
 
-        private static void Packet_EditMapRequest(int index, ref byte[] data)
+        private static void Packet_RequestEditMap(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -1515,13 +1512,10 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void Packet_EditShop(int index, ref byte[] data)
+        public static void Packet_RequestEditShop(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -1580,13 +1574,10 @@ namespace Server
             Log.Add(GetPlayerLogin(index) + " saving shop #" + ShopNum + ".", Constant.ADMIN_LOG);
         }
 
-        public static void Packet_EditSkill(int index, ref byte[] data)
+        public static void Packet_RequestEditSkill(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -2750,9 +2741,6 @@ namespace Server
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte)AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;

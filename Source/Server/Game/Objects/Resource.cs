@@ -162,15 +162,12 @@ namespace Server
 
         #region Incoming Packets
 
-        public static void Packet_EditResource(int index, ref byte[] data)
+        public static void Packet_RequestEditResource(int index, ref byte[] data)
         {
             var buffer = new ByteStream(4);
 
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;

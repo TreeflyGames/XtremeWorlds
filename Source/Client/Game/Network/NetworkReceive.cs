@@ -135,7 +135,7 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SShopEditor] = Packet_EditShop;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSkillEditor] = Packet_EditSkill;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SResourceEditor] = Packet_ResourceEditor;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAnimationEditor] = Packet_EditAnimation;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAnimationEditor] = Packet_AnimationEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SProjectileEditor] = HandleProjectileEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SJobEditor] = Packet_JobEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetEditor] = Packet_PetEditor;
@@ -1013,7 +1013,7 @@ namespace Client
         // *****************
         // ***  EDITORS  ***
         // *****************
-        private static void Packet_EditAnimation(ref byte[] data)
+        private static void Packet_AnimationEditor(ref byte[] data)
         {
             GameState.InitAnimationEditor = true;
         }

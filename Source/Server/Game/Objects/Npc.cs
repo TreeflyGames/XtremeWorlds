@@ -1215,12 +1215,10 @@ namespace Server
 
         #region Incoming Packets
 
-        public static void Packet_EditNPC(int index, ref byte[] data)
+        public static void Packet_RequestEditNPC(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;

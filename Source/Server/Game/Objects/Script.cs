@@ -30,9 +30,6 @@ namespace Server
             if (Core.Global.Command.GetPlayerAccess(index) < (byte)AccessType.Owner)
                 return;
 
-            if (Core.Type.TempPlayer[index].Editor > 0)
-                return;
-
             string user;
 
             user = Core.Global.Command.IsEditorLocked(index, (byte)EditorType.Script);
