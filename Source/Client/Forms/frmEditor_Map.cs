@@ -2020,11 +2020,11 @@ namespace Client
             GameState.CurTileset = cmbTileSets.SelectedIndex + 1;
         }
 
-        #endregion
-
         private void cmbLayers_SelectedIndexChanged(object sender, EventArgs e)
         {
             GameState.CurLayer = cmbLayers.SelectedIndex;
         }
+
+        #endregion
     }
 }
