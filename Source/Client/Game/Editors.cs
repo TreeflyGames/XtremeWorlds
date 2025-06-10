@@ -896,35 +896,7 @@ namespace Client
         {
             GameState.Pet_Changed = new bool[Core.Constant.MAX_PETS];
         }
-
-        public static void ScriptEditorInit()
-        {
-            ref var withBlock = ref Core.Type.Script;
-            string code = withBlock.Code;
-
-            // Open code in temp file
-            string tempFilePath = System.IO.Path.GetTempFileName() + ".cs";
-            System.IO.File.WriteAllText(tempFilePath, code);
-
-            // Open with default text editor
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = tempFilePath,
-                UseShellExecute = true
-            });
-        }
-
-        public static void ScriptEditorOK()
-        {
-            GameState.MyEditorType = -1;
-            NetworkSend.SendCloseEditor();
-        }
-
-        public static void ScripteEditorCancel()
-        {
-            GameState.MyEditorType = -1;
-            NetworkSend.SendCloseEditor();
-        }
+        
         #endregion
 
     }

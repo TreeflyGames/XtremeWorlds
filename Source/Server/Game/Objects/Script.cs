@@ -62,13 +62,28 @@ namespace Server
             if (Core.Global.Command.GetPlayerAccess(index) < (byte)AccessType.Owner)
                 return;
 
-            // Save ith the new script code
-            File.WriteAllText(Core.Path.Scripts, buffer.ReadString(), Encoding.UTF8);
+            // Save with the new script code and ensure the filename is Script.cs
+            var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
+
+            // Create file
+            if (!File.Exists(scriptPath))
+            {
+                Directory.CreateDirectory(Core.Path.Scripts);
+                File.Create(scriptPath);
+                using (File.Create(scriptPath))
+                {
+                    File.WriteAllText(scriptPath, buffer.ReadString(), Encoding.UTF8);
+                }
+            }
+            else
+            {
+                File.WriteAllText(scriptPath, buffer.ReadString(), Encoding.UTF8);
+            }
 
             Task.Run(async () =>
-            {
-                await LoadScriptAsync(index);
-            });
+                {
+                    await LoadScriptAsync(index);
+                });
         }
 
         public static async Task LoadScriptAsync(int index)
@@ -76,9 +91,10 @@ namespace Server
             try
             {
                 // Load the script file
-                if (File.Exists(Core.Path.Scripts))
-                {
-                    var text = File.ReadAllText(Core.Path.Scripts, Encoding.UTF8);
+                var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
+                if (File.Exists(scriptPath))
+                {                  
+                    var text = File.ReadAllText(scriptPath, Encoding.UTF8);
                     if (!string.IsNullOrEmpty(text))
                     {
                         Core.Type.Script.Code = text;

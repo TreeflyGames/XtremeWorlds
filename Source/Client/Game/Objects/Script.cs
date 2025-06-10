@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Assimp;
+using Core;
 using Mirage.Sharp.Asfw;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,19 @@ namespace Client
 {
     public class Script
     {
+        public static string TempFile = System.IO.Path.GetTempFileName() + ".cs";
+
         public static void Packet_EditScript(ref byte[] data)
         {
+            ByteStream buffer;
+
+            buffer = new ByteStream(data);
+
+            var code = buffer.ReadString();
+            Core.Type.Script.Code = code;
+
+            buffer.Dispose();
+
             GameState.InitScriptEditor = true;
         }
 
@@ -38,6 +50,12 @@ namespace Client
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
+        }
+
+        public static void ScriptEditorInit()
+        {
+            ref var withBlock = ref Core.Type.Script;
+            string code = withBlock.Code;
         }
     }
 }

@@ -416,7 +416,7 @@ namespace Client
             // 
             // btnScriptEditor
             // 
-            btnScriptEditor.Location = new Point(147, 162);
+            btnScriptEditor.Location = new Point(152, 162);
             btnScriptEditor.Margin = new Padding(4, 3, 4, 3);
             btnScriptEditor.Name = "btnScriptEditor";
             btnScriptEditor.Padding = new Padding(5);

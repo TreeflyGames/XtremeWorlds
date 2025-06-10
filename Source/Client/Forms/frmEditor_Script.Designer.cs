@@ -82,6 +82,7 @@ namespace Client
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "frmEditor_Script";
             Text = "Script Editor";
+            FormClosing += frmEditor_Script_FormClosing;
             ResumeLayout(false);
         }
 
