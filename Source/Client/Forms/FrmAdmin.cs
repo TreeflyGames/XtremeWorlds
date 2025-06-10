@@ -139,12 +139,6 @@ namespace Client
 
         private void btnAnimationEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -156,12 +150,6 @@ namespace Client
 
         private void btnJobEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -173,12 +161,6 @@ namespace Client
 
         private void btnItemEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -190,12 +172,6 @@ namespace Client
 
         private void BtnMapEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -207,12 +183,6 @@ namespace Client
 
         private void btnNPCEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -224,12 +194,6 @@ namespace Client
 
         private void btnPetEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -241,12 +205,6 @@ namespace Client
 
         private void btnProjectiles_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -258,12 +216,6 @@ namespace Client
 
         private void btnResourceEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -275,12 +227,6 @@ namespace Client
 
         private void btnShopEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -292,12 +238,6 @@ namespace Client
 
         private void btnSkillEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
