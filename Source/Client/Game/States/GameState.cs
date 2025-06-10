@@ -397,6 +397,11 @@ namespace Client
         public static int InShop; // is the player in a shop?
         public static byte ShopAction; // stores the current shop action
 
+        public static int MapTab;
+        public static int CurLayer;
+        public static int CurAutotileType;
+        public static int CurTileset;
+
         // Editors
         public static bool InitEditor;
         public static bool InitMapEditor;

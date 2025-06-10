@@ -111,7 +111,7 @@ namespace Client
             }
 
             // Get the selected tileset index
-            tilesetIndex = Instance.cmbTileSets.SelectedIndex + 1;
+            tilesetIndex = GameState.CurTileset;
 
             if (tilesetIndex == 0)
             {
@@ -123,57 +123,52 @@ namespace Client
             var gfxInfo = GameClient.GetGfxInfo(tilesetPath);
 
             // Handle varying tileset sizes
-            var texture = GameClient.GetTexture(tilesetPath);
-            if (texture is null)
+            if (!System.IO.File.Exists(tilesetPath + GameState.GfxExt))
             {
+                Instance.picBackSelect.Image = null;
                 return;
             }
 
-            // Use the dimensions of the PictureBox (picBackSelect)
-            int picWidth = Instance.picBackSelect.Width;
-            int picHeight = Instance.picBackSelect.Height;
-
-            // Create a render target for drawing
-            using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
+            using (var srcImage = System.Drawing.Image.FromFile(tilesetPath + GameState.GfxExt))
             {
-                GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget);
-                GameClient.Graphics.GraphicsDevice.Clear(Color.Black);
+                int srcWidth = srcImage.Width;
+                int srcHeight = srcImage.Height;
+                int picWidth = Instance.picBackSelect.Width;
+                int picHeight = Instance.picBackSelect.Height;
 
-                // Create a SpriteBatch for rendering
-                using (var spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice))
+                // Calculate scale to fit PictureBox while preserving aspect ratio
+                float scaleX = (float)picWidth / srcWidth;
+                float scaleY = (float)picHeight / srcHeight;
+                float scale = Math.Min(scaleX, scaleY);
+
+                int destWidth = (int)Math.Round(srcWidth * scale);
+                int destHeight = (int)Math.Round(srcHeight * scale);
+
+                using (var bmp = new System.Drawing.Bitmap(picWidth, picHeight))
+                using (var g = System.Drawing.Graphics.FromImage(bmp))
                 {
-                    // Begin the SpriteBatch with appropriate settings
-                    spriteBatch.Begin();
+                    g.Clear(System.Drawing.Color.Black);
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-                    // Calculate the source rectangle
-                    var sourceRect = new Rectangle(0, 0, gfxInfo.Width, gfxInfo.Height);
+                    // Center the image
+                    int offsetX = (picWidth - destWidth) / 2;
+                    int offsetY = (picHeight - destHeight) / 2;
 
-                    // Calculate the destination rectangle, preserving aspect ratio
-                    float scaleX = (float)(picWidth / (double)gfxInfo.Width);
-                    float scaleY = (float)(picHeight / (double)gfxInfo.Height);
-                    float scale = Math.Min(scaleX, scaleY);
+                    g.DrawImage(srcImage, offsetX, offsetY, destWidth, destHeight);
 
-                    int destWidth = (int)Math.Round(gfxInfo.Width * scale);
-                    int destHeight = (int)Math.Round(gfxInfo.Height * scale);
-                    var destRect = new Rectangle(0, 0, destWidth, destHeight);
+                    // Draw selection rectangle
+                    int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.PicX * scale) + offsetX;
+                    int scaledY = (int)Math.Round(GameState.EditorTileSelStart.Y * GameState.PicY * scale) + offsetY;
+                    int scaledWidth = (int)Math.Round(GameState.EditorTileWidth * GameState.PicX * scale);
+                    int scaledHeight = (int)Math.Round(GameState.EditorTileHeight * GameState.PicY * scale);
 
-                    // Draw the tileset texture at the top-left
-                    spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
-                    DrawSelectionRectangle(spriteBatch, scale);
+                    using (var pen = new System.Drawing.Pen(System.Drawing.Color.Red, Math.Max(1, (int)Math.Round(1f * scale))))
+                    {
+                        g.DrawRectangle(pen, scaledX, scaledY, scaledWidth, scaledHeight);
+                    }
 
-                    // End the SpriteBatch
-                    spriteBatch.End();
-                }
-
-                // Reset the render target to the back buffer
-                GameClient.Graphics.GraphicsDevice.SetRenderTarget(null);
-
-                // Convert the render target to a Texture2D and set it as the PictureBox background
-                using (var stream = new MemoryStream())
-                {
-                    renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
-                    stream.Position = 0L;
-                    Instance.picBackSelect.Image = System.Drawing.Image.FromStream(stream);
+                    Instance.picBackSelect.Image?.Dispose();
+                    Instance.picBackSelect.Image = (System.Drawing.Image)bmp.Clone();
                 }
             }
         }
@@ -368,12 +363,12 @@ namespace Client
 
         private void CmbTileSets_Click(object sender, EventArgs e)
         {
-            if (cmbTileSets.SelectedIndex + 1 > GameState.NumTileSets)
+            if (GameState.CurTileset > GameState.NumTileSets)
             {
                 cmbTileSets.SelectedIndex = 0;
             }
 
-            Core.Type.MyMap.Tileset = cmbTileSets.SelectedIndex + 1;
+            Core.Type.MyMap.Tileset = GameState.CurTileset;
 
             GameState.EditorTileSelStart = new Point(0, 0);
             GameState.EditorTileSelEnd = new Point(1, 1);
@@ -381,6 +376,7 @@ namespace Client
 
         private void CmbAutoTile_SelectedIndexChanged(object sender, EventArgs e)
         {
+            GameState.CurAutotileType = cmbAutoTile.SelectedIndex;
             if (cmbAutoTile.SelectedIndex == 0)
             {
                 GameState.EditorTileWidth = 1;
@@ -959,8 +955,8 @@ namespace Client
                 Instance.cmbTileSets.Items.Add(i + 1);
 
             Instance.cmbTileSets.SelectedIndex = 0;
-            Instance.cmbLayers.SelectedIndex = 0;
-            Instance.cmbAutoTile.SelectedIndex = 0;
+            GameState.CurLayer = 0;
+            GameState.CurAutotileType = 0;
             Instance.scrlMapItemValue.Value = 1;
 
             MapPropertiesInit();
@@ -977,9 +973,9 @@ namespace Client
                 GameState.EditorTileWidth = 1;
                 GameState.EditorTileHeight = 1;
 
-                if (Instance.cmbAutoTile.SelectedIndex > 0)
+                if (GameState.CurAutotileType > 0)
                 {
-                    switch (Instance.cmbAutoTile.SelectedIndex)
+                    switch (GameState.CurAutotileType)
                     {
                         case 1: // autotile
                             {
@@ -1062,13 +1058,10 @@ namespace Client
         public static void MapEditorMouseDown(int X, int Y, bool movedMouse = true)
         {
             int i;
-            int CurLayer;
             bool isModified = false;
             int x = 0;
 
             General.SetWindowFocus(General.Client.Window.Handle);
-
-            CurLayer = Instance.cmbLayers.SelectedIndex;
 
             if (GameState.CurX < 0 || GameState.CurY < 0 || GameState.CurX >= Core.Type.MyMap.MaxX || GameState.CurY >= Core.Type.MyMap.MaxY)
                 return;
@@ -1082,7 +1075,7 @@ namespace Client
             if (!GameLogic.IsInBounds())
                 return;
 
-            if (Instance.cmbAutoTile.SelectedIndex == -1)
+            if (GameState.CurAutotileType == -1)
                 return;
 
             if (GameClient.IsMouseButtonDown(MouseButton.Left))
@@ -1104,22 +1097,22 @@ namespace Client
                     }
                 }
 
-                if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpTiles))
+                if (GameState.MapTab == (int)MapTab.Tiles)
                 {
                     if (GameState.EditorTileWidth == 1 & GameState.EditorTileHeight == 1) // single tile
                     {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, false, (byte)Instance.cmbAutoTile.SelectedIndex);
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, GameState.CurLayer, false, (byte)GameState.CurAutotileType);
                     }
-                    else if (Instance.cmbAutoTile.SelectedIndex == 0) // multi tile!
+                    else if (GameState.CurAutotileType == 0) // multi tile!
                     {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true);
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, GameState.CurLayer, true);
                     }
                     else
                     {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, (byte)Instance.cmbAutoTile.SelectedIndex);
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, GameState.CurLayer, true, (byte)GameState.CurAutotileType);
                     }
                 }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
+                else if (GameState.MapTab == (int)MapTab.Attributes)
                 {
                     ref var withBlock1 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
                     // blocked tile
@@ -1344,7 +1337,7 @@ namespace Client
                         }
                     }
                 }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpDirBlock))
+                else if (GameState.MapTab == (int)MapTab.Directions)
                 {
                     // Convert adjusted coordinates to game world coordinates
                     X = (int)Math.Round(GameState.TileView.Left + Math.Floor((GameState.CurMouseX + GameState.Camera.Left) % GameState.PicX));
@@ -1368,7 +1361,7 @@ namespace Client
                         }
                     }
                 }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
+                else if (GameState.MapTab == (int)MapTab.Events)
                 {
                     if (frmEditor_Event.Instance.Visible == false)
                     {
@@ -1390,22 +1383,22 @@ namespace Client
 
             if (GameClient.IsMouseButtonDown(MouseButton.Right))
             {
-                if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpTiles))
+                if (GameState.MapTab == (int)MapTab.Tiles)
                 {
                     if (GameState.EditorTileWidth == 1 & GameState.EditorTileHeight == 1) // single tile
                     {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, false, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, GameState.CurLayer, false, (byte)GameState.CurAutotileType, 1);
                     }
-                    else if (Instance.cmbAutoTile.SelectedIndex == 0) // multi tile!
+                    else if (GameState.CurAutotileType == 0) // multi tile!
                     {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, 0, 1);
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, GameState.CurLayer, true, 0, 1);
                     }
                     else
                     {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, GameState.CurLayer, true, (byte)GameState.CurAutotileType, 1);
                     }
                 }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
+                else if (GameState.MapTab == (int)MapTab.Attributes)
                 {
                     ref var withBlock2 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
                     // clear attribute
@@ -1418,10 +1411,8 @@ namespace Client
                     withBlock2.Data2_2 = 0;
                     withBlock2.Data3_2 = 0;
                 }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
-                {
+                else if (GameState.MapTab == (int)MapTab.Events)
                     Event.DeleteEvent(GameState.CurX, GameState.CurY);
-                }
             }
 
             MapEditorHistory();
@@ -1559,8 +1550,8 @@ namespace Client
                     withBlock.Layer[CurLayer].Tileset = 0;
                 }
                 else
-                {
-                    withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                {   
+                    withBlock.Layer[CurLayer].Tileset = GameState.CurTileset;
                 }
                 withBlock.Layer[CurLayer].AutoTile = theAutotile;
                 Autotile.CacheRenderState(x, y, CurLayer);
@@ -1582,7 +1573,7 @@ namespace Client
                 }
                 else
                 {
-                    withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                    withBlock1.Layer[CurLayer].Tileset = GameState.CurTileset;
                 }
                 withBlock1.Layer[CurLayer].AutoTile = 0;
                 Autotile.CacheRenderState(x, y, CurLayer);
@@ -1649,19 +1640,19 @@ namespace Client
 
         public static void MapEditorClearLayer(LayerType layer)
         {
-            GameLogic.Dialogue("Map Editor", "Clear Layer: " + layer.ToString(), "Are you sure you wish to clear this layer?", (byte)DialogueType.ClearLayer, (byte)DialogueStyle.YesNo, Instance.cmbLayers.SelectedIndex, Instance.cmbAutoTile.SelectedIndex);
+            GameLogic.Dialogue("Map Editor", "Clear Layer: " + layer.ToString(), "Are you sure you wish to clear this layer?", (byte)DialogueType.ClearLayer, (byte)DialogueStyle.YesNo, GameState.CurLayer, GameState.CurAutotileType);
         }
 
         public static void MapEditorFillLayer(LayerType layer, byte theAutotile = 0, byte tileX = 0, byte tileY = 0)
         {
-            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, Instance.cmbLayers.SelectedIndex, Instance.cmbAutoTile.SelectedIndex, tileX, tileY, Instance.cmbTileSets.SelectedIndex + 1);
+            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, GameState.CurLayer, GameState.CurAutotileType, tileX, tileY, Instance.cmbTileSets.SelectedIndex + 1);
         }
 
         public static void MapEditorEyeDropper()
         {
             int CurLayer;
 
-            CurLayer = Instance.cmbLayers.SelectedIndex;
+            CurLayer = GameState.CurLayer;
 
             {
                 ref var withBlock = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
@@ -1811,7 +1802,7 @@ namespace Client
 
             GameState.TileHistoryIndex++;
 
-            if  (isModified)
+            if (isModified)
                 General.SetWindowFocus(General.Client.Window.Handle);
             else
                 MapEditorRedo();
@@ -2032,5 +2023,20 @@ namespace Client
         }
 
         #endregion
+
+        private void tabpages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GameState.MapTab = Instance.tabpages.SelectedIndex;
+        }
+
+        private void cmbLayers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GameState.CurLayer = Instance.cmbLayers.SelectedIndex;
+        }
+
+        private void cmbTileSets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GameState.CurTileset = Instance.cmbTileSets.SelectedIndex + 1;
+        }
     }
 }

@@ -236,23 +236,23 @@ namespace Client
 
         public static void DrawMapAttributes()
         {
-            int X;
+            int x;
             int y;
             int tX;
             int tY;
             int tA;
 
             var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
-            for (X = (int)Math.Round(GameState.TileView.Left - 1d); X < loopTo; X++)
+            for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo; x++)
             {
                 var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
                 for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
                 {
-                    if (GameLogic.IsValidMapPoint(X, y))
+                    if (GameLogic.IsValidMapPoint(x, y))
                     {
                         {
-                            ref var withBlock = ref Core.Type.MyMap.Tile[X, y];
-                            tX = (int)Math.Round(GameLogic.ConvertMapX(X * GameState.PicX) - 4 + GameState.PicX * 0.5d);
+                            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                            tX = (int)Math.Round(GameLogic.ConvertMapX(x * GameState.PicX) - 4 + GameState.PicX * 0.5d);
                             tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.PicY) - 7 + GameState.PicY * 0.5d);
 
                             if (GameState.EditorAttribute == 1)

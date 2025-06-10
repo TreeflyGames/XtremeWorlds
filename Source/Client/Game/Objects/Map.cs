@@ -150,7 +150,7 @@ namespace Client
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i == frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    if (i == GameState.CurLayer)
                                     {
                                         alpha = 0.5f;
                                     }
@@ -247,7 +247,7 @@ namespace Client
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    if (i != GameState.CurLayer)
                                     {
                                         alpha = 0.5f;
                                     }

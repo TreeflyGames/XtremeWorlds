@@ -1074,6 +1074,7 @@ namespace Client
             tabpages.SelectedIndex = 0;
             tabpages.Size = new Size(550, 629);
             tabpages.TabIndex = 14;
+            tabpages.SelectedIndexChanged += tabpages_SelectedIndexChanged;
             // 
             // tpTiles
             // 
@@ -1138,6 +1139,7 @@ namespace Client
             cmbLayers.Name = "cmbLayers";
             cmbLayers.Size = new Size(112, 24);
             cmbLayers.TabIndex = 14;
+            cmbLayers.SelectedIndexChanged += cmbLayers_SelectedIndexChanged;
             // 
             // Label9
             // 
@@ -1159,6 +1161,7 @@ namespace Client
             cmbTileSets.Name = "cmbTileSets";
             cmbTileSets.Size = new Size(68, 24);
             cmbTileSets.TabIndex = 12;
+            cmbTileSets.SelectedIndexChanged += cmbTileSets_SelectedIndexChanged;
             cmbTileSets.Click += CmbTileSets_Click;
             // 
             // tpAttributes

@@ -832,9 +832,9 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count)
+                        if (GameState.CurLayer < (int)LayerType.Count)
                         {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
+                            GameState.CurLayer = GameState.CurLayer;
                         }
                     }
 
@@ -853,9 +853,9 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0)
+                        if (GameState.CurLayer > 0)
                         {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
+                            GameState.CurLayer = GameState.CurLayer - 1;
                         }
                     }
                     else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
@@ -2874,24 +2874,9 @@ namespace Client
 
             if (GameState.MyEditorType == (int)EditorType.Map)
             {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpDirBlock))
-                {
-                    var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
-                    for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)
-                    {
-                        var loopTo11 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                        for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo11; y++)
-                        {
-                            if (GameLogic.IsValidMapPoint(x, y))
-                            {
-                                DrawDirections(x, y);
-                            }
-                        }
-                    }
-                }
+                UpdateDirBlock();
+                UpdateMapAttributes();
 
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpAttributes))
-                    Text.DrawMapAttributes();
             }
 
             for (i = 0; i < byte.MaxValue; i++)
@@ -2928,9 +2913,16 @@ namespace Client
 
             if (GameState.MyEditorType == (int)EditorType.Map)
             {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpEvents))
+                if (frmEditor_Map.Instance.InvokeRequired)
                 {
-                    DrawEvents();
+
+                }
+                else
+                {
+                    if (GameState.MapTab == (int)MapTab.Events)
+                    {
+                        DrawEvents();
+                    }
                 }
             }
 
@@ -2947,6 +2939,36 @@ namespace Client
             Gui.Render();
             string argpath = System.IO.Path.Combine(Core.Path.Misc, "Cursor");
             RenderTexture(ref argpath, GameState.CurMouseX, GameState.CurMouseY, 0, 0, 16, 16, 32, 32);
+        }
+
+        public static void UpdateMapAttributes()
+        {
+            if (GameState.MapTab == (int)MapTab.Attributes)
+            {
+                Text.DrawMapAttributes();
+            }
+        }
+
+        public static void UpdateDirBlock()
+        {
+            int x;
+            int y;
+
+            if (GameState.MapTab == (int)MapTab.Directions)
+            {
+                var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
+                for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)
+                {
+                    var loopTo11 = (int)Math.Round(GameState.TileView.Bottom + 1d);
+                    for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo11; y++)
+                    {
+                        if (GameLogic.IsValidMapPoint(x, y))
+                        {
+                            DrawDirections(x, y);
+                        }
+                    }
+                }
+            }
         }
     }
 }

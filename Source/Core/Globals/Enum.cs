@@ -660,5 +660,16 @@ namespace Core
             Texture,
             Font
         }
+
+        public enum  MapTab
+        {
+            Tiles,
+            Attributes,
+            NPCs,
+            Settings,
+            Directions,
+            Events,
+            Effects
+        }
     }
 }
