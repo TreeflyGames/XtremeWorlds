@@ -1,9 +1,11 @@
 ﻿using System.Windows.Forms;
+using Assimp.Configs;
 using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
+using MonoGame.Extended.Content.Tiled;
 using static Core.Enum;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
@@ -14,7 +16,6 @@ namespace Client
 
     public partial class frmEditor_Map
     {
-        private System.Windows.Forms.Timer loopTimer;
         public frmEditor_Map()
         {
             InitializeComponent();
@@ -957,6 +958,7 @@ namespace Client
             Instance.cmbTileSets.SelectedIndex = 0;
             Instance.cmbAutoTile.SelectedIndex = 0;
             Instance.cmbLayers.SelectedIndex = 0;
+            Instance.cmbAttribute.SelectedIndex = 0;
 
             GameState.CurLayer = 0;
             GameState.CurAutotileType = 0;
@@ -1057,15 +1059,17 @@ namespace Client
 
         }
 
-        public static void MapEditorMouseDown(int X, int Y, bool movedMouse = true)
+        public static void MapEditorMouseDown(int x, int y, bool movedMouse = true)
         {
             int i;
             bool isModified = false;
-            int x = 0;
 
             General.SetWindowFocus(General.Client.Window.Handle);
 
             if (GameState.CurX < 0 || GameState.CurY < 0 || GameState.CurX >= Core.Type.MyMap.MaxX || GameState.CurY >= Core.Type.MyMap.MaxY)
+                return;
+
+            if (!GameLogic.IsInBounds())
                 return;
 
             if (GameState.EyeDropper)
@@ -1074,28 +1078,22 @@ namespace Client
                 return;
             }
 
-            if (!GameLogic.IsInBounds())
-                return;
-
-            if (GameState.CurAutotileType == -1)
-                return;
+            var withBlock = Core.Type.MyMap.Tile[x, y];
 
             if (GameClient.IsMouseButtonDown(MouseButton.Left))
             {
                 if (Instance.optInfo.Checked)
                 {
                     if (GameState.Info == false)
-                    {
+                    {                     
+                        if (Instance.cmbAttribute.SelectedIndex == 1)
                         {
-                            if (Instance.cmbAttribute.SelectedIndex == 1)
-                            {
-                                GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
-                            }
-                            else
-                            {
-                                GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type2), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1_2 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2_2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3_2, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
-                            }
+                            GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
                         }
+                        else
+                        {
+                            GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type2), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1_2 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2_2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3_2, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
+                        }                   
                     }
                 }
 
@@ -1342,16 +1340,16 @@ namespace Client
                 else if (GameState.MapTab == (int)MapTab.Directions)
                 {
                     // Convert adjusted coordinates to game world coordinates
-                    X = (int)Math.Round(GameState.TileView.Left + Math.Floor((GameState.CurMouseX + GameState.Camera.Left) % GameState.PicX));
-                    Y = (int)Math.Round(GameState.TileView.Top + Math.Floor((GameState.CurMouseY + GameState.Camera.Top) % GameState.PicY));
+                    x= (int)Math.Round(GameState.TileView.Left + Math.Floor((GameState.CurMouseX + GameState.Camera.Left) % GameState.PicX));
+                    y = (int)Math.Round(GameState.TileView.Top + Math.Floor((GameState.CurMouseY + GameState.Camera.Top) % GameState.PicY));
 
                     // see if it hits an arrow
                     for (i = 0; i < 4; i++)
                     {
                         // flip the value.
-                        if (X >= GameState.DirArrowX[i] & X <= GameState.DirArrowX[i] + 16)
+                        if (x >= GameState.DirArrowX[i] & x <= GameState.DirArrowX[i] + 16)
                         {
-                            if (Y >= GameState.DirArrowY[i] & Y <= GameState.DirArrowY[i] + 16)
+                            if (y >= GameState.DirArrowY[i] & y <= GameState.DirArrowY[i] + 16)
                             {
                                 // flip the value.
                                 bool localIsDirBlocked() { byte argdir = (byte)i; var ret = GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir); return ret; }
@@ -1470,6 +1468,11 @@ namespace Client
                         }
                     }
                 }
+            }
+
+            if (GameClient.CurrentKeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) || GameClient.CurrentKeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl))
+            {
+                MapEditorReplaceTile((LayerType)GameState.CurLayer, GameState.CurX, GameState.CurY, withBlock);
             }
 
             if (x == 1)
@@ -2023,6 +2026,89 @@ namespace Client
         private void cmbLayers_SelectedIndexChanged(object sender, EventArgs e)
         {
             GameState.CurLayer = cmbLayers.SelectedIndex;
+        }
+
+        /// <summary>
+        /// Replaces the X/Y coordinates of all tiles in the given layer with the specified values.
+        /// </summary>
+        /// <param name="layer">The layer to update.</param>
+        /// <param name="tileX">The new X coordinate to set.</param>
+        /// <param name="tileY">The new Y coordinate to set.</param>
+        public static void MapEditorReplaceTile(LayerType layer, int tileX, int tileY, Core.Type.TileStruct oldTile)
+        {
+            int maxX = Core.Type.MyMap.MaxX;
+            int maxY = Core.Type.MyMap.MaxY;
+
+            for (int x = 0; x < maxX; x++)
+            {
+                for (int y = 0; y < maxY; y++)
+                {
+                    ref var tile = ref Core.Type.MyMap.Tile[x, y];
+                    if ((int)MapTab.Tiles == GameState.MapTab)
+                    {
+                        if (tile.Layer[(int)layer].X == oldTile.Layer[(int)layer].X && tile.Layer[(int)layer].Y == oldTile.Layer[(int)layer].Y)
+                        {
+                            if (GameClient.IsMouseButtonDown(MouseButton.Left))
+                            {
+                                tile.Layer[(int)layer].X = Core.Type.MyMap.Tile[tileX, tileY].Layer[(int)layer].X;
+                                tile.Layer[(int)layer].Y = Core.Type.MyMap.Tile[tileX, tileY].Layer[(int)layer].Y;
+                                tile.Layer[(int)layer].Tileset = Core.Type.MyMap.Tile[tileX, tileY].Layer[(int)layer].Tileset;
+                            }
+                            else if (GameClient.IsMouseButtonDown(MouseButton.Right))
+                            {
+                                tile.Layer[(int)layer].X = 0;
+                                tile.Layer[(int)layer].Y = 0;
+                                tile.Layer[(int)layer].Tileset = 0;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+
+                            tile.Layer[(int)layer].AutoTile = 0;
+                            Autotile.CacheRenderState(x, y, (int)layer);
+                        }                      
+                    }
+                    else if ((int)MapTab.Attributes == GameState.MapTab)
+                    {
+                        if (GameClient.IsMouseButtonDown(MouseButton.Left))
+                        {
+                            if (GameState.EditorAttribute == 1)
+                            {
+                                tile.Data1 = Core.Type.MyMap.Tile[tileX, tileY].Data1;
+                                tile.Data2 = Core.Type.MyMap.Tile[tileX, tileY].Data2;
+                                tile.Data3 = Core.Type.MyMap.Tile[tileX, tileY].Data3;
+                                tile.Type = Core.Type.MyMap.Tile[tileX, tileY].Type;
+                            }
+                            else
+                            {
+                                tile.Data1_2 = Core.Type.MyMap.Tile[tileX, tileY].Data1_2;
+                                tile.Data2_2 = Core.Type.MyMap.Tile[tileX, tileY].Data2_2;
+                                tile.Data3_2 = Core.Type.MyMap.Tile[tileX, tileY].Data3_2;
+                                tile.Type2 = Core.Type.MyMap.Tile[tileX, tileY].Type2;
+                            }
+                        }
+
+                        if (GameClient.IsMouseButtonDown(MouseButton.Right))
+                        {
+                            if (GameState.EditorAttribute == 1)
+                            {
+                                tile.Data1 = 0;
+                                tile.Data2 = 0;
+                                tile.Data3 = 0;
+                                tile.Type = 0;
+                            }
+                            else
+                            {
+                                tile.Data1_2 = 0;
+                                tile.Data2_2 = 0;
+                                tile.Data3_2 = 0;
+                                tile.Type2 = 0;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         #endregion

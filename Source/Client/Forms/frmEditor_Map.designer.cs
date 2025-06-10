@@ -2095,7 +2095,7 @@ namespace Client
             AutoScroll = true;
             AutoSize = true;
             BackColor = Color.FromArgb(45, 45, 48);
-            ClientSize = new Size(552, 632);
+            ClientSize = new Size(552, 605);
             Controls.Add(tabpages);
             Controls.Add(ToolStrip);
             Controls.Add(pnlAttributes);

@@ -68,7 +68,6 @@ namespace Client
 
         // Minimum interval (in milliseconds) between repeated key inputs
         private const byte KeyRepeatInterval = 200;
-        private const byte MouseRepeatInterval = 75;
 
         // Lock object to ensure thread safety
         public static readonly object InputLock = new object();
@@ -830,7 +829,7 @@ namespace Client
 
                 if (GameState.MyEditorType == (int)EditorType.Map)
                 {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
+                    if (GameClient.CurrentKeyboardState.IsKeyDown(Keys.LeftShift))
                     {
                         if (GameState.CurLayer > 0)
                         {
@@ -851,7 +850,7 @@ namespace Client
 
                 if (GameState.MyEditorType == (int)EditorType.Map)
                 {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
+                    if (GameClient.CurrentKeyboardState.IsKeyDown(Keys.LeftShift))
                     {
                         if (GameState.CurLayer < (int)Core.Enum.LayerType.Count)
                         {
@@ -935,13 +934,10 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (IsMouseButtonDown(MouseButton.Left))
+                if (GameState.MyEditorType == (int)EditorType.Map)
                 {
-                    if (GameState.MyEditorType == (int)EditorType.Map)
-                    {
-                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                    }
-                }
+                    frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                }             
                 
                 if (IsSeartchCooldownElapsed())
                 {
@@ -949,7 +945,6 @@ namespace Client
                     {
                         Pet.PetMove(GameState.CurX, GameState.CurY);
                     }
-
 
                     if (IsMouseButtonDown(MouseButton.Left))
                     {
@@ -968,14 +963,6 @@ namespace Client
                     if (slotNum >= 0L)
                     {
                         NetworkSend.SendDeleteHotbar(slotNum);
-                    }
-
-                    if (GameState.MyEditorType == (int)EditorType.Map)
-                    {
-                        if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameClient.MouseRepeatInterval)
-                        {
-                            frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                        }
                     }
 
                     if (GameState.VbKeyShift == true)
