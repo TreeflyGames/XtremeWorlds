@@ -1,6 +1,7 @@
 ﻿using System.Data.Common;
 using Core;
 using Core.Localization;
+using Microsoft.Toolkit.HighPerformance;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -640,6 +641,17 @@ namespace Client
                             }
 
                             Map.SendRequestEditMap();
+                            break;
+                        }
+
+                    case "/editscript":
+                        {
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
+                            {
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                            }
+
+                            Script.SendRequestEditScript();
                             break;
                         }
 
