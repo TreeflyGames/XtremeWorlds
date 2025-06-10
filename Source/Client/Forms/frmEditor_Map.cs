@@ -1601,7 +1601,7 @@ namespace Client
                                 }
                                 else
                                 {
-                                    withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                                    withBlock2.Layer[CurLayer].Tileset = GameState.CurTileset;
                                 }
                                 withBlock2.Layer[CurLayer].AutoTile = 0;
                                 Autotile.CacheRenderState(x, y, CurLayer);
