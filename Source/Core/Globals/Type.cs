@@ -1113,7 +1113,7 @@ namespace Core
 
         public struct ScriptStruct
         {
-            public string Code;
+            public string[] Code;
         }
 
         #endregion

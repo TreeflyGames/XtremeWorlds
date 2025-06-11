@@ -18,9 +18,9 @@ namespace Server
         public static Task ScriptLoopTask;
         public static CancellationTokenSource ScriptLoopCts;
 
-        public interface Main
+        public interface ICalc
         {
-            int Loop();
+            int Sum(int a, int b);
         }
 
         public static void Packet_RequestEditScript(int index, ref byte[] data)
@@ -43,17 +43,29 @@ namespace Server
             Core.Type.TempPlayer[index].Editor = (byte)EditorType.Script;
 
             buffer.WriteInt32((int)ServerPackets.SScriptEditor);
-            buffer.WriteString(Core.Type.Script.Code);
+
+            buffer.WriteInt32(Core.Type.Script.Code != null ? Core.Type.Script.Code.Length : 0);
+
+            if (Core.Type.Script.Code != null)
+            {
+                foreach (var line in Core.Type.Script.Code)
+                {
+                    buffer.WriteString(line);
+                }
+            }
+            else
+            {
+                buffer.WriteString(string.Empty);
+            }
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
-
         }
 
         public static void Packet_SaveScript(int index, ref byte[] data)
         {
-            var buffer = new ByteStream(data);
+            var buffer = new ByteStream(data);;
 
             // Prevent hacking
             if (Core.Global.Command.GetPlayerAccess(index) < (byte)AccessType.Owner)
@@ -61,6 +73,7 @@ namespace Server
 
             // Save with the new script code and ensure the filename is Script.cs
             var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
+            string code = buffer.ReadString();
 
             // Create file
             if (!File.Exists(scriptPath))
@@ -74,7 +87,7 @@ namespace Server
             }
             else
             {
-                File.WriteAllText(scriptPath, buffer.ReadString(), Encoding.UTF8);
+                File.WriteAllText(scriptPath, code, Encoding.UTF8);
             }
 
             Task.Run(async () =>
@@ -84,69 +97,66 @@ namespace Server
         }
 
         public static async Task LoadScriptAsync(int index)
-        {
+    {
+            // Load the script file
+            var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
+            if (File.Exists(scriptPath))
+            {
+                var lines = File.ReadLines(scriptPath, Encoding.UTF8).ToArray();
+                if (lines.Length > 0)
+                {
+                    Core.Type.Script.Code = lines;
+                }
+                else
+                {
+                    Core.Type.Script.Code = Array.Empty<string>();
+                }
+            }
+            else
+            {
+                Core.Type.Script.Code = Array.Empty<string>();
+            }
+
+            string code = (Core.Type.Script.Code != null && Core.Type.Script.Code.Length > 0) ? string.Join(Environment.NewLine, Core.Type.Script.Code) : string.Empty;
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                NetworkSend.PlayerMsg(index, "No script code found to compile.", (int)ColorType.BrightRed);
+                Debug.WriteLine("No script code found to compile.");
+                return;
+            }
+
+            // Cancel previous loop if running
+            ScriptLoopCts?.Cancel();
+            if (ScriptLoopTask != null)
+            {
+                await ScriptLoopTask;
+            }
+
+            // you can but don't have to inherit your script class from ICalc
+            ICalc calc = null;
+
             try
             {
-                // Load the script file
-                var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
-                if (File.Exists(scriptPath))
-                {                  
-                    var text = File.ReadAllText(scriptPath, Encoding.UTF8);
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        Core.Type.Script.Code = text;
-                    }
-                    else
-                    {
-                        Core.Type.Script.Code = string.Empty;
-                    }
-                }
-                else
-                {
-                    Core.Type.Script.Code = string.Empty;
-                }
-
-                // Cancel previous loop if running
-                ScriptLoopCts?.Cancel();
-                if (ScriptLoopTask != null)
-                {
-                    try { await ScriptLoopTask; } catch { /* ignore */ }
-                }
-
-                // Compile the script
-                var script = CSScript.Evaluator.CompileMethod(Core.Type.Script.Code);
-
-                if (script != null)
-                {
-                    Main main = CSScript.Evaluator
-                                         .LoadCode<Main>(Core.Type.Script.Code);
-                    // Call the Main loop if available
-                    if (main != null)
-                    {
-                        ScriptLoopCts = new CancellationTokenSource();
-                        var token = ScriptLoopCts.Token;
-                        ScriptLoopTask = Task.Run(async () =>
-                        {
-                            while (!token.IsCancellationRequested)
-                            {
-                                // Assuming Main has a method called Loop to be called repeatedly
-                                main.Loop();
-                                await Task.Delay(1, token); // Prevents tight infinite loop, adjust as needed
-                            }
-                        }, token);
-                    }
-                }
-                else
-                {
-                    NetworkSend.PlayerMsg(index, "Script compilation failed.", (int)ColorType.BrightRed);
-                    Debug.WriteLine("Script compilation failed.");
-                }
-
+                calc = CSScript.Evaluator.LoadCode<ICalc>(code);
             }
             catch (Exception ex)
             {
-                NetworkSend.PlayerMsg(index, "Error loading scripts: " + ex.Message, (int)ColorType.BrightRed);
-                Debug.WriteLine("Error loading scripts: " + ex.Message);
+                NetworkSend.PlayerMsg(index, "Script does not implement ICalc: " + ex.Message, (int)ColorType.BrightRed);
+                Debug.WriteLine("Script does not implement ICalc: " + ex.Message);
+                return;
+            }
+
+            if (calc != null)
+            {
+                int result = calc.Sum(1, 2);
+                Console.WriteLine(result);
+                NetworkSend.PlayerMsg(index, result.ToString(), (int)ColorType.BrightRed);
+            }
+            else
+            {
+                NetworkSend.PlayerMsg(index, "Script loaded but ICalc implementation not found.", (int)ColorType.BrightRed);
+                Debug.WriteLine("Script loaded but ICalc implementation not found.");
             }
         }
     }
