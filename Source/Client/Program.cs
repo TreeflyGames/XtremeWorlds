@@ -1964,7 +1964,7 @@ namespace Client
                 for (i = 0; i <= loopTo1; i++)
                 {
                     if (theArray[(int)i] == null)
-                        break;
+                        continue;
 
                     // Measure button text size and apply padding
                     var textSize = Text.Fonts[FontType.Georgia].MeasureString(theArray[(int)i]);
