@@ -314,12 +314,6 @@ namespace Client
 
         private void btnMoralEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
@@ -332,12 +326,6 @@ namespace Client
 
         private void btnScriptEditor_Click(object sender, EventArgs e)
         {
-            if (GameState.MyEditorType != -1)
-            {
-                Interaction.MsgBox("You're arleady in an editor. Please save your work before continuing.");
-                return;
-            }
-
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
             {
                 Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
