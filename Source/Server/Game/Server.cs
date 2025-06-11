@@ -27,7 +27,7 @@ namespace Server
 
         private static void ProcessExitHandler(object sender, EventArgs e)
         {
-            var loopTo = NetworkConfig.Socket.HighIndex;
+            var loopTo = NetworkConfig.Socket?.HighIndex;
             for (int i = 0; i <= loopTo; i++)
             {
                 Player.LeftGame(i);
