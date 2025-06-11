@@ -2062,7 +2062,7 @@ namespace Client
                             }
                             else
                             {
-                                continue;
+                                return; // No mouse button pressed, exit early
                             }
 
                             tile.Layer[(int)layer].AutoTile = 0;
