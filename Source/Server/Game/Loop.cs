@@ -1,10 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using Core;
+﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Type;
@@ -115,7 +116,14 @@ namespace Server
                     lastUpdateSavePlayers = General.GetTimeMs() + 300000;
                 }
 
-                Script.Instance.Loop();
+                try
+                {
+                    Script.Instance?.Loop();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
 
                 await Task.Delay(1);
             }

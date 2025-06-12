@@ -124,7 +124,7 @@ namespace Server
                 return CanPlayerAttackPlayerRet;
             }
 
-            CanPlayerAttackPlayerRet = Conversions.ToBoolean(1);
+            CanPlayerAttackPlayerRet = true;
             return CanPlayerAttackPlayerRet;
         }
 
@@ -136,7 +136,7 @@ namespace Server
             double ShieldSlot;
             ShieldSlot = GetPlayerEquipment(index, EquipmentType.Shield);
 
-            CanPlayerBlockHitRet = Conversions.ToBoolean(0);
+            CanPlayerBlockHitRet = false;
 
             if (ShieldSlot >= 0)
             {
@@ -149,7 +149,7 @@ namespace Server
 
                     if (n <= i)
                     {
-                        CanPlayerBlockHitRet = Conversions.ToBoolean(1);
+                        CanPlayerBlockHitRet = true;
                     }
                 }
             }
@@ -2747,74 +2747,88 @@ namespace Server
 
         public static void JoinGame(int index)
         {
-            int i;
+            try
+            {
+                // Notify everyone that a player has joined the game.
+                NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
 
-            // Notify everyone that a player has joined the game.
-            NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
+                // Send all the required game data to the user.
+                CheckEquippedItems(index);
+                NetworkSend.SendInventory(index);
+                NetworkSend.SendWornEquipment(index);
+                NetworkSend.SendExp(index);
+                NetworkSend.SendHotbar(index);
+                NetworkSend.SendPlayerSkills(index);
+                NetworkSend.SendStats(index);
+                NetworkSend.SendJoinMap(index);
 
-            // Warp the player to his saved location
-            PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
+                // Send welcome messages
+                NetworkSend.SendWelcome(index);
 
-            // Send all the required game data to the user.
-            CheckEquippedItems(index);
-            NetworkSend.SendInventory(index);
-            NetworkSend.SendWornEquipment(index);
-            NetworkSend.SendExp(index);
-            NetworkSend.SendHotbar(index);
-            NetworkSend.SendPlayerSkills(index);
-            NetworkSend.SendStats(index);
-            NetworkSend.SendJoinMap(index);
+                // Send the flag so they know they can start doing stuff
+                NetworkSend.SendInGame(index);
 
-            // Send welcome messages
-            NetworkSend.SendWelcome(index);
-
-            // Send the flag so they know they can start doing stuff
-            NetworkSend.SendInGame(index);
+                Script.Instance?.JoinGame(index);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             General.UpdateCaption();
         }
 
         public static void LeftGame(int index)
         {
-            int i;
-            int tradeTarget;
-
-            if (Core.Type.TempPlayer[index].InGame)
+            try
             {
-                NetworkSend.SendLeftMap(index);
-                Core.Type.TempPlayer[index].InGame = false;
+                int i;
+                int tradeTarget;
 
-                // Check if the player was in a party, and if so cancel it out so the other player doesn't continue to get half exp
-                // leave party.
-                Party.PlayerLeave(index);
-
-                // cancel any trade they're in
-                if (Core.Type.TempPlayer[index].InTrade >= 0)
+                if (Core.Type.TempPlayer[index].InGame)
                 {
-                    tradeTarget = (int)Core.Type.TempPlayer[index].InTrade;
-                    NetworkSend.PlayerMsg(tradeTarget, string.Format("{0} has declined the trade.", GetPlayerName(index)), (int) ColorType.BrightRed);
-                    // clear out trade
-                    var loopTo = Core.Constant.MAX_INV;
-                    for (i = 0; i < loopTo; i++)
+                    NetworkSend.SendLeftMap(index);
+                    Core.Type.TempPlayer[index].InGame = false;
+
+                    // Check if the player was in a party, and if so cancel it out so the other player doesn't continue to get half exp
+                    // leave party.
+                    Party.PlayerLeave(index);
+
+                    // cancel any trade they're in
+                    if (Core.Type.TempPlayer[index].InTrade >= 0)
                     {
-                        Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
-                        Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
+                        tradeTarget = (int)Core.Type.TempPlayer[index].InTrade;
+                        NetworkSend.PlayerMsg(tradeTarget, string.Format("{0} has declined the trade.", GetPlayerName(index)), (int)ColorType.BrightRed);
+                        // clear out trade
+                        var loopTo = Core.Constant.MAX_INV;
+                        for (i = 0; i < loopTo; i++)
+                        {   
+                            Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
+                            Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
+                        }
+                        Core.Type.TempPlayer[tradeTarget].InTrade = -1;
+                        NetworkSend.SendCloseTrade(tradeTarget);
                     }
-                    Core.Type.TempPlayer[tradeTarget].InTrade = -1;
-                    NetworkSend.SendCloseTrade(tradeTarget);
+
+                    // Send a global message that he/she left
+                    NetworkSend.GlobalMsg(string.Format("{0} has left {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
+
+                    Console.WriteLine(string.Format("{0} has left {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
+
+                    Pet.RecallPet(index);
+                    Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);
+                    Database.SaveBank(index);
+
+                    Script.Instance?.LeftGame(index);
                 }
 
-                // Send a global message that he/she left
-                NetworkSend.GlobalMsg(string.Format("{0} has left {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
-
-                Console.WriteLine(string.Format("{0} has left {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
-
-                Pet.RecallPet(index);
-                Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);
-                Database.SaveBank(index);
+                Database.ClearPlayer(index);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            Database.ClearPlayer(index);
             General.UpdateCaption();
         }
 
@@ -2879,6 +2893,15 @@ namespace Server
             {
                 SetPlayerPK(index, Conversions.ToInteger(false));
                 NetworkSend.SendPlayerData(index);
+            }
+
+            try
+            {
+                Script.Instance?.OnDeath();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
         }
