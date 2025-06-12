@@ -247,7 +247,76 @@ namespace Client
                 frmEditor_Animation.Instance.picSprite0.Invalidate();
                 frmEditor_Animation.Instance.picSprite1.Invalidate();
 
-                Application.DoEvents();
+                if (GameState.InGame == false)
+                {
+
+                    switch (GameState.MyEditorType)
+                    {
+                        case (int)Core.Enum.EditorType.Item:
+                            {
+                                frmEditor_Item.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Job:
+                            {
+                                frmEditor_Job.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Map:
+                            {
+                                frmEditor_Map.Instance.Dispose();
+                                frmEditor_Event.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.NPC:
+                            {
+                                frmEditor_NPC.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Pet:
+                            {
+                                frmEditor_Pet.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Projectile:
+                            {
+                                frmEditor_Projectile.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Resource:
+                            {
+                                frmEditor_Resource.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Shop:
+                            {
+                                frmEditor_Shop.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Skill:
+                            {
+                                frmEditor_Skill.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Animation:
+                            {
+                                frmEditor_Animation.Instance.Dispose();
+                                break;
+                            }
+                        case (int)Core.Enum.EditorType.Moral:
+                            {
+                                frmEditor_Moral.Instance.Dispose();
+                                break;
+                            }
+                    }
+
+                    if (GameState.AdminPanel)
+                    {
+                        FrmAdmin.Instance.Dispose();
+                    }
+
+                    Application.DoEvents();
+                }
             }
 
             catch (InvalidOperationException)
