@@ -1428,6 +1428,11 @@ namespace Client
                         ref var currentTile = ref Core.Type.MyMap.Tile[x2, y2];
                         ref var historyTile = ref Core.Type.TileHistory[GameState.TileHistoryIndex].Tile[x2, y2];
 
+                        if (currentTile.Layer == null || currentTile.Layer.Length <= i2 || historyTile.Layer == null || historyTile.Layer.Length <= i2)
+                        {
+                            continue; // Skip processing if Layer is not properly initialized
+                        }
+
                         // Check if the tile is modified
                         isModified = currentTile.Data1 != historyTile.Data1 ||
                                             currentTile.Data2 != historyTile.Data2 ||
@@ -1686,6 +1691,11 @@ namespace Client
                         ref var currentTile = ref Core.Type.MyMap.Tile[x, y];
                         ref var historyTile = ref Core.Type.TileHistory[GameState.TileHistoryIndex].Tile[x, y];
 
+                        if (currentTile.Layer == null || currentTile.Layer.Length <= i || historyTile.Layer == null || historyTile.Layer.Length <= i)
+                        {
+                            continue; // Skip processing if Layer is not properly initialized
+                        }
+
                         if (!isModified)
                         {
                             // Check if the tile is modified
@@ -1755,6 +1765,11 @@ namespace Client
                     {
                         ref var currentTile = ref Core.Type.MyMap.Tile[x, y];
                         ref var historyTile = ref Core.Type.TileHistory[GameState.TileHistoryIndex].Tile[x, y];
+
+                        if (currentTile.Layer == null || currentTile.Layer.Length <= i || historyTile.Layer == null || historyTile.Layer.Length <= i)
+                        {
+                            continue; // Skip processing if Layer is not properly initialized
+                        }
 
                         if (!isModified)
                         {
