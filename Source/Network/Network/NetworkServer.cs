@@ -190,14 +190,14 @@
         {
             using (List<int>.Enumerator enumerator = this._unsignedIndex.GetEnumerator())
             {
-            if (enumerator.MoveNext())
-            {
-                int current = enumerator.Current;
-                if (this.HighIndex < current)
-                this.HighIndex = current;
-                this._unsignedIndex.Remove(current);
-                return current;
-            }
+                if (enumerator.MoveNext())
+                {
+                    int current = enumerator.Current;
+                    if (this.HighIndex < current)
+                    this.HighIndex = current;
+                    this._unsignedIndex.Remove(current);
+                    return current;
+                }
             }
 
             if (this._socket.Count == 0)
@@ -562,7 +562,7 @@
 
         public void SendDataToAll(ReadOnlySpan<byte> data)
         {
-          for (int index = 0; index <= this.HighIndex; ++index)
+          for (int index = 0; index < this.HighIndex; ++index)
           {
             if (this._socket.ContainsKey(index))
               this.SendDataTo(index, data);
@@ -575,7 +575,7 @@
           Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
           Buffer.BlockCopy((Array) data.ToArray(), 0, (Array) numArray, 4, head);
       
-          for (int index = 0; index <= this.HighIndex; ++index)
+          for (int index = 0; index < this.HighIndex; ++index)
           {
             if (this._socket.ContainsKey(index))
               this.SendDataTo(index, numArray);
@@ -584,7 +584,7 @@
 
         public void SendDataToAllBut(int index, ref byte[] data)
         {
-          for (int index1 = 1; index1 <= this.HighIndex; ++index1)
+          for (int index1 = 0; index1 < this.HighIndex; ++index1)
           {
             if (this._socket.ContainsKey(index1) && index1 != index)
               this.SendDataTo(index1, data);
@@ -596,7 +596,7 @@
           byte[] numArray = new byte[head + 4];
           Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
           Buffer.BlockCopy((Array) data.ToArray(), 0, (Array) numArray, 4, head);
-          for (int index1 = 1; index1 <= this.HighIndex; ++index1)
+          for (int index1 = 0; index1 < this.HighIndex; ++index1)
           {
             if (this._socket.ContainsKey(index1) && index1 != index)
               this.SendDataTo(index1, numArray);
