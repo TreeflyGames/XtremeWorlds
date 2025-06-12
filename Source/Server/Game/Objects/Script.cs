@@ -140,7 +140,6 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Instance = null;
                 NetworkSend.PlayerMsg(index, $"Script compile error: {ex.Message}", (int)ColorType.BrightRed);
                 Debug.WriteLine($"Script compile error: {ex}");
             }
