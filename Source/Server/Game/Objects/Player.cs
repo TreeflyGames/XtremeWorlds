@@ -1599,7 +1599,7 @@ namespace Server
             }
 
             // They tried to hack
-            if (Conversions.ToInteger(Moved) == 0 | ExpectingWarp & !DidWarp)
+            if (Moved == false | ExpectingWarp & !DidWarp)
             {
                 PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
             }
@@ -1607,7 +1607,7 @@ namespace Server
             x = GetPlayerX(index);
             y = GetPlayerY(index);
 
-            if (Conversions.ToInteger(Moved) == 1)
+            if (Moved)
             {
                 if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
                 {
@@ -2837,23 +2837,33 @@ namespace Server
 
         public static void KillPlayer(int index)
         {
-            int exp;
-
-            // Calculate exp to give attacker
-            exp = GetPlayerExp(index) / 3;
-
-            // Make sure we dont get less then 0
-            if (exp < 0)
-                exp = 0;
-            if (exp == 0)
+            try
             {
-                NetworkSend.PlayerMsg(index, "You've lost no experience.", (int) ColorType.BrightGreen);
+                int exp;
+
+                // Calculate exp to give attacker
+                exp = GetPlayerExp(index) / 3;
+
+                // Make sure we dont get less then 0
+                if (exp < 0)
+                    exp = 0;
+
+                if (exp == 0)
+                {
+                    NetworkSend.PlayerMsg(index, "You've lost no experience.", (int)ColorType.BrightGreen);
+                }
+                else
+                {
+                    SetPlayerExp(index, GetPlayerExp(index) - exp);
+                    NetworkSend.SendExp(index);
+                    NetworkSend.PlayerMsg(index, string.Format("You've lost {0} experience.", exp), (int)ColorType.BrightRed);
+                }
+
+                Script.Instance?.KillPlayer(index);
             }
-            else
+            catch (Exception e)
             {
-                SetPlayerExp(index, GetPlayerExp(index) - exp);
-                NetworkSend.SendExp(index);
-                NetworkSend.PlayerMsg(index, string.Format("You've lost {0} experience.", exp), (int) ColorType.BrightRed);
+                Console.WriteLine(e.Message);
             }
 
             OnDeath(index);
