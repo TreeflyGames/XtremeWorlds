@@ -139,7 +139,7 @@ namespace Server
                 Console.WriteLine("Saving all online players...");
 
                 var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     Database.SaveCharacter(i, Core.Type.TempPlayer[i].Slot);
                     Database.SaveBank(i);
@@ -180,7 +180,7 @@ namespace Server
             int i;
 
             var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -322,7 +322,7 @@ namespace Server
                                     {
 
                                         var loopTo4 = NetworkConfig.Socket.HighIndex;
-                                        for (i = 0; i <= loopTo4; i++)
+                                        for (i = 0; i < loopTo4; i++)
                                         {
                                             if (NetworkConfig.IsPlaying(i))
                                             {
@@ -1344,7 +1344,7 @@ namespace Server
                                 {
                                     didCast = Conversions.ToBoolean(1);
                                     var loopTo = NetworkConfig.Socket.HighIndex;
-                                    for (i = 0; i <= loopTo; i++)
+                                    for (i = 0; i < loopTo; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i))
                                         {
@@ -1410,7 +1410,7 @@ namespace Server
 
                                     didCast = Conversions.ToBoolean(1);
                                     var loopTo2 = NetworkConfig.Socket.HighIndex;
-                                    for (i = 0; i <= loopTo2; i++)
+                                    for (i = 0; i < loopTo2; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                                         {

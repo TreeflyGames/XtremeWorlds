@@ -497,7 +497,7 @@ namespace Server
             if (GetPlayerAccess(index) < (int)AccessType.Moderator)
                 return;
 
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i < loopTo; i++)
             {
                 if (i != index & GetPlayerName(i) != "")
@@ -781,7 +781,7 @@ namespace Server
             int mapNum = GetPlayerMap(index);
 
             // Send all players on current map to index
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i < loopTo; i++)
             {
                 if (IsPlaying(i))
@@ -801,7 +801,7 @@ namespace Server
 
             // Send index's player data to everyone on the map including himself
             data = PlayerData(index);
-            NetworkConfig.SendDataToMapBut(index, mapNum, data, data.Length);
+            NetworkConfig.SendDataToMap(mapNum, data, data.Length);
             SendPlayerXYToMap(index);
             NetworkSend.SendMapEquipment(index);
             NetworkSend.SendVitals(index);
@@ -922,7 +922,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SAdminMsg);
             buffer.WriteString(Msg);
 
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i < loopTo; i++)
             {
                 if (GetPlayerAccess(i) >= (int)AccessType.Moderator)
                 {

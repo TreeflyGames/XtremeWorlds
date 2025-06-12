@@ -729,7 +729,7 @@ namespace Server
 
             // Try to attack a player
             var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 Tempindex = i;
 
@@ -1269,7 +1269,7 @@ namespace Server
             EventLogic.SpawnGlobalEvents(mapNum);
             
             var loopTo10 = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo10; i++)
+            for (i = 0; i < loopTo10; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -1294,12 +1294,11 @@ namespace Server
 
             // Refresh map for everyone online
             var loopTo12 = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo12; i++)
+            for (i = 0; i < loopTo12; i++)
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                 {
                     Player.PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i), (byte)Core.Enum.DirectionType.Down);
-                    // Send map
                     NetworkSend.SendMapData(i, mapNum, true);
                 }
             }
@@ -1747,7 +1746,7 @@ namespace Server
 
             // Check for a player   
             var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (GetPlayerMap(index) == GetPlayerMap(i))
                 {

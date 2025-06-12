@@ -1000,7 +1000,7 @@ namespace Client
 
             Autotile.InitAutotiles();
 
-            GameState.MapData = Conversions.ToBoolean(1);
+            GameState.MapData = true;
 
             for (i = 0; i < byte.MaxValue; i++)
                 GameLogic.ClearActionMsg((byte)i);

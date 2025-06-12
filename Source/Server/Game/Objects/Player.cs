@@ -1123,7 +1123,7 @@ namespace Server
             ByteStream buffer;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
+            if (NetworkConfig.IsPlaying(index) == false | mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return;
 
             // Check if you are out of bounds
@@ -1172,7 +1172,7 @@ namespace Server
             if (GameLogic.GetTotalMapPlayers(mapNum) > 0)
             {
                 var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     if (NetworkConfig.IsPlaying(i))
                     {
@@ -2764,6 +2764,9 @@ namespace Server
 
                 // Send welcome messages
                 NetworkSend.SendWelcome(index);
+
+                // Warp the player to his saved location
+                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
 
                 // Send the flag so they know they can start doing stuff
                 NetworkSend.SendInGame(index);

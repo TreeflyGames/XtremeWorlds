@@ -106,14 +106,11 @@ namespace Client
 
         public static bool GameStarted()
         {
-            bool GameStartedRet = default;
-            GameStartedRet = false;
-            if (GameState.InGame == false)
+            bool GameStartedRet = false;
+
+            if (GameState.InGame == false || GameState.MapData == false || GameState.PlayerData == false)
                 return GameStartedRet;
-            if (GameState.MapData == false)
-                return GameStartedRet;
-            if (GameState.PlayerData == false)
-                return GameStartedRet;
+
             GameStartedRet = true;
             return GameStartedRet;
         }

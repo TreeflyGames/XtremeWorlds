@@ -17,11 +17,6 @@ namespace Server
     {
         public static dynamic? Instance { get; private set; }
 
-        public interface Main
-        {
-            int Loop();
-        }
-
         public static void Packet_RequestEditScript(int index, ref byte[] data)
         {
             var buffer = new ByteStream(4);
@@ -71,13 +66,13 @@ namespace Server
                 return;
 
             // Save with the new script code and ensure the filename is Script.cs
-            var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
+            var scriptPath = Path.Combine(Core.Path.Database, "Script.cs");
             string code = buffer.ReadString();
 
             // Create file
             if (!File.Exists(scriptPath))
             {
-                Directory.CreateDirectory(Core.Path.Scripts);
+                Directory.CreateDirectory(Core.Path.Database);
                 File.Create(scriptPath);
                 using (File.Create(scriptPath))
                 {
@@ -98,7 +93,7 @@ namespace Server
         public static async Task LoadScriptAsync(int index)
         {
             // Load the script file
-            var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
+            var scriptPath = Path.Combine(Core.Path.Database, "Script.cs");
             if (File.Exists(scriptPath))
             {
                 var lines = File.ReadLines(scriptPath, Encoding.UTF8).ToArray();
