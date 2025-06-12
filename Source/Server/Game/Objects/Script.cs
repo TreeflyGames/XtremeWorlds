@@ -15,12 +15,12 @@ namespace Server
 {
     public class Script
     {
-        public static Task ScriptLoopTask;
-        public static CancellationTokenSource ScriptLoopCts;
+        public static Task? ScriptLoopTask;
+        public static CancellationTokenSource? ScriptLoopCts;
 
-        public interface ICalc
+        public interface Main
         {
-            int Sum(int a, int b);
+            int Loop();
         }
 
         public static void Packet_RequestEditScript(int index, ref byte[] data)
@@ -97,7 +97,7 @@ namespace Server
         }
 
         public static async Task LoadScriptAsync(int index)
-    {
+        {
             // Load the script file
             var scriptPath = Path.Combine(Core.Path.Scripts, "Script.cs");
             if (File.Exists(scriptPath))
@@ -126,37 +126,33 @@ namespace Server
                 return;
             }
 
-            // Cancel previous loop if running
-            ScriptLoopCts?.Cancel();
-            if (ScriptLoopTask != null)
-            {
-                await ScriptLoopTask;
-            }
-
-            // you can but don't have to inherit your script class from ICalc
-            ICalc calc = null;
-
             try
             {
-                calc = CSScript.Evaluator.LoadCode<ICalc>(code);
+                // Use the Roslyn evaluator directly for dynamic code loading
+                var evaluator = CSScript.RoslynEvaluator;
+                CSScript.EvaluatorConfig.Engine = EvaluatorEngine.Roslyn;
+
+                // Dynamically load and execute the script
+                dynamic script = evaluator
+                    .ReferenceDomainAssemblies()
+                    .LoadCode(code);
+
+                // Start a loop to call the script's Sum method every second
+                ScriptLoopCts = new CancellationTokenSource();
+                var token = ScriptLoopCts.Token;
+                ScriptLoopTask = Task.Run(async () =>
+                {
+                    while (!token.IsCancellationRequested)
+                    {
+                        script.Loop();
+                        await Task.Delay(1, token);
+                    }
+                }, token);
             }
             catch (Exception ex)
             {
-                NetworkSend.PlayerMsg(index, "Script does not implement ICalc: " + ex.Message, (int)ColorType.BrightRed);
-                Debug.WriteLine("Script does not implement ICalc: " + ex.Message);
-                return;
-            }
-
-            if (calc != null)
-            {
-                int result = calc.Sum(1, 2);
-                Console.WriteLine(result);
-                NetworkSend.PlayerMsg(index, result.ToString(), (int)ColorType.BrightRed);
-            }
-            else
-            {
-                NetworkSend.PlayerMsg(index, "Script loaded but ICalc implementation not found.", (int)ColorType.BrightRed);
-                Debug.WriteLine("Script loaded but ICalc implementation not found.");
+                NetworkSend.PlayerMsg(index, $"Script compile error: {ex.Message}", (int)ColorType.BrightRed);
+                Debug.WriteLine($"Script compile error: {ex}");
             }
         }
     }
