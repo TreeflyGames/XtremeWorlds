@@ -2438,7 +2438,7 @@ namespace Server
             var npcY = default(int);
             int attackspeed;
 
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | !PetAlive(attacker))
+            if (NetworkConfig.IsPlaying(attacker) == false | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | !PetAlive(attacker))
             {
                 return CanPetAttackNPCRet;
             }
@@ -2514,11 +2514,11 @@ namespace Server
                     {
                         if (Core.Type.NPC[(int)NPCNum].Behaviour != (byte)  NPCBehavior.Friendly & Core.Type.NPC[(int)NPCNum].Behaviour != (byte)  NPCBehavior.ShopKeeper)
                         {
-                            CanPetAttackNPCRet = Conversions.ToBoolean(1);
+                            CanPetAttackNPCRet = true;
                         }
                         else
                         {
-                            CanPetAttackNPCRet = Conversions.ToBoolean(0);
+                            CanPetAttackNPCRet = false;
                         }
                     }
                 }
@@ -2537,7 +2537,7 @@ namespace Server
             int NPCNum;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | damage < 0 | !PetAlive(attacker))
+            if (NetworkConfig.IsPlaying(attacker) == false | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | damage < 0 | !PetAlive(attacker))
             {
                 return;
             }
