@@ -2878,34 +2878,18 @@ namespace Server
 
         public static int GetPlayerVitalRegen(int index, VitalType Vital)
         {
-            int GetPlayerVitalRegenRet = default;
-            var i = default(int);
-
-            // Prevent subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index >= Core.Constant.MAX_PLAYERS)
+            try
             {
-                GetPlayerVitalRegenRet = 0;
-                return GetPlayerVitalRegenRet;
+                int i;
+                i = Script.Instance?.GetPlayerVitalRegen();
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            switch (Vital)
-            {
-                case VitalType.HP:
-                    {
-                        i = GetPlayerStat(index, StatType.Vitality) / 2;
-                        break;
-                    }
-                case VitalType.SP:
-                    {
-                        i = GetPlayerStat(index, StatType.Spirit) / 2;
-                        break;
-                    }
-            }
-
-            if (i < 2)
-                i = 2;
-            GetPlayerVitalRegenRet = i;
-            return GetPlayerVitalRegenRet;
+            return 0;
         }
 
         public static void HandleNPCKillExperience(int index, int NPCNum)
