@@ -184,7 +184,7 @@ namespace Server
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
-                    for (int x = 1, loopTo1 = (int) VitalType.Count; x < loopTo1; x++)
+                    for (int x = 0, loopTo1 = (int) VitalType.Count; x < loopTo1; x++)
                     {
                         if (GetPlayerVital(i, (VitalType)x) != GetPlayerMaxVital(i, (VitalType)x))
                         {
