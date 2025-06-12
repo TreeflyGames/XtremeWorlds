@@ -188,24 +188,26 @@
     
         private int FindEmptySlot(int startIndex)
         {
-          using (List<int>.Enumerator enumerator = this._unsignedIndex.GetEnumerator())
-          {
+            using (List<int>.Enumerator enumerator = this._unsignedIndex.GetEnumerator())
+            {
             if (enumerator.MoveNext())
             {
-              int current = enumerator.Current;
-              if (this.HighIndex < current)
+                int current = enumerator.Current;
+                if (this.HighIndex < current)
                 this.HighIndex = current;
-              this._unsignedIndex.Remove(current);
-              return current;
+                this._unsignedIndex.Remove(current);
+                return current;
             }
-          }
-          if (this._socket.Count == 0)
-          {
-            this.HighIndex = startIndex;
-            return startIndex;
-          }
-          ++this.HighIndex;
-          return this.HighIndex;
+            }
+
+            if (this._socket.Count == 0)
+            {
+                this.HighIndex = startIndex + 1;
+                return startIndex;
+            }
+
+            ++this.HighIndex;
+            return this.HighIndex;
         }
 
         public async Task StartListeningAsync(int port, int backlog)
