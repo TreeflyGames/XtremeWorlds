@@ -2856,13 +2856,14 @@ namespace Server
                 }
 
                 Script.Instance?.KillPlayer(index);
+
+                OnDeath(index);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            OnDeath(index);
         }
 
         public static void OnDeath(int index)
@@ -3045,7 +3046,7 @@ namespace Server
             // Check if they have enough MP
             if (GetPlayerVital(index, VitalType.SP) < MPCost)
             {
-                NetworkSend.PlayerMsg(index, "Not enough mana!", (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "Not enough spirit!", (int) ColorType.Yellow);
                 return;
             }
 
@@ -3063,7 +3064,7 @@ namespace Server
             // make sure they have the right access
             if (AccessReq > GetPlayerAccess(index))
             {
-                NetworkSend.PlayerMsg(index, "You must be an administrator to use this skill.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You must be a developer to use this skill.", (int) ColorType.BrightRed);
                 return;
             }
 
@@ -3132,11 +3133,11 @@ namespace Server
                             // go through skill Type
                             else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
                             {
-                                HasBuffered = Conversions.ToBoolean(1);
+                                HasBuffered = true;
                             }
                             else if (CanPlayerAttackPlayer(index, Target, true))
                             {
-                                HasBuffered = Conversions.ToBoolean(1);
+                                HasBuffered = true;
                             }
                         }
                         else if (TargetType == TargetType.NPC)
@@ -3145,16 +3146,16 @@ namespace Server
                             if (!IsInRange(range, GetPlayerX(index), GetPlayerY(index), Core.Type.MapNPC[mapNum].NPC[Target].X, Core.Type.MapNPC[mapNum].NPC[Target].Y))
                             {
                                 NetworkSend.PlayerMsg(index, "Target not in range.", (int) ColorType.BrightRed);
-                                HasBuffered = Conversions.ToBoolean(0);
+                                HasBuffered = false;
                             }
                             // go through skill Type
                             else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
                             {
-                                HasBuffered = Conversions.ToBoolean(1);
+                                HasBuffered = true;
                             }
                             else if (CanPlayerAttackNPC(index, Target, true))
                             {
-                                HasBuffered = Conversions.ToBoolean(1);
+                                HasBuffered = true;
                             }
                         }
 
