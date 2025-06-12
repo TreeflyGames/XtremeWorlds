@@ -2881,7 +2881,7 @@ namespace Server
             try
             {
                 int i;
-                i = Script.Instance?.GetPlayerVitalRegen();
+                i = Script.Instance?.GetPlayerVitalRegen(index, Vital);
                 return i;
             }
             catch (Exception e)
