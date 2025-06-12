@@ -943,7 +943,7 @@ namespace Client
             tsbDeleteMap.ImageTransparentColor = Color.Magenta;
             tsbDeleteMap.Name = "tsbDeleteMap";
             tsbDeleteMap.Size = new Size(28, 25);
-            tsbDeleteMap.ToolTipText = "Delete Map";
+            tsbDeleteMap.ToolTipText = "Clear Map";
             tsbDeleteMap.Click += tsbDeleteMap_Click;
             // 
             // tsbUndo
