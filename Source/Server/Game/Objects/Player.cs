@@ -2741,10 +2741,6 @@ namespace Server
 
         }
 
-        #endregion
-
-        #region Misc
-
         public static void JoinGame(int index)
         {
             try
@@ -2773,7 +2769,7 @@ namespace Server
 
                 Script.Instance?.JoinGame(index);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
