@@ -308,6 +308,11 @@ namespace Client
                                 frmEditor_Moral.Instance.Dispose();
                                 break;
                             }
+                        case (int)Core.Enum.EditorType.Script:
+                            {
+                                frmEditor_Script.Instance.Dispose();
+                                break;
+                            }
                     }
 
                     if (GameState.AdminPanel)
