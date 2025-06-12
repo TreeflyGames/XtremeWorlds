@@ -963,6 +963,8 @@ namespace Client
             GameState.CurLayer = 0;
             GameState.CurAutotileType = 0;
             Instance.scrlMapItemValue.Value = 1;
+            Instance.scrlTrap.Maximum = 32767;
+            Instance.scrlHeal.Maximum = 32767;
 
             MapPropertiesInit();
 
@@ -1086,7 +1088,7 @@ namespace Client
                 {
                     if (GameState.Info == false)
                     {                     
-                        if (Instance.cmbAttribute.SelectedIndex == 1)
+                        if (GameState.EditorAttribute == 1)
                         {
                             GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
                         }
