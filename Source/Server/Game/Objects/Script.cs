@@ -15,8 +15,7 @@ namespace Server
 {
     public class Script
     {
-        public static Task? ScriptLoopTask;
-        public static CancellationTokenSource? ScriptLoopCts;
+        public static dynamic? Instance { get; private set; }
 
         public interface Main
         {
@@ -137,20 +136,11 @@ namespace Server
                     .ReferenceDomainAssemblies()
                     .LoadCode(code);
 
-                // Start a loop to call the script's Sum method every second
-                ScriptLoopCts = new CancellationTokenSource();
-                var token = ScriptLoopCts.Token;
-                ScriptLoopTask = Task.Run(async () =>
-                {
-                    while (!token.IsCancellationRequested)
-                    {
-                        script.Loop();
-                        await Task.Delay(1, token);
-                    }
-                }, token);
+                Instance = script;
             }
             catch (Exception ex)
             {
+                Instance = null;
                 NetworkSend.PlayerMsg(index, $"Script compile error: {ex.Message}", (int)ColorType.BrightRed);
                 Debug.WriteLine($"Script compile error: {ex}");
             }

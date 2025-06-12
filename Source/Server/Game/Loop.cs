@@ -115,6 +115,8 @@ namespace Server
                     lastUpdateSavePlayers = General.GetTimeMs() + 300000;
                 }
 
+                Script.Instance.Loop();
+
                 await Task.Delay(1);
             }
             while (true);
