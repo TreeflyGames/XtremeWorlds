@@ -692,7 +692,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAPS;
             for (mapNum = 0; mapNum < (int)loopTo; mapNum++)
             {
-                var loopTo1 = NetworkConfig.Socket.HighIndex + 1;
+                var loopTo1 = NetworkConfig.Socket.HighIndex;
                 for (playerindex = 0; playerindex < (int)loopTo1; playerindex++)
                 {
                     tickCount = General.GetTimeMs();
