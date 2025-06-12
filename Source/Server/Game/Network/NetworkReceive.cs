@@ -2095,20 +2095,20 @@ namespace Server
 
         public static void Packet_BuyItem(int index, ref byte[] data)
         {
-            int shopslot;
-            double shopnum;
+            int shopSlot;
+            double shopMum;
             int itemAmount;
             var buffer = new ByteStream(data);
 
-            shopslot = buffer.ReadInt32();
+            shopSlot = buffer.ReadInt32();
 
             // not in shop, exit out
-            shopnum = Core.Type.TempPlayer[index].InShop;
+            shopMum = Core.Type.TempPlayer[index].InShop;
 
-            if (shopnum < 0 | shopnum > Core.Constant.MAX_SHOPS)
+            if (shopMum < 0 | shopMum > Core.Constant.MAX_SHOPS)
                 return;
 
-            ref var withBlock = ref Core.Type.Shop[(int)shopnum].TradeItem[shopslot];
+            ref var withBlock = ref Core.Type.Shop[(int)shopMum].TradeItem[shopSlot];
 
             // check trade exists
             if (withBlock.Item < 0)
