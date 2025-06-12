@@ -1308,15 +1308,15 @@ namespace Server
 
         private static void Packet_NeedMap(int index, ref byte[] data)
         {
-            string s;
+            int s;
             var buffer = new ByteStream(data);
 
             // Get yes/no value
-            s = buffer.ReadInt32().ToString();
+            s = buffer.ReadInt32();
             buffer.Dispose();
 
             // Check if data is needed to be sent
-            if (Conversions.ToDouble(s) == 1d)
+            if (s == 1)
             {
                 NetworkSend.SendMapData(index, GetPlayerMap(index), true);
             }
@@ -1325,7 +1325,7 @@ namespace Server
                 NetworkSend.SendMapData(index, GetPlayerMap(index), false);
             }
 
-            if (Core.Type.Map[GetPlayerMap(index)].Shop >= 0)
+            if (Core.Type.Map[GetPlayerMap(index)].Shop >= 0 && Core.Type.Map[GetPlayerMap(index)].Shop < Core.Constant.MAX_SHOPS)
             {
                 if (!string.IsNullOrEmpty(Core.Type.Shop[Core.Type.Map[GetPlayerMap(index)].Shop].Name))
                 {
