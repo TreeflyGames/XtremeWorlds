@@ -1212,7 +1212,7 @@ namespace Client
             SetPlayerSprite(i, buffer.ReadInt32());
             SetPlayerMap(i, buffer.ReadInt32());
             SetPlayerAccess(i, buffer.ReadInt32());
-            SetPlayerPk(i, buffer.ReadInt32());
+            SetPlayerPK(i, buffer.ReadInt32());
 
             for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());
@@ -1228,10 +1228,10 @@ namespace Client
             if (i == GameState.MyIndex)
             {
                 // Reset directions
-                GameState.DirUp = Conversions.ToBoolean(0);
-                GameState.DirDown = Conversions.ToBoolean(0);
-                GameState.DirLeft = Conversions.ToBoolean(0);
-                GameState.DirRight = Conversions.ToBoolean(0);
+                GameState.DirUp = false;
+                GameState.DirDown = false;
+                GameState.DirLeft = false;
+                GameState.DirRight = false;
 
                 // set form
                 {

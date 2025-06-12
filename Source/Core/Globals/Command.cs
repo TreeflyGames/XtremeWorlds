@@ -301,7 +301,7 @@ namespace Core.Global
             Type.Player[index].Access = (byte)access;
         }
 
-        public static void SetPlayerPk(int index, int pk)
+        public static void SetPlayerPK(int index, int pk)
         {
             Type.Player[index].Pk = (byte)pk;
         }

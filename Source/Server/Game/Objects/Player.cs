@@ -750,7 +750,7 @@ namespace Server
         public static void PlayerAttackPlayer(int attacker, int victim, int Damage)
         {
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | Damage < 0)
+            if (NetworkConfig.IsPlaying(attacker) == false | Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | Damage < 0)
             {
                 return;
             }
@@ -1593,7 +1593,7 @@ namespace Server
                         NetworkSend.PlayerMsg(index, "You've been injured by a trap.", (int) ColorType.BrightRed);
                         NetworkSend.SendVital(index, (VitalType)VitalType.HP);
                     }
-                    Moved = Conversions.ToBoolean(1);
+                    Moved = true;
                 }
 
             }
@@ -1644,7 +1644,7 @@ namespace Server
 
                                     Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
                                 }
-                                begineventprocessing = Conversions.ToBoolean(0);
+                                begineventprocessing = false;
                             }
                         }
                     }
@@ -2758,14 +2758,13 @@ namespace Server
                 NetworkSend.SendStats(index);
                 NetworkSend.SendJoinMap(index);
 
+                // Send the flag so they know they can start doing stuff
+                NetworkSend.SendInGame(index);
+
                 // Send welcome messages
                 NetworkSend.SendWelcome(index);
 
-                // Warp the player to his saved location
-                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
-
-                // Send the flag so they know they can start doing stuff
-                NetworkSend.SendInGame(index);
+                General.UpdateCaption();
 
                 Script.Instance?.JoinGame(index);
             }
@@ -2773,8 +2772,6 @@ namespace Server
             {
                 Console.WriteLine(e.Message);
             }
-
-            General.UpdateCaption();
         }
 
         public static void LeftGame(int index)
@@ -2801,7 +2798,7 @@ namespace Server
                         // clear out trade
                         var loopTo = Core.Constant.MAX_INV;
                         for (i = 0; i < loopTo; i++)
-                        {   
+                        {
                             Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
                             Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
                         }
@@ -2822,6 +2819,8 @@ namespace Server
                 }
 
                 Database.ClearPlayer(index);
+
+                General.UpdateCaption();
             }
             catch (Exception e)
             {
@@ -2831,82 +2830,43 @@ namespace Server
             General.UpdateCaption();
         }
 
-        public static void KillPlayer(int index)
+        public static int KillPlayer(int index)
         {
             try
             {
-                int exp;
-
-                // Calculate exp to give attacker
-                exp = GetPlayerExp(index) / 3;
-
-                // Make sure we dont get less then 0
-                if (exp < 0)
-                    exp = 0;
+                int exp = Script.Instance?.KillPlayer(index);
 
                 if (exp == 0)
                 {
                     NetworkSend.PlayerMsg(index, "You've lost no experience.", (int)ColorType.BrightGreen);
                 }
                 else
-                {
-                    SetPlayerExp(index, GetPlayerExp(index) - exp);
+                {                   
                     NetworkSend.SendExp(index);
                     NetworkSend.PlayerMsg(index, string.Format("You've lost {0} experience.", exp), (int)ColorType.BrightRed);
                 }
 
-                Script.Instance?.KillPlayer(index);
-
-                OnDeath(index);
+                return exp;
+                
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
+            return 0;
+
         }
 
         public static void OnDeath(int index)
         {
-            // Set HP to nothing
-            SetPlayerVital(index, VitalType.HP, 0);
-
-            // Warp player away
-            SetPlayerDir(index, (byte) DirectionType.Down);
-
-            {
-                ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)];
-                // to the bootmap if it is set
-                if (withBlock.BootMap > 0)
-                {
-                    PlayerWarp(index, withBlock.BootMap, withBlock.BootX, withBlock.BootY, (int)DirectionType.Down);
-                }
-                else
-                {
-                    PlayerWarp(index, Core.Type.Job[GetPlayerJob(index)].StartMap, Core.Type.Job[GetPlayerJob(index)].StartX, Core.Type.Job[GetPlayerJob(index)].StartY, (int)DirectionType.Down);
-                }
-            }
-
-            // Clear skill casting
-            Core.Type.TempPlayer[index].SkillBuffer = -1;
-            Core.Type.TempPlayer[index].SkillBufferTimer = 0;
-            NetworkSend.SendClearSkillBuffer(index);
-
-            // Restore vitals
-            for (int i = 0, loopTo = (byte) VitalType.Count; i < loopTo; i++)
-                SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
-
-            NetworkSend.SendVitals(index);
-
-            // If the player the attacker killed was a pk then take it away
-            if (GetPlayerPK(index) == 1)
-            {
-                SetPlayerPK(index, Conversions.ToInteger(false));
-                NetworkSend.SendPlayerData(index);
-            }
-
             try
             {
+                // Clear skill casting
+                Core.Type.TempPlayer[index].SkillBuffer = -1;
+                Core.Type.TempPlayer[index].SkillBufferTimer = 0;
+                NetworkSend.SendClearSkillBuffer(index);
+
                 Script.Instance?.OnDeath();
             }
             catch (Exception e)

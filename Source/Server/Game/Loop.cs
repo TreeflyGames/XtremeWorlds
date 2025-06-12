@@ -1024,7 +1024,7 @@ namespace Server
 
             switch (Core.Type.TempPlayer[index].TargetType)
             {
-                case var case4 when case4 == (byte)TargetType.NPC:
+                case (byte)TargetType.NPC:
                     {
                         // Deal with damaging abilities.
                         if (dealsDamage & Player.CanPlayerAttackNPC(index, target, true))
@@ -1043,7 +1043,7 @@ namespace Server
                         break;
                     }
 
-                case var case5 when case5 == (byte)TargetType.Player:
+                case (byte)TargetType.Player:
                     {
 
                         // Deal with damaging abilities.

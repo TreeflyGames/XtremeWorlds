@@ -2325,8 +2325,6 @@ namespace Server
             int mapNum;
             int i;
 
-            // Prevent subscript out of range
-
             mapNum = GetPlayerMap(index);
 
             // Find a free projectile
