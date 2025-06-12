@@ -1663,7 +1663,7 @@ namespace Server
             Core.Type.Player[index].Level = 0;
             Core.Type.Player[index].Map = 0;
             Core.Type.Player[index].Name = "";
-            Core.Type.Player[index].Pk = 0;
+            Core.Type.Player[index].PK = false;
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sex = 0;
 

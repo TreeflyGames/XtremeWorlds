@@ -822,7 +822,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerSprite(index));
             buffer.WriteInt32(GetPlayerMap(index));
             buffer.WriteInt32(GetPlayerAccess(index));
-            buffer.WriteInt32(GetPlayerPK(index));
+            buffer.WriteBoolean(GetPlayerPK(index));
 
             var loopTo = (int)StatType.Count;
             for (i = 0; i < loopTo; i++)
@@ -963,7 +963,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SSayMsg);
             buffer.WriteString(GetPlayerName(index));
             buffer.WriteInt32(GetPlayerAccess(index));
-            buffer.WriteInt32(GetPlayerPK(index));
+            buffer.WriteBoolean(GetPlayerPK(index));
             buffer.WriteString(Message);
             buffer.WriteString("[Map]:");
             buffer.WriteInt32(SayColor);
@@ -980,7 +980,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SSayMsg);
             buffer.WriteString(GetPlayerName(index));
             buffer.WriteInt32(GetPlayerAccess(index));
-            buffer.WriteInt32(GetPlayerPK(index));
+            buffer.WriteBoolean(GetPlayerPK(index));
             buffer.WriteString(Message);
             buffer.WriteString("[Global]:");
             buffer.WriteInt32(SayColor);

@@ -326,7 +326,7 @@ namespace Core
             public byte Level;
             public int Exp;
             public byte Access;
-            public byte Pk;
+            public bool PK;
             public int[] Vital;
             public byte[] Stat;
             public byte Points;

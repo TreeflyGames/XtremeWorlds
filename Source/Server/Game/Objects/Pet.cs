@@ -2929,7 +2929,7 @@ namespace Server
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
-                    if (GetPlayerPK(victim) == 0)
+                    if (GetPlayerPK(victim) == false)
                     {
                         return CanPetAttackPlayerRet;
                     }
@@ -3068,11 +3068,11 @@ namespace Server
                     }
                 }
 
-                if (GetPlayerPK(victim) == 0)
+                if (GetPlayerPK(victim) == false)
                 {
-                    if (GetPlayerPK(attacker) == 0)
+                    if (GetPlayerPK(attacker) == false)
                     {
-                        Player.SetPlayerPK(attacker, 1);
+                        Player.SetPlayerPK(attacker, true);
                         NetworkSend.SendPlayerData(attacker);
                         NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer");
                     }
@@ -3253,7 +3253,7 @@ namespace Server
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
-                    if (GetPlayerPK(victim) == 0)
+                    if (GetPlayerPK(victim) == false)
                     {
                         return CanPetAttackPetRet;
                     }
@@ -3375,11 +3375,11 @@ namespace Server
                     }
                 }
 
-                if (GetPlayerPK(victim) == 0)
+                if (GetPlayerPK(victim) == false)
                 {
-                    if (GetPlayerPK(attacker) == 0)
+                    if (GetPlayerPK(attacker) == false)
                     {
-                        Player.SetPlayerPK(attacker, 1);
+                        Player.SetPlayerPK(attacker, true);
                         NetworkSend.SendPlayerData(attacker);
                         NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer!!!");
                     }
@@ -4398,7 +4398,7 @@ namespace Server
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
-                    if (GetPlayerPK(victim) == 0)
+                    if (GetPlayerPK(victim) == false)
                     {
                         NetworkSend.PlayerMsg(attacker, "This is a safe zone!", (int) ColorType.Yellow);
                         return CanPlayerAttackPetRet;

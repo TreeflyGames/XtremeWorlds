@@ -102,10 +102,10 @@ namespace Core.Global
             return GetPlayerDirRet;
         }
 
-        public static int GetPlayerPK(int index)
+        public static bool GetPlayerPK(int index)
         {
-            int GetPlayerPKRet = default;
-            GetPlayerPKRet = Type.Player[index].Pk;
+            bool GetPlayerPKRet = default;
+            GetPlayerPKRet = Type.Player[index].PK;
             return GetPlayerPKRet;
         }
 
@@ -301,9 +301,9 @@ namespace Core.Global
             Type.Player[index].Access = (byte)access;
         }
 
-        public static void SetPlayerPK(int index, int pk)
+        public static void SetPlayerPK(int index, bool pk)
         {
-            Type.Player[index].Pk = (byte)pk;
+            Type.Player[index].PK = pk;
         }
 
         public static void SetPlayerX(int index, int x)

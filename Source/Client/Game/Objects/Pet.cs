@@ -646,7 +646,7 @@ namespace Client
             string name;
 
             // Check access level
-            if (GetPlayerPK(index) == 0)
+            if (GetPlayerPK(index) == false)
             {
 
                 switch (GetPlayerAccess(index))

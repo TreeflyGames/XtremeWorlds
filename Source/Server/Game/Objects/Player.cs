@@ -84,7 +84,7 @@ namespace Server
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
-                    if (GetPlayerPK(victim) == 0)
+                    if (GetPlayerPK(victim) == false)
                     {
                         NetworkSend.PlayerMsg(attacker, "This is a safe zone!", (int)(int) ColorType.BrightRed);
                         return CanPlayerAttackPlayerRet;
@@ -327,11 +327,11 @@ namespace Server
                         }
                     }
 
-                    if (GetPlayerPK(victim) == 0)
+                    if (GetPlayerPK(victim) == false)
                     {
-                        if (GetPlayerPK(attacker) == 0)
+                        if (GetPlayerPK(attacker) == false)
                         {
-                            SetPlayerPK(attacker, Conversions.ToInteger(true));
+                            SetPlayerPK(attacker, true);
                             NetworkSend.SendPlayerData(attacker);
                             NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer!");
                         }
@@ -940,11 +940,11 @@ namespace Server
             int z;
             var eqcount = default(int);
             int invcount = default, j = default;
-            if (GetPlayerPK(victim) == 0)
+            if (GetPlayerPK(victim) == false)
             {
-                if (GetPlayerPK(attacker) == 0)
+                if (GetPlayerPK(attacker) == false)
                 {
-                    SetPlayerPK(attacker, 1);
+                    SetPlayerPK(attacker, true);
                     NetworkSend.SendPlayerData(attacker);
                     NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer!!!");
                 }
@@ -1075,9 +1075,9 @@ namespace Server
             return GetPlayerJobRet;
         }
 
-        public static void SetPlayerPK(int index, int PK)
+        public static void SetPlayerPK(int index, bool PK)
         {
-            Core.Type.Player[index].Pk = (byte)PK;
+            Core.Type.Player[index].PK = PK;
         }
 
         #endregion

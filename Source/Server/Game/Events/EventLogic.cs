@@ -1838,7 +1838,7 @@ namespace Server
                                             break;
 
                                         case (byte)EventType.ChangePk:
-                                            Core.Type.Player[i].Pk = (byte)(command.Data1 == 0 ? 0 : 1);
+                                            Core.Type.Player[i].PK = (command.Data1 == 0 ? false : true);
                                             NetworkSend.SendPlayerData((int)i);
                                             break;
 

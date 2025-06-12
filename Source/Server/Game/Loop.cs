@@ -237,6 +237,7 @@ namespace Server
                                 // make it public
                                 MapItem[mapNum, i].PlayerName = "";
                                 MapItem[mapNum, i].PlayerTimer = 0;
+
                                 // send updates to everyone
                                 Item.SendMapItemsToAll(mapNum);
                             }
@@ -247,6 +248,7 @@ namespace Server
                                 {
                                     // despawn it
                                     Database.ClearMapItem(i, mapNum);
+
                                     // send updates to everyone
                                     Item.SendMapItemsToAll(mapNum);
                                 }
@@ -337,13 +339,14 @@ namespace Server
                                                         // Make sure we get a positive value
                                                         if (distanceX < 0)
                                                             distanceX *= -1;
+
                                                         if (distanceY < 0)
                                                             distanceY *= -1;
 
                                                         // Are they in range?  if so GET'M!
                                                         if (distanceX <= n & distanceY <= n)
                                                         {
-                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == i)
+                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i))
                                                             {
                                                                 if (Strings.Len(Core.Type.NPC[(int)NPCNum].AttackSay) > 0)
                                                                 {
@@ -369,7 +372,7 @@ namespace Server
                                                         // Are they in range?  if so GET'M!
                                                         if (distanceX <= n & distanceY <= n)
                                                         {
-                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == 1)
+                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i))
                                                             {
                                                                 if (Core.Type.NPC[(int)NPCNum].AttackSay.Length > 0)
                                                                 {

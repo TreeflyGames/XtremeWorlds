@@ -46,7 +46,7 @@ namespace Client
             Core.Type.Player[index].Map = 0;
             Core.Type.Player[index].MapGetTimer = 0;
             Core.Type.Player[index].Moving = 0;
-            Core.Type.Player[index].Pk = 0;
+            Core.Type.Player[index].PK = false;
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sprite = 0;
 
@@ -1212,7 +1212,7 @@ namespace Client
             SetPlayerSprite(i, buffer.ReadInt32());
             SetPlayerMap(i, buffer.ReadInt32());
             SetPlayerAccess(i, buffer.ReadInt32());
-            SetPlayerPK(i, buffer.ReadInt32());
+            SetPlayerPK(i, buffer.ReadBoolean());
 
             for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());
