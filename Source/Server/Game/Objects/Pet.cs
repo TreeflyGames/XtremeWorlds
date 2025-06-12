@@ -2583,38 +2583,12 @@ namespace Server
                     Event.GivePlayerExp(attacker, exp);
                 }
 
-                // For n = 0 To 20
-                // If Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num >= 0 Then
-                // 'SpawnItem(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Num, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Value, mapNum, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].y)
-                // 'MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Value = 0
-                // 'MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Num = 0
-                // End If
-                // Next
-
                 // Now set HP to 0 so we know to actually kill them in the server loop (this prevents subscript out of range)
                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num = 0;
                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].SpawnWait = General.GetTimeMs();
                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] = 0;
                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].TargetType = 0;
                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Target = 0;
-
-                // clear DoTs and HoTs
-                // For i = 1 To Core.Constant.MAX_COTS
-                // With Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].DoT(i)
-                // .Skill = 0
-                // .Timer = 0
-                // .Caster = 0
-                // .StartTime = 0
-                // .Used = 0
-                // End With
-                // With Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].HoT(i)
-                // .Skill = 0
-                // .Timer = 0
-                // .Caster = 0
-                // .StartTime = 0
-                // .Used = 0
-                // End With
-                // Next
 
                 // send death to the map
                 NPC.SendNPCDead(mapNum, (int)MapNPCNum);
