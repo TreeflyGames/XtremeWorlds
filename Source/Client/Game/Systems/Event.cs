@@ -1116,11 +1116,6 @@ namespace Client
 
                                         break;
                                     }
-                                case (byte)Core.Enum.EventType.CustomScript:
-                                    {
-                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Execute Custom Script Case: " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1);
-                                        break;
-                                    }
                                 case (byte)Core.Enum.EventType.PlayBgm:
                                     {
                                         frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play BGM [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1 + "]");
@@ -1799,13 +1794,6 @@ namespace Client
                             TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data4 = (int)Math.Round(frmEditor_Event.Instance.nudPlayAnimTileY.Value);
                         }
 
-                        break;
-                    }
-
-                case (int)Core.Enum.EventType.CustomScript:
-                    {
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = (int)Math.Round(frmEditor_Event.Instance.nudCustomScript.Value);
                         break;
                     }
 
@@ -2655,15 +2643,7 @@ namespace Client
                         frmEditor_Event.Instance.fraCommands.Visible = false;
                         break;
                     }
-                case (byte)Core.Enum.EventType.CustomScript:
-                    {
-                        IsEdit = true;
-                        frmEditor_Event.Instance.nudCustomScript.Value = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
-                        frmEditor_Event.Instance.fraDialogue.Visible = true;
-                        frmEditor_Event.Instance.fraCustomScript.Visible = true;
-                        frmEditor_Event.Instance.fraCommands.Visible = false;
-                        break;
-                    }
+
                 case (byte)Core.Enum.EventType.PlayBgm:
                     {
                         IsEdit = true;
@@ -3191,11 +3171,6 @@ namespace Client
                             TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data4 = (int)Math.Round(frmEditor_Event.Instance.nudPlayAnimTileY.Value);
                         }
 
-                        break;
-                    }
-                case (byte)Core.Enum.EventType.CustomScript:
-                    {
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = (int)Math.Round(frmEditor_Event.Instance.nudCustomScript.Value);
                         break;
                     }
                 case (byte)Core.Enum.EventType.PlayBgm:

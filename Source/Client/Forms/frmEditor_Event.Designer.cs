@@ -317,11 +317,6 @@ namespace Client
             btnMoveWaitOk = new DarkUI.Controls.DarkButton();
             DarkLabel79 = new DarkUI.Controls.DarkLabel();
             cmbMoveWait = new DarkUI.Controls.DarkComboBox();
-            fraCustomScript = new DarkUI.Controls.DarkGroupBox();
-            nudCustomScript = new DarkUI.Controls.DarkNumericUpDown();
-            DarkLabel78 = new DarkUI.Controls.DarkLabel();
-            btnCustomScriptCancel = new DarkUI.Controls.DarkButton();
-            btnCustomScriptOk = new DarkUI.Controls.DarkButton();
             fraSpawnNPC = new DarkUI.Controls.DarkGroupBox();
             btnSpawnNPCOk = new DarkUI.Controls.DarkButton();
             btnSpawnNPCancel = new DarkUI.Controls.DarkButton();
@@ -554,8 +549,6 @@ namespace Client
             fraSetWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudWaitAmount).BeginInit();
             fraMoveRouteWait.SuspendLayout();
-            fraCustomScript.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)nudCustomScript).BeginInit();
             fraSpawnNPC.SuspendLayout();
             fraSetWeather.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudWeatherIntensity).BeginInit();
@@ -1795,7 +1788,6 @@ namespace Client
             fraDialogue.Controls.Add(fraPlayerSwitch);
             fraDialogue.Controls.Add(fraSetWait);
             fraDialogue.Controls.Add(fraMoveRouteWait);
-            fraDialogue.Controls.Add(fraCustomScript);
             fraDialogue.Controls.Add(fraSpawnNPC);
             fraDialogue.Controls.Add(fraSetWeather);
             fraDialogue.Controls.Add(fraGiveExp);
@@ -2618,33 +2610,6 @@ namespace Client
             cmbMoveWait.Size = new Size(222, 24);
             cmbMoveWait.TabIndex = 0;
             // 
-            // fraCustomScript
-            // 
-            fraCustomScript.BackColor = Color.FromArgb(45, 45, 48);
-            fraCustomScript.BorderColor = Color.FromArgb(90, 90, 90);
-            fraCustomScript.Controls.Add(nudCustomScript);
-            fraCustomScript.Controls.Add(DarkLabel78);
-            fraCustomScript.Controls.Add(btnCustomScriptCancel);
-            fraCustomScript.Controls.Add(btnCustomScriptOk);
-            fraCustomScript.ForeColor = Color.Gainsboro;
-            fraCustomScript.Location = new Point(468, 457);
-            fraCustomScript.Margin = new Padding(4, 3, 4, 3);
-            fraCustomScript.Name = "fraCustomScript";
-            fraCustomScript.Padding = new Padding(4, 3, 4, 3);
-            fraCustomScript.Size = new Size(289, 110);
-            fraCustomScript.TabIndex = 47;
-            fraCustomScript.TabStop = false;
-            fraCustomScript.Text = "Execute Custom Script";
-            fraCustomScript.Visible = false;
-            // 
-            // nudCustomScript
-            // 
-            nudCustomScript.Location = new Point(78, 22);
-            nudCustomScript.Margin = new Padding(4, 3, 4, 3);
-            nudCustomScript.Name = "nudCustomScript";
-            nudCustomScript.Size = new Size(197, 23);
-            nudCustomScript.TabIndex = 1;
-            // 
             // DarkLabel78
             // 
             DarkLabel78.AutoSize = true;
@@ -2655,28 +2620,6 @@ namespace Client
             DarkLabel78.Size = new Size(35, 15);
             DarkLabel78.TabIndex = 0;
             DarkLabel78.Text = "Case:";
-            // 
-            // btnCustomScriptCancel
-            // 
-            btnCustomScriptCancel.Location = new Point(188, 52);
-            btnCustomScriptCancel.Margin = new Padding(4, 3, 4, 3);
-            btnCustomScriptCancel.Name = "btnCustomScriptCancel";
-            btnCustomScriptCancel.Padding = new Padding(6);
-            btnCustomScriptCancel.Size = new Size(88, 27);
-            btnCustomScriptCancel.TabIndex = 24;
-            btnCustomScriptCancel.Text = "Cancel";
-            btnCustomScriptCancel.Click += BtnCustomScriptCancel_Click;
-            // 
-            // btnCustomScriptOk
-            // 
-            btnCustomScriptOk.Location = new Point(93, 52);
-            btnCustomScriptOk.Margin = new Padding(4, 3, 4, 3);
-            btnCustomScriptOk.Name = "btnCustomScriptOk";
-            btnCustomScriptOk.Padding = new Padding(6);
-            btnCustomScriptOk.Size = new Size(88, 27);
-            btnCustomScriptOk.TabIndex = 25;
-            btnCustomScriptOk.Text = "Ok";
-            btnCustomScriptOk.Click += BtnCustomScriptOK_Click;
             // 
             // fraSpawnNPC
             // 
@@ -5147,10 +5090,6 @@ namespace Client
             fraSetWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudWaitAmount).EndInit();
             fraMoveRouteWait.ResumeLayout(false);
-            fraMoveRouteWait.PerformLayout();
-            fraCustomScript.ResumeLayout(false);
-            fraCustomScript.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)nudCustomScript).EndInit();
             fraSpawnNPC.ResumeLayout(false);
             fraSetWeather.ResumeLayout(false);
             fraSetWeather.PerformLayout();
@@ -5531,8 +5470,6 @@ namespace Client
         internal DarkUI.Controls.DarkNumericUpDown nudGiveExp;
         internal DarkUI.Controls.DarkButton btnSpawnNPCOk;
         internal DarkUI.Controls.DarkButton btnSpawnNPCancel;
-        internal DarkUI.Controls.DarkGroupBox fraCustomScript;
-        internal DarkUI.Controls.DarkNumericUpDown nudCustomScript;
         internal DarkUI.Controls.DarkLabel DarkLabel78;
         internal DarkUI.Controls.DarkButton btnCustomScriptCancel;
         internal DarkUI.Controls.DarkButton btnCustomScriptOk;

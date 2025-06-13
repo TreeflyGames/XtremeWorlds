@@ -1932,10 +1932,6 @@ namespace Server
                                                 break;
                                             }
 
-                                        case (byte)EventType.CustomScript:
-                                            Event.CustomScript(i, command.Data1, mapNum, withBlock1.EventId);
-                                            break;
-
                                         case (byte)EventType.PlayBgm:
                                             {
                                                 using (var buffer = new ByteStream(4))

@@ -369,9 +369,6 @@ namespace Core
             PlaySound,
             StopSound,
 
-            // Etc...
-            CustomScript,
-
             SetAccess,
 
             // Shop/Bank
