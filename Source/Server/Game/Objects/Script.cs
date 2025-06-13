@@ -131,7 +131,11 @@ namespace Server
                     .ReferenceDomainAssemblies()
                     .LoadCode(code);
 
-                Instance = script;
+                if (script != null)
+                {
+                    Instance = script;
+                    NetworkSend.PlayerMsg(index, "Script saved successfully!", (int)ColorType.BrightBlue);
+                }
             }
             catch (Exception ex)
             {
