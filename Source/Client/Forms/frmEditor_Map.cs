@@ -947,7 +947,6 @@ namespace Client
 
             // we're not in a shop
             Instance.cmbShop.SelectedIndex = 0;
-            Instance.cmbAttribute.SelectedIndex = 0;
 
             Instance.optBlocked.Checked = true;
 
@@ -2033,6 +2032,11 @@ namespace Client
         private void tabpages_SelectedIndexChanged(object sender, EventArgs e)
         {
             GameState.MapTab = Instance.tabpages.SelectedIndex;
+
+            if (GameState.MapTab == (int)MapTab.Attributes)
+            {
+                cmbAttribute.SelectedIndex = 1;
+            }
         }
 
         private void cmbTileSets_SelectedIndexChanged(object sender, EventArgs e)
