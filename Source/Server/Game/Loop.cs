@@ -209,7 +209,7 @@ namespace Server
             int damage;
             int distanceX;
             int distanceY;
-             int NPCNum;
+            int NPCNum;
             int target;
             byte targetType;
             var targetX = default(int);
@@ -424,7 +424,7 @@ namespace Server
                                 }
                             }
 
-                            targetVerify = Conversions.ToBoolean(0);
+                            targetVerify = false;
 
                             // /////////////////////////////////////////////
                             // // This is used for NPC walking/targetting //
@@ -722,41 +722,18 @@ namespace Server
 
         public static int GetNPCVitalRegen(int NPCNum, VitalType vital)
         {
-            int GetNPCVitalRegenRet = default;
-            int i;
-
-            GetNPCVitalRegenRet = 0;
-
-            // Prevent subscript out of range
-            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
+            try
             {
-                return GetNPCVitalRegenRet;
+                int i;
+                i = Script.Instance?.GetNPCVitalRegen(NPCNum, vital);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            switch (vital)
-            {
-                case var @case when @case == VitalType.HP:
-                    {
-                        i = (int)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Vitality] / 3;
-
-                        if (i < 0)
-                            i = 0;
-                        GetNPCVitalRegenRet = i;
-                        break;
-                    }
-                case var case1 when case1 == VitalType.SP:
-                    {
-                        i = (int)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Intelligence] / 3;
-
-                        if (i < 0)
-                            i = 0;
-                        GetNPCVitalRegenRet = i;
-                        break;
-                    }
-            }
-
-            return GetNPCVitalRegenRet;
-
+            return 0;
         }
 
         public static bool HandlePetSkill(int index)
