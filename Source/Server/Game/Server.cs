@@ -137,7 +137,7 @@ namespace Server
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Player!", (int)ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Player!", (int)ColorType.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
@@ -145,7 +145,7 @@ namespace Server
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Moderator!", (int)ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Moderator!", (int)ColorType.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
@@ -153,7 +153,7 @@ namespace Server
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Mapper!", (int)ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Mapper!", (int)ColorType.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
@@ -161,7 +161,7 @@ namespace Server
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Developer!", (int)ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Developer!", (int)ColorType.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
@@ -169,7 +169,7 @@ namespace Server
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Owner!", (int)ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Owner!", (int)ColorType.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
