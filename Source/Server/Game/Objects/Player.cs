@@ -1,9 +1,10 @@
-﻿using System;
-using Core;
+﻿using Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using System;
+using System.Reflection;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -97,170 +98,14 @@ namespace Server
 
         public static void AttackPlayer(int attacker, int victim, int damage, int skillNum = 0, int NPCNum = 0)
         {
-            int exp;
-            int mapNum;
-            int n;
-            ByteStream buffer;
-
-            if (NPCNum == -1)
+            try
             {
-                // Check for subscript out of range
-                if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | damage < 0)
-                {
-                    return;
-                }
-
-                // Check for weapon
-                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
-                {
-                    n = GetPlayerEquipment(attacker, EquipmentType.Weapon);
-                }
-
-                // Send this packet so they can see the person attacking
-                buffer = new ByteStream(4);
-                buffer.WriteInt32((byte)ServerPackets.SAttack);
-                buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMapBut(attacker, GetPlayerMap(attacker), buffer.UnreadData, buffer.WritePosition);
-                buffer.Dispose();
-
-                if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
-                {
-                    NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + damage, (int)ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-
-                    // Player is dead
-                    NetworkSend.GlobalMsg(GetPlayerName(victim) + " has been killed by " + GetPlayerName(attacker));
-
-                    if ((int)Core.Type.Map[GetPlayerMap(victim)].Moral >= 0)
-                    {
-                        if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(victim)].Moral].LoseExp)
-                        {
-                            // Calculate exp to give attacker
-                            exp = (int)Math.Round(GetPlayerExp(victim) / 3.0);
-
-                            // Make sure we dont get less then 0
-                            if (exp < 0)
-                            {
-                                exp = 0;
-                            }
-
-                            if (exp == 0)
-                            {
-                                NetworkSend.PlayerMsg(victim, "You lost no experience.", (int)ColorType.BrightGreen);
-                                NetworkSend.PlayerMsg(attacker, "You received no experience.", (int)ColorType.BrightRed);
-                            }
-                            else
-                            {
-                                SetPlayerExp(victim, GetPlayerExp(victim) - exp);
-                                NetworkSend.SendExp(victim);
-                                NetworkSend.PlayerMsg(victim, "You lost " + exp + " experience.", (int)ColorType.BrightRed);
-                                SetPlayerExp(attacker, GetPlayerExp(attacker) + exp);
-                                NetworkSend.SendExp(attacker);
-                                NetworkSend.PlayerMsg(attacker, "You received " + exp + " experience.", (int)ColorType.BrightGreen);
-                            }
-
-                            // Check for a level up
-                            CheckPlayerLevelUp(attacker);
-                        }
-                    }
-
-                    // Check if target is player who died and if so set target to 0
-                    if (Core.Type.TempPlayer[attacker].TargetType == (byte)TargetType.Player)
-                    {
-                        if (Core.Type.TempPlayer[attacker].Target == victim)
-                        {
-                            Core.Type.TempPlayer[attacker].Target = 0;
-                            Core.Type.TempPlayer[attacker].TargetType = 0;
-                        }
-                    }
-
-                    if (GetPlayerPK(victim) == false)
-                    {
-                        if (GetPlayerPK(attacker) == false)
-                        {
-                            SetPlayerPK(attacker, true);
-                            NetworkSend.SendPlayerData(attacker);
-                            NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer!");
-                        }
-                    }
-                    else
-                    {
-                        NetworkSend.GlobalMsg(GetPlayerName(victim) + " has paid the price for being a Player Killer!");
-                    }
-
-                    OnDeath(victim);
-                }
-                else
-                {
-                    // Player not dead, just do the damage
-                    SetPlayerVital(victim, (VitalType)VitalType.HP, GetPlayerVital(victim, (VitalType)VitalType.HP) - damage);
-                    NetworkSend.SendVital(victim, (VitalType)VitalType.HP);
-                    NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + damage, (int)ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-
-                    // if a stunning skill, stun the player
-                    if (skillNum >= 0)
-                    {
-                        if (Core.Type.Skill[skillNum].StunDuration > 0)
-                            StunPlayer(victim, skillNum);
-                    }
-                }
-
-                // Reset attack timer
-                Core.Type.TempPlayer[attacker].AttackTimer = General.GetTimeMs();
+                Script.Instance?.AttackPlayer(attacker, victim);
             }
-            else // npc to player
+            catch (Exception e)
             {
-                // Check for subscript out of range
-                if (Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | damage < 0)
-                    return;
-
-                mapNum = GetPlayerMap(victim);
-
-                // Send this packet so they can see the person attacking
-                buffer = new ByteStream(4);
-                buffer.WriteInt32((byte)ServerPackets.SNPCAttack);
-                buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
-                buffer.Dispose();
-
-                if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
-                {
-
-                    NetworkSend.SendActionMsg(mapNum, "-" + damage, (int)ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-
-                    // Player is dead
-                    NetworkSend.GlobalMsg(GetPlayerName(victim) + " has been killed by " + Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[attacker].Num].Name);
-
-                    // Check if target is player who died and if so set target to 0
-                    if (Core.Type.TempPlayer[attacker].TargetType == (byte)TargetType.Player)
-                    {
-                        if (Core.Type.TempPlayer[attacker].Target == victim)
-                        {
-                            Core.Type.TempPlayer[attacker].Target = 0;
-                            Core.Type.TempPlayer[attacker].TargetType = 0;
-                        }
-                    }
-
-                    OnDeath(victim);
-                }
-                else
-                {
-                    // Player not dead, just do the damage
-                    SetPlayerVital(victim, (VitalType)VitalType.HP, GetPlayerVital(victim, (VitalType)VitalType.HP) - damage);
-                    NetworkSend.SendVital(victim, (VitalType)VitalType.HP);
-                    NetworkSend.SendActionMsg(mapNum, "-" + damage, (int)ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-
-                    // if a stunning skill, stun the player
-                    if (skillNum >= 0)
-                    {
-                        if (Core.Type.Skill[skillNum].StunDuration > 0)
-                            StunPlayer(victim, skillNum);
-                    }
-                }
-
-                // Reset attack timer
-                Core.Type.MapNPC[mapNum].NPC[attacker].AttackTimer = General.GetTimeMs();
+                Console.WriteLine(e.Message);
             }
-
         }
 
         public static void StunPlayer(int index, int skillNum)
@@ -288,7 +133,7 @@ namespace Server
             int attackSpeed;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS)
+            if (NetworkConfig.IsPlaying(attacker) == false | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS)
             {
                 return CanPlayerAttackNPCRet;
             }

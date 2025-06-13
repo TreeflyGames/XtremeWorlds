@@ -693,12 +693,7 @@ namespace Server
             if (Core.Type.TempPlayer[index].StunDuration > 0)
                 return;
 
-            // Send this packet so they can see the person attacking
-            buffer = new ByteStream(4);
-            buffer.WriteInt32((int) ServerPackets.SAttack);
-            buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
-            buffer.Dispose();
+            NetworkSend.SendPlayerAttack(index);
 
             // Projectile check
             if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
