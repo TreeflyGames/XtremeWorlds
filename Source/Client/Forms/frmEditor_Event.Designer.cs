@@ -92,8 +92,8 @@ namespace Client
             TreeNode treeNode31 = new TreeNode("Hold Player");
             TreeNode treeNode32 = new TreeNode("Release Player");
             TreeNode treeNode33 = new TreeNode("Movement", new TreeNode[] { treeNode27, treeNode28, treeNode29, treeNode30, treeNode31, treeNode32 });
-            TreeNode treeNode34 = new TreeNode("Animation");
-            TreeNode treeNode35 = new TreeNode("Play Animation", new TreeNode[] { treeNode34 });
+            TreeNode treeNode34 = new TreeNode("Play Animation");
+            TreeNode treeNode35 = new TreeNode("Animation", new TreeNode[] { treeNode34 });
             TreeNode treeNode36 = new TreeNode("Begin Quest");
             TreeNode treeNode37 = new TreeNode("Complete Task");
             TreeNode treeNode38 = new TreeNode("End Quest");
@@ -120,58 +120,6 @@ namespace Client
             TreeNode treeNode59 = new TreeNode("Show Picture");
             TreeNode treeNode60 = new TreeNode("Hide Picture");
             TreeNode treeNode61 = new TreeNode("Cutscene Options", new TreeNode[] { treeNode56, treeNode57, treeNode58, treeNode59, treeNode60 });
-            ListViewGroup listViewGroup1 = new ListViewGroup("Movement", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup2 = new ListViewGroup("Wait", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup3 = new ListViewGroup("Turning", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup4 = new ListViewGroup("Speed", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup5 = new ListViewGroup("Walk Animation", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup6 = new ListViewGroup("Fixed Direction", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup7 = new ListViewGroup("WalkThrough", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup8 = new ListViewGroup("Set Position", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup9 = new ListViewGroup("Set Graphic", HorizontalAlignment.Left);
-            ListViewItem listViewItem1 = new ListViewItem("Move Up");
-            ListViewItem listViewItem2 = new ListViewItem("Move Down");
-            ListViewItem listViewItem3 = new ListViewItem("Move left");
-            ListViewItem listViewItem4 = new ListViewItem("Move Right");
-            ListViewItem listViewItem5 = new ListViewItem("Move Randomly");
-            ListViewItem listViewItem6 = new ListViewItem("Move To Player***");
-            ListViewItem listViewItem7 = new ListViewItem("Move from Player***");
-            ListViewItem listViewItem8 = new ListViewItem("Step Forwards");
-            ListViewItem listViewItem9 = new ListViewItem("Step Backwards");
-            ListViewItem listViewItem10 = new ListViewItem("Wait 100Ms");
-            ListViewItem listViewItem11 = new ListViewItem("Wait 500Ms");
-            ListViewItem listViewItem12 = new ListViewItem("Wait 1000Ms");
-            ListViewItem listViewItem13 = new ListViewItem("Turn Up");
-            ListViewItem listViewItem14 = new ListViewItem("Turn Down");
-            ListViewItem listViewItem15 = new ListViewItem("Turn Left");
-            ListViewItem listViewItem16 = new ListViewItem("Turn Right");
-            ListViewItem listViewItem17 = new ListViewItem("Turn 90DG Right");
-            ListViewItem listViewItem18 = new ListViewItem("Turn 90DG Left");
-            ListViewItem listViewItem19 = new ListViewItem("Turn 180DG");
-            ListViewItem listViewItem20 = new ListViewItem("Turn Randomly");
-            ListViewItem listViewItem21 = new ListViewItem("Turn To Player***");
-            ListViewItem listViewItem22 = new ListViewItem("Turn From Player***");
-            ListViewItem listViewItem23 = new ListViewItem("Set Speed 8x Slower");
-            ListViewItem listViewItem24 = new ListViewItem("Set Speed 4x Slower");
-            ListViewItem listViewItem25 = new ListViewItem("Set Speed 2x Slower");
-            ListViewItem listViewItem26 = new ListViewItem("Set Speed To Normal");
-            ListViewItem listViewItem27 = new ListViewItem("Set Speed 2x Faster");
-            ListViewItem listViewItem28 = new ListViewItem("Set Speed 4x Faster");
-            ListViewItem listViewItem29 = new ListViewItem("Set Freq. To Lowest");
-            ListViewItem listViewItem30 = new ListViewItem("Set Freq. To Lower");
-            ListViewItem listViewItem31 = new ListViewItem("Set Freq. To Normal");
-            ListViewItem listViewItem32 = new ListViewItem("Set Freq. To Higher");
-            ListViewItem listViewItem33 = new ListViewItem("Set Freq. To Highest");
-            ListViewItem listViewItem34 = new ListViewItem("Walking Animation ON");
-            ListViewItem listViewItem35 = new ListViewItem("Walking Animation OFF");
-            ListViewItem listViewItem36 = new ListViewItem("Fixed Direction ON");
-            ListViewItem listViewItem37 = new ListViewItem("Fixed Direction OFF");
-            ListViewItem listViewItem38 = new ListViewItem("Walkthrough ON");
-            ListViewItem listViewItem39 = new ListViewItem("Walkthrough ON");
-            ListViewItem listViewItem40 = new ListViewItem("Set Position Below Player");
-            ListViewItem listViewItem41 = new ListViewItem("Set PositionWith Player");
-            ListViewItem listViewItem42 = new ListViewItem("Set Position Above Player");
-            ListViewItem listViewItem43 = new ListViewItem("Set Graphic...");
             tvCommands = new TreeView();
             fraPageSetUp = new DarkUI.Controls.DarkGroupBox();
             chkGlobal = new DarkUI.Controls.DarkCheckBox();
@@ -247,10 +195,10 @@ namespace Client
             chkIgnoreMove = new DarkUI.Controls.DarkCheckBox();
             DarkGroupBox10 = new DarkUI.Controls.DarkGroupBox();
             lstvwMoveRoute = new DarkUI.Controls.DarkListView();
-            ColumnHeader3 = new ColumnHeader();
-            ColumnHeader4 = new ColumnHeader();
             lstMoveRoute = new ListBox();
             cmbEvent = new DarkUI.Controls.DarkComboBox();
+            ColumnHeader3 = new ColumnHeader();
+            ColumnHeader4 = new ColumnHeader();
             pnlGraphicSel = new Panel();
             fraDialogue = new DarkUI.Controls.DarkGroupBox();
             fraShowChatBubble = new DarkUI.Controls.DarkGroupBox();
@@ -1660,86 +1608,12 @@ namespace Client
             lstvwMoveRoute.Dock = DockStyle.Top;
             lstvwMoveRoute.Font = new Font("Microsoft Sans Serif", 8.25F);
             lstvwMoveRoute.ForeColor = Color.Gainsboro;
-            listViewGroup1.Header = "Movement";
-            listViewGroup1.Name = "lstVgMovement";
-            listViewGroup2.Header = "Wait";
-            listViewGroup2.Name = "lstVgWait";
-            listViewGroup3.Header = "Turning";
-            listViewGroup3.Name = "lstVgTurn";
-            listViewGroup4.Header = "Speed";
-            listViewGroup4.Name = "lstVgSpeed";
-            listViewGroup5.Header = "Walk Animation";
-            listViewGroup5.Name = "lstVgWalk";
-            listViewGroup6.Header = "Fixed Direction";
-            listViewGroup6.Name = "lstVgDirection";
-            listViewGroup7.Header = "WalkThrough";
-            listViewGroup7.Name = "lstVgWalkThrough";
-            listViewGroup8.Header = "Set Position";
-            listViewGroup8.Name = "lstVgSetposition";
-            listViewGroup9.Header = "Set Graphic";
-            listViewGroup9.Name = "lstVgSetGraphic";
-            listViewItem1.Group = listViewGroup1;
-            listViewItem2.Group = listViewGroup1;
-            listViewItem2.IndentCount = 1;
-            listViewItem3.Group = listViewGroup1;
-            listViewItem4.Group = listViewGroup1;
-            listViewItem4.IndentCount = 1;
-            listViewItem5.Group = listViewGroup1;
-            listViewItem6.Group = listViewGroup1;
-            listViewItem7.Group = listViewGroup1;
-            listViewItem8.Group = listViewGroup1;
-            listViewItem9.Group = listViewGroup1;
-            listViewItem10.Group = listViewGroup2;
-            listViewItem11.Group = listViewGroup2;
-            listViewItem12.Group = listViewGroup2;
-            listViewItem13.Group = listViewGroup3;
-            listViewItem14.Group = listViewGroup3;
-            listViewItem15.Group = listViewGroup3;
-            listViewItem16.Group = listViewGroup3;
-            listViewItem17.Group = listViewGroup3;
-            listViewItem18.Group = listViewGroup3;
-            listViewItem19.Group = listViewGroup3;
-            listViewItem20.Group = listViewGroup3;
-            listViewItem21.Group = listViewGroup3;
-            listViewItem22.Group = listViewGroup3;
-            listViewItem23.Group = listViewGroup4;
-            listViewItem24.Group = listViewGroup4;
-            listViewItem25.Group = listViewGroup4;
-            listViewItem26.Group = listViewGroup4;
-            listViewItem27.Group = listViewGroup4;
-            listViewItem28.Group = listViewGroup4;
-            listViewItem29.Group = listViewGroup4;
-            listViewItem30.Group = listViewGroup4;
-            listViewItem31.Group = listViewGroup4;
-            listViewItem32.Group = listViewGroup4;
-            listViewItem33.Group = listViewGroup4;
-            listViewItem34.Group = listViewGroup5;
-            listViewItem35.Group = listViewGroup5;
-            listViewItem36.Group = listViewGroup6;
-            listViewItem37.Group = listViewGroup6;
-            listViewItem38.Group = listViewGroup7;
-            listViewItem39.Group = listViewGroup7;
-            listViewItem40.Group = listViewGroup8;
-            listViewItem41.Group = listViewGroup8;
-            listViewItem42.Group = listViewGroup8;
-            listViewItem43.Group = listViewGroup9;
             lstvwMoveRoute.Location = new Point(4, 19);
             lstvwMoveRoute.Margin = new Padding(4, 3, 4, 3);
-            lstvwMoveRoute.MultiSelect = false;
             lstvwMoveRoute.Name = "lstvwMoveRoute";
             lstvwMoveRoute.Size = new Size(686, 458);
             lstvwMoveRoute.TabIndex = 5;
             lstvwMoveRoute.Click += LstvwMoveRoute_SelectedIndexChanged;
-            // 
-            // ColumnHeader3
-            // 
-            ColumnHeader3.Text = "";
-            ColumnHeader3.Width = 150;
-            // 
-            // ColumnHeader4
-            // 
-            ColumnHeader4.Text = "";
-            ColumnHeader4.Width = 150;
             // 
             // lstMoveRoute
             // 
@@ -1763,6 +1637,16 @@ namespace Client
             cmbEvent.Name = "cmbEvent";
             cmbEvent.Size = new Size(222, 24);
             cmbEvent.TabIndex = 0;
+            // 
+            // ColumnHeader3
+            // 
+            ColumnHeader3.Text = "";
+            ColumnHeader3.Width = 150;
+            // 
+            // ColumnHeader4
+            // 
+            ColumnHeader4.Text = "";
+            ColumnHeader4.Width = 150;
             // 
             // pnlGraphicSel
             // 
@@ -2609,17 +2493,6 @@ namespace Client
             cmbMoveWait.Name = "cmbMoveWait";
             cmbMoveWait.Size = new Size(222, 24);
             cmbMoveWait.TabIndex = 0;
-            // 
-            // DarkLabel78
-            // 
-            DarkLabel78.AutoSize = true;
-            DarkLabel78.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel78.Location = new Point(12, 24);
-            DarkLabel78.Margin = new Padding(4, 0, 4, 0);
-            DarkLabel78.Name = "DarkLabel78";
-            DarkLabel78.Size = new Size(35, 15);
-            DarkLabel78.TabIndex = 0;
-            DarkLabel78.Text = "Case:";
             // 
             // fraSpawnNPC
             // 
@@ -4829,6 +4702,7 @@ namespace Client
             // 
             // FraRenaming
             // 
+            FraRenaming.BorderColor = Color.FromArgb(51, 51, 51);
             FraRenaming.Controls.Add(btnRename_Cancel);
             FraRenaming.Controls.Add(btnRename_Ok);
             FraRenaming.Controls.Add(fraRandom10);
@@ -4849,6 +4723,7 @@ namespace Client
             btnRename_Cancel.Location = new Point(267, 118);
             btnRename_Cancel.Margin = new Padding(4, 3, 4, 3);
             btnRename_Cancel.Name = "btnRename_Cancel";
+            btnRename_Cancel.Padding = new Padding(5);
             btnRename_Cancel.Size = new Size(88, 27);
             btnRename_Cancel.TabIndex = 2;
             btnRename_Cancel.Text = "Cancel";
@@ -4860,6 +4735,7 @@ namespace Client
             btnRename_Ok.Location = new Point(63, 118);
             btnRename_Ok.Margin = new Padding(4, 3, 4, 3);
             btnRename_Ok.Name = "btnRename_Ok";
+            btnRename_Ok.Padding = new Padding(5);
             btnRename_Ok.Size = new Size(88, 27);
             btnRename_Ok.TabIndex = 1;
             btnRename_Ok.Text = "Ok";
@@ -4867,6 +4743,7 @@ namespace Client
             // 
             // fraRandom10
             // 
+            fraRandom10.BorderColor = Color.FromArgb(51, 51, 51);
             fraRandom10.Controls.Add(txtRename);
             fraRandom10.Controls.Add(lblEditing);
             fraRandom10.ForeColor = Color.Gainsboro;
@@ -4881,6 +4758,9 @@ namespace Client
             // 
             // txtRename
             // 
+            txtRename.BackColor = Color.FromArgb(69, 73, 74);
+            txtRename.BorderStyle = BorderStyle.FixedSingle;
+            txtRename.ForeColor = Color.FromArgb(220, 220, 220);
             txtRename.Location = new Point(7, 47);
             txtRename.Margin = new Padding(4, 3, 4, 3);
             txtRename.Name = "txtRename";
@@ -4891,6 +4771,7 @@ namespace Client
             // lblEditing
             // 
             lblEditing.AutoSize = true;
+            lblEditing.ForeColor = Color.FromArgb(220, 220, 220);
             lblEditing.Location = new Point(4, 29);
             lblEditing.Margin = new Padding(4, 0, 4, 0);
             lblEditing.Name = "lblEditing";
@@ -5090,6 +4971,7 @@ namespace Client
             fraSetWait.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudWaitAmount).EndInit();
             fraMoveRouteWait.ResumeLayout(false);
+            fraMoveRouteWait.PerformLayout();
             fraSpawnNPC.ResumeLayout(false);
             fraSetWeather.ResumeLayout(false);
             fraSetWeather.PerformLayout();
@@ -5470,9 +5352,6 @@ namespace Client
         internal DarkUI.Controls.DarkNumericUpDown nudGiveExp;
         internal DarkUI.Controls.DarkButton btnSpawnNPCOk;
         internal DarkUI.Controls.DarkButton btnSpawnNPCancel;
-        internal DarkUI.Controls.DarkLabel DarkLabel78;
-        internal DarkUI.Controls.DarkButton btnCustomScriptCancel;
-        internal DarkUI.Controls.DarkButton btnCustomScriptOk;
         internal DarkUI.Controls.DarkGroupBox fraMoveRouteWait;
         internal DarkUI.Controls.DarkButton btnMoveWaitCancel;
         internal DarkUI.Controls.DarkButton btnMoveWaitOk;
