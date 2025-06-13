@@ -3072,7 +3072,7 @@ namespace Server
                 {
                     if (GetPlayerPK(attacker) == false)
                     {
-                        Player.SetPlayerPK(attacker, true);
+                        SetPlayerPK(attacker, true);
                         NetworkSend.SendPlayerData(attacker);
                         NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer");
                     }
@@ -3379,7 +3379,7 @@ namespace Server
                 {
                     if (GetPlayerPK(attacker) == false)
                     {
-                        Player.SetPlayerPK(attacker, true);
+                        SetPlayerPK(attacker, true);
                         NetworkSend.SendPlayerData(attacker);
                         NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer!!!");
                     }

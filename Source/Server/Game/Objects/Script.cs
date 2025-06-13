@@ -134,7 +134,7 @@ namespace Server
                 if (script != null)
                 {
                     Instance = script;
-                    NetworkSend.PlayerMsg(index, "Script saved successfully!", (int)ColorType.BrightBlue);
+                    NetworkSend.PlayerMsg(index, "Script saved successfully!", (int)ColorType.Yellow);
                 }
             }
             catch (Exception ex)

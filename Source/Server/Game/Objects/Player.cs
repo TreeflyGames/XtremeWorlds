@@ -17,115 +17,18 @@ namespace Server
 
         public static bool CanPlayerAttackPlayer(int attacker, int victim, bool IsSkill = false)
         {
-            bool CanPlayerAttackPlayerRet = default;
-
-            if (!IsSkill)
+            try
             {
-                // Check attack timer
-                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
-                {
-                    if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed)
-                        return CanPlayerAttackPlayerRet;
-                }
-                else if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + 1000)
-                    return CanPlayerAttackPlayerRet;
+                bool i;
+                i = Script.Instance?.CanPlayerAttackPlayer(attacker, victim, IsSkill);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            // Check for subscript out of range
-            if (!NetworkConfig.IsPlaying(victim))
-                return CanPlayerAttackPlayerRet;
-
-            // Make sure they are on the same map
-            if (!(GetPlayerMap(attacker) == GetPlayerMap(victim)))
-                return CanPlayerAttackPlayerRet;
-
-            // Make sure we dont attack the player if they are switching maps
-            if (Core.Type.TempPlayer[victim].GettingMap == true)
-                return CanPlayerAttackPlayerRet;
-
-            if (!IsSkill)
-            {
-                // Check if at same coordinates
-                switch (GetPlayerDir(attacker))
-                {
-                    case (int)DirectionType.Up:
-                        {
-                            if (!(GetPlayerY(victim) + 1 == GetPlayerY(attacker) & GetPlayerX(victim) == GetPlayerX(attacker)))
-                                return CanPlayerAttackPlayerRet;
-                            break;
-                        }
-                    case (int)DirectionType.Down:
-                        {
-                            if (!(GetPlayerY(victim) - 1 == GetPlayerY(attacker) & GetPlayerX(victim) == GetPlayerX(attacker)))
-                                return CanPlayerAttackPlayerRet;
-                            break;
-                        }
-                    case (int)DirectionType.Left:
-                        {
-                            if (!(GetPlayerY(victim) == GetPlayerY(attacker) & GetPlayerX(victim) + 1 == GetPlayerX(attacker)))
-                                return CanPlayerAttackPlayerRet;
-                            break;
-                        }
-                    case (int)DirectionType.Right:
-                        {
-                            if (!(GetPlayerY(victim) == GetPlayerY(attacker) & GetPlayerX(victim) - 1 == GetPlayerX(attacker)))
-                                return CanPlayerAttackPlayerRet;
-                            break;
-                        }
-                    default:
-                        {
-                            return CanPlayerAttackPlayerRet;
-                        }
-                }
-            }
-
-            // CheckIf Type.Map is attackable
-            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral >= 0)
-            {
-                if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
-                {
-                    if (GetPlayerPK(victim) == false)
-                    {
-                        NetworkSend.PlayerMsg(attacker, "This is a safe zone!", (int)(int) ColorType.BrightRed);
-                        return CanPlayerAttackPlayerRet;
-                    }
-                }
-            }
-
-            // Make sure they have more then 0 hp
-            if (GetPlayerVital(victim, VitalType.HP) < 0)
-                return CanPlayerAttackPlayerRet;
-
-            // Check to make sure that they dont have access
-            if (GetPlayerAccess(attacker) > (int)AccessType.Moderator)
-            {
-                NetworkSend.PlayerMsg(attacker, "You cannot attack any player for thou art an admin!", (int)(int) ColorType.BrightRed);
-                return CanPlayerAttackPlayerRet;
-            }
-
-            // Check to make sure the victim isn't an admin
-            if (GetPlayerAccess(victim) > (int)AccessType.Moderator)
-            {
-                NetworkSend.PlayerMsg(attacker, "You cannot attack " + GetPlayerName(victim) + "!", (int)(int) ColorType.BrightRed);
-                return CanPlayerAttackPlayerRet;
-            }
-
-            // Make sure attacker is high enough level
-            if (GetPlayerLevel(attacker) < 10)
-            {
-                NetworkSend.PlayerMsg(attacker, "You are below level 10, you cannot attack another player yet!", (int)(int) ColorType.BrightRed);
-                return CanPlayerAttackPlayerRet;
-            }
-
-            // Make sure victim is high enough level
-            if (GetPlayerLevel(victim) < 10)
-            {
-                NetworkSend.PlayerMsg(attacker, GetPlayerName(victim) + " is below level 10, you cannot attack this player yet!", (int)(int) ColorType.BrightRed);
-                return CanPlayerAttackPlayerRet;
-            }
-
-            CanPlayerAttackPlayerRet = true;
-            return CanPlayerAttackPlayerRet;
+            return false;
         }
 
         public static bool CanPlayerBlockHit(int index)
@@ -1009,18 +912,6 @@ namespace Server
                 NetworkSend.SendExp(index);
                 NetworkSend.SendPlayerData(index);
             }
-        }
-
-        public static int GetPlayerJob(int index)
-        {
-            int GetPlayerJobRet = default;
-            GetPlayerJobRet = Core.Type.Player[index].Job;
-            return GetPlayerJobRet;
-        }
-
-        public static void SetPlayerPK(int index, bool PK)
-        {
-            Core.Type.Player[index].PK = PK;
         }
 
         #endregion
