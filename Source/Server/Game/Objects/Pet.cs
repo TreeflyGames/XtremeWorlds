@@ -1245,7 +1245,7 @@ namespace Server
                         break;
                     }
 
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte) DirectionType.Right:
                     {
                         SetPetX(index, GetPetX(index) + 1);
                         break;
@@ -1478,7 +1478,7 @@ namespace Server
                         break;
                     }
 
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte) DirectionType.Right:
                     {
                         // Check to make sure not outside of boundries
                         if (x < Core.Type.Map[mapNum].MaxX)
@@ -2499,7 +2499,7 @@ namespace Server
                                 break;
                             }
 
-                        case var case3 when case3 == (byte) DirectionType.Right:
+                        case (byte) DirectionType.Right:
                             {
                                 npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X - 1;
                                 npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y;
@@ -2910,7 +2910,7 @@ namespace Server
                             break;
                         }
 
-                    case var case3 when case3 == (byte) DirectionType.Right:
+                    case (byte) DirectionType.Right:
                         {
                             if (!(GetPlayerY(victim) == GetPetY(attacker)) & GetPlayerX(victim) - 1 == GetPetX(attacker))
                                 return CanPetAttackPlayerRet;
@@ -3234,7 +3234,7 @@ namespace Server
                             break;
                         }
 
-                    case var case3 when case3 == (byte) DirectionType.Right:
+                    case (byte) DirectionType.Right:
                         {
                             if (!(GetPetY(victim) == GetPetY(attacker) & GetPetX(victim) - 1 == GetPetX(attacker)))
                                 return CanPetAttackPetRet;
@@ -3901,7 +3901,7 @@ namespace Server
                                     break;
                                 }
 
-                            case var case3 when case3 == (byte)SkillType.HealHp:
+                            case (byte)SkillType.HealHp:
                             case var case4 when case4 == (byte)SkillType.HealMp:
                             case var case5 when case5 == (byte)SkillType.DamageMp:
                                 {
@@ -4379,7 +4379,7 @@ namespace Server
                             break;
                         }
 
-                    case var case3 when case3 == (byte) DirectionType.Right:
+                    case (byte) DirectionType.Right:
                         {
                             if (!(GetPetY(victim) == GetPlayerY(attacker) & GetPetX(victim) - 1 == GetPlayerX(attacker)))
                                 return CanPlayerAttackPetRet;

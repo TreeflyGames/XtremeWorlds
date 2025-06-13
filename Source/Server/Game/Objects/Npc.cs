@@ -468,7 +468,7 @@ namespace Server
                         NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                         break;
                     }
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte) DirectionType.Right:
                     {
                         Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X = (byte)(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X + 1);
 

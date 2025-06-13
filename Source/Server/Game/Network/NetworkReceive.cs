@@ -778,7 +778,7 @@ namespace Server
                         y = GetPlayerY(index);
                         break;
                     }
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte) DirectionType.Right:
                     {
 
                         if (GetPlayerX(index) == Core.Type.Map[GetPlayerMap(index)].MaxX)

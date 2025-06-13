@@ -358,7 +358,7 @@ namespace Server
                             atkY = GetPlayerY(attacker);
                             break;
                         }
-                    case var case3 when case3 == (byte) DirectionType.Right:
+                    case (byte) DirectionType.Right:
                         {
                             atkX = GetPlayerX(attacker) + 1;
                             atkY = GetPlayerY(attacker);
