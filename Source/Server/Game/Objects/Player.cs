@@ -130,123 +130,66 @@ namespace Server
 
         public static bool CanPlayerBlockHit(int index)
         {
-            bool CanPlayerBlockHitRet = default;
-            int i;
-            int n;
-            double ShieldSlot;
-            ShieldSlot = GetPlayerEquipment(index, EquipmentType.Shield);
-
-            CanPlayerBlockHitRet = false;
-
-            if (ShieldSlot >= 0)
+            try
             {
-                n = (int)Math.Round(Conversion.Int(VBMath.Rnd() * 2f));
-
-                if (n == 1)
-                {
-                    i = GetPlayerStat(index, StatType.Luck) / 2 + GetPlayerLevel(index) / 2;
-                    n = (int)Math.Round(Conversion.Int(VBMath.Rnd() * 100f) + 1f);
-
-                    if (n <= i)
-                    {
-                        CanPlayerBlockHitRet = true;
-                    }
-                }
+                bool i;
+                i = Script.Instance?.CanPlayerBlockHit(index);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            return CanPlayerBlockHitRet;
-
+            return false;
         }
 
         public static bool CanPlayerCriticalHit(int index)
         {
-            bool CanPlayerCriticalHitRet = false;
-
-            int i;
-            int n;
-
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
+            try
             {
-                n = (int)Math.Round(VBMath.Rnd() * 2f);
-
-                if (n == 1)
-                {
-                    i = GetPlayerStat(index, StatType.Strength) / 2 + GetPlayerLevel(index) / 2;
-                    n = (int)Math.Round(Conversion.Int(VBMath.Rnd() * 100f) + 1f);
-
-                    if (n <= i)
-                    {
-                        CanPlayerCriticalHitRet = true;
-                    }
-                }
+                bool i;
+                i = Script.Instance?.CanPlayerCriticialHit(index);
+                return i;
             }
-        
-            return CanPlayerCriticalHitRet;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return false;
         }
 
         public static int GetPlayerDamage(int index)
         {
-            int GetPlayerDamageRet = default;
-            int weaponNum;
-
-            GetPlayerDamageRet = 0;
-
-            // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index >= Core.Constant.MAX_PLAYERS)
+            try
             {
-                return GetPlayerDamageRet;
+                int i;
+                i = Script.Instance?.GetPlayerDamage(index);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
-            {
-                weaponNum = GetPlayerEquipment(index, EquipmentType.Weapon);
-                GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + Core.Type.Item[weaponNum].Data2 * 2 + GetPlayerLevel(index) * 3 + General.GetRandom.NextDouble(0d, 20d));
-            }
-            else
-            {
-                GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + GetPlayerLevel(index) * 3 + General.GetRandom.NextDouble(0d, 20d));
-            }
-
-            return GetPlayerDamageRet;
-
+            return 0;
         }
 
         public static int GetPlayerProtection(int index)
         {
-            int GetPlayerProtectionRet = default;
-            double Armor;
-            double Helm;
-            double Shield;
-            GetPlayerProtectionRet = 0;
-
-            // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index >= Core.Constant.MAX_PLAYERS)
+            try
             {
-                return GetPlayerProtectionRet;
+                int i;
+                i = Script.Instance?.GetPlayerProtection(index);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            Armor = GetPlayerEquipment(index, EquipmentType.Armor);
-            Helm = GetPlayerEquipment(index, EquipmentType.Helmet);
-            Shield = GetPlayerEquipment(index, EquipmentType.Shield);
-
-            if (Armor >= 0)
-            {
-                GetPlayerProtectionRet += Core.Type.Item[(int)Armor].Data2;
-            }
-
-            if (Helm >= 0)
-            {
-                GetPlayerProtectionRet += Core.Type.Item[(int)Helm].Data2;
-            }
-
-            if (Shield >= 0)
-            {
-                GetPlayerProtectionRet += Core.Type.Item[(int)Shield].Data2;
-            }
-
-            GetPlayerProtectionRet = (int)Math.Round(GetPlayerProtectionRet / 6d);
-            GetPlayerProtectionRet += GetPlayerStat(index, StatType.Luck) / 5;
-            return GetPlayerProtectionRet;
+            return 0;
         }
 
         public static void AttackPlayer(int attacker, int victim, int damage, int skillNum = 0, int NPCNum = 0)
@@ -627,7 +570,7 @@ namespace Server
         {
             bool IsInRangeRet = default;
             int nVal;
-            IsInRangeRet = Conversions.ToBoolean(0);
+            IsInRangeRet = false;
             nVal = (int)Math.Round(Math.Sqrt(Math.Pow(x1 - x2, 2d) + Math.Pow(y1 - y2, 2d)));
             if (nVal <= range)
                 IsInRangeRet = Conversions.ToBoolean(1);
@@ -640,7 +583,7 @@ namespace Server
             int rate;
             int rndNum;
 
-            CanPlayerDodgeRet = Conversions.ToBoolean(0);
+            CanPlayerDodgeRet = false;
 
             rate = GetPlayerStat(index, StatType.Luck) / 4;
             rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
