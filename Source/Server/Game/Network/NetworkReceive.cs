@@ -751,7 +751,7 @@ namespace Server
             // Check tradeskills
             switch (GetPlayerDir(index))
             {
-                case var @case when @case == (byte) DirectionType.Up:
+                case  (byte) DirectionType.Up:
                     {
 
                         if (GetPlayerY(index) == 0)
@@ -760,7 +760,7 @@ namespace Server
                         y = GetPlayerY(index) - 1;
                         break;
                     }
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
 
                         if (GetPlayerY(index) == Core.Type.Map[GetPlayerMap(index)].MaxY)
@@ -769,7 +769,7 @@ namespace Server
                         y = GetPlayerY(index) + 1;
                         break;
                     }
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte) DirectionType.Left:
                     {
 
                         if (GetPlayerX(index) == 0)

@@ -278,14 +278,14 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == VitalType.HP:
+                case  VitalType.HP:
                     {
                         buffer.WriteInt32(GetPetMaxVital(index, VitalType.HP));
                         buffer.WriteInt32(GetPetVital(index, VitalType.HP));
                         break;
                     }
 
-                case var case1 when case1 == VitalType.SP:
+                case VitalType.SP:
                     {
                         buffer.WriteInt32(GetPetMaxVital(index, VitalType.SP));
                         buffer.WriteInt32(GetPetVital(index, VitalType.SP));
@@ -1227,19 +1227,19 @@ namespace Server
 
             switch (dir)
             {
-                case var @case when @case == (byte) DirectionType.Up:
+                case  (byte) DirectionType.Up:
                     {
                         SetPetY(index, GetPetY(index) - 1);
                         break;
                     }
 
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
                         SetPetY(index, GetPetY(index) + 1);
                         break;
                     }
 
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte) DirectionType.Left:
                     {
                         SetPetX(index, GetPetX(index) - 1);
                         break;
@@ -1299,7 +1299,7 @@ namespace Server
             switch (dir)
             {
 
-                case var @case when @case == (byte) DirectionType.Up:
+                case  (byte) DirectionType.Up:
                     {
                         // Check to make sure not outside of boundries
                         if (y > 0)
@@ -1359,7 +1359,7 @@ namespace Server
                         break;
                     }
 
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
                         // Check to make sure not outside of boundries
                         if (y < Core.Type.Map[mapNum].MaxY)
@@ -1418,7 +1418,7 @@ namespace Server
                         break;
                     }
 
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte) DirectionType.Left:
                     {
 
                         // Check to make sure not outside of boundries
@@ -2259,13 +2259,13 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == VitalType.HP:
+                case  VitalType.HP:
                     {
                         i = GetPlayerStat(index, (StatType)((byte)(StatType.Spirit) * 0.8d + 6));
                         break;
                     }
 
-                case var case1 when case1 == VitalType.SP:
+                case VitalType.SP:
                     {
                         i = GetPlayerStat(index, (StatType)((byte)(StatType.Spirit) / 4 + 12.5d));
                         break;
@@ -2478,21 +2478,21 @@ namespace Server
                     switch (GetPetDir(attacker))
                     {
 
-                        case var @case when @case == (byte) DirectionType.Up:
+                        case  (byte) DirectionType.Up:
                             {
                                 npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X;
                                 npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y + 1;
                                 break;
                             }
 
-                        case var case1 when case1 == (byte) DirectionType.Down:
+                        case (byte) DirectionType.Down:
                             {
                                 npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X;
                                 npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y - 1;
                                 break;
                             }
 
-                        case var case2 when case2 == (byte) DirectionType.Left:
+                        case (byte) DirectionType.Left:
                             {
                                 npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X + 1;
                                 npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y;
@@ -2889,21 +2889,21 @@ namespace Server
                 // Check if at same coordinates
                 switch (GetPetDir(attacker))
                 {
-                    case var @case when @case == (byte) DirectionType.Up:
+                    case  (byte) DirectionType.Up:
                         {
                             if (!(GetPlayerY(victim) + 1 == GetPetY(attacker)) & GetPlayerX(victim) == GetPetX(attacker))
                                 return CanPetAttackPlayerRet;
                             break;
                         }
 
-                    case var case1 when case1 == (byte) DirectionType.Down:
+                    case (byte) DirectionType.Down:
                         {
                             if (!(GetPlayerY(victim) - 1 == GetPetY(attacker)) & GetPlayerX(victim) == GetPetX(attacker))
                                 return CanPetAttackPlayerRet;
                             break;
                         }
 
-                    case var case2 when case2 == (byte) DirectionType.Left:
+                    case (byte) DirectionType.Left:
                         {
                             if (!(GetPlayerY(victim) == GetPetY(attacker)) & GetPlayerX(victim) + 1 == GetPetX(attacker))
                                 return CanPetAttackPlayerRet;
@@ -3186,7 +3186,7 @@ namespace Server
         {
             bool CanPetAttackPetRet = default;
 
-            if (Conversions.ToBoolean(~isSkill))
+            if (isSkill == 0)
             {
                 if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].PetAttackTimer + 1000)
                     return CanPetAttackPetRet;
@@ -3207,27 +3207,27 @@ namespace Server
             if (Core.Type.TempPlayer[attacker].PetSkillBuffer.Skill > 0 & isSkill == 0)
                 return CanPetAttackPetRet;
 
-            if (Conversions.ToBoolean(~isSkill))
+            if (isSkill == 0)
             {
 
                 // Check if at same coordinates
                 switch (GetPetDir(attacker))
                 {
-                    case var @case when @case == (byte) DirectionType.Up:
+                    case  (byte) DirectionType.Up:
                         {
                             if (!(GetPetY(victim) - 1 == GetPetY(attacker) & GetPetX(victim) == GetPetX(attacker)))
                                 return CanPetAttackPetRet;
                             break;
                         }
 
-                    case var case1 when case1 == (byte) DirectionType.Down:
+                    case (byte) DirectionType.Down:
                         {
                             if (!(GetPetY(victim) + 1 == GetPetY(attacker) & GetPetX(victim) == GetPetX(attacker)))
                                 return CanPetAttackPetRet;
                             break;
                         }
 
-                    case var case2 when case2 == (byte) DirectionType.Left:
+                    case (byte) DirectionType.Left:
                         {
                             if (!(GetPetY(victim) == GetPetY(attacker) & GetPetX(victim) + 1 == GetPetX(attacker)))
                                 return CanPetAttackPetRet;
@@ -3588,7 +3588,7 @@ namespace Server
                 // PET
                 case 0:
                 case 1:
-                case var @case when @case == (byte)SkillType.Pet: // self-cast & self-cast AOE
+                case  (byte)SkillType.Pet: // self-cast & self-cast AOE
                     {
                         hasBuffered = Conversions.ToBoolean(1);
                         break;
@@ -3788,13 +3788,13 @@ namespace Server
                     {
                         switch (Core.Type.Skill[(int)skillNum].Type)
                         {
-                            case var @case when @case == (byte)SkillType.HealHp:
+                            case  (byte)SkillType.HealHp:
                                 {
                                     SkillPet_Effect((int)VitalType.HP, true, index, vital, (int)skillNum);
                                     didCast = Conversions.ToBoolean(1);
                                     break;
                                 }
-                            case var case1 when case1 == (byte)SkillType.HealMp:
+                            case (byte)SkillType.HealMp:
                                 {
                                     SkillPet_Effect((int)VitalType.SP, true, index, vital, (int)skillNum);
                                     didCast = Conversions.ToBoolean(1);
@@ -3846,7 +3846,7 @@ namespace Server
                         switch (Core.Type.Skill[(int)skillNum].Type)
                         {
 
-                            case var case2 when case2 == (byte)SkillType.DamageHp:
+                            case (byte)SkillType.DamageHp:
                                 {
                                     didCast = Conversions.ToBoolean(1);
 
@@ -4358,21 +4358,21 @@ namespace Server
                 switch (GetPlayerDir(attacker))
                 {
 
-                    case var @case when @case == (byte) DirectionType.Up:
+                    case  (byte) DirectionType.Up:
                         {
                             if (!(GetPetY(victim) + 1 == GetPlayerY(attacker) & GetPetX(victim) == GetPlayerX(attacker)))
                                 return CanPlayerAttackPetRet;
                             break;
                         }
 
-                    case var case1 when case1 == (byte) DirectionType.Down:
+                    case (byte) DirectionType.Down:
                         {
                             if (!(GetPetY(victim) - 1 == GetPlayerY(attacker) & GetPetX(victim) == GetPlayerX(attacker)))
                                 return CanPlayerAttackPetRet;
                             break;
                         }
 
-                    case var case2 when case2 == (byte) DirectionType.Left:
+                    case (byte) DirectionType.Left:
                         {
                             if (!(GetPetY(victim) == GetPlayerY(attacker) & GetPetX(victim) + 1 == GetPlayerX(attacker)))
                                 return CanPlayerAttackPetRet;
@@ -4875,13 +4875,13 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == VitalType.HP:
+                case  VitalType.HP:
                     {
                         GetPetVitalRet = Core.Type.Player[index].Pet.Health;
                         break;
                     }
 
-                case var case1 when case1 == VitalType.SP:
+                case VitalType.SP:
                     {
                         GetPetVitalRet = Core.Type.Player[index].Pet.Mana;
                         break;
@@ -4900,13 +4900,13 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == VitalType.HP:
+                case  VitalType.HP:
                     {
                         Core.Type.Player[index].Pet.Health = amount;
                         break;
                     }
 
-                case var case1 when case1 == VitalType.SP:
+                case VitalType.SP:
                     {
                         Core.Type.Player[index].Pet.Mana = amount;
                         break;
@@ -4920,13 +4920,13 @@ namespace Server
             int GetPetMaxVitalRet = default;
             switch (vital)
             {
-                case var @case when @case == VitalType.HP:
+                case  VitalType.HP:
                     {
                         GetPetMaxVitalRet = Core.Type.Player[index].Pet.Level * 4 + (int)Core.Type.Player[index].Pet.Stat[(byte)StatType.Luck] * 10 + 150;
                         break;
                     }
 
-                case var case1 when case1 == VitalType.SP:
+                case VitalType.SP:
                     {
                         GetPetMaxVitalRet = (int)Math.Round(((double)(Core.Type.Player[index].Pet.Level * 4) + (double)Core.Type.Player[index].Pet.Stat[(byte)StatType.Spirit] / 2d) * 5d + 50d);
                         break;

@@ -340,19 +340,19 @@ namespace Server
                 // Check if at same coordinates
                 switch (GetPlayerDir(attacker))
                 {
-                    case var @case when @case == (byte) DirectionType.Up:
+                    case  (byte) DirectionType.Up:
                         {
                             atkX = GetPlayerX(attacker);
                             atkY = GetPlayerY(attacker) - 1;
                             break;
                         }
-                    case var case1 when case1 == (byte) DirectionType.Down:
+                    case (byte) DirectionType.Down:
                         {
                             atkX = GetPlayerX(attacker);
                             atkY = GetPlayerY(attacker) + 1;
                             break;
                         }
-                    case var case2 when case2 == (byte) DirectionType.Left:
+                    case (byte) DirectionType.Left:
                         {
                             atkX = GetPlayerX(attacker) - 1;
                             atkY = GetPlayerY(attacker);

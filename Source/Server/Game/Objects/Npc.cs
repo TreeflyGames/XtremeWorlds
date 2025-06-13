@@ -426,7 +426,7 @@ namespace Server
 
             switch (Dir)
             {
-                case var @case when @case == (byte) DirectionType.Up:
+                case  (byte) DirectionType.Up:
                     {
                         Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y = (byte)(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y - 1);
 
@@ -440,7 +440,7 @@ namespace Server
                         NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                         break;
                     }
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
                         Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y = (byte)(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y + 1);
 
@@ -454,7 +454,7 @@ namespace Server
                         NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                         break;
                     }
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte) DirectionType.Left:
                     {
                         Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X = (byte)(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X - 1);
 

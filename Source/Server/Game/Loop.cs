@@ -1320,7 +1320,7 @@ namespace Server
                         }
                         switch (Core.Type.Skill[skillNum].Type)
                         {
-                            case var @case when @case == (byte)SkillType.DamageHp:
+                            case  (byte)SkillType.DamageHp:
                                 {
                                     didCast = Conversions.ToBoolean(1);
                                     var loopTo = NetworkConfig.Socket.HighIndex;
