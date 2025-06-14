@@ -1011,4 +1011,628 @@ public class Script
         return CanPlayerParryRet;
     }
 
+    public bool CanPetAttackPlayer(int attacker, int victim, bool isSkill = false)
+    {
+        bool CanPetAttackPlayerRet = default;
+
+        if (!isSkill)
+        {
+            if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].PetAttackTimer + 1000)
+                return CanPetAttackPlayerRet;
+        }
+
+        // Check for subscript out of range
+        if (!NetworkConfig.IsPlaying(victim))
+            return CanPetAttackPlayerRet;
+
+        // Make sure they are on the same map
+        if (!(GetPlayerMap(attacker) == GetPlayerMap(victim)))
+            return CanPetAttackPlayerRet;
+
+        // Make sure we dont attack the player if they are switching maps
+        if (Core.Type.TempPlayer[victim].GettingMap == true)
+            return CanPetAttackPlayerRet;
+
+        if (Core.Type.TempPlayer[attacker].PetSkillBuffer.Skill > 0 & isSkill == false)
+            return CanPetAttackPlayerRet;
+
+        if (!isSkill)
+        {
+            // Check if at same coordinates
+            switch (GetPetDir(attacker))
+            {
+                case  (byte) DirectionType.Up:
+                    {
+                        if (!(GetPlayerY(victim) + 1 == GetPetY(attacker)) & GetPlayerX(victim) == GetPetX(attacker))
+                            return CanPetAttackPlayerRet;
+                        break;
+                    }
+
+                case (byte) DirectionType.Down:
+                    {
+                        if (!(GetPlayerY(victim) - 1 == GetPetY(attacker)) & GetPlayerX(victim) == GetPetX(attacker))
+                            return CanPetAttackPlayerRet;
+                        break;
+                    }
+
+                case (byte) DirectionType.Left:
+                    {
+                        if (!(GetPlayerY(victim) == GetPetY(attacker)) & GetPlayerX(victim) + 1 == GetPetX(attacker))
+                            return CanPetAttackPlayerRet;
+                        break;
+                    }
+
+                case (byte) DirectionType.Right:
+                    {
+                        if (!(GetPlayerY(victim) == GetPetY(attacker)) & GetPlayerX(victim) - 1 == GetPetX(attacker))
+                            return CanPetAttackPlayerRet;
+                        break;
+                    }
+
+                default:
+                    {
+                        return CanPetAttackPlayerRet;
+                    }
+            }
+        }
+
+        // CheckIf Type.Map is attackable
+        if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral >= 0)
+        {
+            if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
+            {
+                if (GetPlayerPK(victim) == false)
+                {
+                    return CanPetAttackPlayerRet;
+                }
+            }
+        }
+
+        // Make sure they have more then 0 hp
+        if (GetPlayerVital(victim, VitalType.HP) < 0)
+            return CanPetAttackPlayerRet;
+
+        // Check to make sure that they dont have access
+        if (GetPlayerAccess(attacker) > (byte) AccessType.Moderator)
+        {
+            NetworkSend.PlayerMsg(attacker, "Admins cannot attack other players.", (int) ColorType.Yellow);
+            return CanPetAttackPlayerRet;
+        }
+
+        // Check to make sure the victim isn't an admin
+        if (GetPlayerAccess(victim) > (byte) AccessType.Moderator)
+        {
+            NetworkSend.PlayerMsg(attacker, "You cannot attack " + GetPlayerName(victim) + "!", (int) ColorType.Yellow);
+            return CanPetAttackPlayerRet;
+        }
+
+        // Don't attack a party member
+        if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0)
+        {
+            if (Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
+            {
+                NetworkSend.PlayerMsg(attacker, "You can't attack another party member!", (int) ColorType.Yellow);
+                return CanPetAttackPlayerRet;
+            }
+        }
+
+        CanPetAttackPlayerRet = true;
+        return CanPetAttackPlayerRet;
+    }
+
+    public void PetAttackPlayer(int attacker, int victim, int damage, int skillNum)
+    {
+
+            int exp;
+            int i;
+
+            // Check for subscript out of range
+
+            if (NetworkConfig.IsPlaying(attacker) == false | NetworkConfig.IsPlaying(victim) == false | damage < 0 | PetAlive(attacker) == false)
+            {
+                return;
+            }
+
+            if (skillNum == -1)
+            {
+                // Send this packet so they can see the pet attacking
+                SendPetAttack(attacker, victim);
+            }
+
+            // set the regen timer
+            Core.Type.TempPlayer[attacker].PetStopRegen = true;
+            Core.Type.TempPlayer[attacker].PetStopRegenTimer = General.GetTimeMs();
+
+            if (damage >= GetPlayerVital(victim, VitalType.HP))
+            {
+                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPlayerVital(victim, VitalType.HP), (int) ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
+
+                // send the sound
+                // If skillNum >= 0 Then SendMapSound(victim, GetPlayerX(victim), GetPlayerY(victim), SoundEntity.seSkill, skillNum)
+
+                // Player is dead
+                NetworkSend.GlobalMsg(GetPlayerName(victim) + " has been killed by " + GetPlayerName(attacker) + "'s " + GetPetName(attacker) + ".");
+
+                // Calculate exp to give attacker
+                exp = GetPlayerExp(victim) / 10;
+
+                // Make sure we dont get less then 0
+                if (exp < 0)
+                {
+                    exp = 0;
+                }
+
+                if (exp == 0)
+                {
+                    NetworkSend.PlayerMsg(victim, "You lost no experience.", (int) ColorType.BrightGreen);
+                    NetworkSend.PlayerMsg(attacker, "You received no experience.", (int) ColorType.BrightRed);
+                }
+                else
+                {
+                    SetPlayerExp(victim, GetPlayerExp(victim) - exp);
+                    NetworkSend.SendExp(victim);
+                    NetworkSend.PlayerMsg(victim, "You lost " + exp + " experience.", (int) ColorType.BrightRed);
+
+                    // check if we're in a party
+                    if (Core.Type.TempPlayer[attacker].InParty >= 0)
+                    {
+                        // pass through party exp share function
+                        ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, GetPlayerMap(attacker));
+                    }
+                    else
+                    {
+                        // not in party, get exp for self
+                        Event.GivePlayerExp(attacker, exp);
+                    }
+                }
+
+                // purge target info of anyone who targetted dead guy
+                var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                for (i = 0; i < loopTo; i++)
+                {
+
+                    if (NetworkConfig.IsPlaying(i) & NetworkConfig.Socket.IsConnected(i))
+                    {
+                        if (GetPlayerMap(i) == GetPlayerMap(attacker))
+                        {
+                            if (Core.Type.TempPlayer[i].TargetType == (byte)TargetType.Player)
+                            {
+                                if (Core.Type.TempPlayer[i].Target == victim)
+                                {
+                                    Core.Type.TempPlayer[i].Target = 0;
+                                    Core.Type.TempPlayer[i].TargetType = 0;
+                                    NetworkSend.SendTarget(i, 0, 0);
+                                }
+                            }
+
+                            if (Core.Type.Player[i].Pet.Alive == 1)
+                            {
+                                if (Core.Type.TempPlayer[i].PetTargetType == (byte)TargetType.Player)
+                                {
+                                    if (Core.Type.TempPlayer[i].PetTarget == victim)
+                                    {
+                                        Core.Type.TempPlayer[i].PetTarget = 0;
+                                        Core.Type.TempPlayer[i].PetTargetType = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (GetPlayerPK(victim) == false)
+                {
+                    if (GetPlayerPK(attacker) == false)
+                    {
+                        SetPlayerPK(attacker, true);
+                        NetworkSend.SendPlayerData(attacker);
+                        NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer");
+                    }
+                }
+                else
+                {
+                    NetworkSend.GlobalMsg(GetPlayerName(victim) + " has paid the price for being a Player Killer!");
+                }
+
+                OnDeath(victim);
+            }
+            else
+            {
+                // Player not dead, just do the damage
+                SetPlayerVital(victim, VitalType.HP, GetPlayerVital(victim, VitalType.HP) - damage);
+                NetworkSend.SendVital(victim, VitalType.HP);
+
+                // send the sound
+                // If skillNum >= 0 Then SendMapSound(victim, GetPlayerX(victim), GetPlayerY(victim), SoundEntity.seSkill, skillNum)
+
+                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + damage, (int) ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
+                NetworkSend.SendBlood(GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
+
+                // set the regen timer
+                Core.Type.TempPlayer[victim].StopRegen = 0;
+                Core.Type.TempPlayer[victim].StopRegenTimer = General.GetTimeMs();
+
+                // if a stunning Skill, stun the player
+                if (skillNum >= 0)
+                {
+                    if (Core.Type.Skill[skillNum].StunDuration > 0)
+                        StunPlayer(victim, skillNum);
+
+                    // DoT
+                    if (Core.Type.Skill[skillNum].Duration > 0)
+                    {
+                        // AddDoT_Player(victim, skillNum, attacker)
+                    }
+                }
+            }
+
+            // Reset attack timer
+            Core.Type.TempPlayer[attacker].PetAttackTimer = General.GetTimeMs();
+    }
+
+    public void TryPetAttackPlayer(int index, int victim)
+    {
+        int mapNum;
+        int damage;
+
+        if (GetPlayerMap(index) != GetPlayerMap(victim))
+            return;
+
+        if (!PetAlive(index))
+            return;
+
+        // Can the npc attack the player?
+        if (CanPetAttackPlayer(index, victim))
+        {
+            mapNum = GetPlayerMap(index);
+
+            // check if PLAYER can avoid the attack
+            if (CanPlayerDodge(victim))
+            {
+                NetworkSend.SendActionMsg(mapNum, "Dodge!", (int) ColorType.Pink, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
+                return;
+            }
+
+            if (CanPlayerParry(victim))
+            {
+                NetworkSend.SendActionMsg(mapNum, "Parry!", (int) ColorType.Pink, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
+                return;
+            }
+
+            if (CanPlayerBlockHit(victim))
+            {
+                NetworkSend.SendActionMsg(mapNum, "Block!", (int) ColorType.BrightCyan, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
+                return;
+            }
+
+            // Get the damage we can do
+            damage = GetPetDamage(index);
+
+            // take away armour
+            damage = (int)Math.Round(damage - General.GetRandom.NextDouble(1, GetPetStat(index, StatType.Luck) * 2));
+
+            // randomise for up to 10% lower than Core.Constant.MAX hit
+            damage = (int)Math.Round(General.GetRandom.NextDouble(1d, damage));
+
+            // * 1.5 if crit hit
+            if (CanPetCrit(index))
+            {
+                damage = (int)Math.Round(damage * 1.5d);
+                NetworkSend.SendActionMsg(mapNum, "Critical!", (int) ColorType.BrightCyan, 1, GetPetX(index) * 32, GetPetY(index) * 32);
+            }
+
+            if (damage > 0)
+            {
+                PetAttackPlayer(index, victim, damage, -1);
+            }
+        }
+    }
+
+    public bool CanPetAttackPet(int attacker, int victim, int isSkill)
+    {
+
+        bool CanPetAttackPetRet = default;
+
+        if (isSkill == 0)
+        {
+            if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].PetAttackTimer + 1000)
+                return CanPetAttackPetRet;
+        }
+
+        // Check for subscript out of range
+        if (!NetworkConfig.IsPlaying(victim) | !NetworkConfig.IsPlaying(attacker))
+            return CanPetAttackPetRet;
+
+        // Make sure they are on the same map
+        if (!(GetPlayerMap(attacker) == GetPlayerMap(victim)))
+            return CanPetAttackPetRet;
+
+        // Make sure we dont attack the player if they are switching maps
+        if (Core.Type.TempPlayer[victim].GettingMap == true)
+            return CanPetAttackPetRet;
+
+        if (Core.Type.TempPlayer[attacker].PetSkillBuffer.Skill > 0 & isSkill == 0)
+            return CanPetAttackPetRet;
+
+        if (isSkill == 0)
+        {
+
+            // Check if at same coordinates
+            switch (GetPetDir(attacker))
+            {
+                case  (byte) DirectionType.Up:
+                    {
+                        if (!(GetPetY(victim) - 1 == GetPetY(attacker) & GetPetX(victim) == GetPetX(attacker)))
+                            return CanPetAttackPetRet;
+                        break;
+                    }
+
+                case (byte) DirectionType.Down:
+                    {
+                        if (!(GetPetY(victim) + 1 == GetPetY(attacker) & GetPetX(victim) == GetPetX(attacker)))
+                            return CanPetAttackPetRet;
+                        break;
+                    }
+
+                case (byte) DirectionType.Left:
+                    {
+                        if (!(GetPetY(victim) == GetPetY(attacker) & GetPetX(victim) + 1 == GetPetX(attacker)))
+                            return CanPetAttackPetRet;
+                        break;
+                    }
+
+                case (byte) DirectionType.Right:
+                    {
+                        if (!(GetPetY(victim) == GetPetY(attacker) & GetPetX(victim) - 1 == GetPetX(attacker)))
+                            return CanPetAttackPetRet;
+                        break;
+                    }
+
+                default:
+                    {
+                        return CanPetAttackPetRet;
+                    }
+            }
+        }
+
+        // CheckIf Type.Map is attackable
+        if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral >= 0)
+        {
+            if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
+            {
+                if (GetPlayerPK(victim) == false)
+                {
+                    return CanPetAttackPetRet;
+                }
+            }
+        }
+
+        // Make sure they have more then 0 hp
+        if (Core.Type.Player[victim].Pet.Health < 0)
+            return CanPetAttackPetRet;
+
+        // Check to make sure that they dont have access
+        if (GetPlayerAccess(attacker) > (byte) AccessType.Moderator)
+        {
+            NetworkSend.PlayerMsg(attacker, "Admins cannot attack other players.", (int) ColorType.BrightRed);
+            return CanPetAttackPetRet;
+        }
+
+        // Check to make sure the victim isn't an admin
+        if (GetPlayerAccess(victim) > (byte) AccessType.Moderator)
+        {
+            NetworkSend.PlayerMsg(attacker, "You cannot attack " + GetPlayerName(victim) + "!", (int) ColorType.BrightRed);
+            return CanPetAttackPetRet;
+        }
+
+        // Don't attack a party member
+        if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0)
+        {
+            if (Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
+            {
+                NetworkSend.PlayerMsg(attacker, "You can't attack another party member!", (int) ColorType.BrightRed);
+                return CanPetAttackPetRet;
+            }
+        }
+
+        if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0 & Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
+        {
+            if (isSkill > 0)
+            {
+                if (Core.Type.Skill[isSkill].Type == (byte)SkillType.HealMp | Core.Type.Skill[isSkill].Type == (byte)SkillType.HealHp)
+                {
+                }
+                // Carry On :D
+                else
+                {
+                    return CanPetAttackPetRet;
+                }
+            }
+            else
+            {
+                return CanPetAttackPetRet;
+            }
+        }
+
+        CanPetAttackPetRet = true;
+        return CanPetAttackPetRet;
+    }
+
+    public void PetAttackPet(int attacker, int victim, int damage, int skillNum)
+    {
+        int exp;
+        int i;
+
+        // Check for subscript out of range
+
+        if (NetworkConfig.IsPlaying(attacker) == false | NetworkConfig.IsPlaying(victim) == false | damage < 0 | PetAlive(attacker) == false | PetAlive(victim) == false)
+        {
+            return;
+        }
+
+        if (skillNum == -1)
+        {
+            // Send this packet so they can see the pet attacking
+            SendPetAttack(attacker, victim);
+        }
+
+        // set the regen timer
+        Core.Type.TempPlayer[attacker].PetStopRegen = true;
+        Core.Type.TempPlayer[attacker].PetStopRegenTimer = General.GetTimeMs();
+
+        if (damage >= GetPetVital(victim, VitalType.HP))
+        {
+            NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, VitalType.HP), (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
+
+            // send the sound
+            // If skillNum >= 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, skillNum
+
+            // purge target info of anyone who targetted dead guy
+            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo; i++)
+            {
+
+                if (NetworkConfig.IsPlaying(i) & NetworkConfig.Socket.IsConnected(i))
+                {
+                    if (GetPlayerMap(i) == GetPlayerMap(attacker))
+                    {
+                        if (Core.Type.TempPlayer[i].TargetType == (byte)TargetType.Player)
+                        {
+                            if (Core.Type.TempPlayer[i].Target == victim)
+                            {
+                                Core.Type.TempPlayer[i].Target = 0;
+                                Core.Type.TempPlayer[i].TargetType = 0;
+                                NetworkSend.SendTarget(i, 0, 0);
+                            }
+                        }
+
+                        if (PetAlive(i))
+                        {
+                            if (Core.Type.TempPlayer[i].PetTargetType == (byte)TargetType.Player)
+                            {
+                                if (Core.Type.TempPlayer[i].PetTarget == victim)
+                                {
+                                    Core.Type.TempPlayer[i].PetTarget = 0;
+                                    Core.Type.TempPlayer[i].PetTargetType = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (GetPlayerPK(victim) == false)
+            {
+                if (GetPlayerPK(attacker) == false)
+                {
+                    SetPlayerPK(attacker, true);
+                    NetworkSend.SendPlayerData(attacker);
+                    NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer!!!");
+                }
+            }
+            else
+            {
+                NetworkSend.GlobalMsg(GetPlayerName(victim) + " has paid the price for being a Player Killer!!!");
+            }
+
+            // kill pet
+            NetworkSend.PlayerMsg(victim, "Your " + GetPetName(victim) + " was killed by " + GetPlayerName(attacker) + "'s " + GetPetName(attacker) + "!", (int) ColorType.BrightRed);
+            ReleasePet(victim);
+        }
+        else
+        {
+            // Player not dead, just do the damage
+            SetPetVital(victim, VitalType.HP, GetPetVital(victim, VitalType.HP) - damage);
+            SendPetVital(victim, VitalType.HP);
+
+            // Set pet to begin attacking the other pet if it isn't dead or dosent have another target
+            if (Core.Type.TempPlayer[victim].PetTarget < 0 & Core.Type.TempPlayer[victim].PetBehavior != PetBehaviourGoto)
+            {
+                Core.Type.TempPlayer[victim].PetTarget = attacker;
+                Core.Type.TempPlayer[victim].PetTargetType = (byte)TargetType.Pet;
+            }
+
+            // send the sound
+            // If skillNum >= 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, skillNum
+
+            NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + damage, (int) ColorType.BrightRed, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
+            NetworkSend.SendBlood(GetPlayerMap(victim), GetPetX(victim), GetPetY(victim));
+
+            // set the regen timer
+            Core.Type.TempPlayer[victim].PetStopRegen = true;
+            Core.Type.TempPlayer[victim].PetStopRegenTimer = General.GetTimeMs();
+
+            // if a stunning Skill, stun the player
+            if (skillNum >= 0)
+            {
+                if (Core.Type.Skill[skillNum].StunDuration > 0)
+                    StunPet(victim, skillNum);
+                // DoT
+                if (Core.Type.Skill[skillNum].Duration > 0)
+                {
+                    // AddDoT_Pet(victim, skillNum, attacker, TargetType.Pet)
+                }
+            }
+        }
+
+        // Reset attack timer
+        Core.Type.TempPlayer[attacker].PetAttackTimer = General.GetTimeMs();
+    }
+
+    public void TryPetAttackPet(int index, int victim)
+    {
+        int mapNum;
+        var blockAmount = default(int);
+        int damage;
+
+        if (GetPlayerMap(index) != GetPlayerMap(victim))
+            return;
+
+        if (!PetAlive(index) | !PetAlive(victim))
+            return;
+
+        // Can the npc attack the player?
+        if (CanPetAttackPet(index, victim, -1))
+        {
+            mapNum = GetPlayerMap(index);
+
+            // check if Pet can avoid the attack
+            if (CanPetDodge(victim))
+            {
+                NetworkSend.SendActionMsg(mapNum, "Dodge!", (int) ColorType.Pink, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
+                return;
+            }
+
+            if (CanPetParry(victim))
+            {
+                NetworkSend.SendActionMsg(mapNum, "Parry!", (int) ColorType.Pink, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
+                return;
+            }
+
+            // Get the damage we can do
+            damage = GetPetDamage(index);
+
+            // if the player blocks, take away the block amount
+            damage -= blockAmount;
+
+            // take away armour
+            damage = (int)Math.Round(damage - General.GetRandom.NextDouble(1, (int)Core.Type.Player[index].Pet.Stat[(byte)StatType.Luck] * 2));
+
+            // randomise for up to 10% lower than Core.Constant.MAX hit
+            damage = (int)Math.Round(General.GetRandom.NextDouble(1d, damage));
+
+            // * 1.5 if crit hit
+            if (CanPetCrit(index))
+            {
+                damage = (int)Math.Round(damage * 1.5d);
+                NetworkSend.SendActionMsg(mapNum, "Critical!", (int) ColorType.BrightCyan, 1, GetPetX(index) * 32, GetPetY(index) * 32);
+            }
+
+            if (damage > 0)
+            {
+                PetAttackPet(index, victim, damage, -1);
+            }
+
+        }
+    }
 }

@@ -10,7 +10,7 @@ namespace Client
     public class Pet
     {
 
-        #region Globals etc
+        #region Globals
 
         internal const byte PetbarTop = 2;
         internal const byte PetbarLeft = 2;
