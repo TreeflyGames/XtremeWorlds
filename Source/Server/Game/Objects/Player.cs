@@ -213,75 +213,14 @@ namespace Server
 
         public static void TryPlayerAttackPlayer(int attacker, int victim)
         {
-            int mapNum;
-            int Damage;
-            int i;
-            var armor = default(int);
-
-            Damage = 0;
-
-            // Can we attack the player?
-            if (CanPlayerAttackPlayer(attacker, victim))
+            try
             {
-
-                mapNum = GetPlayerMap(attacker);
-
-                // check if NPC can avoid the attack
-                if (CanPlayerDodge(victim))
-                {
-                    NetworkSend.SendActionMsg(mapNum, "Dodge!", (int) ColorType.Pink, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-                    return;
-                }
-
-                if (CanPlayerParry(victim))
-                {
-                    NetworkSend.SendActionMsg(mapNum, "Parry!", (int) ColorType.Pink, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-                    return;
-                }
-
-                // Get the damage we can do
-                Damage = GetPlayerDamage(attacker);
-
-                if (CanPlayerBlockHit(victim))
-                {
-                    NetworkSend.SendActionMsg(mapNum, "Block!", (int) ColorType.BrightCyan, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-                    Damage = 0;
-                    return;
-                }
-                else
-                {
-
-                    var loopTo = EquipmentType.Count;
-                    for (i = 0; i < (int)loopTo; i++)
-                    {
-                        if (GetPlayerEquipment(victim, (EquipmentType)i) >= 0)
-                        {
-                            armor += Core.Type.Item[GetPlayerEquipment(victim, (EquipmentType)i)].Data2;
-                        }
-                    }
-
-                    // take away armour
-                    Damage -= GetPlayerStat(victim, StatType.Spirit) * 2 + GetPlayerLevel(victim) * 3 + armor;
-
-                    // * 1.5 if it's a crit!
-                    if (CanPlayerCriticalHit(attacker))
-                    {
-                        Damage = (int)Math.Round(Damage * 1.5d);
-                        NetworkSend.SendActionMsg(mapNum, "Critical!", (int) ColorType.BrightCyan, 1, GetPlayerX(attacker) * 32, GetPlayerY(attacker) * 32);
-                    }
-                }
-
-                if (Damage > 0)
-                {
-                    PlayerAttackPlayer(attacker, victim, Damage);
-                }
-                else
-                {
-                    NetworkSend.PlayerMsg(attacker, "Your attack does nothing.", (int) ColorType.BrightRed);
-                }
-
+                Script.Instance?.TryPlayerAttackPlayer(attacker, victim);
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public static void PlayerAttackPlayer(int attacker, int victim, int Damage)
