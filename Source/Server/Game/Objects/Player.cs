@@ -1052,9 +1052,8 @@ namespace Server
 
         }
 
-        public static object CanPlayerUseItem(int index, int itemNum)
+        public static bool CanPlayerUseItem(int index, int itemNum)
         {
-            object CanPlayerUseItemRet = default;
             int i;
 
             if ((int)Core.Type.Map[GetPlayerMap(index)].Moral >= 0)
@@ -1062,7 +1061,7 @@ namespace Server
                 if (Conversions.ToInteger(Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanUseItem) == 0)
                 {
                     NetworkSend.PlayerMsg(index, "You can't use items here!", (int) ColorType.BrightRed);
-                    return CanPlayerUseItemRet;
+                    return false;
                 }
             }
 
@@ -1072,39 +1071,39 @@ namespace Server
                 if (GetPlayerStat(index, (StatType)i) < Core.Type.Item[itemNum].Stat_Req[i])
                 {
                     NetworkSend.PlayerMsg(index, "You do not meet the stat requirements to use this item.", (int) ColorType.BrightRed);
-                    return CanPlayerUseItemRet;
+                    return false;
                 }
             }
 
             if (Core.Type.Item[itemNum].LevelReq > GetPlayerLevel(index))
             {
                 NetworkSend.PlayerMsg(index, "You do not meet the level requirements to use this item.", (int) ColorType.BrightRed);
-                return CanPlayerUseItemRet;
+                return false;
             }
 
             // Make sure they are the right job
             if (!(Core.Type.Item[itemNum].JobReq == GetPlayerJob(index)) & !(Core.Type.Item[itemNum].JobReq == -1))
             {
-                NetworkSend.PlayerMsg(index, "You do not meet the class requirements to use this item.", (int) ColorType.BrightRed);
-                return CanPlayerUseItemRet;
+                NetworkSend.PlayerMsg(index, "You do not meet the job requirements to use this item.", (int) ColorType.BrightRed);
+                return false;
             }
 
             // access requirement
             if (!(GetPlayerAccess(index) >= Core.Type.Item[itemNum].AccessReq))
             {
                 NetworkSend.PlayerMsg(index, "You do not meet the access requirement to equip this item.", (int) ColorType.BrightRed);
-                return CanPlayerUseItemRet;
+                return false;
             }
 
             // check the player isn't doing something
             if (Core.Type.TempPlayer[index].InBank == true | Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InTrade >= 0)
             {
                 NetworkSend.PlayerMsg(index, "You can't use items while in a bank, shop, or trade!", (int) ColorType.BrightRed);
-                return CanPlayerUseItemRet;
+                return false;
             }
 
-            CanPlayerUseItemRet = 0;
-            return CanPlayerUseItemRet;
+            return true;
+
         }
 
         public static void UseItem(int index, int InvNum)
@@ -1761,17 +1760,6 @@ namespace Server
             try
             {
                 int exp = Script.Instance?.KillPlayer(index);
-
-                if (exp == 0)
-                {
-                    NetworkSend.PlayerMsg(index, "You've lost no experience.", (int)ColorType.BrightGreen);
-                }
-                else
-                {                   
-                    NetworkSend.SendExp(index);
-                    NetworkSend.PlayerMsg(index, string.Format("You've lost {0} experience.", exp), (int)ColorType.BrightRed);
-                }
-
                 return exp;
                 
             }
@@ -1800,76 +1788,6 @@ namespace Server
                 Console.WriteLine(e.Message);
             }
 
-        }
-
-        public static int GetPlayerVitalRegen(int index, VitalType Vital)
-        {
-            try
-            {
-                int i;
-                i = Script.Instance?.GetPlayerVitalRegen(index, Vital);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return 0;
-        }
-
-        public static void HandleNPCKillExperience(int index, int NPCNum)
-        {
-            // Get the experience we'll have to hand out. If it's negative, just ignore this method.
-            int Experience = Core.Type.NPC[(int)NPCNum].Exp;
-            if (Experience < 0)
-                return;
-
-            // Is our player in a party? If so, hand out exp to everyone.
-            if (Party.IsPlayerInParty(index))
-            {
-                Party.ShareExp(Party.GetPlayerParty(index), Experience, index, GetPlayerMap(index));
-            }
-            else
-            {
-                SetPlayerExp(index, Experience);
-            }
-        }
-
-        public static void HandlePlayerKillExperience(int attacker, int victim)
-        {
-            // Calculate exp to give attacker
-            var exp = GetPlayerExp(victim) / 10;
-
-            // Make sure we dont get less then 0
-            if (exp < 0)
-            {
-                exp = 0;
-            }
-
-            if (exp == 0)
-            {
-                NetworkSend.PlayerMsg(victim, "You've lost no exp.", (int) ColorType.BrightRed);
-                NetworkSend.PlayerMsg(attacker, "You've received no exp.", (int) ColorType.BrightBlue);
-            }
-            else
-            {
-                SetPlayerExp(victim, GetPlayerExp(victim) - exp);
-                NetworkSend.SendExp(victim);
-                NetworkSend.PlayerMsg(victim, string.Format("You've lost {0} exp.", exp), (int) ColorType.BrightRed);
-
-                // check if we're in a party
-                if (Conversions.ToInteger(Party.IsPlayerInParty(attacker)) > 0)
-                {
-                    // pass through party exp share function
-                    Party.ShareExp(Party.GetPlayerParty(attacker), exp, attacker, GetPlayerMap(attacker));
-                }
-                else
-                {
-                    // not in party, get exp for self
-                    SetPlayerExp(attacker, exp);
-                }
-            }
         }
 
         #endregion

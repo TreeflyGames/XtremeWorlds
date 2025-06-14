@@ -72,6 +72,23 @@ public class Script
 
     }
 
+    public int KillPlayer(int index)
+    {
+        int exp = GetPlayerExp(index) / 3;
+        
+        if (exp == 0)
+        {
+            NetworkSend.PlayerMsg(index, "You've lost no experience.", (int)ColorType.BrightGreen);
+        }
+        else
+        {                   
+            NetworkSend.SendExp(index);
+            NetworkSend.PlayerMsg(index, string.Format("You've lost {0} experience.", exp), (int)ColorType.BrightRed);
+        }
+
+        return exp;
+    }
+
     public void UpdateMapAI()
     {
         var now = General.GetTimeMs();

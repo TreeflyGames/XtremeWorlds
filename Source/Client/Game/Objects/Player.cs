@@ -904,7 +904,7 @@ namespace Client
         #region Attacking
         public static void CheckAttack(bool mouse = false)
         {
-            int attackspeed;
+            int attackSpeed;
             var x = default(int);
             var y = default(int);
             var buffer = new ByteStream(4);
@@ -926,14 +926,14 @@ namespace Client
                 // speed from weapon
                 if (GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon) >= 0)
                 {
-                    attackspeed = Core.Type.Item[GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon)].Speed * 1000;
+                    attackSpeed = Core.Type.Item[GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon)].Speed * 1000;
                 }
                 else
                 {
-                    attackspeed = 1000;
+                    attackSpeed = 1000;
                 }
 
-                if (Core.Type.Player[GameState.MyIndex].AttackTimer + attackspeed < General.GetTickCount())
+                if (Core.Type.Player[GameState.MyIndex].AttackTimer + attackSpeed < General.GetTickCount())
                 {
                     if (Core.Type.Player[GameState.MyIndex].Attacking == 0)
                     {
