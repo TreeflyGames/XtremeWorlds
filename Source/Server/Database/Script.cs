@@ -92,14 +92,14 @@ public class Script
     public void UpdateMapAI()
     {
         var now = General.GetTimeMs();
-        var maxMaps = Core.Constant.MAX_MAPS;
-        var maxMapItems = Core.Constant.MAX_MAP_ITEMS;
-        var maxMapNpcs = Core.Constant.MAX_MAP_NPCS;
+        var mapCount = Core.Constant.MAX_MAPS;
+        var itemCount = Core.Constant.MAX_MAP_ITEMS;
+        var npcCount = Core.Constant.MAX_MAP_NPCS;
 
-        for (int mapNum = 0; mapNum < maxMaps; mapNum++)
+        for (int mapNum = 0; mapNum < mapCount; mapNum++)
         {
             // Handle map items (public/despawn)
-            for (int i = 0; i < maxMapItems; i++)
+            for (int i = 0; i < itemCount; i++)
             {
                 var item = Core.Type.MapItem[mapNum, i];
                 if (item.Num >= 0 && !string.IsNullOrEmpty(item.PlayerName))
