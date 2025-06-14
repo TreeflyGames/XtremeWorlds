@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Core.Database;
+using Core.Globals;
 using MonoGame.Extended.Content.Tiled;
 
 namespace Core
@@ -43,11 +44,12 @@ namespace Core
         public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[byte.MaxValue];
         public static ScriptStruct Script = new ScriptStruct(); 
 
-        // New feature arrays
         public static QuestStruct[] Quests = new QuestStruct[Constant.MAX_QUESTS];
         public static EventStruct[] Events = new EventStruct[Constant.MAX_EVENTS];
         public static GuildStruct[] Guilds = new GuildStruct[Constant.MAX_GUILDS];
         public static WeatherStruct Weather = new WeatherStruct();
+
+        public static Entity[] Entity = new Entity[Constant.MAX_PLAYERS + Constant.MAX_NPCS + Constant.MAX_PETS];
 
         #region Struct Definitions
 
@@ -341,7 +343,6 @@ namespace Core
             public byte[] Switches;
             public int[] Variables;
             public ResourceTypetruct[] GatherSkills;
-            public PlayerPetStruct Pet;
             public int XOffset;
             public int YOffset;
             public byte Moving;
@@ -352,8 +353,8 @@ namespace Core
             public int Emote;
             public int EmoteTimer;
             public int EventTimer;
-            public PlayerQuestStruct[] Quests; // New: Quest progress tracking
-            public int GuildId; // New: Guild affiliation
+            public PlayerQuestStruct[] Quests;
+            public int GuildId;
         }
 
         public struct TempPlayerStruct

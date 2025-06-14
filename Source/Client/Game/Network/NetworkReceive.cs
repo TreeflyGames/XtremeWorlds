@@ -116,16 +116,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPartyUpdate] = Party.Packet_PartyUpdate;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPartyVitals] = Party.Packet_PartyVitals;
 
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdatePet] = Pet.Packet_UpdatePet;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdatePlayerPet] = Pet.Packet_UpdatePlayerPet;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetMove] = Pet.Packet_PetMove;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetDir] = Pet.Packet_PetDir;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetVital] = Pet.Packet_PetVital;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClearPetSkillBuffer] = Pet.Packet_ClearPetSkillBuffer;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetAttack] = Pet.Packet_PetAttack;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetXY] = Pet.Packet_PetXY;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetExp] = Pet.Packet_PetExperience;
-
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClock] = Packet_Clock;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STime] = Packet_Time;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SScriptEditor] = Script.Packet_EditScript;

@@ -118,12 +118,6 @@ namespace Client
                     }
                 case (byte)Core.Enum.TargetType.Pet:
                     {
-                        if (IsPlaying(lockindex) && Pet.PetAlive(lockindex) && GetPlayerMap(lockindex) == GetPlayerMap(GameState.MyIndex))
-                        {
-                            x = (int)Math.Round(Core.Type.Player[lockindex].Pet.X * GameState.PicX + 16 - width / 2d + Core.Type.Player[lockindex].Pet.XOffset);
-                            y = (int)Math.Round(Core.Type.Player[lockindex].Pet.Y * GameState.PicY + 16 - height / 2d + Core.Type.Player[lockindex].Pet.YOffset);
-                        }
-
                         break;
                     }
             }

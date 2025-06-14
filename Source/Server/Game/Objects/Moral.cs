@@ -207,7 +207,7 @@ namespace Server
             // Save it
             SendUpdateMoralToAll(moralNum);
             SaveMoral(moralNum);
-            Core.Log.Add(GetPlayerLogin(index) + " saved moral #" + moralNum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved moral #" + moralNum + ".", Constant.ADMIN_LOG);
             SendMorals(index);
         }
 

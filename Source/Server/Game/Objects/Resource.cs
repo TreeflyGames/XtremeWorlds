@@ -226,7 +226,7 @@ namespace Server
             SendUpdateResourceToAll(resourcenum);
             SaveResource(resourcenum);
 
-            Core.Log.Add(GetPlayerLogin(index) + " saved Resource #" + resourcenum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved Resource #" + resourcenum + ".", Constant.ADMIN_LOG);
 
             buffer.Dispose();
         }

@@ -85,29 +85,6 @@ namespace Client
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
 
-            Core.Type.Player[index].Pet.Num = -1;
-            Core.Type.Player[index].Pet.Health = 0;
-            Core.Type.Player[index].Pet.Mana = 0;
-            Core.Type.Player[index].Pet.Level = 0;
-
-            Core.Type.Player[index].Pet.Stat = new byte[(int)Core.Enum.StatType.Count];
-            for (int x = 0; x < (int)Core.Enum.StatType.Count; x++)
-                Core.Type.Player[index].Pet.Stat[x] = 0;
-
-            Core.Type.Player[index].Pet.Skill = new int[Core.Constant.MAX_PET_SKILLS];
-            for (int x = 0; x < Core.Constant.MAX_PET_SKILLS; x++)
-                Core.Type.Player[index].Pet.Skill[x] = -1;
-
-            Core.Type.Player[index].Pet.X = 0;
-            Core.Type.Player[index].Pet.Y = 0;
-            Core.Type.Player[index].Pet.Dir = 0;
-            Core.Type.Player[index].Pet.MaxHp = 0;
-            Core.Type.Player[index].Pet.MaxMp = 0;
-            Core.Type.Player[index].Pet.Alive = 0;
-            Core.Type.Player[index].Pet.AttackBehaviour = 0;
-            Core.Type.Player[index].Pet.Exp = 0;
-            Core.Type.Player[index].Pet.Tnl = 0;
-
             Trade.InTrade = -1;
         }
         #endregion

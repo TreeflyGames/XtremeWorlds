@@ -1997,7 +1997,7 @@ namespace Server
                                             break;
 
                                         case (byte)EventType.GiveExp:
-                                            Event.GivePlayerExp(i, command.Data1);
+                                            SetPlayerExp(i, command.Data1);
                                             break;
 
                                         case (byte)EventType.ShowChatBubble:

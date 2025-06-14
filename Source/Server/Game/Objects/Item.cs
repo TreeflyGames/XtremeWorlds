@@ -525,7 +525,7 @@ namespace Server
             // Save it
             SaveItem(n);
             SendUpdateItemToAll(n);
-            Core.Log.Add(GetPlayerLogin(index) + " saved item #" + n + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved item #" + n + ".", Constant.ADMIN_LOG);
             buffer.Dispose();
         }
 

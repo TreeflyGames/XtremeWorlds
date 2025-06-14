@@ -941,11 +941,6 @@ namespace Client
                 
                 if (IsSeartchCooldownElapsed())
                 {
-                    if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
-                    {
-                        Pet.PetMove(GameState.CurX, GameState.CurY);
-                    }
-
                     if (IsMouseButtonDown(MouseButton.Left))
                     {
                         Player.CheckAttack(true);
@@ -1828,8 +1823,8 @@ namespace Client
         public static void DrawChatBubble(long Index)
         {
             var theArray = default(string[]);
-            long x;
-            long y;
+            int x;
+            int y;
             long i;
             var MaxWidth = default(long);
             long x2;
@@ -1878,13 +1873,15 @@ namespace Client
 
                     case (byte)TargetType.Pet:
                     {
-                        x = GameLogic.ConvertMapX(Core.Type.Player[GameState.MyIndex].Pet.X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Core.Type.Player[GameState.MyIndex].Pet.Y * 32) - 32;
+                        x = 0;
+                        y = 0;
                         break;
                     }
 
                     default:
                     {
+                        x = 0;
+                        y = 0;
                         return;
                     }
                 }
@@ -1904,7 +1901,7 @@ namespace Client
                         MaxWidth = Text.GetTextWidth(theArray[(int)i], FontType.Georgia);
                 }
 
-                // calculate the new position
+                // calculate the new position 
                 x2 = x - MaxWidth / 2L;
                 y2 = y - (Information.UBound(theArray) + 1) * 12;
 
@@ -2630,14 +2627,6 @@ namespace Client
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
-                            if (Pet.PetAlive(i))
-                            {
-                                if (Core.Type.Player[i].Pet.Y == y)
-                                {
-                                    Pet.DrawPet(i);
-                                }
-                            }
-
                             if (Core.Type.Player[i].Y == y)
                             {
                                 DrawPlayer(i);
@@ -2697,11 +2686,6 @@ namespace Client
                                 break;
 
                             case (int)TargetType.Pet:
-                                DrawTarget(
-                                    Core.Type.Player[GameState.MyTarget].Pet.X * 32 - 16 +
-                                    Core.Type.Player[GameState.MyTarget].Pet.XOffset,
-                                    Core.Type.Player[GameState.MyTarget].Pet.Y * 32 +
-                                    Core.Type.Player[GameState.MyTarget].Pet.YOffset);
                                 break;
 
                         }
@@ -2820,10 +2804,6 @@ namespace Client
                 if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                 {
                     Text.DrawPlayerName(i);
-                    if (Pet.PetAlive(i))
-                    {
-                        Pet.DrawPlayerPetName(i);
-                    }
                 }
             }
 

@@ -155,19 +155,6 @@ namespace Client
                     }
                 }
 
-                // check if we need to unlock the pets's Skill casting restriction
-                if (Pet.PetSkillBuffer >= 0)
-                {
-                    if (Core.Type.Player[GameState.MyIndex].Pet.Num >= 0 || Core.Type.Player[GameState.MyIndex].Pet.Num <= Constant.MAX_PETS)
-                    {
-                        if (Pet.PetSkillBufferTimer + Core.Type.Skill[Core.Type.Pet[(int)Core.Type.Player[GameState.MyIndex].Pet.Num].Skill[(int)Pet.PetSkillBuffer]].CastTime * 1000 < tick)
-                        {
-                            Pet.PetSkillBuffer = -1;
-                            Pet.PetSkillBufferTimer = 0;
-                        }
-                    }
-                }
-
                 if (GameState.CanMoveNow)
                 {
                     Player.CheckMovement(); // Check if player is trying to move
@@ -177,18 +164,6 @@ namespace Client
                 // Process input before rendering, otherwise input will be behind by 1 frame
                 if (walkTimer < tick)
                 {
-                    for (i = 0; i < Constant.MAX_PLAYERS; i++)
-                    {
-                        if (IsPlaying(i))
-                        {
-                            Player.ProcessPlayerMovement(i);
-                            if (Pet.PetAlive(i))
-                            {
-                                Pet.ProcessPetMovement(i);
-                            }
-                        }
-                    }
-
                     // Process NPC movements (actually move them)
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {

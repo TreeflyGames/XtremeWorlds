@@ -16,397 +16,6 @@ namespace Server
 
     public class Player
     {
-
-        public static bool CanPlayerAttackPlayer(int attacker, int victim, bool IsSkill = false)
-        {
-            try
-            {
-                bool i;
-                i = Script.Instance?.CanPlayerAttackPlayer(attacker, victim, IsSkill);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return false;
-        }
-
-        public static bool CanPlayerBlockHit(int index)
-        {
-            try
-            {
-                bool i;
-                i = Script.Instance?.CanPlayerBlockHit(index);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return false;
-        }
-
-        public static bool CanPlayerCriticalHit(int index)
-        {
-            try
-            {
-                bool i;
-                i = Script.Instance?.CanPlayerCriticialHit(index);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return false;
-        }
-
-        public static int GetPlayerDamage(int index)
-        {
-            try
-            {
-                int i;
-                i = Script.Instance?.GetPlayerDamage(index);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return 0;
-        }
-
-        public static int GetPlayerProtection(int index)
-        {
-            try
-            {
-                int i;
-                i = Script.Instance?.GetPlayerProtection(index);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return 0;
-        }
-
-        public static void AttackPlayer(int attacker, int victim, int damage, int skillNum = 0, int NPCNum = 0)
-        {
-            try
-            {
-                Script.Instance?.AttackPlayer(attacker, victim);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public static void StunPlayer(int index, int skillNum)
-        {
-            try
-            {
-                Script.Instance?.StunPlayer(index, skillNum);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public static bool CanPlayerAttackNPC(int attacker, int MapNPCNum, bool IsSkill = false)
-        {
-            try
-            {
-                bool i;
-                i = Script.Instance?.CanPlayerAttackNPC(attacker, MapNPCNum, IsSkill);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return false;
-        }
-
-        public static void StunNPC(int index, int mapNum, int skillNum)
-        {
-            try
-            {
-                Script.Instance?.StunNPC(index, mapNum, Skill);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public static void PlayerAttackNPC(int attacker, int MapNPCNum, int Damage)
-        {
-            try
-            {
-                Script.Instance?.PlayerAttackNPC(attacker, MapNPCNum, Damage);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public static bool IsInRange(int range, int x1, int y1, int x2, int y2)
-        {
-            bool IsInRangeRet = default;
-            int nVal;
-            IsInRangeRet = false;
-            nVal = (int)Math.Round(Math.Sqrt(Math.Pow(x1 - x2, 2d) + Math.Pow(y1 - y2, 2d)));
-            if (nVal <= range)
-                IsInRangeRet = Conversions.ToBoolean(1);
-            return IsInRangeRet;
-        }
-
-        public static bool CanPlayerDodge(int index)
-        {
-            try
-            {
-                bool i;
-                i = Script.Instance?.CanPlayerDodge(index);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-
-            }
-
-            return false;
-        }
-
-        public static bool CanPlayerParry(int index)
-        {
-            try
-            {
-                bool i;
-                i = Script.Instance?.CanPlayerParry(index);
-                return i;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return false;
-        }
-
-        public static void TryPlayerAttackPlayer(int attacker, int victim)
-        {
-            try
-            {
-                Script.Instance?.TryPlayerAttackPlayer(attacker, victim);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public static void PlayerAttackPlayer(int attacker, int victim, int Damage)
-        {
-            try
-            {
-                Script.Instance?.PlayerAttackPlayer(attacker, victim, Damage);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public static void TryPlayerAttackNPC(int index, int MapNPCNum)
-        {
-            try
-            {
-                Script.Instance?.TryPlayerAttackNPC(index, MapNPCNum);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public static bool IsPlayerDead(int index)
-        {
-            bool IsPlayerDeadRet = false;
-            IsPlayerDeadRet = false;
-            if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
-                return IsPlayerDeadRet;
-            if (GetPlayerVital(index, VitalType.HP) < 0)
-                IsPlayerDeadRet = true;
-            return IsPlayerDeadRet;
-        }
-
-        public static void HandlePlayerKillPlayer(int attacker, int victim)
-        {
-            // Notify everyone that our player has bit the dust.
-            NetworkSend.GlobalMsg(string.Format("{0} has been killed by {1}!", GetPlayerName(victim), GetPlayerName(attacker)));
-
-            // Hand out player experience
-            HandlePlayerKillExperience(attacker, victim);
-
-            // Handle our PK outcomes.
-            HandlePlayerKilledPK(attacker, victim);
-
-            // Remove our player from everyone's target list.
-            foreach (var p in Core.Type.TempPlayer.Where((x, i) => x.InGame & GetPlayerMap((int)Operators.AddObject(i, 1)) == GetPlayerMap(victim) & Operators.ConditionalCompareObjectEqual(x.TargetType, TargetType.Player, false) & Operators.ConditionalCompareObjectEqual(x.Target, victim, false)).Select((x, i) => Operators.AddObject(i, 1)).ToArray())
-            {
-                Core.Type.TempPlayer[(int)p].Target = 0;
-                Core.Type.TempPlayer[(int)p].TargetType = 0;
-                NetworkSend.SendTarget(Conversions.ToInteger(p), 0, 0);
-            }
-
-            // Actually kill the player.
-            OnDeath(victim);
-        }
-
-        public static void HandlePlayerKillNPC(int mapNum, int index, int MapNPCNum)
-        {
-            // Set our attacker's target to nothing.
-            NetworkSend.SendTarget(index, 0, 0);
-
-            // Hand out player experience
-            HandleNPCKillExperience(index, (int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num);
-
-            // Drop items if we can.
-            NPC.DropNPCItems(mapNum, MapNPCNum);
-
-            // Set our NPC's data to default so we know it's dead.
-            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num = -1;
-            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].SpawnWait = General.GetTimeMs();
-            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] = 0;
-
-            // Notify all our clients that the NPC has died.
-            NPC.SendNPCDead(mapNum, (int)MapNPCNum);
-
-            // Check if our dead NPC is targeted by another player and remove their targets.
-            foreach (var p in Core.Type.TempPlayer
-                .Select((x, i) => new { Player = x, Index = i })
-                .Where(x => x.Player.InGame
-                            && GetPlayerMap(x.Index + 1) == mapNum
-                            && x.Player.TargetType == (byte)TargetType.NPC
-                            && x.Player.Target == MapNPCNum)
-                .Select(x => x.Index + 1))
-            {
-                Core.Type.TempPlayer[p].Target = 0;
-                Core.Type.TempPlayer[p].TargetType = 0;
-            }
-
-        }
-
-        public static void HandlePlayerKilledPK(int attacker, int victim)
-        {
-            // TODO: Redo this method, it is horrendous.
-            int z;
-            var eqcount = default(int);
-            int invcount = default, j = default;
-            if (GetPlayerPK(victim) == false)
-            {
-                if (GetPlayerPK(attacker) == false)
-                {
-                    SetPlayerPK(attacker, true);
-                    NetworkSend.SendPlayerData(attacker);
-                    NetworkSend.GlobalMsg(GetPlayerName(attacker) + " has been deemed a Player Killer!!!");
-                }
-            }
-            else
-            {
-                NetworkSend.GlobalMsg(GetPlayerName(victim) + " has paid the price for being a Player Killer!!!");
-            }
-
-            if ((int)Core.Type.Map[GetPlayerMap(victim)].Moral >= 0)
-            {
-                if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(victim)].Moral].DropItems)
-                {
-                    if (GetPlayerLevel(victim) >= 10)
-                    {
-
-                        var loopTo = Core.Constant.MAX_INV;
-                        for (z = 0; z < (int)loopTo; z++)
-                        {
-                            if (GetPlayerInv(victim, z) > 0)
-                            {
-                                invcount += 0;
-                            }
-                        }
-
-                        var loopTo1 = EquipmentType.Count;
-                        for (z = 0; z < (int)loopTo1; z++)
-                        {
-                            if (GetPlayerEquipment(victim, (EquipmentType)z) > 0)
-                            {
-                                eqcount += 0;
-                            }
-                        }
-                        z = (int)Math.Round(General.GetRandom.NextDouble(1d, invcount + eqcount));
-
-                        if (z == 0)
-                            z = 0;
-                        if (z > invcount + eqcount)
-                            z = invcount + eqcount;
-                        if (z > invcount)
-                        {
-                            z -= invcount;
-
-                            for (int x = 0, loopTo2 = (int)(EquipmentType.Count); x < (int)loopTo2; x++)
-                            {
-                                if (GetPlayerEquipment(victim, (EquipmentType)x) >= 0)
-                                {
-                                    j += 0;
-
-                                    if (j == z)
-                                    {
-                                        // Here it is, drop this piece of equipment!
-                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[GetPlayerEquipment(victim, (EquipmentType)x)].Name, (int) ColorType.BrightRed);
-                                        Item.SpawnItem(GetPlayerEquipment(victim, (EquipmentType)x), 1, GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
-                                        SetPlayerEquipment(victim, -1, (EquipmentType)x);
-                                        NetworkSend.SendWornEquipment(victim);
-                                        NetworkSend.SendMapEquipment(victim);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-
-                            for (int x = 1, loopTo3 = Core.Constant.MAX_INV; x < (int)loopTo3; x++)
-                            {
-                                if (GetPlayerInv(victim, x) > 0)
-                                {
-                                    j += 0;
-
-                                    if (j == z)
-                                    {
-                                        // Here it is, drop this item!
-                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[GetPlayerInv(victim, x)].Name, (int) ColorType.BrightRed);
-                                        Item.SpawnItem(GetPlayerInv(victim, x), GetPlayerInvValue(victim, x), GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
-                                        SetPlayerInv(victim, x, 0);
-                                        SetPlayerInvValue(victim, x, 0);
-                                        NetworkSend.SendInventory(victim);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         #region Data
 
         public static void CheckPlayerLevelUp(int index)
@@ -433,7 +42,7 @@ namespace Server
             // Send an ok to client to start receiving in game data
             NetworkSend.SendLoginOK(index);
             JoinGame(index);
-            string text = string.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), SettingsManager.Instance.GameName);
+            string text = string.Format("{0} | {1} has began playing {2}.", GetAccountLogin(index), GetPlayerName(index), SettingsManager.Instance.GameName);
             Core.Log.Add(text, Constant.PLAYER_LOG);
             Console.WriteLine(text);
             
@@ -497,15 +106,6 @@ namespace Server
             SetPlayerX(index, x);
             SetPlayerY(index, y);
             SetPlayerDir(index, dir);
-
-            if (Pet.PetAlive(index))
-            {
-                Pet.SetPetX(index, x);
-                Pet.SetPetY(index, y);
-                Core.Type.TempPlayer[index].PetTarget = 0;
-                Core.Type.TempPlayer[index].PetTargetType = 0;
-                Pet.SendPetXy(index, x, y);
-            }
 
             NetworkSend.SendPlayerXY(index);
 
@@ -1780,11 +1380,6 @@ namespace Server
                                     EventLogic.TriggerEvent(index, 1, 0, GetPlayerX(index), GetPlayerY(index));
                                     break;
                                 }
-                            case (byte)CommonEventType.CustomScript:
-                                {
-                                    Event.CustomScript(index, Core.Type.Item[itemNum].Data2, GetPlayerMap(index), n);
-                                    break;
-                                }
                         }
 
                         break;
@@ -1798,16 +1393,8 @@ namespace Server
 
                 case (byte)ItemType.Pet:
                     {
-                        if (Core.Type.Item[itemNum].Stackable == 1)
-                        {
-                            TakeInv(index, itemNum, 1);
-                        }
-                        else
-                        {
-                            TakeInv(index, itemNum, 0);
-                        }
+                        TakeInv(index, itemNum, 1);
                         n = Core.Type.Item[itemNum].Data1;
-                        Pet.AdoptPet(index, n);
                         break;
                     }
             }
@@ -2151,8 +1738,6 @@ namespace Server
                     NetworkSend.GlobalMsg(string.Format("{0} has left {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
 
                     Console.WriteLine(string.Format("{0} has left {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
-
-                    Pet.RecallPet(index);
                     Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);
                     Database.SaveBank(index);
 
@@ -2247,7 +1832,7 @@ namespace Server
             }
             else
             {
-                Event.GivePlayerExp(index, Experience);
+                SetPlayerExp(index, Experience);
             }
         }
 
@@ -2282,7 +1867,7 @@ namespace Server
                 else
                 {
                     // not in party, get exp for self
-                    Event.GivePlayerExp(attacker, exp);
+                    SetPlayerExp(attacker, exp);
                 }
             }
         }
@@ -2290,174 +1875,15 @@ namespace Server
         #endregion
 
         #region Skills
-        public static void bufferSkill(int index, int SkillSlot)
+        public static void BufferSkill(int index, int skillSlot)
         {
-            double skillNum;
-            int MPCost;
-            int LevelReq;
-            int mapNum;
-            int SkillCastType;
-            int JobReq;
-            int AccessReq;
-            int range;
-            bool HasBuffered;
-
-            TargetType TargetType;
-            int Target;
-
-            // Prevent subscript out of range
-            if (SkillSlot < 0 | SkillSlot > Core.Constant.MAX_PLAYER_SKILLS)
-                return;
-
-            skillNum = GetPlayerSkill(index, SkillSlot);
-            mapNum = GetPlayerMap(index);
-
-            if (skillNum < 0 | skillNum > Core.Constant.MAX_SKILLS)
-                return;
-
-            // Make sure player has the skill
-            if (!HasSkill(index, (int)skillNum))
-                return;
-
-            // see if cooldown has finished
-            if (Core.Type.TempPlayer[index].SkillCD[SkillSlot] > General.GetTimeMs())
+            try
             {
-                NetworkSend.PlayerMsg(index, "Skill hasn't cooled down yet!", (int) ColorType.Yellow);
-                return;
+                Script.Instance?.BufferSkill(index, skillSlot);
             }
-
-            MPCost = Core.Type.Skill[(int)skillNum].MpCost;
-
-            // Check if they have enough MP
-            if (GetPlayerVital(index, VitalType.SP) < MPCost)
+            catch (Exception e)
             {
-                NetworkSend.PlayerMsg(index, "Not enough spirit!", (int) ColorType.Yellow);
-                return;
-            }
-
-            LevelReq = Core.Type.Skill[(int)skillNum].LevelReq;
-
-            // Make sure they are the right level
-            if (LevelReq > GetPlayerLevel(index))
-            {
-                NetworkSend.PlayerMsg(index, "You must be level " + LevelReq + " to use this skill.", (int) ColorType.BrightRed);
-                return;
-            }
-
-            AccessReq = Core.Type.Skill[(int)skillNum].AccessReq;
-
-            // make sure they have the right access
-            if (AccessReq > GetPlayerAccess(index))
-            {
-                NetworkSend.PlayerMsg(index, "You must be a developer to use this skill.", (int) ColorType.BrightRed);
-                return;
-            }
-
-            JobReq = Core.Type.Skill[(int)skillNum].JobReq;
-
-            // make sure the JobReq > 0
-            if (JobReq > 0) // 0 = no req
-            {
-                if (JobReq != GetPlayerJob(index))
-                {
-                    NetworkSend.PlayerMsg(index, "Only " + GameLogic.CheckGrammar(Core.Type.Job[JobReq].Name) + " can use this skill.", (int) ColorType.Yellow);
-                    return;
-                }
-            }
-
-            // find out what kind of skill it is! self cast, target or AOE
-            if (Core.Type.Skill[(int)skillNum].Range > 0)
-            {
-                // ranged attack, single target or aoe?
-                if (!Core.Type.Skill[(int)skillNum].IsAoE)
-                {
-                    SkillCastType = 2; // targetted
-                }
-                else
-                {
-                    SkillCastType = 3;
-                } // targetted aoe
-            }
-            else if (!Core.Type.Skill[(int)skillNum].IsAoE)
-            {
-                SkillCastType = 0; // self-cast
-            }
-            else
-            {
-                SkillCastType = 0;
-            } // self-cast AoE
-
-            TargetType = (TargetType)Core.Type.TempPlayer[index].TargetType;
-            Target = Core.Type.TempPlayer[index].Target;
-            range = Core.Type.Skill[(int)skillNum].Range;
-            HasBuffered = Conversions.ToBoolean(0);
-
-            switch (SkillCastType)
-            {
-                case 0:
-                case 1: // self-cast & self-cast AOE
-                    {
-                        HasBuffered = Conversions.ToBoolean(1);
-                        break;
-                    }
-                case 2:
-                case 3: // targeted & targeted AOE
-                    {
-                        // check if have target
-                        if (!(Target > 0))
-                        {
-                            NetworkSend.PlayerMsg(index, "You do not have a target.", (int) ColorType.BrightRed);
-                        }
-                        if (TargetType == TargetType.Player)
-                        {
-                            // if have target, check in range
-                            if (!IsInRange(range, GetPlayerX(index), GetPlayerY(index), GetPlayerX(Target), GetPlayerY(Target)))
-                            {
-                                NetworkSend.PlayerMsg(index, "Target not in range.", (int) ColorType.BrightRed);
-                            }
-                            // go through skill Type
-                            else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
-                            {
-                                HasBuffered = true;
-                            }
-                            else if (CanPlayerAttackPlayer(index, Target, true))
-                            {
-                                HasBuffered = true;
-                            }
-                        }
-                        else if (TargetType == TargetType.NPC)
-                        {
-                            // if have target, check in range
-                            if (!IsInRange(range, GetPlayerX(index), GetPlayerY(index), Core.Type.MapNPC[mapNum].NPC[Target].X, Core.Type.MapNPC[mapNum].NPC[Target].Y))
-                            {
-                                NetworkSend.PlayerMsg(index, "Target not in range.", (int) ColorType.BrightRed);
-                                HasBuffered = false;
-                            }
-                            // go through skill Type
-                            else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
-                            {
-                                HasBuffered = true;
-                            }
-                            else if (CanPlayerAttackNPC(index, Target, true))
-                            {
-                                HasBuffered = true;
-                            }
-                        }
-
-                        break;
-                    }
-            }
-
-            if (HasBuffered)
-            {
-                Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].CastAnim, 0, 0, (byte)TargetType.Player, index);
-                Core.Type.TempPlayer[index].SkillBuffer = SkillSlot;
-                Core.Type.TempPlayer[index].SkillBufferTimer = General.GetTimeMs();
-                return;
-            }
-            else
-            {
-                NetworkSend.SendClearSkillBuffer(index);
+                Console.WriteLine(e.Message);
             }
         }
 

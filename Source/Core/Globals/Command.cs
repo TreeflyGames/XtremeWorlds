@@ -6,11 +6,158 @@ namespace Core.Global
 {
     public class Command
     {
-        public static string GetPlayerLogin(int index)
+        public static string GetAccountLogin(int index)
         {
-            string GetPlayerLoginRet = default;
-            GetPlayerLoginRet = Type.Account[index].Login;
-            return GetPlayerLoginRet;
+            return Type.Account[index].Login;
+        }
+
+        public static string GetAccountPasword(int index)
+        {
+            return Type.Account[index].Password;
+        }
+
+        public static int GetEntityMaxVital(int index, Enum.VitalType Vital)
+        {
+            switch (Vital)
+            {
+                case Enum.VitalType.HP:
+                    return (int)Math.Round(100d + (Type.Player[index].Level + GetEntityStat(index, Enum.StatType.Vitality) / 2d) * 2d);
+                case Enum.VitalType.SP:
+                    return (int)Math.Round(50d + (Type.Player[index].Level + GetEntityStat(index, Enum.StatType.Spirit) / 2d) * 2d);
+                default:
+                    return 0;
+            }
+        }
+
+        public static int GetEntityStat(int index, Enum.StatType Stat)
+        {
+            int x = Type.Player[index].Stat[(int)Stat];
+            for (int i = 0; i < (int)Enum.EquipmentType.Count; i++)
+            {
+                if (Type.Player[index].Equipment[i] >= 0)
+                {
+                    if (Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat] > 0)
+                    {
+                        x += Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat];
+                    }
+                }
+            }
+            return x;
+        }
+
+        public static int GetEntityAccess(int index)
+        {
+            return Type.Player[index].Access;
+        }
+
+        public static int GetEntityX(int index)
+        {
+            return Type.Player[index].X;
+        }
+
+        public static int GetEntityY(int index)
+        {
+            return Type.Player[index].Y;
+        }
+
+        public static byte GetEntityDir(int index)
+        {
+            return Type.Player[index].Dir;
+        }
+
+        public static bool GetEntityPK(int index)
+        {
+            return Type.Player[index].PK;
+        }
+
+        public static int GetEntityNextLevel(int index)
+        {
+            return (int)Math.Round(50d / 3d * (Math.Pow(GetEntityLevel(index) + 1, 3d) - 6d * Math.Pow(GetEntityLevel(index) + 1, 2d) + 17 * (GetEntityLevel(index) + 1) - 12d));
+        }
+
+        public static int GetEntityExp(int index)
+        {
+            return Type.Player[index].Exp;
+        }
+
+        public static int GetEntityRawStat(int index, Enum.StatType Stat)
+        {
+            return Type.Player[index].Stat[(int)Stat];
+        }
+
+        public static string GetEntityName(int index)
+        {
+            return Type.Player[index].Name;
+        }
+
+        public static int GetEntityGatherSkillLvl(int index, int skillSlot)
+        {
+            return Type.Player[index].GatherSkills[skillSlot].SkillLevel;
+        }
+
+        public static int GetEntityGatherSkillExp(int index, int skillSlot)
+        {
+            return Type.Player[index].GatherSkills[skillSlot].SkillCurExp;
+        }
+
+        public static int GetEntityGatherSkillMaxExp(int index, int skillSlot)
+        {
+            return Type.Player[index].GatherSkills[skillSlot].SkillNextLvlExp;
+        }
+
+        public static int GetEntityInv(int index, int invslot)
+        {
+            return Type.Player[index].Inv[invslot].Num;
+        }
+
+        public static int GetEntityInvValue(int index, int invslot)
+        {
+            return Type.Player[index].Inv[invslot].Value;
+        }
+
+        public static int GetEntityPoints(int index)
+        {
+            return Type.Player[index].Points;
+        }
+
+        public static int GetEntityVital(int index, Enum.VitalType vital)
+        {
+            return Type.Player[index].Vital[(int)vital];
+        }
+
+        public static int GetEntitySprite(int index)
+        {
+            return Type.Player[index].Sprite;
+        }
+
+        public static int GetEntityJob(int index)
+        {
+            return Type.Player[index].Job;
+        }
+
+        public static int GetEntityMap(int index)
+        {
+            return Type.Player[index].Map;
+        }
+
+        public static int GetEntityLevel(int index)
+        {
+            return Type.Player[index].Level;
+        }
+
+        public static int GetEntityEquipment(int index, Enum.EquipmentType equipmentSlot)
+        {
+            return Type.Player[index].Equipment[(int)equipmentSlot];
+        }
+
+        public static int GetEntitySkill(int index, int skillSlot)
+        {
+            return Type.Player[index].Skill[skillSlot].Num;
+        }
+
+        public static int GetEntitySkillCD(int index, int skillSlot)
+        {
+            return Type.Player[index].Skill[skillSlot].CD;
         }
 
         public static void SetPlayerLogin(int index, string login)
@@ -29,7 +176,6 @@ namespace Core.Global
         {
             Type.Account[index].Password = password;
         }
-
         public static int GetPlayerMaxVital(int index, Enum.VitalType Vital)
         {
             int GetPlayerMaxVitalRet = default;

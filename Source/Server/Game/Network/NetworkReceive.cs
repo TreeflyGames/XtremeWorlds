@@ -122,12 +122,6 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPartyChatMsg] = Party.Packet_PartyChatMsg;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPets] = Pet.Packet_RequestPets;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSummonPet] = Pet.Packet_SummonPet;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetMove] = Pet.Packet_PetMove;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetBehaviour] = Pet.Packet_SetPetBehaviour;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CReleasePet] = Pet.Packet_ReleasePet;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetSkill] = Pet.Packet_PetSkill;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetUseStatPoint] = Pet.Packet_UsePetStatPoint;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPet] = Pet.Packet_RequestPet;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_RequestEditItem;
@@ -249,15 +243,15 @@ namespace Server
                         return;
                     }
 
-                    if (GetPlayerLogin(index) == "")
+                    if (GetAccountLogin(index) == "")
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Login);
                         return;
                     }
 
                     // Show the player up on the socket status
-                    Log.Add(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".", Constant.PLAYER_LOG);
-                    Console.WriteLine(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".");
+                    Log.Add(GetAccountLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".", Constant.PLAYER_LOG);
+                    Console.WriteLine(GetAccountLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".");
 
                     // send them to the character portal
                     NetworkSend.SendPlayerChars(index);
@@ -486,7 +480,7 @@ namespace Server
                 if (Core.Type.Char.Count == 1)
                     SetPlayerAccess(index, (int)AccessType.Owner);
 
-                Log.Add("Character " + name + " added to " + GetPlayerLogin(index) + "'s account.", Constant.PLAYER_LOG);
+                Log.Add("Character " + name + " added to " + GetAccountLogin(index) + "'s account.", Constant.PLAYER_LOG);
                 Player.HandleUseChar(index);
 
                 buffer.Dispose();
@@ -709,7 +703,7 @@ namespace Server
                         }
                         else
                         {
-                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int)ColorType.BrightRed);
                             return;
                         }
                     }
@@ -720,27 +714,6 @@ namespace Server
                     }
                 }
             }
-
-            // Try to attack a player
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i < loopTo; i++)
-            {
-                Tempindex = i;
-
-                // Make sure we dont try to attack ourselves
-                if (Tempindex != index)
-                {
-                    if (NetworkConfig.IsPlaying(Tempindex))
-                    {
-                        Player.TryPlayerAttackPlayer(index, i);
-                    }
-                }
-            }
-
-            // Try to attack a npc
-            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
-            for (i = 0; i < loopTo1; i++)
-                Player.TryPlayerAttackNPC(index, i);
 
             // Check tradeskills
             switch (GetPlayerDir(index))
@@ -848,7 +821,7 @@ namespace Server
 
             if (i >= 0)
             {
-                NetworkSend.PlayerMsg(index, "Account:  " + GetPlayerLogin(i) + ", Name: " + GetPlayerName(i), (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "Account:  " + GetAccountLogin(i) + ", Name: " + GetPlayerName(i), (int) ColorType.Yellow);
 
                 if (GetPlayerAccess(index) > (byte)AccessType.Moderator)
                 {
@@ -1564,7 +1537,7 @@ namespace Server
             // Save it
             NetworkSend.SendUpdateShopToAll(ShopNum);
             Database.SaveShop(ShopNum);
-            Log.Add(GetPlayerLogin(index) + " saving shop #" + ShopNum + ".", Constant.ADMIN_LOG);
+            Log.Add(GetAccountLogin(index) + " saving shop #" + ShopNum + ".", Constant.ADMIN_LOG);
         }
 
         public static void Packet_RequestEditSkill(int index, ref byte[] data)
@@ -1641,7 +1614,7 @@ namespace Server
             // Save it
             NetworkSend.SendUpdateSkillToAll(skillNum);
             Database.SaveSkill(skillNum);
-            Log.Add(GetPlayerLogin(index) + " saved Skill #" + skillNum + ".", Constant.ADMIN_LOG);
+            Log.Add(GetAccountLogin(index) + " saved Skill #" + skillNum + ".", Constant.ADMIN_LOG);
 
             buffer.Dispose();
         }
@@ -1881,7 +1854,7 @@ namespace Server
                 if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanCast)
                 {
                     // set the skill buffer before casting
-                    Player.bufferSkill(index, n);
+                    Player.BufferSkill(index, n);
                 }
             }
         }
@@ -2602,7 +2575,7 @@ namespace Server
 
             if (index > 0 & NetworkConfig.IsPlaying(index))
             {
-                NetworkSend.GlobalMsg(GetPlayerLogin(index) + "/" + GetPlayerName(index) + " has been booted for (" + Reason + ")");
+                NetworkSend.GlobalMsg(GetAccountLogin(index) + "/" + GetPlayerName(index) + " has been booted for (" + Reason + ")");
 
                 NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
             }

@@ -402,7 +402,6 @@ namespace Core
             Switch,
             Variable,
             Key,
-            CustomScript
         }
 
         public enum EditorType

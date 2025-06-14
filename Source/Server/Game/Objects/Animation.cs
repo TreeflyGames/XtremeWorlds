@@ -156,7 +156,7 @@ namespace Server
             // Save it
             SaveAnimation(AnimNum);
             SendUpdateAnimationToAll(AnimNum);
-            Core.Log.Add(GetPlayerLogin(index) + " saved Animation #" + AnimNum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved Animation #" + AnimNum + ".", Constant.ADMIN_LOG);
 
         }
 

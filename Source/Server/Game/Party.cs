@@ -492,7 +492,7 @@ namespace Server
             if (!(exp >= Core.Type.Party[partyNum].MemberCount))
             {
                 // no party - keep exp for self
-                Event.GivePlayerExp(index, exp);
+                SetPlayerExp(index, exp);
                 return;
             }
 
@@ -540,7 +540,7 @@ namespace Server
                         if (GetPlayerMap(tmpindex) == mapNum)
                         {
                             // give them their share
-                            Event.GivePlayerExp(tmpindex, expShare);
+                            SetPlayerExp(tmpindex, expShare);
                         }
                     }
                 }
@@ -551,7 +551,7 @@ namespace Server
             {
                 tmpindex = Core.Type.Party[partyNum].Member[(int)Math.Round(General.GetRandom.NextDouble(1d, Core.Type.Party[partyNum].MemberCount))];
                 // give the exp
-                Event.GivePlayerExp(tmpindex, leftOver);
+                SetPlayerExp(tmpindex, leftOver);
             }
 
         }
