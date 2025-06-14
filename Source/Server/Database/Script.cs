@@ -183,7 +183,7 @@ public class Script
         return CanPlayerBlockHitRet;
     }
 
-    public bool CanPlayerCriticalHitRet(int index)
+    public bool CanPlayerCriticalHit(int index)
     {
         bool CanPlayerCriticalHitRet = false;
 
