@@ -937,7 +937,7 @@ namespace Client
                 if (GameState.MyIndex < 0 | GameState.MyIndex > Constant.MAX_PLAYERS)
                     return;
 
-                if (Conversions.ToInteger(Event.InEvent) == 1)
+                if (Event.InEvent)
                     return;
 
                 if (GameState.SkillBuffer >= 0)

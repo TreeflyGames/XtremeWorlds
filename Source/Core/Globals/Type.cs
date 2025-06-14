@@ -448,7 +448,7 @@ namespace Core
 
         public struct MapItemStruct
         {
-            public double Num;
+            public int Num;
             public int Value;
             public byte X;
             public byte Y;
@@ -460,7 +460,7 @@ namespace Core
 
         public struct MapNPCStruct
         {
-            public double Num;
+            public int Num;
             public int Target;
             public byte TargetType;
             public int[] Vital;

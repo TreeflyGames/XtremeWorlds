@@ -110,207 +110,53 @@ namespace Server
 
         public static void StunPlayer(int index, int skillNum)
         {
-            // check if it's a stunning skill
-            if (Core.Type.Skill[skillNum].StunDuration > 0)
+            try
             {
-                // set the values on index
-                Core.Type.TempPlayer[index].StunDuration = Core.Type.Skill[skillNum].StunDuration;
-                Core.Type.TempPlayer[index].StunTimer = General.GetTimeMs();
-                // send it to the index
-                NetworkSend.SendStunned(index);
-                // tell him he's stunned
-                NetworkSend.PlayerMsg(index, "You have been stunned!", (int) ColorType.Yellow);
+                Script.Instance?.StunPlayer(index, skillNum);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
-        public static bool CanPlayerAttackNPC(int attacker, double MapNPCNum, bool IsSkill = false)
+        public static bool CanPlayerAttackNPC(int attacker, int MapNPCNum, bool IsSkill = false)
         {
-            bool CanPlayerAttackNPCRet = default;
-            int mapNum;
-            double NPCNum;
-            var atkX = default(int);
-            var atkY = default(int);
-            int attackSpeed;
-
-            // Check for subscript out of range
-            if (NetworkConfig.IsPlaying(attacker) == false | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS)
+            try
             {
-                return CanPlayerAttackNPCRet;
+                bool i;
+                i = Script.Instance?.CanPlayerAttackNPC(attacker, MapNPCNum, IsSkill);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(attacker)].NPC[(int)MapNPCNum].Num < 0)
-            {
-                return CanPlayerAttackNPCRet;
-            }
-
-            mapNum = GetPlayerMap(attacker);
-            NPCNum = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
-
-            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
-            {
-                return CanPlayerAttackNPCRet;
-            }
-
-            // Make sure the npc isn't already dead
-            if (Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(int)VitalType.HP] < 0)
-            {
-                return CanPlayerAttackNPCRet;
-            }
-
-            // Make sure they are on the same map
-
-            // attack speed from weapon
-            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
-            {
-                attackSpeed = Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed;
-            }
-            else
-            {
-                attackSpeed = 1000;
-            }
-
-            if (NPCNum >= 0 & General.GetTimeMs() > Core.Type.TempPlayer[attacker].AttackTimer + attackSpeed)
-            {
-                // exit out early
-                if (IsSkill)
-                {
-                    if (Core.Type.NPC[(int)NPCNum].Behaviour != (byte)  NPCBehavior.Friendly & Core.Type.NPC[(int)NPCNum].Behaviour != (byte)NPCBehavior.ShopKeeper)
-                    {
-                        CanPlayerAttackNPCRet = Conversions.ToBoolean(1);
-                        return CanPlayerAttackNPCRet;
-                    }
-                }
-
-                // Check if at same coordinates
-                switch (GetPlayerDir(attacker))
-                {
-                    case  (byte) DirectionType.Up:
-                        {
-                            atkX = GetPlayerX(attacker);
-                            atkY = GetPlayerY(attacker) - 1;
-                            break;
-                        }
-                    case (byte) DirectionType.Down:
-                        {
-                            atkX = GetPlayerX(attacker);
-                            atkY = GetPlayerY(attacker) + 1;
-                            break;
-                        }
-                    case (byte) DirectionType.Left:
-                        {
-                            atkX = GetPlayerX(attacker) - 1;
-                            atkY = GetPlayerY(attacker);
-                            break;
-                        }
-                    case (byte) DirectionType.Right:
-                        {
-                            atkX = GetPlayerX(attacker) + 1;
-                            atkY = GetPlayerY(attacker);
-                            break;
-                        }
-                }
-
-                if (atkX == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X)
-                {
-                    if (atkY == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y)
-                    {
-                        if (Core.Type.NPC[(int)NPCNum].Behaviour != (byte)NPCBehavior.Friendly & Core.Type.NPC[(int)NPCNum].Behaviour != (byte)NPCBehavior.ShopKeeper & Core.Type.NPC[(int)NPCNum].Behaviour != (byte)NPCBehavior.Quest)
-                        {
-                            CanPlayerAttackNPCRet = Conversions.ToBoolean(1);
-                        }
-                        else if (Strings.Len(Core.Type.NPC[(int)NPCNum].AttackSay) > 0)
-                        {
-                            NetworkSend.PlayerMsg(attacker, Core.Type.NPC[(int)NPCNum].Name + ": " + Core.Type.NPC[(int)NPCNum].AttackSay, (int) ColorType.Yellow);
-                        }
-                    }
-                }
-            }
-
-            return CanPlayerAttackNPCRet;
-
+            return false;
         }
 
         public static void StunNPC(int index, int mapNum, int skillNum)
         {
-            // check if it's a stunning skill
-            if (Core.Type.Skill[skillNum].StunDuration > 0)
+            try
             {
-                // set the values on index
-                Core.Type.MapNPC[mapNum].NPC[index].StunDuration = Core.Type.Skill[skillNum].StunDuration;
-                Core.Type.MapNPC[mapNum].NPC[index].StunTimer = General.GetTimeMs();
+                Script.Instance?.StunNPC(index, mapNum, Skill);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
         public static void PlayerAttackNPC(int attacker, int MapNPCNum, int Damage)
         {
-            // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Damage < 0)
-                return;
-
-            var mapNum = GetPlayerMap(attacker);
-            var NPCNum = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
-            string Name = Core.Type.NPC[(int)NPCNum].Name;
-
-            // Check for weapon
-            int Weapon = 0;
-            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
+            try
             {
-                Weapon = GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                Script.Instance?.PlayerAttackNPC(attacker, MapNPCNum, Damage);
             }
-
-            // Deal damage to our NPC.
-            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(int) VitalType.HP] = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(int) VitalType.HP] - Damage;
-
-            // Set the NPC target to the player so they can come after them.
-            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].TargetType = (int)TargetType.Player;
-            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Target = attacker;
-
-            // Check for any mobs on the map with the Guard behaviour so they can come after our player.
-            if (Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num].Behaviour == (byte)NPCBehavior.Guard)
+            catch (Exception e)
             {
-                // Find all NPCs with the same Id as the current NPC in the group
-                var guards = Core.Type.MapNPC[mapNum].NPC.Where(npc => Operators.ConditionalCompareObjectEqual(npc.Num, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num, false)).Select((npc, index) => index);
-
-                // Set the target for each guard NPC
-                foreach (var guardindex in guards)
-                {
-                    Core.Type.MapNPC[mapNum].NPC[guardindex].Target = attacker;
-                    Core.Type.MapNPC[mapNum].NPC[guardindex].TargetType = (byte)TargetType.Player;
-                }
-            }
-
-            // Send our general visual stuff.
-            NetworkSend.SendActionMsg(mapNum, "-" + Damage, (int) ColorType.BrightRed, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
-            NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y);
-            NetworkSend.SendPlayerAttack(attacker);
-            if (Weapon >= 0)
-            {
-                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
-                {
-                    Animation.SendAnimation(mapNum, Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, (int)MapNPCNum);
-                }
-            }
-
-            // Reset our attack timer.
-            Core.Type.TempPlayer[attacker].AttackTimer = General.GetTimeMs();
-
-            if (!NPC.IsNPCDead(mapNum, MapNPCNum))
-            {
-                // Check if our NPC has something to share with our player.
-                if (Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].TargetType == 0)
-                {
-                    if ((Core.Type.NPC[(int)NPCNum].AttackSay.Length) > 0)
-                    {
-                        NetworkSend.PlayerMsg(attacker, string.Format("{0} says: '{1}'", Core.Type.NPC[(int)NPCNum].Name, Core.Type.NPC[(int)NPCNum].AttackSay), (int) ColorType.Yellow);
-                    }
-                }
-
-                NPC.SendMapNPCTo(mapNum, MapNPCNum);
-            }
-            else
-            {
-                HandlePlayerKillNPC(mapNum, attacker, MapNPCNum);
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -487,7 +333,7 @@ namespace Server
             }
         }
 
-        public static void TryPlayerAttackNPC(int index, double MapNPCNum)
+        public static void TryPlayerAttackNPC(int index, int MapNPCNum)
         {
 
             int NPCNum;
