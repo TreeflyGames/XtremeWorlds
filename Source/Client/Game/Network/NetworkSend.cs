@@ -482,16 +482,6 @@ namespace Client
             buffer.Dispose();
         }
 
-        public static void SendLeaveGame()
-        {
-            var buffer = new ByteStream(4);
-
-            buffer.WriteInt32((int)Packets.ClientPackets.CQuit);
-
-            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
-            buffer.Dispose();
-        }
-
         public static void SendUnequip(int eqNum)
         {
             var buffer = new ByteStream(4);

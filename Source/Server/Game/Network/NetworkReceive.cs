@@ -64,7 +64,6 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSearch] = Packet_PlayerSearch;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSkills] = Packet_Skills;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCast] = Packet_Cast;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CQuit] = Packet_QuitGame;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwapInvSlots] = Packet_SwapInvSlots;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwapSkillSlots] = Packet_SwapSkillSlots;
 
@@ -1885,12 +1884,6 @@ namespace Server
                     Player.bufferSkill(index, n);
                 }
             }
-        }
-
-        public static void Packet_QuitGame(int index, ref byte[] data)
-        {
-            NetworkSend.SendLeftGame(index);
-            Player.LeftGame(index);
         }
 
         public static void Packet_SwapInvSlots(int index, ref byte[] data)

@@ -42,7 +42,6 @@ namespace Core
             CSearch,
             CSkills,
             CCast,
-            CQuit,
             CSwapInvSlots,
             CSwapSkillSlots,
 
