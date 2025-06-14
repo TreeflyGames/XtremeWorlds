@@ -335,72 +335,14 @@ namespace Server
 
         public static void TryPlayerAttackNPC(int index, int MapNPCNum)
         {
-
-            int NPCNum;
-
-            int mapNum;
-
-            int Damage;
-
-            Damage = 0;
-
-            // Can we attack the npc?
-            if (CanPlayerAttackNPC(index, MapNPCNum))
+            try
             {
-                mapNum = GetPlayerMap(index);
-                NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
-
-                // check if NPC can avoid the attack
-                if (NPC.CanNPCDodge(NPCNum))
-                {
-                    NetworkSend.SendActionMsg(mapNum, "Dodge!", (int) ColorType.Pink, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
-                    return;
-                }
-
-                if (NPC.CanNPCParry(NPCNum))
-                {
-                    NetworkSend.SendActionMsg(mapNum, "Parry!", (int) ColorType.Pink, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
-                    return;
-                }
-
-                // Get the damage we can do
-                Damage = GetPlayerDamage(index);
-
-                if (NPC.CanNPCBlock(NPCNum))
-                {
-                    NetworkSend.SendActionMsg(mapNum, "Block!", (int) ColorType.BrightCyan, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
-                    Damage = 0;
-                    return;
-                }
-                else
-                {
-
-                    Damage -= (int)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Spirit] * 2 + Core.Type.NPC[(int)NPCNum].Level * 3;
-
-                    // * 1.5 if it's a crit!
-                    if (CanPlayerCriticalHit(index))
-                    {
-                        Damage = (int)Math.Round(Damage * 1.5d);
-                        NetworkSend.SendActionMsg(mapNum, "Critical!", (int) ColorType.BrightCyan, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
-                    }
-
-                }
-
-                Core.Type.TempPlayer[index].Target = (int)MapNPCNum;
-                Core.Type.TempPlayer[index].TargetType = (byte)TargetType.NPC;
-                NetworkSend.SendTarget(index, (int)MapNPCNum, (byte)TargetType.NPC);
-
-                if (Damage > 0)
-                {
-                    PlayerAttackNPC(index, (int)MapNPCNum, Damage);
-                }
-                else
-                {
-                    NetworkSend.PlayerMsg(index, "Your attack does nothing.", (int) ColorType.BrightRed);
-                }
-
+                Script.Instance?.TryPlayerAttackNPC(index, MapNPCNum);
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public static bool IsPlayerDead(int index)
@@ -573,35 +515,13 @@ namespace Server
 
         public static void CheckPlayerLevelUp(int index)
         {
-            int expRollover;
-            int level_count;
-
-            level_count = 0;
-
-            while (GetPlayerExp(index) >= GetPlayerNextLevel(index))
+            try
             {
-                expRollover = GetPlayerExp(index) - GetPlayerNextLevel(index);
-                SetPlayerLevel(index, GetPlayerLevel(index) + 1);
-                SetPlayerPoints(index, GetPlayerPoints(index) + Constant.STAT_PER_LEVEL);
-                SetPlayerExp(index, expRollover);
-                level_count += 1;
+                Script.Instance?.CheckPlayerLevelUp(index);
             }
-
-            if (level_count > 0)
+            catch (Exception e)
             {
-                if (level_count == 1)
-                {
-                    // singular
-                    NetworkSend.GlobalMsg(GetPlayerName(index) + " has gained " + level_count + " level!");
-                }
-                else
-                {
-                    // plural
-                    NetworkSend.GlobalMsg(GetPlayerName(index) + " has gained " + level_count + " levels!");
-                }
-                NetworkSend.SendActionMsg(GetPlayerMap(index), "Level Up", (int) ColorType.Yellow, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
-                NetworkSend.SendExp(index);
-                NetworkSend.SendPlayerData(index);
+                Console.WriteLine(e.Message);
             }
         }
 
