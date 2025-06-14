@@ -57,6 +57,8 @@ namespace Server
 
                 if (tick > tmr500)
                 {
+                    UpdateMapAI();
+
                     // Move the timer up 500ms.
                     tmr500 = General.GetTimeMs() + 500;
                 }
@@ -130,6 +132,64 @@ namespace Server
                     // Spawn the items
                     Item.SpawnMapItems(y);
                     Item.SendMapItemsToAll(y);
+                }
+            }
+        }
+
+        private static void UpdateMapAI()
+        {
+            var now = General.GetTimeMs();
+            var maxMaps = Core.Constant.MAX_MAPS;
+            var maxMapItems = Core.Constant.MAX_MAP_ITEMS;
+            var maxMapNpcs = Core.Constant.MAX_MAP_NPCS;
+
+            for (int mapNum = 0; mapNum < maxMaps; mapNum++)
+            {
+                if (General.IsServerDestroyed)
+                    return;
+
+                // Handle map items (public/despawn)
+                for (int i = 0; i < maxMapItems; i++)
+                {
+                    var item = Core.Type.MapItem[mapNum, i];
+                    if (item.Num >= 0 && !string.IsNullOrEmpty(item.PlayerName))
+                    {
+                        if (item.PlayerTimer < now)
+                        {
+                            item.PlayerName = "";
+                            item.PlayerTimer = 0;
+                            Item.SendMapItemsToAll(mapNum);
+                        }
+                        if (item.CanDespawn && item.DespawnTimer < now)
+                        {
+                            Database.ClearMapItem(i, mapNum);
+                            Item.SendMapItemsToAll(mapNum);
+                        }
+                    }
+                }
+
+                // Respawn resources
+                var mapResource = Core.Type.MapResource[mapNum];
+                if (mapResource.ResourceCount > 0)
+                {
+                    for (int i = 0; i < mapResource.ResourceCount; i++)
+                    {
+                        var resData = mapResource.ResourceData[i];
+                        int resourceindex = Core.Type.Map[mapNum].Tile[resData.X, resData.Y].Data1;
+                        if (resourceindex > 0)
+                        {
+                            if (resData.State == 1 || resData.Health < 1)
+                            {
+                                if (resData.Timer + Core.Type.Resource[resourceindex].RespawnTime * 1000 < now)
+                                {
+                                    resData.Timer = now;
+                                    resData.State = 0;
+                                    resData.Health = (byte)Core.Type.Resource[resourceindex].Health;
+                                    Resource.SendMapResourceToMap(mapNum, i);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
