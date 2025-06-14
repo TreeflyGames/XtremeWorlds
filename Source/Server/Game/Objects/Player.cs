@@ -5,6 +5,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using System;
 using System.Reflection;
+using System.Text;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -173,42 +174,35 @@ namespace Server
 
         public static bool CanPlayerDodge(int index)
         {
-            bool CanPlayerDodgeRet = default;
-            int rate;
-            int rndNum;
-
-            CanPlayerDodgeRet = false;
-
-            rate = GetPlayerStat(index, StatType.Luck) / 4;
-            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
-
-            if (rndNum <= rate)
+            try
             {
-                CanPlayerDodgeRet = Conversions.ToBoolean(1);
+                bool i;
+                i = Script.Instance?.CanPlayerDodge(index);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
             }
 
-            return CanPlayerDodgeRet;
-
+            return false;
         }
 
         public static bool CanPlayerParry(int index)
         {
-            bool CanPlayerParryRet = default;
-            int rate;
-            int rndNum;
-
-            CanPlayerParryRet = Conversions.ToBoolean(0);
-
-            rate = GetPlayerStat(index, StatType.Luck) / 6;
-            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
-
-            if (rndNum <= rate)
+            try
             {
-                CanPlayerParryRet = Conversions.ToBoolean(1);
+                bool i;
+                i = Script.Instance?.CanPlayerParry(index);
+                return i;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            return CanPlayerParryRet;
-
+            return false;
         }
 
         public static void TryPlayerAttackPlayer(int attacker, int victim)

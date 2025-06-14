@@ -973,4 +973,42 @@ public class Script
         }
     }
 
+    public bool CanPlayerDodge(int index)
+    {
+        bool CanPlayerDodgeRet = default;
+        int rate;
+        int rndNum;
+
+        CanPlayerDodgeRet = false;
+
+        rate = GetPlayerStat(index, StatType.Luck) / 4;
+        rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
+
+        if (rndNum <= rate)
+        {
+            CanPlayerDodgeRet = true;
+        }
+
+        return CanPlayerDodgeRet;
+    }
+
+    public bool CanPlayerParry(int index)
+    {
+        bool CanPlayerParryRet = default;
+        int rate;
+        int rndNum;
+
+        CanPlayerParryRet = false;
+
+        rate = GetPlayerStat(index, StatType.Luck) / 6;
+        rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
+
+        if (rndNum <= rate)
+        {
+            CanPlayerParryRet = true;
+        }
+
+        return CanPlayerParryRet;
+    }
+
 }
