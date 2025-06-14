@@ -85,5 +85,10 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Database\Script.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
 </Project>
