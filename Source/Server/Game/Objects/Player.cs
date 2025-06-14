@@ -286,50 +286,13 @@ namespace Server
 
         public static void PlayerAttackPlayer(int attacker, int victim, int Damage)
         {
-            // Check for subscript out of range
-            if (NetworkConfig.IsPlaying(attacker) == false | Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | Damage < 0)
+            try
             {
-                return;
+                Script.Instance?.PlayerAttackPlayer(attacker, victim, Damage);
             }
-
-            // Check if our assailant has a weapon.
-            int Weapon = 0;
-            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
+            catch (Exception e)
             {
-                Weapon = GetPlayerEquipment(attacker, EquipmentType.Weapon);
-            }
-
-            // Stop our player's regeneration abilities.
-            Core.Type.TempPlayer[attacker].StopRegen = 0;
-            Core.Type.TempPlayer[attacker].StopRegenTimer = General.GetTimeMs();
-
-            // Deal damage to our player.
-            SetPlayerVital(victim, VitalType.HP, GetPlayerVital(victim, VitalType.HP) - Damage);
-
-            // Send all the visuals to our player.
-            if (Weapon > 0)
-            {
-                Animation.SendAnimation(GetPlayerMap(victim), Core.Type.Item[Weapon].Animation, 0, 0, (byte)TargetType.Player, victim);
-            }
-            NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + Damage, (int) ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
-            NetworkSend.SendBlood(GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
-
-            // set the regen timer
-            Core.Type.TempPlayer[victim].StopRegen = 0;
-            Core.Type.TempPlayer[victim].StopRegenTimer = General.GetTimeMs();
-
-            // Reset attack timer
-            Core.Type.TempPlayer[attacker].AttackTimer = General.GetTimeMs();
-
-            if (!IsPlayerDead(victim))
-            {
-                // Send our player's new vitals to everyone that needs them.
-                NetworkSend.SendVital(victim, (VitalType)VitalType.HP);
-            }
-            else
-            {
-                // Handle our dead player.
-                HandlePlayerKillPlayer(attacker, victim);
+                Console.WriteLine(e.Message);
             }
         }
 
