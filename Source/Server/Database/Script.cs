@@ -263,7 +263,7 @@ public class Script
                             {
                                 if (target > 0)
                                 {
-                                    if (NetworkConfig.IsPlaying(target) && GetPlayerMap(target) == mapNum)
+                                    if (GetPlayerMap(target) == mapNum)
                                     {
                                         targetVerify = true;
                                         targetY = GetPlayerY(target);
@@ -295,77 +295,64 @@ public class Script
                                 }
                             }
 
-                            if (targetVerify)
+                            if (entity.Type == Entity.EntityType.NPC)
                             {
-                                if (!Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
+                                 if (targetVerify)
                                 {
-                                    int i = EventLogic.FindNPCPath(mapNum, x, targetX, targetY);
-                                    if (i < 4)
+                                    if (!Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
                                     {
-                                        if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
+                                        int i = EventLogic.FindNPCPath(mapNum, x, targetX, targetY);
+                                        if (i < 4)
                                         {
-                                            Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
-                                        if (i == 1)
-                                        {
-                                            i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
                                             if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
                                             {
                                                 Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
                                             }
                                         }
+                                        else
+                                        {
+                                            i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
+                                            if (i == 1)
+                                            {
+                                                i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
+                                                if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
+                                                {
+                                                    Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Server.NPC.NPCDir(mapNum, x, Event.GetNPCDir(targetX, targetY, (int)entity.X, (int)entity.Y));
                                     }
                                 }
                                 else
                                 {
-                                    Server.NPC.NPCDir(mapNum, x, Event.GetNPCDir(targetX, targetY, (int)entity.X, (int)entity.Y));
-                                }
-                            }
-                            else
-                            {
-                                int i = (int)Math.Round(new Random().NextDouble() * 4);
-                                if (i == 1)
-                                {
-                                    i = (int)Math.Round(new Random().NextDouble() * 4);
-                                    if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
+                                    int i = (int)Math.Round(new Random().NextDouble() * 4);
+                                    if (i == 1)
                                     {
-                                        Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
+                                        i = (int)Math.Round(new Random().NextDouble() * 4);
+                                        if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
+                                        {
+                                            Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    // NPCs attack targets
-                    int attackTarget = entity.Target;
-                    byte attackTargetType = entity.TargetType;
+                        // NPCs attack targets
+                        int attackTarget = entity.Target;
+                        byte attackTargetType = entity.TargetType;
 
-                    if (attackTarget > 0)
-                    {
-                        if (attackTargetType == (byte)Core.Enum.TargetType.Player)
+                        if (attackTarget > 0)
                         {
-                            if (NetworkConfig.IsPlaying(attackTarget) && GetPlayerMap(attackTarget) == mapNum)
+                            if (attackTargetType == (byte)Core.Enum.TargetType.Player)
                             {
-                                // Placeholder for attack logic
-                            }
-                            else
-                            {
-                                entity.Target = 0;
-                                entity.TargetType = 0;
-                            }
-                        }
-                        else if (attackTargetType == (byte)Core.Enum.TargetType.NPC)
-                        {
-                            if (attackTarget < entities.Count)
-                            {
-                                var targetEntity = entities[attackTarget];
-                                if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
+                                if (GetPlayerMap(attackTarget) == mapNum)
                                 {
-                                    // Placeholder for NPC vs NPC attack logic
+                                    // Placeholder for attack logic
                                 }
                                 else
                                 {
@@ -373,49 +360,65 @@ public class Script
                                     entity.TargetType = 0;
                                 }
                             }
-                            else
+                            else if (attackTargetType == (byte)Core.Enum.TargetType.NPC)
                             {
-                                entity.Target = 0;
-                                entity.TargetType = 0;
+                                if (attackTarget < entities.Count)
+                                {
+                                    var targetEntity = entities[attackTarget];
+                                    if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
+                                    {
+                                        // Placeholder for NPC vs NPC attack logic
+                                    }
+                                    else
+                                    {
+                                        entity.Target = 0;
+                                        entity.TargetType = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    entity.Target = 0;
+                                    entity.TargetType = 0;
+                                }
                             }
                         }
-                    }
 
-                    // Regenerate NPC's HP
-                    if (entity.Vital[(byte)VitalType.HP] > 0)
-                    {
-                        // Placeholder for HP regen
-                        if (entity.Vital[(byte)VitalType.HP] > GameLogic.GetNPCMaxVital(x, VitalType.HP))
+                        // Regenerate NPC's HP
+                        if (entity.Vital[(byte)VitalType.HP] > 0)
                         {
-                            entity.Vital[(byte)VitalType.HP] = GameLogic.GetNPCMaxVital(x, VitalType.HP);
-                        }
-                    }
-
-                    if (entity.Vital[(byte)VitalType.SP] > 0)
-                    {
-                        // Placeholder for SP regen
-                        if (entity.Vital[(byte)VitalType.SP] > GameLogic.GetNPCMaxVital(x, VitalType.SP))
-                        {
-                            entity.Vital[(byte)VitalType.SP] = GameLogic.GetNPCMaxVital(x, VitalType.SP);
-                        }
-                    }
-
-                    // Check if the npc is dead or not
-                    if (entity.Vital[(byte)VitalType.HP] < 0 && entity.SpawnWait > 0)
-                    {
-                        entity.Num = 0;
-                        entity.SpawnWait = General.GetTimeMs();
-                        entity.Vital[(byte)VitalType.HP] = 0;
-                    }
-
-                    // Spawning an NPC
-                    if (entity.Num == -1)
-                    {
-                        if (entity.SpawnSecs > 0)
-                        {
-                            if (tickCount > entity.SpawnWait + entity.SpawnSecs * 1000)
+                            // Placeholder for HP regen
+                            if (entity.Vital[(byte)VitalType.HP] > GameLogic.GetNPCMaxVital(x, VitalType.HP))
                             {
-                                Server.NPC.SpawnNPC(x, mapNum);
+                                entity.Vital[(byte)VitalType.HP] = GameLogic.GetNPCMaxVital(x, VitalType.HP);
+                            }
+                        }
+
+                        if (entity.Vital[(byte)VitalType.SP] > 0)
+                        {
+                            // Placeholder for SP regen
+                            if (entity.Vital[(byte)VitalType.SP] > GameLogic.GetNPCMaxVital(x, VitalType.SP))
+                            {
+                                entity.Vital[(byte)VitalType.SP] = GameLogic.GetNPCMaxVital(x, VitalType.SP);
+                            }
+                        }
+
+                        // Check if the npc is dead or not
+                        if (entity.Vital[(byte)VitalType.HP] < 0 && entity.SpawnWait > 0)
+                        {
+                            entity.Num = 0;
+                            entity.SpawnWait = General.GetTimeMs();
+                            entity.Vital[(byte)VitalType.HP] = 0;
+                        }
+
+                        // Spawning an NPC
+                        if (entity.Num == -1)
+                        {
+                            if (entity.SpawnSecs > 0)
+                            {
+                                if (tickCount > entity.SpawnWait + entity.SpawnSecs * 1000)
+                                {
+                                    Server.NPC.SpawnNPC(x, mapNum);
+                                }
                             }
                         }
                     }

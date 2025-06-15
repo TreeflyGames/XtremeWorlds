@@ -30,19 +30,19 @@ namespace Core.Globals
         public byte[] Stat { get; set; }
         public byte Points { get; set; } // Player
         public int[] Equipment { get; set; } // Player
-        public object[] Inv { get; set; } // Player: PlayerInvStruct[]
-        public object[] PlayerSkill { get; set; } // Player: PlayerSkillStruct[]
-        public int Map { get; set; } // Player: int, NPC: not present, Pet: not present
+        public object[] Inv { get; set; } // Player
+        public object[] PlayerSkill { get; set; } // Player
+        public int Map { get; set; } // Player
         public byte X { get; set; } // Player
         public byte Y { get; set; } // Player
         public byte Dir { get; set; } // Player
         public int Sprite { get; set; }
         public int Exp { get; set; }
         public byte Access { get; set; } // Player
-        public object[] Hotbar { get; set; } // Player: HotbarStruct[]
+        public object[] Hotbar { get; set; } // Player
         public byte[] Switches { get; set; } // Player
         public int[] Variables { get; set; } // Player
-        public object PetStruct { get; set; } // Player: PlayerPetStruct
+        public object PetStruct { get; set; } // Player
         public int XOffset { get; set; } // Player
         public int YOffset { get; set; } // Player
         public byte Moving { get; set; } // Player
@@ -53,7 +53,7 @@ namespace Core.Globals
         public int Emote { get; set; } // Player
         public int EmoteTimer { get; set; } // Player
         public int EventTimer { get; set; } // Player
-        public object[] Quests { get; set; } // Player: PlayerQuestStruct[]
+        public object[] Quests { get; set; } // Player
         public int GuildId { get; set; } // Player
         public int[] DropChance { get; set; } // NPC
         public int[] DropItem { get; set; } // NPC
@@ -66,7 +66,7 @@ namespace Core.Globals
         public int Animation { get; set; } // NPC
         public int HP { get; set; } // NPC
         public int Damage { get; set; } // NPC
-        public int[] Skill { get; set; } // NPC: byte[], Pet: int[]
+        public int[] Skill { get; set; } // NPC
         public byte Faction { get; set; } // NPC
         public int Num { get; set; } // Pet
         public int MaxLevel { get; set; } // Pet
