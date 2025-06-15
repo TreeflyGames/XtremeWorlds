@@ -410,14 +410,18 @@ public class Script
                             entity.Vital[(byte)VitalType.HP] = 0;
                         }
 
+
                         // Spawning an NPC
-                        if (entity.Num == -1)
+                        if (entity.Type == Entity.EntityType.NPC)
                         {
-                            if (entity.SpawnSecs > 0)
+                            if (entity.Num == -1)
                             {
-                                if (tickCount > entity.SpawnWait + entity.SpawnSecs * 1000)
+                                if (entity.SpawnSecs > 0)
                                 {
-                                    Server.NPC.SpawnNPC(x, mapNum);
+                                    if (tickCount > entity.SpawnWait + entity.SpawnSecs * 1000)
+                                    {
+                                        Server.NPC.SpawnNPC(x, mapNum);
+                                    }
                                 }
                             }
                         }
