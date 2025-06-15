@@ -211,7 +211,10 @@ public class Script
                                             var otherEntity = Core.Type.Entity[i];
                                             if (otherEntity != null && otherEntity.Num >= 0)
                                             {
-                                                if ((int)otherEntity.Faction > 0 &&
+                                                // Use the NPC num from the map, not the entity index
+                                                int otherNpcNum = Core.Type.Map[mapNum].NPC[i];
+                                                if (otherNpcNum >= 0 &&
+                                                    (int)otherEntity.Faction > 0 &&
                                                     otherEntity.Faction != entity.Faction)
                                                 {
                                                     int n = entity.Range;
