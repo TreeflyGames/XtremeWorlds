@@ -2125,9 +2125,9 @@ namespace Client
             GameState.InMenu = true;
             GameState.InGame = false;
 
+            General.ClearGameData();
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();
-            General.ClearGameData();
         }
 
         public static void SetOptionsScreen()
