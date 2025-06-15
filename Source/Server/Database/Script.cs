@@ -36,6 +36,25 @@ public class Script
     {
         // Warp the player to his saved location
         PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
+
+        // Notify everyone that a player has joined the game.
+        NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
+
+        // Send all the required game data to the user.
+        CheckEquippedItems(index);
+        NetworkSend.SendInventory(index);
+        NetworkSend.SendWornEquipment(index);
+        NetworkSend.SendExp(index);
+        NetworkSend.SendHotbar(index);
+        NetworkSend.SendPlayerSkills(index);
+        NetworkSend.SendStats(index);
+        NetworkSend.SendJoinMap(index);
+
+        // Send the flag so they know they can start doing stuff
+        NetworkSend.SendInGame(index);
+
+        // Send welcome messages
+        NetworkSend.SendWelcome(index);
     }
 
     public void LeftGame(int index)

@@ -440,7 +440,7 @@ namespace Server
         {
             lock (SyncLock)
             {
-                return Enumerable.Range(0, NetworkConfig.Socket.HighIndex + 1)
+                return Enumerable.Range(0, NetworkConfig.Socket.HighIndex)
                     .Count(i => NetworkConfig.IsPlaying(i));
             }
         }
