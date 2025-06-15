@@ -1,9 +1,11 @@
 ﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Mirage.Sharp.Asfw.Network;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using static Core.Enum;
@@ -57,6 +59,15 @@ namespace Server
 
                 if (tick > tmr500)
                 {
+                    // Check for disconnects
+                    for (int i = 0; i < NetworkConfig.Socket.HighIndex; i++)
+                    {
+                        if (!NetworkConfig.Socket.IsConnected(i))
+                        {
+                            Player.LeftGame(i);
+                        }
+                    }
+
                     UpdateMapAI();
 
                     // Move the timer up 500ms.

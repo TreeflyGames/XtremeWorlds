@@ -194,7 +194,9 @@
                 {
                     int current = enumerator.Current;
                     if (this.HighIndex < current)
-                    this.HighIndex = current;
+                    {
+                        this.HighIndex = current;
+                    }
                     this._unsignedIndex.Remove(current);
                     return current;
                 }
@@ -268,18 +270,18 @@
 
         private Socket EndAccept(IAsyncResult ar = null)
         {
-          IAsyncResult asyncResult = ar ?? this._pendingAccept;
-          if (asyncResult == null || this._listener == null)
+            IAsyncResult asyncResult = ar ?? this._pendingAccept;
+            if (asyncResult == null || this._listener == null)
             return (Socket) null;
-          this._pendingAccept = (IAsyncResult) null;
-          return this._listener.EndAccept(asyncResult);
+            this._pendingAccept = (IAsyncResult) null;
+            return this._listener.EndAccept(asyncResult);
         }
 
         private void ListenManager()
         {
-          if (!this.IsListening || this._listener == null || this._pendingAccept != null || this.ClientLimit > 0 && this.ClientLimit <= this._socket.Count)
+            if (!this.IsListening || this._listener == null || this._pendingAccept != null || this.ClientLimit > 0 && this.ClientLimit <= this._socket.Count)
             return;
-          this._pendingAccept = this._listener.BeginAccept(new AsyncCallback(this.DoAcceptClient), (object) null);
+            this._pendingAccept = this._listener.BeginAccept(new AsyncCallback(this.DoAcceptClient), (object) null);
         }
 
         private void BeginReceiveData(int index)
@@ -372,25 +374,25 @@
         state.Dispose();
       }
   
-      // Append new data to the ring buffer safely
-      private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
-      {
-        if (state.RingBuffer == null)
+        // Append new data to the ring buffer safely
+         private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
         {
-          // Initialize RingBuffer if it's null
-          state.RingBuffer = new byte[length];
-          Buffer.BlockCopy(state.Buffer, 0, state.RingBuffer, 0, length);
-        }
-        else
-        {
-          // Expand RingBuffer if it already has data
-          int oldLength = state.RingBuffer.Length;
-          byte[] newBuffer = new byte[oldLength + length];
-          Buffer.BlockCopy(state.RingBuffer, 0, newBuffer, 0, oldLength);
-          Buffer.BlockCopy(state.Buffer, 0, newBuffer, oldLength, length);
-          state.RingBuffer = newBuffer;
-        }
-      }
+            if (state.RingBuffer == null)
+            {
+                // Initialize RingBuffer if it's null
+                state.RingBuffer = new byte[length];
+                Buffer.BlockCopy(state.Buffer, 0, state.RingBuffer, 0, length);
+            }
+            else
+            {
+                // Expand RingBuffer if it already has data
+                int oldLength = state.RingBuffer.Length;
+                byte[] newBuffer = new byte[oldLength + length];
+                Buffer.BlockCopy(state.RingBuffer, 0, newBuffer, 0, oldLength);
+                Buffer.BlockCopy(state.Buffer, 0, newBuffer, oldLength, length);
+                state.RingBuffer = newBuffer;
+            }
+          }
 
         private void PacketHandler(ref NetworkServer.ReceiveState so)
         {
