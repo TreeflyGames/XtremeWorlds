@@ -217,6 +217,12 @@ namespace Core.Globals
             return entity;
         }
 
+        /// <summary>
+        /// Converts a NPC Entity to a MapNPCStruct for npc-specific data.
+        /// </summary>
+        /// <param name="id">The entity ID.</param>
+        /// <param name="entity">The NPC Entity to convert.</param>
+        /// <returns>A NPC struct with mapped properties.</returns>
         public static Core.Type.MapNPCStruct ToNPC(int id, Entity entity)
         {
             return new Core.Type.MapNPCStruct
@@ -251,7 +257,6 @@ namespace Core.Globals
         /// <param name="id">The entity ID.</param>
         /// <param name="entity">The Player Entity to convert.</param>
         /// <returns>A PlayerStruct with mapped properties.</returns>
-        /// <exception cref="ArgumentException">Thrown if the entity is not a Player.</exception>
         public static Core.Type.PlayerStruct ToPlayer(int id, Entity entity)
         {
             return new Core.Type.PlayerStruct
@@ -292,5 +297,35 @@ namespace Core.Globals
                 GuildId = entity.GuildId
             };
         }
+
+
+        /// <summary>
+        /// Converts a Pet Entity to a PetStruct for pet-specific data.
+        /// </summary>
+        /// <param name="id">The entity ID.</param>
+        /// <param name="entity">The Pet Entity to convert.</param>
+        /// <returns>A PetStruct with mapped properties.</returns>
+        public static Core.Type.PetStruct ToPet(int id, Entity entity)
+        {
+            return new Core.Type.PetStruct
+            {
+                Num = id,
+                Name = entity.Name ?? string.Empty,
+                Sprite = entity.Sprite,
+                Range = entity.Range,
+                Level = (byte)entity.Level,
+                MaxLevel = entity.MaxLevel,
+                ExpGain = entity.ExpGain,
+                Points = (byte)entity.Points,
+                StatType = (byte)entity.StatType,
+                LevelingType = (byte)entity.LevelingType,
+                Stat = entity.Stat != null ? (byte[])entity.Stat.Clone() : new byte[0],
+                Skill = entity.Skill != null ? (int[])entity.Skill.Clone() : new int[0],
+                Evolvable = (byte)entity.Evolvable,
+                EvolveLevel = entity.EvolveLevel,
+                EvolveNum = entity.EvolveNum
+            };
+        }
+
     }
 }

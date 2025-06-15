@@ -436,8 +436,10 @@ public class Script
                         Core.Type.MapNPC[mapNum].NPC[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNPC(entity.Id, entity);
                         break;
                     case Entity.EntityType.Player:
+                        Core.Type.Player[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPlayer(entity.Id, entity);
                         break;
                     case Entity.EntityType.Pet:
+                        Core.Type.Pet[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPet(entity.Id, entity);
                         break;
                 }
             }

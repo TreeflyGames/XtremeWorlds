@@ -281,34 +281,6 @@ namespace Core
             public int EvolveNum;
         }
 
-        public struct PlayerPetStruct
-        {
-            public int Num;
-            public int Health;
-            public int Mana;
-            public int Level;
-            public byte[] Stat;
-            public int[] Skill;
-            public int Points;
-            public int X;
-            public int Y;
-            public int Dir;
-            public int MaxHp;
-            public int MaxMp;
-            public byte Alive;
-            public int AttackBehaviour;
-            public int AdoptiveStats;
-            public int Exp;
-            public int Tnl;
-            public int XOffset;
-            public int YOffset;
-            public byte Moving;
-            public byte Attacking;
-            public int AttackTimer;
-            public byte Steps;
-            public int Damage;
-        }
-
         public struct AccountStruct
         {
             public string Login;
