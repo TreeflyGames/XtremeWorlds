@@ -160,18 +160,15 @@ namespace Server
             int i;
             NPCTileIsOpenRet = true;
 
-            if (PlayersOnMap[mapNum])
+            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo; i++)
             {
-                var loopTo = NetworkConfig.Socket.HighIndex + 1;
-                for (i = 0; i < loopTo; i++)
+                if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == x & GetPlayerY(i) == y)
                 {
-                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == x & GetPlayerY(i) == y)
-                    {
-                        NPCTileIsOpenRet = false;
-                        return NPCTileIsOpenRet;
-                    }
+                    NPCTileIsOpenRet = false;
+                    return NPCTileIsOpenRet;
                 }
-            }
+            }        
 
             for (int LoopI = 0, loopTo1 = Core.Constant.MAX_MAP_NPCS; LoopI < loopTo1; LoopI++)
             {
@@ -611,7 +608,7 @@ namespace Server
             for (i = 0; i < loopTo2; i++)
                 Core.Type.NPC[(int)NPCNum].Skill[i] = buffer.ReadByte();
 
-            Core.Type.NPC[(int)NPCNum].Level = buffer.ReadInt32();
+            Core.Type.NPC[(int)NPCNum].Level = buffer.ReadByte();
             Core.Type.NPC[(int)NPCNum].Damage = buffer.ReadInt32();
 
             // Save it

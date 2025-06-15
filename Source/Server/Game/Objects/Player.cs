@@ -128,8 +128,6 @@ namespace Server
             // Now we check if there were any players left on the map the player just left, and if not stop processing npcs
             if (GameLogic.GetTotalMapPlayers(OldMap) == 0)
             {
-                PlayersOnMap[OldMap] = false;
-
                 // Regenerate all NPCs' health
                 var loopTo1 = Core.Constant.MAX_MAP_NPCS;
                 for (i = 0; i < loopTo1; i++)
@@ -140,11 +138,9 @@ namespace Server
                     }
 
                 }
-
             }
 
             // Sets it so we know to process npcs on the map
-            PlayersOnMap[mapNum] = true;
             Core.Type.TempPlayer[index].GettingMap = true;
 
             Moral.SendUpdateMoralTo(index, Core.Type.Map[mapNum].Moral);
@@ -1788,21 +1784,6 @@ namespace Server
                 Console.WriteLine(e.Message);
             }
 
-        }
-
-        #endregion
-
-        #region Skills
-        public static void BufferSkill(int index, int skillSlot)
-        {
-            try
-            {
-                Script.Instance?.BufferSkill(index, skillSlot);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
 
         #endregion

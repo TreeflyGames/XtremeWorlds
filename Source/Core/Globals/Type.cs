@@ -23,7 +23,6 @@ namespace Core
         public static MapStruct[] Map = new MapStruct[Constant.MAX_MAPS];
         public static MapStruct MyMap;
         public static TileStruct[,] TempTile;
-        public static bool[] PlayersOnMap = new bool[Constant.MAX_MAPS];
         public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, Constant.MAX_MAP_ITEMS];
         public static MapItemStruct[] MyMapItem = new MapItemStruct[Constant.MAX_MAP_ITEMS];
         public static MapDataStruct[] MapNPC = new MapDataStruct[Constant.MAX_MAPS];
@@ -236,7 +235,7 @@ namespace Core
             public int Exp;
             public int Animation;
             public byte[] Skill;
-            public int Level;
+            public byte Level;
             public int Damage;
         }
 
@@ -269,7 +268,7 @@ namespace Core
             public string Name;
             public int Sprite;
             public int Range;
-            public int Level;
+            public byte Level;
             public int MaxLevel;
             public int ExpGain;
             public int LevelPnts;

@@ -418,8 +418,6 @@ namespace Server
             // Iterate through all maps.
             for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
-                if (!PlayersOnMap[i] || Event.TempEventMap[i].EventCount <= 0) continue;
-
                 // Process global events on this map.
                 for (int x = 0; x < Event.TempEventMap[i].EventCount; x++)
                 {

@@ -829,7 +829,6 @@ namespace Server
             Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[1];
 
             // Reset the values for if a player is on the map or not
-            PlayersOnMap[mapNum] = false;
             Core.Type.Map[mapNum].Name = "";
             Core.Type.Map[mapNum].Music = "";
         }

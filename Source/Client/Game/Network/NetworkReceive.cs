@@ -666,7 +666,7 @@ namespace Client
             for (x = 0; x < Constant.MAX_NPC_SKILLS; x++)
                 Core.Type.NPC[i].Skill[x] = buffer.ReadByte();
 
-            Core.Type.NPC[i].Level = buffer.ReadInt32();
+            Core.Type.NPC[i].Level = buffer.ReadByte();
             Core.Type.NPC[i].Damage = buffer.ReadInt32();
 
             buffer.Dispose();

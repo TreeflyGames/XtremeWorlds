@@ -178,7 +178,7 @@ namespace Client
 
         private void NudLevel_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Level = (int)Math.Round(nudLevel.Value);
+            Core.Type.Pet[GameState.EditorIndex].Level = (byte)Math.Round(nudLevel.Value);
         }
 
 

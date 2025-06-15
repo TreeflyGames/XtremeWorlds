@@ -72,9 +72,12 @@ public class Script
         }
     }
 
-    public void BufferSkill(int index, int skillNum)
+    public void BufferSkill(int mapNum, int index, int skillNum)
     {
-
+        if (Core.Type.Moral[Core.Type.Map[mapNum].Moral].CanCast)
+        {
+            return;
+        }      
     }
 
     public int KillPlayer(int index)
@@ -146,92 +149,90 @@ public class Script
                 }
             }
 
-            if (PlayersOnMap[mapNum] == true)
+
+            long tickCount = General.GetTimeMs();
+
+            // Use entities from Entity class
+            var entities = Core.Globals.Entity.Instances;
+            for (int x = 0; x < entities.Count; x++)
             {
-                long tickCount = General.GetTimeMs();
+                var entity = entities[x];
+                if (entity == null || entity.Map != mapNum) continue;
 
-                // Use entities from Entity class
-                var entities = Core.Globals.Entity.Entities;
-                for (int x = 0; x < entities.Count; x++)
+                // Only process entities that are NPCs
+                if (entity.Num < 0) continue;
+
+                // check if they've completed casting, and if so set the actual skill going
+                if (entity.SkillBuffer >= 0)
                 {
-                    var entity = entities[x];
-                    if (entity == null || entity.Map != mapNum) continue;
-
-                    // Only process entities that are NPCs
-                    if (entity.Num < 0) continue;
-
-                    // check if they've completed casting, and if so set the actual skill going
-                    if (entity.SkillBuffer >= 0)
+                    if (General.GetTimeMs() > entity.SkillBufferTimer + Core.Type.Skill[entity.SkillBuffer >= 0 && entity.SkillBuffer < entity.Skill.Length ? entity.Skill[entity.SkillBuffer] : 0].CastTime * 1000)
                     {
-                        if (General.GetTimeMs() > entity.SkillBufferTimer + Core.Type.Skill[entity.SkillBuffer >= 0 && entity.SkillBuffer < entity.Skill.Length ? entity.Skill[entity.SkillBuffer] : 0].CastTime * 1000)
-                        {
-                            BufferSkill(x, entity.SkillBuffer);
-                            entity.SkillBuffer = -1;
-                            entity.SkillBufferTimer = 0;
-                        }
+                        BufferSkill(mapNum, x, entity.SkillBuffer);
+                        entity.SkillBuffer = -1;
+                        entity.SkillBufferTimer = 0;
                     }
-                    else
+                }
+                else
+                {
+                    // ATTACKING ON SIGHT
+                    if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || entity.Behaviour == (byte)NPCBehavior.Guard)
                     {
-                        // ATTACKING ON SIGHT
-                        if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || entity.Behaviour == (byte)NPCBehavior.Guard)
+                        // make sure it's not stunned
+                        if (!(entity.StunDuration > 0))
                         {
-                            // make sure it's not stunned
-                            if (!(entity.StunDuration > 0))
+                            int loopTo4 = NetworkConfig.Socket.HighIndex;
+                            for (int i = 0; i < loopTo4; i++)
                             {
-                                int loopTo4 = NetworkConfig.Socket.HighIndex;
-                                for (int i = 0; i < loopTo4; i++)
+                                if (NetworkConfig.IsPlaying(i))
                                 {
-                                    if (NetworkConfig.IsPlaying(i))
+                                    if (GetPlayerMap(i) == mapNum && entity.TargetType == 0 && GetPlayerAccess(i) <= (byte)AccessType.Moderator)
                                     {
-                                        if (GetPlayerMap(i) == mapNum && entity.TargetType == 0 && GetPlayerAccess(i) <= (byte)AccessType.Moderator)
+                                        int n = entity.Range;
+                                        int distanceX = entity.X - GetPlayerX(i);
+                                        int distanceY = entity.Y - GetPlayerY(i);
+
+                                        if (distanceX < 0) distanceX *= -1;
+                                        if (distanceY < 0) distanceY *= -1;
+
+                                        if (distanceX <= n && distanceY <= n)
                                         {
-                                            int n = entity.Range;
-                                            int distanceX = entity.X - GetPlayerX(i);
-                                            int distanceY = entity.Y - GetPlayerY(i);
-
-                                            if (distanceX < 0) distanceX *= -1;
-                                            if (distanceY < 0) distanceY *= -1;
-
-                                            if (distanceX <= n && distanceY <= n)
+                                            if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || GetPlayerPK(i))
                                             {
-                                                if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || GetPlayerPK(i))
+                                                if (!string.IsNullOrEmpty(entity.AttackSay))
                                                 {
-                                                    if (!string.IsNullOrEmpty(entity.AttackSay))
-                                                    {
-                                                        NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(entity.Name, 1) + " says, '" + entity.AttackSay + "' to you.", (int)ColorType.Yellow);
-                                                    }
-                                                    entity.TargetType = (byte)Core.Enum.TargetType.Player;
-                                                    entity.Target = i;
+                                                    NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(entity.Name, 1) + " says, '" + entity.AttackSay + "' to you.", (int)ColorType.Yellow);
                                                 }
+                                                entity.TargetType = (byte)Core.Enum.TargetType.Player;
+                                                entity.Target = i;
                                             }
                                         }
                                     }
                                 }
+                            }
 
-                                // Check if target was found for NPC targeting
-                                if (entity.TargetType == 0 && entity.Faction > 0)
+                            // Check if target was found for NPC targeting
+                            if (entity.TargetType == 0 && entity.Faction > 0)
+                            {
+                                for (int i = 0; i < entities.Count; i++)
                                 {
-                                    for (int i = 0; i < entities.Count; i++)
+                                    var otherEntity = entities[i];
+                                    if (otherEntity != null && otherEntity.Num >= 0)
                                     {
-                                        var otherEntity = entities[i];
-                                        if (otherEntity != null && otherEntity.Num >= 0)
+                                        if (otherEntity.Map != mapNum) continue;
+                                        if (ReferenceEquals(otherEntity, entity)) continue;
+                                        if ((int)otherEntity.Faction > 0 && otherEntity.Faction != entity.Faction)
                                         {
-                                            if (otherEntity.Map != mapNum) continue;
-                                            if (ReferenceEquals(otherEntity, entity)) continue;
-                                            if ((int)otherEntity.Faction > 0 && otherEntity.Faction != entity.Faction)
+                                            int n = entity.Range;
+                                            int distanceX = entity.X - otherEntity.X;
+                                            int distanceY = entity.Y - otherEntity.Y;
+
+                                            if (distanceX < 0) distanceX *= -1;
+                                            if (distanceY < 0) distanceY *= -1;
+
+                                            if (distanceX <= n && distanceY <= n && entity.Behaviour == (byte)NPCBehavior.AttackOnSight)
                                             {
-                                                int n = entity.Range;
-                                                int distanceX = entity.X - otherEntity.X;
-                                                int distanceY = entity.Y - otherEntity.Y;
-
-                                                if (distanceX < 0) distanceX *= -1;
-                                                if (distanceY < 0) distanceY *= -1;
-
-                                                if (distanceX <= n && distanceY <= n && entity.Behaviour == (byte)NPCBehavior.AttackOnSight)
-                                                {
-                                                    entity.TargetType = (byte)Core.Enum.TargetType.NPC;
-                                                    entity.Target = i;
-                                                }
+                                                entity.TargetType = (byte)Core.Enum.TargetType.NPC;
+                                                entity.Target = i;
                                             }
                                         }
                                     }

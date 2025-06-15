@@ -1853,8 +1853,14 @@ namespace Server
             {
                 if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanCast)
                 {
-                    // set the skill buffer before casting
-                    Player.BufferSkill(index, n);
+                    try
+                    {
+                        Script.Instance?.BufferSkill(index, n);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
             }
         }

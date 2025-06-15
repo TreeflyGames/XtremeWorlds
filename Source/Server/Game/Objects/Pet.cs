@@ -215,7 +215,7 @@ namespace Server
                 withBlock.Name = buffer.ReadString();
                 withBlock.Sprite = buffer.ReadInt32();
                 withBlock.Range = buffer.ReadInt32();
-                withBlock.Level = buffer.ReadInt32();
+                withBlock.Level = buffer.ReadByte();
                 withBlock.MaxLevel = buffer.ReadInt32();
                 withBlock.ExpGain = buffer.ReadInt32();
                 withBlock.LevelPnts = buffer.ReadInt32();
@@ -259,7 +259,7 @@ namespace Server
             withBlock.Name = buffer.ReadString();
             withBlock.Sprite = buffer.ReadInt32();
             withBlock.Range = buffer.ReadInt32();
-            withBlock.Level = buffer.ReadInt32();
+            withBlock.Level = buffer.ReadByte();
             withBlock.MaxLevel = buffer.ReadInt32();
             withBlock.ExpGain = buffer.ReadInt32();
             withBlock.LevelPnts = buffer.ReadInt32();

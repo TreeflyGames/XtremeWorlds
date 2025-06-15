@@ -1,8 +1,11 @@
+using Core;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MonoGame.Extended.ECS;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
-using Core;
-using MonoGame.Extended.ECS;
+using static Core.Type;
 
 namespace Core.Globals
 {
@@ -12,7 +15,7 @@ namespace Core.Globals
     /// </summary>
     public class Entity
     {
-        public static List<Entity> Entities = new List<Entity>();
+        public static List<Entity> Instances = new List<Entity>();
 
         public enum EntityType
         {
@@ -24,74 +27,76 @@ namespace Core.Globals
         public static int Count(Entity entity)
         {
             // Returns the count of entities of the specified type
-            return Entities.FindAll(e => e.Type == entity.Type).Count;
+            return Instances.FindAll(e => e.Type == entity.Type).Count;
         }
 
         public EntityType Type { get; }
         public int Id { get; }
         public string Name { get; set; }
-        public byte Sex { get; set; } // Player
-        public byte Job { get; set; } // Player
-        public int Level { get; set; }
-        public int[] Vital { get; set; } // Player
+        public bool PK { get; set; }
+        public byte Sex { get; set; } 
+        public byte Job { get; set; } 
+        public byte Level { get; set; }
+        public int[] Vital { get; set; } 
         public byte[] Stat { get; set; }
-        public byte Points { get; set; } // Player
-        public int[] Equipment { get; set; } // Player
-        public object[] Inv { get; set; } // Player
-        public object[] PlayerSkill { get; set; } // Player
-        public int Map { get; set; } // Player
-        public byte X { get; set; } // Player
-        public byte Y { get; set; } // Player
-        public byte Dir { get; set; } // Player
+        public byte Points { get; set; } 
+        public int[] Equipment { get; set; } 
+        public object[] Inv { get; set; } 
+        public object[] PlayerSkill { get; set; } 
+        public int Map { get; set; } 
+        public byte X { get; set; } 
+        public byte Y { get; set; } 
+        public byte Dir { get; set; } 
         public int Sprite { get; set; }
         public int Exp { get; set; }
-        public byte Access { get; set; } // Player
-        public object[] Hotbar { get; set; } // Player
-        public byte[] Switches { get; set; } // Player
-        public int[] Variables { get; set; } // Player
-        public object PetStruct { get; set; } // Player
-        public int XOffset { get; set; } // Player
-        public int YOffset { get; set; } // Player
-        public byte Moving { get; set; } // Player
-        public byte Attacking { get; set; } // Player
-        public int AttackTimer { get; set; } // Player
-        public int MapGetTimer { get; set; } // Player
-        public byte Steps { get; set; } // Player
-        public int Emote { get; set; } // Player
-        public int EmoteTimer { get; set; } // Player
-        public int EventTimer { get; set; } // Player
-        public object[] Quests { get; set; } // Player
-        public int GuildId { get; set; } // Player
-        public int[] DropChance { get; set; } // NPC
-        public int[] DropItem { get; set; } // NPC
-        public int[] DropItemValue { get; set; } // NPC
-        public string AttackSay { get; set; } // NPC
-        public byte SpawnTime { get; set; } // NPC
-        public int SpawnSecs { get; set; } // NPC
-        public byte Behaviour { get; set; } // NPC
-        public byte Range { get; set; } // NPC, Pet
-        public int Animation { get; set; } // NPC
-        public int HP { get; set; } // NPC
-        public int Damage { get; set; } // NPC
-        public int[] Skill { get; set; } // NPC
-        public byte Faction { get; set; } // NPC
-        public int Num { get; set; } // Pet
-        public int MaxLevel { get; set; } // Pet
-        public int ExpGain { get; set; } // Pet
-        public int LevelPnts { get; set; } // Pet
-        public byte StatType { get; set; } // Pet
-        public byte LevelingType { get; set; } // Pet
-        public byte Evolvable { get; set; } // Pet
-        public int EvolveLevel { get; set; } // Pet
-        public int EvolveNum { get; set; } // Pet
+        public byte Access { get; set; } 
+        public object[] Hotbar { get; set; } 
+        public byte[] Switches { get; set; } 
+        public int[] Variables { get; set; } 
+        public object PetStruct { get; set; } 
+        public int XOffset { get; set; } 
+        public int YOffset { get; set; } 
+        public byte Moving { get; set; } 
+        public byte Attacking { get; set; } 
+        public int AttackTimer { get; set; } 
+        public int MapGetTimer { get; set; } 
+        public byte Steps { get; set; } 
+        public int Emote { get; set; } 
+        public int EmoteTimer { get; set; } 
+        public int EventTimer { get; set; } 
+        public object[] Quests { get; set; } 
+        public int GuildId { get; set; } 
+        public int[] DropChance { get; set; }
+        public int[] DropItem { get; set; }
+        public int[] DropItemValue { get; set; }
+        public string AttackSay { get; set; }
+        public byte SpawnTime { get; set; }
+        public int SpawnSecs { get; set; }
+        public byte Behaviour { get; set; }
+        public byte Range { get; set; }
+        public int Animation { get; set; }
+        public int HP { get; set; }
+        public int Damage { get; set; }
+        public int[] Skill { get; set; }
+        public byte Faction { get; set; }
+        public int Num { get; set; }
+        public int MaxLevel { get; set; }
+        public int ExpGain { get; set; }
+        public int LevelPnts { get; set; }
+        public byte StatType { get; set; }
+        public byte LevelingType { get; set; }
+        public byte Evolvable { get; set; }
+        public int EvolveLevel { get; set; }
+        public int EvolveNum { get; set; }
         public int SkillBuffer { get; set; }
         public int SkillBufferTimer { get; set; }
-
-        public int SpawnWait { get; set; } // NPC
+        public int SpawnWait { get; set; }
         public byte TargetType { get; set; }
         public int Target { get; set; }
         public int StunDuration { get; set; }
         public int StunTimer { get; set; }
+        public byte StopRegen { get; set; }
+        public ResourceTypetruct[] GatherSkills { get; set; }
         public object RawStruct { get; }
 
         private Entity(EntityType type, int id, object rawStruct)
@@ -106,6 +111,7 @@ namespace Core.Globals
             return new Entity(EntityType.Player, id, player)
             {
                 Name = player.Name,
+                PK = player.PK,
                 Sex = player.Sex,
                 Job = player.Job,
                 Sprite = player.Sprite,
@@ -136,7 +142,8 @@ namespace Core.Globals
                 EmoteTimer = player.EmoteTimer,
                 EventTimer = player.EventTimer,
                 Quests = player.Quests != null ? Array.ConvertAll(player.Quests, x => (object)x) : null,
-                GuildId = player.GuildId
+                GuildId = player.GuildId,
+                GatherSkills = player.GatherSkills
             };
         }
 
@@ -163,7 +170,7 @@ namespace Core.Globals
                 Level = npc.Level,
                 Damage = npc.Damage
             };
-            Entities.Add(entity);
+            Instances.Add(entity);
             return entity;
         }
 
@@ -187,8 +194,84 @@ namespace Core.Globals
                 EvolveLevel = pet.EvolveLevel,
                 EvolveNum = pet.EvolveNum
             };
-            Entities.Add(entity);
+            Instances.Add(entity);
             return entity;
+        }
+
+        public static Core.Type.MapNPCStruct ToNPC(int id, Entity entity)
+        {
+            return new Core.Type.MapNPCStruct
+            {
+                Num = entity.Num,
+                Target = entity.Target,
+                TargetType = entity.TargetType,
+                Vital = entity.Vital != null ? (int[])entity.Vital.Clone() : new int[0], // Clone to prevent shared reference
+                X = entity.X,
+                Y = entity.Y,
+                Dir = entity.Dir,
+                AttackTimer = entity.AttackTimer,
+                SpawnWait = entity.SpawnWait,
+                StunDuration = entity.StunDuration,
+                StunTimer = entity.StunTimer,
+                SkillBuffer = entity.SkillBuffer,
+                SkillBufferTimer = entity.SkillBufferTimer,
+                SkillCD = entity.Skill != null ? (int[])entity.Skill.Clone() : new int[0], // Map NPC skills to cooldowns
+                StopRegen = entity.StopRegen, // Default, as Entity lacks this property
+                StopRegenTimer = 0, // Default, as Entity lacks this property
+                XOffset = entity.XOffset,
+                YOffset = entity.YOffset,
+                Moving = entity.Moving,
+                Attacking = entity.Attacking,
+                Steps = entity.Steps
+            };
+        }
+
+        /// <summary>
+        /// Converts a Player Entity to a PlayerStruct for player-specific data.
+        /// </summary>
+        /// <param name="id">The entity ID.</param>
+        /// <param name="entity">The Player Entity to convert.</param>
+        /// <returns>A PlayerStruct with mapped properties.</returns>
+        /// <exception cref="ArgumentException">Thrown if the entity is not a Player.</exception>
+        public static Core.Type.PlayerStruct ToPlayer(int id, Entity entity)
+        {
+            return new Core.Type.PlayerStruct
+            {
+                Name = entity.Name ?? string.Empty,
+                Sex = entity.Sex,
+                Job = entity.Job,
+                Sprite = entity.Sprite,
+                Level = entity.Level,
+                Exp = entity.Exp,
+                Access = entity.Access,
+                PK = entity.PK,
+                Vital = entity.Vital != null ? (int[])entity.Vital.Clone() : new int[0],
+                Stat = entity.Stat != null ? (byte[])entity.Stat.Clone() : new byte[0],
+                Points = entity.Points,
+                Equipment = entity.Equipment != null ? (int[])entity.Equipment.Clone() : new int[0],
+                Inv = entity.Inv != null ? entity.Inv.Cast<Core.Type.PlayerInvStruct>().ToArray() : new Core.Type.PlayerInvStruct[0],
+                Skill = entity.PlayerSkill != null ? entity.PlayerSkill.Cast<Core.Type.PlayerSkillStruct>().ToArray() : new Core.Type.PlayerSkillStruct[0],
+                Map = entity.Map,
+                X = entity.X,
+                Y = entity.Y,
+                Dir = entity.Dir,
+                Hotbar = entity.Hotbar != null ? entity.Hotbar.Cast<Core.Type.HotbarStruct>().ToArray() : new Core.Type.HotbarStruct[0],
+                Switches = entity.Switches != null ? (byte[])entity.Switches.Clone() : new byte[0],
+                Variables = entity.Variables != null ? (int[])entity.Variables.Clone() : new int[0],
+                GatherSkills = entity.GatherSkills,
+                XOffset = entity.XOffset,
+                YOffset = entity.YOffset,
+                Moving = entity.Moving,
+                Attacking = entity.Attacking,
+                AttackTimer = entity.AttackTimer,
+                MapGetTimer = entity.MapGetTimer,
+                Steps = entity.Steps,
+                Emote = entity.Emote,
+                EmoteTimer = entity.EmoteTimer,
+                EventTimer = entity.EventTimer,
+                Quests = entity.Quests != null ? entity.Quests.Cast<Core.Type.PlayerQuestStruct>().ToArray() : new Core.Type.PlayerQuestStruct[0],
+                GuildId = entity.GuildId
+            };
         }
     }
 }

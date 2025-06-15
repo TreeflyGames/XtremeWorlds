@@ -97,7 +97,7 @@ namespace Client
             buffer.WriteString(withBlock.Name);
             buffer.WriteInt32(withBlock.Sprite);
             buffer.WriteInt32(withBlock.Range);
-            buffer.WriteInt32(withBlock.Level);
+            buffer.WriteByte(withBlock.Level);
             buffer.WriteInt32(withBlock.MaxLevel);
             buffer.WriteInt32(withBlock.ExpGain);
             buffer.WriteInt32(withBlock.LevelPnts);
