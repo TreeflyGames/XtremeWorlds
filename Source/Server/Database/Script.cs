@@ -428,6 +428,18 @@ public class Script
                         }
                     }
                 }
+
+                // copy modified class to struct type
+                switch (entity.Type)
+                {
+                    case Entity.EntityType.NPC:
+                        Core.Type.MapNPC[mapNum].NPC[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNPC(entity.Id, entity);
+                        break;
+                    case Entity.EntityType.Player:
+                        break;
+                    case Entity.EntityType.Pet:
+                        break;
+                }
             }
         }
     }
