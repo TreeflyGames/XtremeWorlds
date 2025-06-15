@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Core;
 using MonoGame.Extended.ECS;
 
@@ -18,6 +19,12 @@ namespace Core.Globals
             Player,
             NPC,
             Pet
+        }
+
+        public static int Count(Entity entity)
+        {
+            // Returns the count of entities of the specified type
+            return Entities.FindAll(e => e.Type == entity.Type).Count;
         }
 
         public EntityType Type { get; }
