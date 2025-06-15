@@ -74,6 +74,14 @@ namespace Core.Globals
         public byte Evolvable { get; set; } // Pet
         public int EvolveLevel { get; set; } // Pet
         public int EvolveNum { get; set; } // Pet
+        public int SkillBuffer { get; set; }
+        public int SkillBufferTimer { get; set; }
+
+        public int SpawnWait { get; set; } // NPC
+        public byte TargetType { get; set; }
+        public int Target { get; set; }
+        public int StunDuration { get; set; }
+        public int StunTimer { get; set; }
         public object RawStruct { get; }
 
         private Entity(EntityType type, int id, object rawStruct)
