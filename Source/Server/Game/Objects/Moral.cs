@@ -19,15 +19,15 @@ namespace Server
         {
             Core.Type.Moral[moralNum].Name = "";
             Core.Type.Moral[moralNum].Color = 0;
-            Core.Type.Moral[moralNum].CanCast = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanDropItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanPK = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanPickupItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanUseItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].DropItems = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].LoseExp = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].NPCBlock = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].PlayerBlock = Conversions.ToBoolean(0);
+            Core.Type.Moral[moralNum].CanCast = false;
+            Core.Type.Moral[moralNum].CanDropItem = false;
+            Core.Type.Moral[moralNum].CanPK = false;
+            Core.Type.Moral[moralNum].CanPickupItem = false;
+            Core.Type.Moral[moralNum].CanUseItem = false;
+            Core.Type.Moral[moralNum].DropItems = false;
+            Core.Type.Moral[moralNum].LoseExp = false;
+            Core.Type.Moral[moralNum].NPCBlock = false;
+            Core.Type.Moral[moralNum].PlayerBlock = false;
         }
 
         public static async Task LoadMoralAsync(int moralNum)

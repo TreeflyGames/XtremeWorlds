@@ -78,7 +78,7 @@ namespace Server
                                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X = (byte)x;
                                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y = (byte)y;
                                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Dir = Core.Type.Map[mapNum].Tile[x, y].Data2;
-                                spawned = Conversions.ToBoolean(1);
+                                spawned = true;
                                 break;
                             }
                         }
@@ -103,7 +103,7 @@ namespace Server
                         {
                             Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X = (byte)x;
                             Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y = (byte)y;
-                            spawned = Conversions.ToBoolean(1);
+                            spawned = true;
                             break;
                         }
                         i += 0;
@@ -123,7 +123,7 @@ namespace Server
                             {
                                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X = (byte)x;
                                 Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y = (byte)y;
-                                spawned = Conversions.ToBoolean(1);
+                                spawned = true;
                             }
                         }
                     }
@@ -158,7 +158,7 @@ namespace Server
         {
             bool NPCTileIsOpenRet = default;
             int i;
-            NPCTileIsOpenRet = Conversions.ToBoolean(1);
+            NPCTileIsOpenRet = true;
 
             if (PlayersOnMap[mapNum])
             {
@@ -167,7 +167,7 @@ namespace Server
                 {
                     if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == x & GetPlayerY(i) == y)
                     {
-                        NPCTileIsOpenRet = Conversions.ToBoolean(0);
+                        NPCTileIsOpenRet = false;
                         return NPCTileIsOpenRet;
                     }
                 }
@@ -177,14 +177,14 @@ namespace Server
             {
                 if (Core.Type.MapNPC[mapNum].NPC[LoopI].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[LoopI].X == x & Core.Type.MapNPC[mapNum].NPC[LoopI].Y == y)
                 {
-                    NPCTileIsOpenRet = Conversions.ToBoolean(0);
+                    NPCTileIsOpenRet = false;
                     return NPCTileIsOpenRet;
                 }
             }
 
             if (Core.Type.Map[mapNum].Tile[x, y].Type != TileType.NPCSpawn & Core.Type.Map[mapNum].Tile[x, y].Type != TileType.Item & Core.Type.Map[mapNum].Tile[x, y].Type != TileType.None & Core.Type.Map[mapNum].Tile[x, y].Type2 != TileType.NPCSpawn & Core.Type.Map[mapNum].Tile[x, y].Type2 != TileType.Item & Core.Type.Map[mapNum].Tile[x, y].Type2 != TileType.None)
             {
-                NPCTileIsOpenRet = Conversions.ToBoolean(0);
+                NPCTileIsOpenRet = false;
             }
 
             return NPCTileIsOpenRet;
@@ -208,7 +208,7 @@ namespace Server
 
             x = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X;
             y = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y;
-            CanNPCMoveRet = Conversions.ToBoolean(1);
+            CanNPCMoveRet = true;
 
             switch (Dir)
             {
@@ -223,7 +223,7 @@ namespace Server
                             // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
                             {
-                                CanNPCMoveRet = Conversions.ToBoolean(0);
+                                CanNPCMoveRet = false;
                                 return CanNPCMoveRet;
                             }
 
@@ -235,7 +235,7 @@ namespace Server
                                 {
                                     if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X & GetPlayerY(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y - 1)
                                     {
-                                        CanNPCMoveRet = Conversions.ToBoolean(0);
+                                        CanNPCMoveRet = false;
                                         return CanNPCMoveRet;
                                     }
                                 }
@@ -247,14 +247,14 @@ namespace Server
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y - 1)
                                 {
-                                    CanNPCMoveRet = Conversions.ToBoolean(0);
+                                    CanNPCMoveRet = false;
                                     return CanNPCMoveRet;
                                 }
                             }
                         }
                         else
                         {
-                            CanNPCMoveRet = Conversions.ToBoolean(0);
+                            CanNPCMoveRet = false;
                         }
 
                         break;
@@ -271,7 +271,7 @@ namespace Server
                             // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
                             {
-                                CanNPCMoveRet = Conversions.ToBoolean(0);
+                                CanNPCMoveRet = false;
                                 return CanNPCMoveRet;
                             }
 
@@ -283,7 +283,7 @@ namespace Server
                                 {
                                     if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X & GetPlayerY(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y + 1)
                                     {
-                                        CanNPCMoveRet = Conversions.ToBoolean(0);
+                                        CanNPCMoveRet = false;
                                         return CanNPCMoveRet;
                                     }
                                 }
@@ -295,14 +295,14 @@ namespace Server
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y + 1)
                                 {
-                                    CanNPCMoveRet = Conversions.ToBoolean(0);
+                                    CanNPCMoveRet = false;
                                     return CanNPCMoveRet;
                                 }
                             }
                         }
                         else
                         {
-                            CanNPCMoveRet = Conversions.ToBoolean(0);
+                            CanNPCMoveRet = false;
                         }
 
                         break;
@@ -319,7 +319,7 @@ namespace Server
                             // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
                             {
-                                CanNPCMoveRet = Conversions.ToBoolean(0);
+                                CanNPCMoveRet = false;
                                 return CanNPCMoveRet;
                             }
 
@@ -331,7 +331,7 @@ namespace Server
                                 {
                                     if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X - 1 & GetPlayerY(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y)
                                     {
-                                        CanNPCMoveRet = Conversions.ToBoolean(0);
+                                        CanNPCMoveRet = false;
                                         return CanNPCMoveRet;
                                     }
                                 }
@@ -343,14 +343,14 @@ namespace Server
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X - 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y)
                                 {
-                                    CanNPCMoveRet = Conversions.ToBoolean(0);
+                                    CanNPCMoveRet = false;
                                     return CanNPCMoveRet;
                                 }
                             }
                         }
                         else
                         {
-                            CanNPCMoveRet = Conversions.ToBoolean(0);
+                            CanNPCMoveRet = false;
                         }
 
                         break;
@@ -367,7 +367,7 @@ namespace Server
                             // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
                             {
-                                CanNPCMoveRet = Conversions.ToBoolean(0);
+                                CanNPCMoveRet = false;
                                 return CanNPCMoveRet;
                             }
 
@@ -379,7 +379,7 @@ namespace Server
                                 {
                                     if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X + 1 & GetPlayerY(i) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y)
                                     {
-                                        CanNPCMoveRet = Conversions.ToBoolean(0);
+                                        CanNPCMoveRet = false;
                                         return CanNPCMoveRet;
                                     }
                                 }
@@ -391,14 +391,14 @@ namespace Server
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X + 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y)
                                 {
-                                    CanNPCMoveRet = Conversions.ToBoolean(0);
+                                    CanNPCMoveRet = false;
                                     return CanNPCMoveRet;
                                 }
                             }
                         }
                         else
                         {
-                            CanNPCMoveRet = Conversions.ToBoolean(0);
+                            CanNPCMoveRet = false;
                         }
 
                         break;
@@ -407,7 +407,7 @@ namespace Server
             }
 
             if (Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].SkillBuffer >= 0)
-                CanNPCMoveRet = Conversions.ToBoolean(0);
+                CanNPCMoveRet = false;
             return CanNPCMoveRet;
 
         }

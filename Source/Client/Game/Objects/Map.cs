@@ -976,7 +976,7 @@ namespace Client
             if (buffer.ReadInt32() == 1)
             {
                 GameState.ResourceIndex = buffer.ReadInt32();
-                GameState.ResourcesInit = Conversions.ToBoolean(0);
+                GameState.ResourcesInit = false;
                 Core.Type.MapResource = new Core.Type.MapResourceStruct[GameState.ResourceIndex];
                 Core.Type.MyMapResource = new Core.Type.MapResourceCacheStruct[Constant.MAX_RESOURCES];
 
@@ -990,7 +990,7 @@ namespace Client
                         Core.Type.MyMapResource[i].Y = buffer.ReadInt32();
                     }
 
-                    GameState.ResourcesInit = Conversions.ToBoolean(1);
+                    GameState.ResourcesInit = true;
                 }
             }
 
@@ -1017,7 +1017,7 @@ namespace Client
 
             GameLogic.UpdateDrawMapName();
 
-            GameState.GettingMap = Conversions.ToBoolean(0);
+            GameState.GettingMap = false;
             GameState.CanMoveNow = true;
 
         }
@@ -1075,7 +1075,7 @@ namespace Client
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
-            GameState.GettingMap = Conversions.ToBoolean(1);
+            GameState.GettingMap = true;
             GameState.CanMoveNow = false;
 
         }

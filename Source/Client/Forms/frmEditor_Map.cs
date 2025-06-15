@@ -741,11 +741,11 @@ namespace Client
         {
             if (chkTint.Checked == true)
             {
-                Core.Type.MyMap.MapTint = Conversions.ToBoolean(1);
+                Core.Type.MyMap.MapTint = true;
             }
             else
             {
-                Core.Type.MyMap.MapTint = Conversions.ToBoolean(0);
+                Core.Type.MyMap.MapTint = false;
             }
         }
 

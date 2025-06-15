@@ -579,7 +579,7 @@ namespace Server
                 return IsPlayerInPartyRet;
 
             if (Core.Type.TempPlayer[index].InParty >= 0)
-                IsPlayerInPartyRet = Conversions.ToBoolean(1);
+                IsPlayerInPartyRet = true;
             return IsPlayerInPartyRet;
         }
 

@@ -39,7 +39,7 @@ namespace Server
         // 4. Code Clarity and Readability:
         //    - Improved code formatting for better readability (consistent indentation, spacing).
         //    - Added comments to explain complex logic sections.
-        //    - Replaced some verbose `Conversions.ToBoolean(0)` and `Conversions.ToBoolean(1)` with `false` and `true` respectively.
+        //    - Replaced some verbose `Conversions.ToBoolean(0)` and `true` with `false` and `true` respectively.
         //    - Replaced some older VB-style string functions (like `InStr`, `Mid`, `Len`, `Val`) with their C# equivalents (`Contains`,
         //      `Substring`, `Length`, `int.Parse` or `double.Parse`).
 

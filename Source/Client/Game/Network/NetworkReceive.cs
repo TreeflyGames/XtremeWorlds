@@ -234,7 +234,7 @@ namespace Client
 
                 // set as empty or not
                 if (Strings.Len(GameState.CharName[i]) == 0)
-                    isSlotEmpty[(int)i] = Conversions.ToBoolean(1);
+                    isSlotEmpty[(int)i] = true;
             }
 
             buffer.Dispose();
@@ -950,7 +950,7 @@ namespace Client
 
         private static void Packet_Critical(ref byte[] data)
         {
-            GameState.ShakeTimerEnabled = Conversions.ToBoolean(1);
+            GameState.ShakeTimerEnabled = true;
             GameState.ShakeTimer = General.GetTickCount();
         }
 

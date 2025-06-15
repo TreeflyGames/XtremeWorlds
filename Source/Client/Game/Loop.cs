@@ -94,7 +94,7 @@ namespace Client
                     {
                         if (Conversions.ToInteger(Event.EventChat) == 1)
                         {
-                            Event.EventChat = Conversions.ToBoolean(0);
+                            Event.EventChat = false;
                         }
                     }
                 }
@@ -118,7 +118,7 @@ namespace Client
                         else
                         {
                             GameState.ShakeCount = 0;
-                            GameState.ShakeTimerEnabled = Conversions.ToBoolean(0);
+                            GameState.ShakeTimerEnabled = false;
                         }
 
                         GameState.ShakeCount += 1;
@@ -362,7 +362,7 @@ namespace Client
                     {
                         if (GameState.FadeAmount == 0)
                         {
-                            GameState.UseFade = Conversions.ToBoolean(0);
+                            GameState.UseFade = false;
                         }
                         else
                         {

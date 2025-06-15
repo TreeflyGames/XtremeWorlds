@@ -773,8 +773,8 @@ namespace Client
                             }
                         }
                         Event.IsMoveRouteCommand = true;
-                        chkIgnoreMove.Checked = Conversions.ToBoolean(0);
-                        chkRepeatRoute.Checked = Conversions.ToBoolean(0);
+                        chkIgnoreMove.Checked = false;
+                        chkRepeatRoute.Checked = false;
                         Event.TempMoveRouteCount = 0;
                         Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
                         fraMoveRoute.Visible = true;

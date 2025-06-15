@@ -967,7 +967,7 @@ namespace Client
                 withBlock.Msg = msg;
                 withBlock.Color = Color;
                 withBlock.Timer = General.GetTickCount();
-                withBlock.Active = Conversions.ToBoolean(1);
+                withBlock.Active = true;
             }
 
         }
@@ -1594,7 +1594,7 @@ namespace Client
             if (GetPlayerInv(GameState.MyIndex, (int)invNum) >= 0)
             {
                 if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Type.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
-                    soulBound = Conversions.ToBoolean(1);
+                    soulBound = true;
                 ShowItemDesc(x, y, (long)GetPlayerInv(GameState.MyIndex, (int)invNum));
             }
         }
@@ -2106,7 +2106,7 @@ namespace Client
             if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]))
             {
                 if (Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]].BindType > 0)
-                    soulBound = Conversions.ToBoolean(1);
+                    soulBound = true;
                 ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]);
             }
         }
@@ -2168,7 +2168,7 @@ namespace Client
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "chkBuying")].Value = 0L;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnSell")].Visible = false;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnBuy")].Visible = true;
-            GameState.shopIsSelling = Conversions.ToBoolean(0);
+            GameState.shopIsSelling = false;
 
             // set the current item
             Gui.UpdateShop();

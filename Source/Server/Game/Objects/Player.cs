@@ -440,8 +440,8 @@ namespace Server
                 {
                     PlayerWarp(index, (int)mapNum, x, y, (int)DirectionType.Down);
 
-                    DidWarp = Conversions.ToBoolean(1);
-                    Moved = Conversions.ToBoolean(1);
+                    DidWarp = true;
+                    Moved = true;
                 }
 
                 x = -1;
@@ -472,7 +472,7 @@ namespace Server
                 {
                     NetworkSend.SendBank(index);
                     Core.Type.TempPlayer[index].InBank = true;
-                    Moved = Conversions.ToBoolean(1);
+                    Moved = true;
                 }
 
                 // Check if it's a heal tile
@@ -506,7 +506,7 @@ namespace Server
                         NetworkSend.PlayerMsg(index, "You feel rejuvenating forces coursing through your body.", (int) ColorType.BrightGreen);
                         NetworkSend.SendVital(index, (VitalType)vital);
                     }
-                    Moved = Conversions.ToBoolean(1);
+                    Moved = true;
                 }
 
                 // Check if it's a trap tile
@@ -554,17 +554,17 @@ namespace Server
                 {
                     for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
-                        begineventprocessing = Conversions.ToBoolean(0);
+                        begineventprocessing = false;
 
                         if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
                         {
                             if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].X == x & Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
-                                    begineventprocessing = Conversions.ToBoolean(1);
+                                    begineventprocessing = true;
                             }
                             else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
-                                begineventprocessing = Conversions.ToBoolean(1);
+                                begineventprocessing = true;
                           
                             if (Conversions.ToInteger(begineventprocessing) == 1)
                             {
@@ -783,7 +783,7 @@ namespace Server
                     // no lock or locked to player?
                     if (string.IsNullOrEmpty(Core.Type.MapItem[mapNum, mapitemNum].PlayerName) | Core.Type.MapItem[mapNum, mapitemNum].PlayerName == GetPlayerName(index))
                     {
-                        CanPlayerPickupItemRet = Conversions.ToBoolean(1);
+                        CanPlayerPickupItemRet = true;
                         return CanPlayerPickupItemRet;
                     }
                 }
@@ -793,7 +793,7 @@ namespace Server
                 }
             }
 
-            CanPlayerPickupItemRet = Conversions.ToBoolean(0);
+            CanPlayerPickupItemRet = false;
             return CanPlayerPickupItemRet;
         }
 
@@ -842,7 +842,7 @@ namespace Server
             bool TakeInvRet = default;
             int i;
 
-            TakeInvRet = Conversions.ToBoolean(0);
+            TakeInvRet = false;
 
             // Check for subscript out of range
             if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
@@ -863,7 +863,7 @@ namespace Server
                         // Is what we are trying to take away more then what they have?  If so just set it to zero
                         if (ItemVal >= GetPlayerInvValue(index, i))
                         {
-                            TakeInvRet = Conversions.ToBoolean(1);
+                            TakeInvRet = true;
                         }
                         else
                         {
@@ -873,7 +873,7 @@ namespace Server
                     }
                     else
                     {
-                        TakeInvRet = Conversions.ToBoolean(1);
+                        TakeInvRet = true;
                     }
 
                     if (TakeInvRet)
@@ -900,7 +900,7 @@ namespace Server
             // Check for subscript out of range
             if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
             {
-                GiveInvRet = Conversions.ToBoolean(0);
+                GiveInvRet = false;
                 return GiveInvRet;
             }
 
@@ -916,12 +916,12 @@ namespace Server
                 SetPlayerInvValue(index, i, GetPlayerInvValue(index, i) + ItemVal);
                 if (SendUpdate)
                     NetworkSend.SendInventoryUpdate(index, i);
-                GiveInvRet = Conversions.ToBoolean(1);
+                GiveInvRet = true;
             }
             else
             {
                 NetworkSend.PlayerMsg(index, "Your inventory is full.", (int)ColorType.BrightRed);
-                GiveInvRet = Conversions.ToBoolean(0);
+                GiveInvRet = false;
             }
 
             return GiveInvRet;
@@ -1015,7 +1015,7 @@ namespace Server
             bool TakeInvSlotRet = default;
             object itemNum;
 
-            TakeInvSlotRet = Conversions.ToBoolean(0);
+            TakeInvSlotRet = false;
 
             // Check for subscript out of range
             if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | InvSlot < 0 | InvSlot > Core.Constant.MAX_ITEMS)
@@ -1029,7 +1029,7 @@ namespace Server
                 // Is what we are trying to take away more then what they have?  If so just set it to zero
                 if (ItemVal >= GetPlayerInvValue(index, InvSlot))
                 {
-                    TakeInvSlotRet = Conversions.ToBoolean(1);
+                    TakeInvSlotRet = true;
                 }
                 else
                 {
@@ -1038,7 +1038,7 @@ namespace Server
             }
             else
             {
-                TakeInvSlotRet = Conversions.ToBoolean(1);
+                TakeInvSlotRet = true;
             }
 
             if (TakeInvSlotRet)

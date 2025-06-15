@@ -591,7 +591,7 @@ namespace Client
                     if (IsWindowVisible("winChatSmall"))
                     {
                         Gui.ShowChat();
-                        GameState.inSmallChat = Conversions.ToBoolean(0);
+                        GameState.inSmallChat = false;
                     }
                     else
                     {
@@ -1981,7 +1981,7 @@ namespace Client
                 // check if it's timed out - close it if so
                 if (withBlock.Timer + 5000 < General.GetTickCount())
                 {
-                    withBlock.Active = Conversions.ToBoolean(0);
+                    withBlock.Active = false;
                 }
             }
         }

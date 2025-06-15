@@ -33,7 +33,7 @@ namespace Server
                 Player.LeftGame(i);
             }
             
-            consoleExit = Conversions.ToBoolean(1);
+            consoleExit = true;
             threadConsole.Join();
         }
 

@@ -66,7 +66,7 @@ namespace Client
                     Bass.ChannelPlay(MusicStream);
                     Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, SettingsManager.Instance.MusicVolume / 100.0f);
                     CurrentMusic = fileName;
-                    FadeInSwitch = Conversions.ToBoolean(1);
+                    FadeInSwitch = true;
                 }
             }
             catch (Exception ex)
@@ -242,7 +242,7 @@ namespace Client
                 }
                 else
                 {
-                    FadeInSwitch = Conversions.ToBoolean(0);
+                    FadeInSwitch = false;
                 }
             }
         }
@@ -259,7 +259,7 @@ namespace Client
                 }
                 else
                 {
-                    FadeOutSwitch = Conversions.ToBoolean(0);
+                    FadeOutSwitch = false;
                     StopMusic();
                 }
             }

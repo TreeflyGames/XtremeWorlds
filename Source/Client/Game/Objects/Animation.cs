@@ -194,7 +194,7 @@ namespace Client
                             AnimInstance[index].LoopIndex[layer] = AnimInstance[index].LoopIndex[layer] + 1;
                             if (AnimInstance[index].LoopIndex[layer] > Core.Type.Animation[AnimInstance[index].Animation].LoopCount[layer])
                             {
-                                AnimInstance[index].Used[layer] = Conversions.ToBoolean(0);
+                                AnimInstance[index].Used[layer] = false;
                             }
                             else
                             {
@@ -271,8 +271,8 @@ namespace Client
                 withBlock.Y = y;
                 withBlock.LockType = 0;
                 withBlock.LockIndex = 0;
-                withBlock.Used[0] = Conversions.ToBoolean(1);
-                withBlock.Used[1] = Conversions.ToBoolean(1);
+                withBlock.Used[0] = true;
+                withBlock.Used[1] = true;
 
                 sound = Core.Type.Animation[withBlock.Animation].Sound;
                 if (!string.IsNullOrEmpty(sound))
@@ -360,7 +360,7 @@ namespace Client
             AnimInstance[index].Y = 0;
 
             for (int i = 0, loopTo = Information.UBound(AnimInstance[index].Used); i < loopTo; i++)
-                AnimInstance[index].Used[i] = Conversions.ToBoolean(0);
+                AnimInstance[index].Used[i] = false;
 
             for (int i = 0, loopTo1 = Information.UBound(AnimInstance[index].Timer); i < loopTo1; i++)
 
@@ -430,8 +430,8 @@ namespace Client
                 withBlock.Y = buffer.ReadInt32();
                 withBlock.LockType = (byte)buffer.ReadInt32();
                 withBlock.LockIndex = buffer.ReadInt32();
-                withBlock.Used[0] = Conversions.ToBoolean(1);
-                withBlock.Used[1] = Conversions.ToBoolean(1);
+                withBlock.Used[0] = true;
+                withBlock.Used[1] = true;
             }
             buffer.Dispose();
         }

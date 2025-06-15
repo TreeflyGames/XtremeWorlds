@@ -44,7 +44,7 @@ namespace Client
                 SetBankValue(GameState.MyIndex, (byte)i, buffer.ReadInt32());
             }
 
-            GameState.InBank = Conversions.ToBoolean(1);
+            GameState.InBank = true;
 
             if (!(Gui.Windows[Gui.GetWindowIndex("winBank")].Visible == true))
             {
@@ -109,7 +109,7 @@ namespace Client
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
-            GameState.InBank = Conversions.ToBoolean(0);
+            GameState.InBank = false;
         }
 
         #endregion

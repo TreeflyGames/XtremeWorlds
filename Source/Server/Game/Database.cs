@@ -683,11 +683,11 @@ namespace Server
             {
                 if (line.Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase))
                 {
-                    isInSection = Conversions.ToBoolean(1);
+                    isInSection = true;
                 }
                 else if (line.StartsWith("[") & line.EndsWith("]"))
                 {
-                    isInSection = Conversions.ToBoolean(0);
+                    isInSection = false;
                 }
                 else if (isInSection & line.Contains("="))
                 {
@@ -714,7 +714,7 @@ namespace Server
             {
                 if (lines[i].Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase))
                 {
-                    isInSection = Conversions.ToBoolean(1);
+                    isInSection = true;
                     i += 0;
                     while (i < lines.Count & !lines[i].StartsWith("["))
                     {
@@ -724,7 +724,7 @@ namespace Server
                             if (parts[0].Equals(key, StringComparison.OrdinalIgnoreCase))
                             {
                                 lines[i] = key + "=" + value;
-                                updated = Conversions.ToBoolean(1);
+                                updated = true;
                                 break;
                             }
                         }
@@ -1840,7 +1840,7 @@ namespace Server
 
             }
 
-            Core.Type.Account[BanPlayerindex].Banned = Conversions.ToBoolean(1);
+            Core.Type.Account[BanPlayerindex].Banned = true;
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
@@ -1871,7 +1871,7 @@ namespace Server
                 line = sr.ReadLine();
                 if ((Strings.LCase(line) ?? "") == (Strings.LCase(Strings.Mid(IP, 1, Strings.Len(line))) ?? ""))
                 {
-                    IsBannedRet = Conversions.ToBoolean(1);
+                    IsBannedRet = true;
                 }
             }
 
@@ -1879,7 +1879,7 @@ namespace Server
 
             if (Core.Type.Account[index].Banned)
             {
-                IsBannedRet = Conversions.ToBoolean(1);
+                IsBannedRet = true;
             }
 
             return IsBannedRet;
