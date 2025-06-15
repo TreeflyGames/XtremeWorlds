@@ -428,7 +428,7 @@ public class Script
                     }
                 }
 
-                // copy modified class to struct type
+                // Copy modified class to struct type
                 switch (entity.Type)
                 {
                     case Entity.EntityType.NPC:
