@@ -74,10 +74,7 @@ public class Script
 
     public void BufferSkill(int mapNum, int index, int skillNum)
     {
-        if (Core.Type.Moral[Core.Type.Map[mapNum].Moral].CanCast)
-        {
-            return;
-        }      
+  
     }
 
     public int KillPlayer(int index)
@@ -167,9 +164,12 @@ public class Script
                 {
                     if (General.GetTimeMs() > entity.SkillBufferTimer + Core.Type.Skill[entity.SkillBuffer >= 0 && entity.SkillBuffer < entity.Skill.Length ? entity.Skill[entity.SkillBuffer] : 0].CastTime * 1000)
                     {
-                        BufferSkill(mapNum, x, entity.SkillBuffer);
-                        entity.SkillBuffer = -1;
-                        entity.SkillBufferTimer = 0;
+                        if (Core.Type.Moral[Map[mapNum].Moral].CanCast)
+                        {
+                            BufferSkill(mapNum, x, entity.SkillBuffer);
+                            entity.SkillBuffer = -1;
+                            entity.SkillBufferTimer = 0;
+                        }
                     }
                 }
                 else
