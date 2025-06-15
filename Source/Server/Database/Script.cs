@@ -1,8 +1,11 @@
 ﻿using Core;
+using Core.Globals;
+using CSScripting;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualBasic;
 using Server;
 using System;
+using System.ComponentModel.DataAnnotations;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -147,13 +150,16 @@ public class Script
             {
                 long tickCount = General.GetTimeMs();
 
-                for (int x = 0; x < Core.Type.Entity.Length; x++)
+                for (int x = 0; x < Core.Constant.MAX_MAP_NPCS; x++)
                 {
-                    var entity = Core.Type.Entity[x];
+                    var entity = Core.Globals.Entity.FromNPC(x, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[x].Num]);
                     if (entity == null || entity.Map != mapNum) continue;
 
+                    // Only process entities that are NPCs
+                    if (entity.Num < 0) continue;
+
                     // check if they've completed casting, and if so set the actual skill going
-                    if (entity.SkillBuffer >= 0 && Core.Type.Map[mapNum].NPC[x] > 0 && entity.Num >= 0)
+                    if (entity.SkillBuffer >= 0)
                     {
                         if (General.GetTimeMs() > entity.SkillBufferTimer + Core.Type.Skill[entity.SkillBuffer >= 0 && entity.SkillBuffer < entity.Skill.Length ? entity.Skill[entity.SkillBuffer] : 0].CastTime * 1000)
                         {
@@ -165,70 +171,66 @@ public class Script
                     else
                     {
                         // ATTACKING ON SIGHT
-                        if (Core.Type.Map[mapNum].NPC[x] >= 0 && entity.Num >= 0)
+                        if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || entity.Behaviour == (byte)NPCBehavior.Guard)
                         {
-                            if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || entity.Behaviour == (byte)NPCBehavior.Guard)
+                            // make sure it's not stunned
+                            if (!(entity.StunDuration > 0))
                             {
-                                // make sure it's not stunned
-                                if (!(entity.StunDuration > 0))
+                                int loopTo4 = NetworkConfig.Socket.HighIndex;
+                                for (int i = 0; i < loopTo4; i++)
                                 {
-                                    int loopTo4 = NetworkConfig.Socket.HighIndex;
-                                    for (int i = 0; i < loopTo4; i++)
+                                    if (NetworkConfig.IsPlaying(i))
                                     {
-                                        if (NetworkConfig.IsPlaying(i))
+                                        if (GetPlayerMap(i) == mapNum && entity.TargetType == 0 && GetPlayerAccess(i) <= (byte)AccessType.Moderator)
                                         {
-                                            if (GetPlayerMap(i) == mapNum && entity.TargetType == 0 && GetPlayerAccess(i) <= (byte)AccessType.Moderator)
+                                            int n = entity.Range;
+                                            int distanceX = entity.X - GetPlayerX(i);
+                                            int distanceY = entity.Y - GetPlayerY(i);
+
+                                            if (distanceX < 0) distanceX *= -1;
+                                            if (distanceY < 0) distanceY *= -1;
+
+                                            if (distanceX <= n && distanceY <= n)
                                             {
-                                                int n = entity.Range;
-                                                int distanceX = entity.X - GetPlayerX(i);
-                                                int distanceY = entity.Y - GetPlayerY(i);
-
-                                                if (distanceX < 0) distanceX *= -1;
-                                                if (distanceY < 0) distanceY *= -1;
-
-                                                if (distanceX <= n && distanceY <= n)
+                                                if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || GetPlayerPK(i))
                                                 {
-                                                    if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || GetPlayerPK(i))
+                                                    if (!string.IsNullOrEmpty(entity.AttackSay))
                                                     {
-                                                        if (!string.IsNullOrEmpty(entity.AttackSay))
-                                                        {
-                                                            NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(entity.Name, 1) + " says, '" + entity.AttackSay + "' to you.", (int)ColorType.Yellow);
-                                                        }
-                                                        entity.TargetType = (byte)Core.Enum.TargetType.Player;
-                                                        entity.Target = i;
+                                                        NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(entity.Name, 1) + " says, '" + entity.AttackSay + "' to you.", (int)ColorType.Yellow);
                                                     }
+                                                    entity.TargetType = (byte)Core.Enum.TargetType.Player;
+                                                    entity.Target = i;
                                                 }
                                             }
                                         }
                                     }
+                                }
 
-                                    // Check if target was found for NPC targeting
-                                    if (entity.TargetType == 0 && entity.Faction > 0)
+                                // Check if target was found for NPC targeting
+                                if (entity.TargetType == 0 && entity.Faction > 0)
+                                {
+                                    int loopTo5 = Core.Constant.MAX_MAP_NPCS;
+                                    for (int i = 0; i < loopTo5; i++)
                                     {
-                                        int loopTo5 = Core.Constant.MAX_MAP_NPCS;
-                                        for (int i = 0; i < loopTo5; i++)
+                                        // FIX: Use correct call signature for FromNPC and pass both parameters
+                                        var otherEntity = Core.Globals.Entity.FromNPC(i, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[i].Num]);
+                                        if (otherEntity != null && otherEntity.Num >= 0)
                                         {
-                                            var otherEntity = Core.Type.Entity[i];
-                                            if (otherEntity != null && otherEntity.Num >= 0)
+                                            if (otherEntity.Map != mapNum) continue;
+                                            if (ReferenceEquals(otherEntity, entity)) continue;
+                                            if ((int)otherEntity.Faction > 0 && otherEntity.Faction != entity.Faction)
                                             {
-                                                // Use the NPC num from the map, not the entity index
-                                                int otherNpcNum = Core.Type.Map[mapNum].NPC[i];
-                                                if (otherNpcNum >= 0 &&
-                                                    (int)otherEntity.Faction > 0 &&
-                                                    otherEntity.Faction != entity.Faction)
+                                                int n = entity.Range;
+                                                int distanceX = entity.X - otherEntity.X;
+                                                int distanceY = entity.Y - otherEntity.Y;
+
+                                                if (distanceX < 0) distanceX *= -1;
+                                                if (distanceY < 0) distanceY *= -1;
+
+                                                if (distanceX <= n && distanceY <= n && entity.Behaviour == (byte)NPCBehavior.AttackOnSight)
                                                 {
-                                                    int n = entity.Range;
-                                                    int distanceX = entity.X - otherEntity.X;
-                                                    int distanceY = entity.Y - otherEntity.Y;
-
-                                                    if (distanceX < 0) distanceX *= -1;
-                                                    if (distanceY < 0) distanceY *= -1;
-
-                                                    if (distanceX <= n && distanceY <= n && entity.Behaviour == (byte)NPCBehavior.AttackOnSight)
-                                                    {
-                                                        entity.TargetType = (byte)Core.Enum.TargetType.NPC;
-                                                        entity.Target = i;
-                                                    }
+                                                    entity.TargetType = (byte)Core.Enum.TargetType.NPC;
+                                                    entity.Target = i;
                                                 }
                                             }
                                         }
@@ -236,100 +238,82 @@ public class Script
                                 }
                             }
                         }
+                    }
 
-                        bool targetVerify = false;
+                    bool targetVerify = false;
 
-                        // NPC walking/targeting
-                        if (Core.Type.Map[mapNum].NPC[x] >= 0 && entity.Num >= 0)
+                    // NPC walking/targeting
+                    if (entity.StunDuration > 0)
+                    {
+                        if (General.GetTimeMs() > entity.StunTimer + entity.StunDuration * 1000)
                         {
-                            if (entity.StunDuration > 0)
+                            entity.StunDuration = 0;
+                            entity.StunTimer = 0;
+                        }
+                    }
+                    else
+                    {
+                        int target = entity.Target;
+                        byte targetType = entity.TargetType;
+                        int targetX = 0, targetY = 0;
+
+                        if (entity.Behaviour != (byte)NPCBehavior.ShopKeeper && entity.Behaviour != (byte)NPCBehavior.Quest)
+                        {
+                            if (targetType == (byte)Core.Enum.TargetType.Player)
                             {
-                                if (General.GetTimeMs() > entity.StunTimer + entity.StunDuration * 1000)
+                                if (target > 0)
                                 {
-                                    entity.StunDuration = 0;
-                                    entity.StunTimer = 0;
+                                    if (NetworkConfig.IsPlaying(target) && GetPlayerMap(target) == mapNum)
+                                    {
+                                        targetVerify = true;
+                                        targetY = GetPlayerY(target);
+                                        targetX = GetPlayerX(target);
+                                    }
+                                    else
+                                    {
+                                        entity.TargetType = 0;
+                                        entity.Target = 0;
+                                    }
                                 }
                             }
-                            else
+                            else if (targetType == (byte)Core.Enum.TargetType.NPC)
                             {
-                                int target = entity.Target;
-                                byte targetType = entity.TargetType;
-                                int targetX = 0, targetY = 0;
-
-                                if (entity.Behaviour != (byte)NPCBehavior.ShopKeeper && entity.Behaviour != (byte)NPCBehavior.Quest)
+                                if (target > 0)
                                 {
-                                    if (targetType == (byte)Core.Enum.TargetType.Player)
+                                    // FIX: Use correct call signature for FromNPC and pass both parameters
+                                    var targetEntity = Core.Globals.Entity.FromNPC(target, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[target].Num]);
+                                    if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
                                     {
-                                        if (target > 0)
-                                        {
-                                            if (NetworkConfig.IsPlaying(target) && GetPlayerMap(target) == mapNum)
-                                            {
-                                                targetVerify = true;
-                                                targetY = GetPlayerY(target);
-                                                targetX = GetPlayerX(target);
-                                            }
-                                            else
-                                            {
-                                                entity.TargetType = 0;
-                                                entity.Target = 0;
-                                            }
-                                        }
+                                        targetVerify = true;
+                                        targetY = targetEntity.Y;
+                                        targetX = targetEntity.X;
                                     }
-                                    else if (targetType == (byte)Core.Enum.TargetType.NPC)
+                                    else
                                     {
-                                        if (target > 0)
-                                        {
-                                            var targetEntity = Core.Type.Entity[target];
-                                            if (targetEntity != null && targetEntity.Num >= 0)
-                                            {
-                                                targetVerify = true;
-                                                targetY = targetEntity.Y;
-                                                targetX = targetEntity.X;
-                                            }
-                                            else
-                                            {
-                                                entity.TargetType = 0;
-                                                entity.Target = 0;
-                                            }
-                                        }
+                                        entity.TargetType = 0;
+                                        entity.Target = 0;
                                     }
+                                }
+                            }
 
-                                    if (targetVerify)
+                            if (targetVerify)
+                            {
+                                if (!Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
+                                {
+                                    int i = EventLogic.FindNPCPath(mapNum, x, targetX, targetY);
+                                    if (i < 4)
                                     {
-                                        if (!Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
+                                        if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
                                         {
-                                            int i = EventLogic.FindNPCPath(mapNum, x, targetX, targetY);
-                                            if (i < 4)
-                                            {
-                                                if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
-                                                {
-                                                    Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
-                                                if (i == 1)
-                                                {
-                                                    i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
-                                                    if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
-                                                    {
-                                                        Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Server.NPC.NPCDir(mapNum, x, Event.GetNPCDir(targetX, targetY, (int)entity.X, (int)entity.Y));
+                                            Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
                                         }
                                     }
                                     else
                                     {
-                                        int i = (int)Math.Round(new Random().NextDouble() * 4);
+                                        i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
                                         if (i == 1)
                                         {
-                                            i = (int)Math.Round(new Random().NextDouble() * 4);
+                                            i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
                                             if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
                                             {
                                                 Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
@@ -337,48 +321,62 @@ public class Script
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    Server.NPC.NPCDir(mapNum, x, Event.GetNPCDir(targetX, targetY, (int)entity.X, (int)entity.Y));
+                                }
+                            }
+                            else
+                            {
+                                int i = (int)Math.Round(new Random().NextDouble() * 4);
+                                if (i == 1)
+                                {
+                                    i = (int)Math.Round(new Random().NextDouble() * 4);
+                                    if (Server.NPC.CanNPCMove(mapNum, x, (byte)i))
+                                    {
+                                        Server.NPC.NPCMove(mapNum, x, i, (int)MovementType.Walking);
+                                    }
+                                }
                             }
                         }
                     }
 
                     // NPCs attack targets
-                    if (Core.Type.Map[mapNum].NPC[x] >= 0 && entity.Num >= 0)
-                    {
-                        int target = entity.Target;
-                        byte targetType = entity.TargetType;
+                    int attackTarget = entity.Target;
+                    byte attackTargetType = entity.TargetType;
 
-                        if (target > 0)
+                    if (attackTarget > 0)
+                    {
+                        if (attackTargetType == (byte)Core.Enum.TargetType.Player)
                         {
-                            if (targetType == (byte)Core.Enum.TargetType.Player)
+                            if (NetworkConfig.IsPlaying(attackTarget) && GetPlayerMap(attackTarget) == mapNum)
                             {
-                                if (NetworkConfig.IsPlaying(target) && GetPlayerMap(target) == mapNum)
-                                {
-                                    // Placeholder for attack logic
-                                }
-                                else
-                                {
-                                    entity.Target = 0;
-                                    entity.TargetType = 0;
-                                }
+                                // Placeholder for attack logic
                             }
-                            else if (targetType == (byte)Core.Enum.TargetType.NPC)
+                            else
                             {
-                                var targetEntity = Core.Type.Entity[target];
-                                if (targetEntity != null && targetEntity.Num >= 0)
-                                {
-                                    // Placeholder for NPC vs NPC attack logic
-                                }
-                                else
-                                {
-                                    entity.Target = 0;
-                                    entity.TargetType = 0;
-                                }
+                                entity.Target = 0;
+                                entity.TargetType = 0;
+                            }
+                        }
+                        else if (attackTargetType == (byte)Core.Enum.TargetType.NPC)
+                        {
+                            // FIX: Use correct call signature for FromNPC and pass both parameters
+                            var targetEntity = Core.Globals.Entity.FromNPC(attackTarget, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[attackTarget].Num]);
+                            if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
+                            {
+                                // Placeholder for NPC vs NPC attack logic
+                            }
+                            else
+                            {
+                                entity.Target = 0;
+                                entity.TargetType = 0;
                             }
                         }
                     }
 
                     // Regenerate NPC's HP
-                    if (entity.Num >= 0 && entity.Vital[(byte)VitalType.HP] > 0)
+                    if (entity.Vital[(byte)VitalType.HP] > 0)
                     {
                         // Placeholder for HP regen
                         if (entity.Vital[(byte)VitalType.HP] > GameLogic.GetNPCMaxVital(x, VitalType.HP))
@@ -387,7 +385,7 @@ public class Script
                         }
                     }
 
-                    if (entity.Num >= 0 && entity.Vital[(byte)VitalType.SP] > 0)
+                    if (entity.Vital[(byte)VitalType.SP] > 0)
                     {
                         // Placeholder for SP regen
                         if (entity.Vital[(byte)VitalType.SP] > GameLogic.GetNPCMaxVital(x, VitalType.SP))
@@ -397,7 +395,7 @@ public class Script
                     }
 
                     // Check if the npc is dead or not
-                    if (entity.Num >= 0 && entity.Vital[(byte)VitalType.HP] < 0 && entity.SpawnWait > 0)
+                    if (entity.Vital[(byte)VitalType.HP] < 0 && entity.SpawnWait > 0)
                     {
                         entity.Num = 0;
                         entity.SpawnWait = General.GetTimeMs();
@@ -405,7 +403,7 @@ public class Script
                     }
 
                     // Spawning an NPC
-                    if (entity.Num == -1 && Core.Type.Map[mapNum].NPC[x] >= 0)
+                    if (entity.Num == -1)
                     {
                         if (entity.SpawnSecs > 0)
                         {

@@ -49,8 +49,6 @@ namespace Core
         public static GuildStruct[] Guilds = new GuildStruct[Constant.MAX_GUILDS];
         public static WeatherStruct Weather = new WeatherStruct();
 
-        public static Entity[] Entity = new Entity[Constant.MAX_PLAYERS + Constant.MAX_NPCS + Constant.MAX_PETS];
-
         #region Struct Definitions
 
         public struct ResourceTypetruct
