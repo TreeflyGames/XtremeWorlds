@@ -201,6 +201,15 @@ namespace Server
                 return;
             }
 
+            try
+            {
+                Script.Instance?.PlayerMove(index);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             SetPlayerDir(index, Dir);
             Moved = false;
             mapNum = GetPlayerMap(index);

@@ -134,6 +134,11 @@ public class Script
         NetworkSend.SendPlayerData(index);
     }
 
+    public void PlayerMove(int index)
+    {
+
+    }
+
     public void UpdateMapAI()
     {
         var now = General.GetTimeMs();
