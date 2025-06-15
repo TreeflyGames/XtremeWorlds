@@ -801,7 +801,7 @@ namespace Server
 
             // Send index's player data to everyone on the map including himself
             data = PlayerData(index);
-            NetworkConfig.SendDataToMap(mapNum, data, data.Length);
+            NetworkConfig.SendDataToMapBut(index, mapNum, data, data.Length);
             SendPlayerXYToMap(index);
             NetworkSend.SendMapEquipment(index);
             NetworkSend.SendVitals(index);
