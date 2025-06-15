@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Core;
+using MonoGame.Extended.ECS;
 
 namespace Core.Globals
 {
@@ -10,6 +11,8 @@ namespace Core.Globals
     /// </summary>
     public class Entity
     {
+        public static List<Entity> Entities = new List<Entity>();
+
         public enum EntityType
         {
             Player,
@@ -132,7 +135,7 @@ namespace Core.Globals
 
         public static Entity FromNPC(int id, Type.NPCStruct npc)
         {
-            return new Entity(EntityType.NPC, id, npc)
+            var entity = new Entity(EntityType.NPC, id, npc)
             {
                 Name = npc.Name,
                 AttackSay = npc.AttackSay,
@@ -153,11 +156,13 @@ namespace Core.Globals
                 Level = npc.Level,
                 Damage = npc.Damage
             };
+            Entities.Add(entity);
+            return entity;
         }
 
         public static Entity FromPet(int id, Type.PetStruct pet)
         {
-            return new Entity(EntityType.Pet, id, pet)
+            var entity = new Entity(EntityType.Pet, id, pet)
             {
                 Num = pet.Num,
                 Name = pet.Name,
@@ -175,6 +180,8 @@ namespace Core.Globals
                 EvolveLevel = pet.EvolveLevel,
                 EvolveNum = pet.EvolveNum
             };
+            Entities.Add(entity);
+            return entity;
         }
     }
 }

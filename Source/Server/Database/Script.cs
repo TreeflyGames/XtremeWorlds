@@ -150,9 +150,11 @@ public class Script
             {
                 long tickCount = General.GetTimeMs();
 
-                for (int x = 0; x < Core.Constant.MAX_MAP_NPCS; x++)
+                // Use entities from Entity class
+                var entities = Core.Globals.Entity.Entities;
+                for (int x = 0; x < entities.Count; x++)
                 {
-                    var entity = Core.Globals.Entity.FromNPC(x, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[x].Num]);
+                    var entity = entities[x];
                     if (entity == null || entity.Map != mapNum) continue;
 
                     // Only process entities that are NPCs
@@ -209,11 +211,9 @@ public class Script
                                 // Check if target was found for NPC targeting
                                 if (entity.TargetType == 0 && entity.Faction > 0)
                                 {
-                                    int loopTo5 = Core.Constant.MAX_MAP_NPCS;
-                                    for (int i = 0; i < loopTo5; i++)
+                                    for (int i = 0; i < entities.Count; i++)
                                     {
-                                        // FIX: Use correct call signature for FromNPC and pass both parameters
-                                        var otherEntity = Core.Globals.Entity.FromNPC(i, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[i].Num]);
+                                        var otherEntity = entities[i];
                                         if (otherEntity != null && otherEntity.Num >= 0)
                                         {
                                             if (otherEntity.Map != mapNum) continue;
@@ -278,10 +278,9 @@ public class Script
                             }
                             else if (targetType == (byte)Core.Enum.TargetType.NPC)
                             {
-                                if (target > 0)
+                                if (target > 0 && target < entities.Count)
                                 {
-                                    // FIX: Use correct call signature for FromNPC and pass both parameters
-                                    var targetEntity = Core.Globals.Entity.FromNPC(target, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[target].Num]);
+                                    var targetEntity = entities[target];
                                     if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
                                     {
                                         targetVerify = true;
@@ -361,11 +360,18 @@ public class Script
                         }
                         else if (attackTargetType == (byte)Core.Enum.TargetType.NPC)
                         {
-                            // FIX: Use correct call signature for FromNPC and pass both parameters
-                            var targetEntity = Core.Globals.Entity.FromNPC(attackTarget, Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[attackTarget].Num]);
-                            if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
+                            if (attackTarget < entities.Count)
                             {
-                                // Placeholder for NPC vs NPC attack logic
+                                var targetEntity = entities[attackTarget];
+                                if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
+                                {
+                                    // Placeholder for NPC vs NPC attack logic
+                                }
+                                else
+                                {
+                                    entity.Target = 0;
+                                    entity.TargetType = 0;
+                                }
                             }
                             else
                             {
