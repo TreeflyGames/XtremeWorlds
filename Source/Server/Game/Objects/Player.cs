@@ -589,7 +589,6 @@ namespace Server
             }
         }
 
-
         public static bool IsTileBlocked(int index, int mapNum, int x, int y, DirectionType dir)
         {      
             // Check for NPC and player blocking  

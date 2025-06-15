@@ -812,7 +812,7 @@ namespace Client
 
             withBlock.nudPetExp.Value = Core.Type.Pet[GameState.EditorIndex].ExpGain;
 
-            withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].LevelPnts;
+            withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].Points;
 
             withBlock.nudMaxLevel.Value = Core.Type.Pet[GameState.EditorIndex].MaxLevel;
 
@@ -834,7 +834,7 @@ namespace Client
                 withBlock.nudPetExp.Value = Core.Type.Pet[GameState.EditorIndex].ExpGain;
                 if (Core.Type.Pet[GameState.EditorIndex].MaxLevel > 0)
                     withBlock.nudMaxLevel.Value = Core.Type.Pet[GameState.EditorIndex].MaxLevel;
-                withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].LevelPnts;
+                withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].Points;
             }
             else
             {
@@ -843,7 +843,7 @@ namespace Client
                 withBlock.pnlPetlevel.Visible = false;
                 withBlock.nudPetExp.Value = Core.Type.Pet[GameState.EditorIndex].ExpGain;
                 withBlock.nudMaxLevel.Value = Core.Type.Pet[GameState.EditorIndex].MaxLevel;
-                withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].LevelPnts;
+                withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].Points;
             }
 
             if (Core.Type.Pet[GameState.EditorIndex].Evolvable == 1)

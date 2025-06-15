@@ -194,7 +194,7 @@ namespace Client
 
         private void NudPetPnts_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].LevelPnts = (int)Math.Round(nudPetPnts.Value);
+            Core.Type.Pet[GameState.EditorIndex].Points = (byte)Math.Round(nudPetPnts.Value);
         }
 
         private void NudMaxLevel_ValueChanged(object sender, EventArgs e)

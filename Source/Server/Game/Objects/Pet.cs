@@ -114,7 +114,7 @@ namespace Server
             buffer.WriteInt32(withBlock.Level);
             buffer.WriteInt32(withBlock.MaxLevel);
             buffer.WriteInt32(withBlock.ExpGain);
-            buffer.WriteInt32(withBlock.LevelPnts);
+            buffer.WriteByte(withBlock.Points);
             buffer.WriteInt32(withBlock.StatType);
             buffer.WriteInt32(withBlock.LevelingType);
 
@@ -149,7 +149,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.Level);
                 buffer.WriteInt32(withBlock.MaxLevel);
                 buffer.WriteInt32(withBlock.ExpGain);
-                buffer.WriteInt32(withBlock.LevelPnts);
+                buffer.WriteByte(withBlock.Points);
                 buffer.WriteInt32(withBlock.StatType);
                 buffer.WriteInt32(withBlock.LevelingType);
 
@@ -218,7 +218,7 @@ namespace Server
                 withBlock.Level = buffer.ReadByte();
                 withBlock.MaxLevel = buffer.ReadInt32();
                 withBlock.ExpGain = buffer.ReadInt32();
-                withBlock.LevelPnts = buffer.ReadInt32();
+                withBlock.Points = buffer.ReadByte();
                 withBlock.StatType = (byte)buffer.ReadInt32();
                 withBlock.LevelingType = (byte)buffer.ReadInt32();
 
@@ -262,7 +262,7 @@ namespace Server
             withBlock.Level = buffer.ReadByte();
             withBlock.MaxLevel = buffer.ReadInt32();
             withBlock.ExpGain = buffer.ReadInt32();
-            withBlock.LevelPnts = buffer.ReadInt32();
+            withBlock.Points = buffer.ReadByte();
             withBlock.StatType = (byte)buffer.ReadInt32();
             withBlock.LevelingType = (byte)buffer.ReadInt32();
 

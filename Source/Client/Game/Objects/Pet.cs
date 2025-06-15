@@ -100,7 +100,7 @@ namespace Client
             buffer.WriteByte(withBlock.Level);
             buffer.WriteInt32(withBlock.MaxLevel);
             buffer.WriteInt32(withBlock.ExpGain);
-            buffer.WriteInt32(withBlock.LevelPnts);
+            buffer.WriteByte(withBlock.Points);
             buffer.WriteInt32(withBlock.StatType);
             buffer.WriteInt32(withBlock.LevelingType);
 

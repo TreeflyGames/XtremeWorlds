@@ -30,8 +30,28 @@ namespace Core.Globals
             return Instances.FindAll(e => e.Type == entity.Type).Count;
         }
 
+        public static int Count()
+        {
+            return Instances.Count;
+        }
+
+        public static int Index(Entity entity)
+        {
+            if (entity == null || Instances == null)
+                return -1; // Handle null cases
+
+            // Get all entities of the same type, sorted by Id
+            var entities = Instances
+                .Where(e => e.Type == entity.Type)
+                .OrderBy(e => e.Id)
+                .ToList();
+
+            // Find the index of the input entity in the sorted list
+            return entities.FindIndex(e => e.Id == entity.Id);
+        }
+
         public EntityType Type { get; }
-        public int Id { get; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public bool PK { get; set; }
         public byte Sex { get; set; } 
@@ -82,7 +102,6 @@ namespace Core.Globals
         public int Num { get; set; }
         public int MaxLevel { get; set; }
         public int ExpGain { get; set; }
-        public int LevelPnts { get; set; }
         public byte StatType { get; set; }
         public byte LevelingType { get; set; }
         public byte Evolvable { get; set; }
@@ -185,7 +204,7 @@ namespace Core.Globals
                 Level = pet.Level,
                 MaxLevel = pet.MaxLevel,
                 ExpGain = pet.ExpGain,
-                LevelPnts = pet.LevelPnts,
+                Points = pet.Points,
                 StatType = pet.StatType,
                 LevelingType = pet.LevelingType,
                 Stat = pet.Stat,

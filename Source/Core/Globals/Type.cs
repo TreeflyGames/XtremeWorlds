@@ -271,7 +271,7 @@ namespace Core
             public byte Level;
             public int MaxLevel;
             public int ExpGain;
-            public int LevelPnts;
+            public byte Points;
             public byte StatType;
             public byte LevelingType;
             public byte[] Stat;
