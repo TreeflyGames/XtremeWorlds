@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Xml.Linq;
@@ -1960,7 +1961,7 @@ namespace Server
 
         public static void Packet_TrainStat(int index, ref byte[] data)
         {
-            int tmpstat;
+            int tmpStat;
             var buffer = new ByteStream(data);
 
             // check points
@@ -1968,23 +1969,17 @@ namespace Server
                 return;
 
             // stat
-            tmpstat = buffer.ReadInt32();
+            tmpStat = buffer.ReadInt32();
 
-            // make sure there stats are not maxed
-            if (GetPlayerRawStat(index, (StatType)tmpstat) >= Core.Constant.MAX_STATS)
+            try
             {
-                NetworkSend.PlayerMsg(index, "You cannot spend any more points on that stat.", (int)ColorType.BrightRed);
-                return;
+                Script.Instance?.TrainStat(index, tmpStat);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            // increment stat
-            SetPlayerStat(index, (StatType)tmpstat, GetPlayerRawStat(index, (StatType)tmpstat) + 1);
-
-            // decrement points
-            SetPlayerPoints(index, GetPlayerPoints(index) - 1);
-
-            // send player new data
-            NetworkSend.SendPlayerData(index);
             buffer.Dispose();
         }
 

@@ -6,6 +6,8 @@ using Microsoft.VisualBasic;
 using Server;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net.NetworkInformation;
+using System.Reflection;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -92,6 +94,25 @@ public class Script
         }
 
         return exp;
+    }
+
+    public void TrainStat(int index, int tmpStat)
+    {
+        // make sure there stats are not maxed
+        if (GetPlayerRawStat(index, (StatType)tmpStat) >= Core.Constant.MAX_STATS)
+        {
+            NetworkSend.PlayerMsg(index, "You cannot spend any more points on that stat.", (int)ColorType.BrightRed);
+            return;
+        }
+
+        // increment stat
+        SetPlayerStat(index, (StatType)tmpStat, GetPlayerRawStat(index, (StatType)tmpStat) + 1);
+
+        // decrement points
+        SetPlayerPoints(index, GetPlayerPoints(index) - 1);
+
+        // send player new data
+        NetworkSend.SendPlayerData(index);
     }
 
     public void UpdateMapAI()
