@@ -146,7 +146,6 @@ public class Script
                 }
             }
 
-
             long tickCount = General.GetTimeMs();
 
             // Use entities from Entity class
