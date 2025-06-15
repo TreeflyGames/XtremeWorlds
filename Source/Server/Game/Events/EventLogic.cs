@@ -200,7 +200,7 @@ namespace Server
         public static void SpawnNewEvents()
         {
             // Use Parallel.For for potential performance gains on multi-core systems.
-            Parallel.For(0, NetworkConfig.Socket.HighIndex + 1, i =>
+            Parallel.For(0, NetworkConfig.Socket.HighIndex, i =>
             {
                 int mapNum = GetPlayerMap(i);
 

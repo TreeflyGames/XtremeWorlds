@@ -164,6 +164,15 @@ namespace Client
                 // Process input before rendering, otherwise input will be behind by 1 frame
                 if (walkTimer < tick)
                 {
+                    // Process player movements
+                    for (i = 0; i < Constant.MAX_PLAYERS; i++)
+                    {
+                        if (IsPlaying(i))
+                        {
+                            Player.ProcessPlayerMovement(i);
+                        }
+                    }
+
                     // Process NPC movements (actually move them)
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
@@ -209,8 +218,10 @@ namespace Client
                         // reset
                         if (GameState.FogOffsetX < -255)
                             GameState.FogOffsetX = 1;
+
                         if (GameState.FogOffsetY < -255)
                             GameState.FogOffsetY = 1;
+
                         fogtmr = tick + 255 - GameState.CurrentFogSpeed;
                     }
                 }

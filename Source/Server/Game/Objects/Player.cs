@@ -170,7 +170,7 @@ namespace Server
             var amount = default(int);
 
             // Check for subscript out of range
-            if (Dir < (int)DirectionType.Up || Dir > (int)DirectionType.DownRight || Movement < (int)MovementType.Standing || Movement > (int)MovementType.Running)
+           if (Dir < (int)DirectionType.Up || Dir > (int)DirectionType.DownRight || Movement < (int)MovementType.Standing || Movement > (int)MovementType.Running)
             {
                 return;
             }

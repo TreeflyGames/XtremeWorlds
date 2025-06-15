@@ -898,7 +898,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerDir(index));
             buffer.WriteInt32(Movement);
 
-            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
+            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }

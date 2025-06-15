@@ -53,10 +53,10 @@ namespace Server
             // Establish some Rulez
             Socket = new NetworkServer((int)Packets.ClientPackets.Count, 8192, Core.Constant.MAX_PLAYERS)
             {
-                BufferLimit = 2048000, // <- this is 2mb Core.Constant.MAX data storage
+                BufferLimit = 2048000, // <- this is 2mb MAX data storage
                 MinimumIndex = 0, // <- this prevents the network from giving us 0 as an index
                 PacketAcceptLimit = 500, // Dunno what is a reasonable cap right now so why not? :P
-                PacketDisconnectCount = 250 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
+                PacketDisconnectCount = 500 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
             };
             // END THE ESTABLISHMENT! WOOH ANARCHY! ~SpiceyWolf
 
