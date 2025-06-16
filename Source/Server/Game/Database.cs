@@ -887,19 +887,19 @@ namespace Server
             //    return;
             //}
 
-            try
-            {
                 if (System.IO.File.Exists(mapsDir + @"\map" + mapNum + ".dat"))
                 {
-                    var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
-                    Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
-                    return;
+                    try
+                    {
+                        var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
+                        Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
+                        return;
+                    }
+                    catch { Exception e; }
+                    {
+                        Console.WriteLine(mapNum + " failed to load map!");
+                    }
                 }
-            }
-            catch { Exception e; }
-            {
-                Console.WriteLine(mapNum + " failed to load map!");
-            }
 
             //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
             //{
