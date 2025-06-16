@@ -88,17 +88,6 @@ namespace Client
                 for (i = 0; i < byte.MaxValue; i++)
                     Animation.CheckAnimInstance(i);
 
-                if (tick > Event.EventChatTimer)
-                {
-                    if (string.IsNullOrEmpty(Event.EventText))
-                    {
-                        if (Conversions.ToInteger(Event.EventChat) == 1)
-                        {
-                            Event.EventChat = false;
-                        }
-                    }
-                }
-
                 // screenshake
                 if (GameState.ShakeTimerEnabled)
                 {

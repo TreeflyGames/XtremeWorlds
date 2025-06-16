@@ -934,11 +934,6 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                }             
-                
                 if (IsSeartchCooldownElapsed())
                 {
                     if (IsMouseButtonDown(MouseButton.Left))

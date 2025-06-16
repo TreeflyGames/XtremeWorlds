@@ -1,76 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Client</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-    <MyType>Empty</MyType>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ManifestCertificateThumbprint>181BBD77C201FB969E61DF100063FD42A08B2BE6</ManifestCertificateThumbprint>
-    <ManifestKeyFile>XtremeWorlds.pfx</ManifestKeyFile>
-    <GenerateManifests>false</GenerateManifests>
-    <TargetZone>LocalIntranet</TargetZone>
-    <SignManifests>false</SignManifests>
-    <PublishUrl>\Publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>false</BootstrapperEnabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
-	<MonoGamePlatform>OpenGL</MonoGamePlatform>
-	<EnableWindowsFormsHighDpiAutoResizing>true</EnableWindowsFormsHighDpiAutoResizing>
-	<HighDpiMode>SystemAware</HighDpiMode>
-	<!-- Options: DpiUnaware, SystemAware, PerMonitor, PerMonitorV2 -->
-	<UseWindowsForms>true</UseWindowsForms>
+    <MonoGamePlatform>OpenGL</MonoGamePlatform>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>None</DebugType>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="bass.dll" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="bassmidi.dll" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="libbass.dylib" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="libbassmidi.dylib" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
-	  <Content Include="Content\**\*.*">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
-	  </Content>
-    <EmbeddedResource Include="Icon.bmp">
+    <Content Include="Content\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+      <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Modules\DarkUI\DarkUI\DarkUI.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -101,10 +69,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Network\Asfw.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Microsoft.Extensions.Configuration">
       <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net8.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
@@ -113,14 +77,6 @@
       <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <PropertyGroup>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
-    <TargetFramework>net9.0-windows</TargetFramework>
-  </PropertyGroup>
   <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
     <MakeDir Directories="$(OutputPath)Content" />
   </Target>
