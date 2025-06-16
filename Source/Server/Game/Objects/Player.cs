@@ -203,15 +203,6 @@ namespace Server
                 return;
             }
 
-            try
-            {
-                Script.Instance?.PlayerMove(index);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
             SetPlayerDir(index, Dir);
             Moved = false;
             mapNum = GetPlayerMap(index);
@@ -557,6 +548,15 @@ namespace Server
 
             if (Moved)
             {
+                try
+                {
+                    Script.Instance?.PlayerMove(index);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
                 if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
                 {
                     for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
