@@ -67,9 +67,6 @@ public class Script
         // Set HP to nothing
         SetPlayerVital(index, Core.Enum.VitalType.HP, 0);
 
-        // Warp player away
-        SetPlayerDir(index, (byte)Core.Enum.DirectionType.Down);
-
         // Restore vitals
         for (int i = 0, loopTo = (byte)Core.Enum.VitalType.Count; i < loopTo; i++)
             SetPlayerVital(index, (Core.Enum.VitalType)i, GetPlayerMaxVital(index, (Core.Enum.VitalType)i));
@@ -81,6 +78,9 @@ public class Script
         }
 
         ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)];
+
+        // Warp player away
+        SetPlayerDir(index, (byte)Core.Enum.DirectionType.Down);
 
         // to the bootmap if it is set
         if (withBlock.BootMap > 0)

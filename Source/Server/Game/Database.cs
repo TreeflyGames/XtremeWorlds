@@ -1731,6 +1731,7 @@ namespace Server
             }
 
             Core.Type.Player[index] = characterData;
+            Core.Type.TempPlayer[index].Slot = (byte)charNum;
             return true;
         }
 

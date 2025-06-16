@@ -218,13 +218,11 @@ namespace Server
                         return;
                     }
 
-                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    if (NetworkConfig.IsMultiLogin(index, username))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Login);
                         return;
                     }
-
-                    NetworkConfig.CheckMultiAccounts(index, username);
 
                     if (!Database.LoadAccount(index, username))
                     {
@@ -338,13 +336,17 @@ namespace Server
                         return;
                     }
 
-                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    if (NetworkConfig.IsMultiLogin(index, username))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
                         return;
                     }
 
-                    NetworkConfig.CheckMultiAccounts(index, username);
+                    if (NetworkConfig.IsMultiLogin(index, username))
+                    {
+                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
+                        return;
+                    }
 
                     userData = Database.SelectRowByColumn("id", Database.GetStringHash(username), "account", "data");
 
@@ -380,14 +382,17 @@ namespace Server
                         return;
                     }
 
-                    Database.LoadCharacter(index, slot);
-                    Database.LoadBank(index);
+                    if (!NetworkConfig.IsMultiAccount(index, Account[index].Login))
+                    {
+                        Database.LoadCharacter(index, slot);
+                        Database.LoadBank(index);
+
+                    }
 
                     // Check if character data has been created
                     if (Strings.Len(Core.Type.Player[index].Name) > 0)
                     {
-                        // we have a char!
-                        Core.Type.TempPlayer[index].Slot = slot;
+                        // we have a char!                        
                         Player.HandleUseChar(index);
                     }
                     else

@@ -786,13 +786,16 @@ namespace Server
             {
                 if (IsPlaying(i))
                 {
-                    if (GetPlayerMap(i) == mapNum)
+                    if (i != index)
                     {
-                        data = PlayerData(i);
-                        dataSize = data.Length;
-                        NetworkConfig.Socket.SendDataTo(index, data, dataSize);
-                        SendPlayerXYTo(index, i);
-                        NetworkSend.SendMapEquipmentTo(index, i);
+                        if (GetPlayerMap(i) == mapNum)
+                        {
+                            data = PlayerData(i);
+                            dataSize = data.Length;
+                            NetworkConfig.Socket.SendDataTo(index, data, dataSize);
+                            SendPlayerXYTo(index, i);
+                            NetworkSend.SendMapEquipmentTo(index, i);
+                        }
                     }
                 }
             }
@@ -801,7 +804,7 @@ namespace Server
 
             // Send index's player data to everyone on the map including himself
             data = PlayerData(index);
-            NetworkConfig.SendDataToMapBut(index, mapNum, data, data.Length);
+            NetworkConfig.SendDataToMap(mapNum, data, data.Length);
             SendPlayerXYToMap(index);
             NetworkSend.SendMapEquipment(index);
             NetworkSend.SendVitals(index);

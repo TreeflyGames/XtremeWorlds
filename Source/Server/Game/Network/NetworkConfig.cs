@@ -78,7 +78,7 @@ namespace Server
             return Core.Type.TempPlayer[index].InGame;
         }
 
-        public static bool IsMultiAccounts(int index, string login)
+        public static bool IsMultiLogin(int index, string login)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
             {
@@ -100,7 +100,7 @@ namespace Server
             return false;
         }
 
-        public static void CheckMultiAccounts(int index, string login)
+        public static bool IsMultiAccount(int index, string login)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
             {
@@ -110,11 +110,16 @@ namespace Server
                     {
                         if (index != i)
                         {
-                            Player.LeftGame(i);
-                        }
+                            Core.Type.Player[index] = Core.Type.Player[i];
+                            Core.Type.TempPlayer[index].Slot = Core.Type.TempPlayer[index].Slot;
+                            Core.Type.Bank[index] = Core.Type.Bank[i];
+                            return true;
+                        }                       
                     }
                 }
             }
+
+            return false;
         }
 
         public static void SendDataToAll(ReadOnlySpan<byte> data, int head)

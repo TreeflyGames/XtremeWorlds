@@ -1002,6 +1002,8 @@ namespace Client
                         header = "Invalid Connection";
                         body = "You lost connection to the game server.";
                         body2 = "Please try again later.";
+
+                        NetworkConfig.InitNetwork();
                         GameState.InGame = false;
                         break;
                     }
@@ -2115,7 +2117,7 @@ namespace Client
         {
             long count;
             count = Information.UBound(GameState.descText);
-            Array.Resize(ref GameState.descText, (int)(count + 1L));
+            Array.Resize(ref GameState.descText, (int)(count));
             GameState.descText[(int)(count)].Text = text;
             GameState.descText[(int)(count)].Color = GameClient.ToDrawingColor(color);
         }

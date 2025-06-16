@@ -64,7 +64,10 @@ namespace Server
                     {
                         if (!NetworkConfig.Socket.IsConnected(i))
                         {
-                            Player.LeftGame(i);
+                            if (IsPlaying(i))
+                            {
+                                Player.LeftGame(i);
+                            }
                         }
                     }
 
