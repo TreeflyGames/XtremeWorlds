@@ -319,11 +319,11 @@
         asyncState.PacketCount++;
 
         // Disconnect if packet count exceeds the DDOS threshold
-        if (this.PacketDisconnectCount > 0 && asyncState.PacketCount >= this.PacketDisconnectCount)
-        {
-            HandleSocketError(asyncState, "Packet Spamming/DDOS");
-            return;
-        }
+        //if (this.PacketDisconnectCount > 0 && asyncState.PacketCount >= this.PacketDisconnectCount)
+        //{
+        //    HandleSocketError(asyncState, "Packet Spamming/DDOS");
+        //    return;
+        //}
 
         // Append received data to the ring buffer
         AppendToRingBuffer(ref asyncState, receivedLength);
