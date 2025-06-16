@@ -12,9 +12,9 @@
     <PackageVersion Include="ManagedBass.Midi" Version="3.1.1" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.6" />
     <PackageVersion Include="MonoGame.Content.Builder.Task" Version="3.8.4" />
     <PackageVersion Include="MonoGame.Extended" Version="4.1.0" />
     <PackageVersion Include="MonoGame.Framework.Content.Pipeline" Version="3.8.4" />
