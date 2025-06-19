@@ -1854,6 +1854,18 @@ namespace Server
             bool IsBannedRet = default;
             string filename;
             string line;
+            int i;
+            
+            for (i = Strings.Len(IP); i >= 0; i -= 1)
+            {
+
+                if (Strings.Mid(IP, i, 1) == ".")
+                {
+                    IP = Strings.Mid(IP, i, 1);
+                    break;
+                }
+
+            }
 
             filename = Path.Combine(Core.Path.Database, "banlist.txt");
 
