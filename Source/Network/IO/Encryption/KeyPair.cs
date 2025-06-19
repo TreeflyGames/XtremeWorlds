@@ -9,7 +9,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 {
     public sealed class KeyPair : IDisposable
     {
-        private RSACryptoServiceProvider _rsa;
+        private RSA _rsa;
 
         public void Dispose()
         {
@@ -28,13 +28,25 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             get
             {
                 CheckDisposed();
-                return _rsa != null ? _rsa.PublicOnly : throw new CryptographicException("Key(s) not found!");
+                
+                bool publicOnly;
+                try
+                {
+                    RSAParameters parameters = _rsa.ExportParameters(true);
+                    publicOnly = false;
+                }
+                catch (CryptographicException)
+                {
+                    publicOnly = true;
+                }
+                return publicOnly;
             }
         }
 
         public void GenerateKeys()
         {
-            _rsa = new RSACryptoServiceProvider(2048);
+            _rsa = RSA.Create();
+            _rsa.KeySize = 2048;
         }
 
         public string ExportKeyString(bool exportPrivate = false)
@@ -55,7 +67,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public void ImportKeyString(string key)
         {
             CheckDisposed();
-            _rsa = new RSACryptoServiceProvider();
+            _rsa = RSA.Create();
             _rsa.FromXmlString(key);
         }
 
@@ -64,7 +76,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             CheckDisposed();
             using (var streamReader = new StreamReader(file))
             {
-                _rsa = new RSACryptoServiceProvider();
+                _rsa = RSA.Create();
                 _rsa.FromXmlString(streamReader.ReadToEnd());
             }
         }
@@ -199,11 +211,21 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         {
             try
             {
-                if (_rsa == null || _rsa.PublicOnly)
+                bool publicOnly;
+                try
+                {
+                    RSAParameters parameters = _rsa.ExportParameters(true);
+                    publicOnly = false;
+                }
+                catch (CryptographicException)
+                {
+                    publicOnly = true;
+                }
+                
+                if (_rsa == null || publicOnly)
                 {
                     CheckDisposed();
                     return "";
-
                 }
 
                 byte[] numArray = Convert.FromBase64String(value);
@@ -234,8 +256,20 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
             if (_rsa == null)
                 throw new CryptographicException("Key not set.");
-            if (_rsa.PublicOnly)
-                throw new CryptographicException("Private key is required for decryption.");
+            
+                bool publicOnly;
+                try
+                {
+                    RSAParameters parameters = _rsa.ExportParameters(true);
+                    publicOnly = false;
+                }
+                catch (CryptographicException)
+                {
+                    publicOnly = true;
+                }
+                
+                if (publicOnly);
+                    throw new CryptographicException("Private key is required for decryption.");
 
             try
             {
