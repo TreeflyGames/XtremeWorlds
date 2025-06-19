@@ -177,18 +177,6 @@ namespace Server
                     // Cut off last portion of ip
                     IP = NetworkConfig.Socket.ClientIP(index);
 
-                    for (i = Strings.Len(IP); i >= 0; i -= 1)
-                    {
-
-                        if (Strings.Mid(IP, i, 1) == ".")
-                        {
-                            break;
-                        }
-
-                    }
-
-                    IP = Strings.Mid(IP, 1, i);
-
                     if (General.GetShutDownTimer.IsRunning)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Login);
@@ -203,10 +191,11 @@ namespace Server
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
-                    var version = assembly.GetName().Version;
-
+                    var serverVersion = assembly.GetName().Version.ToString();
+                    var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
+                        
                     // Check versions
-                    if ((Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "") != (version.ToString() ?? ""))
+                    if (clientVersion != serverVersion)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Login);
                         return;
@@ -281,18 +270,6 @@ namespace Server
                     // Cut off last portion of ip
                     IP = NetworkConfig.Socket.ClientIP(index);
 
-                    for (i = Strings.Len(IP); i >= 0; i -= 1)
-                    {
-
-                        if (Strings.Mid(IP, i, 1) == ".")
-                        {
-                            break;
-                        }
-
-                    }
-
-                    IP = Strings.Mid(IP, 1, i);
-
                     if (Database.IsBanned(index, IP))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Banned, (byte)MenuType.Register);
@@ -313,10 +290,11 @@ namespace Server
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
-                    var version = assembly.GetName().Version;
+                    var serverVersion = assembly.GetName().Version.ToString();
+                    var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
 
                     // Check versions
-                    if ((Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "") != (version.ToString() ?? ""))
+                    if (clientVersion != serverVersion)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Register);
                         return;
