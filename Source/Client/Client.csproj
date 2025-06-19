@@ -72,6 +72,9 @@
     <Reference Include="Microsoft.Extensions.Configuration">
       <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net8.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.UserSecrets">
+      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration.usersecrets\9.0.6\lib\net9.0\Microsoft.Extensions.Configuration.UserSecrets.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Configuration" />
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
