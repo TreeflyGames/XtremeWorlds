@@ -177,7 +177,7 @@ namespace Server
                     // Cut off last portion of ip
                     IP = NetworkConfig.Socket.ClientIP(index);
 
-                    if (General.GetShutDownTimer.IsRunning)
+                    if (General.GetShutDownTimer != null && General.GetShutDownTimer.IsRunning)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Login);
                         return;
