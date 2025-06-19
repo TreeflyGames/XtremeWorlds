@@ -401,5 +401,3 @@ FodyWeavers.xsd
 [Bb]uild/
 *.secret.json
 /.idea
-/Source/Client/wwwroot
-/XtremeWorlds
