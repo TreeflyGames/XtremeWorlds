@@ -6,7 +6,7 @@ using Android.Views;
 using Android.Content;
 using Android.Runtime;
 
-namespace Client.Android
+namespace Client
 {
     [Activity(Label = "XtremeWorlds", 
         MainLauncher = true,
@@ -15,7 +15,7 @@ namespace Client.Android
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation,
         Exported = true,
         ScreenOrientation = ScreenOrientation.Landscape)]
-    public class MainActivity : AndroidGameActivity
+    public class MainActivity : Activity
     {
         public static MainActivity Instance { get; private set; }
         
