@@ -22,6 +22,7 @@ namespace Core
 #else
                 string assemblyPath = Assembly.GetEntryAssembly().Location;
                 return Directory.GetParent(assemblyPath).FullName;
+#endif
             }
         }
 

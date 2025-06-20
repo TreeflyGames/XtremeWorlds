@@ -323,7 +323,6 @@ namespace Core.Localization
                     // Optionally, try to save the default file if loading failed and it was supposed to exist
                     // Save(dataToLoad, languageFile); // Be careful with this to not overwrite a corrupted user file without backup
                 }
-            #endif
             }
             else
             {
