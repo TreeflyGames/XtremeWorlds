@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Android.Views;
 using Android.Content;
 using Android.Runtime;
+using Client;
 
 namespace Client
 {
@@ -18,11 +19,13 @@ namespace Client
     public class MainActivity : Activity
     {
         public static MainActivity Instance { get; private set; }
+        public static GameClient Client = new GameClient();
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            var game = Client.General.Client; // ✅ Correct: accesses the static instance
+            
+            var game = Client;
             SetContentView((View)game.Services.GetService(typeof(View)));
             game.Run();
         }
