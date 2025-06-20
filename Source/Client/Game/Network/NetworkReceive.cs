@@ -83,7 +83,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STarget] = Packet_Target;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAdmin] = Packet_Admin;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNames] = Packet_MapNames;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SCritical] = Packet_Critical;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SrClick] = Packet_RClick;
@@ -117,25 +116,16 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPartyUpdate] = Party.Packet_PartyUpdate;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPartyVitals] = Party.Packet_PartyVitals;
 
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdatePet] = Pet.Packet_UpdatePet;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdatePlayerPet] = Pet.Packet_UpdatePlayerPet;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetMove] = Pet.Packet_PetMove;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetDir] = Pet.Packet_PetDir;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetVital] = Pet.Packet_PetVital;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClearPetSkillBuffer] = Pet.Packet_ClearPetSkillBuffer;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetAttack] = Pet.Packet_PetAttack;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetXY] = Pet.Packet_PetXY;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetExp] = Pet.Packet_PetExperience;
-
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClock] = Packet_Clock;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STime] = Packet_Time;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SScriptEditor] = Script.Packet_EditScript;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SItemEditor] = Packet_EditItem;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCEditor] = Packet_NPCEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SShopEditor] = Packet_EditShop;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSkillEditor] = Packet_EditSkill;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SResourceEditor] = Packet_ResourceEditor;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAnimationEditor] = Packet_EditAnimation;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAnimationEditor] = Packet_AnimationEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SProjectileEditor] = HandleProjectileEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SJobEditor] = Packet_JobEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetEditor] = Packet_PetEditor;
@@ -243,8 +233,8 @@ namespace Client
                 GameState.CharJob[(int)i] = buffer.ReadInt32();
 
                 // set as empty or not
-                if (!(Strings.Len(GameState.CharName[(int)i]) > 0))
-                    isSlotEmpty[(int)i] = Conversions.ToBoolean(1);
+                if (Strings.Len(GameState.CharName[i]) == 0)
+                    isSlotEmpty[(int)i] = true;
             }
 
             buffer.Dispose();
@@ -676,7 +666,7 @@ namespace Client
             for (x = 0; x < Constant.MAX_NPC_SKILLS; x++)
                 Core.Type.NPC[i].Skill[x] = buffer.ReadByte();
 
-            Core.Type.NPC[i].Level = buffer.ReadInt32();
+            Core.Type.NPC[i].Level = buffer.ReadByte();
             Core.Type.NPC[i].Damage = buffer.ReadInt32();
 
             buffer.Dispose();
@@ -958,19 +948,9 @@ namespace Client
             GameState.InitAdminForm = true;
         }
 
-        private static void Packet_MapNames(ref byte[] data)
-        {
-            int i;
-            var buffer = new ByteStream(data);
-            for (i = 0; i < Constant.MAX_MAPS; i++)
-                GameState.MapNames[i] = buffer.ReadString();
-
-            buffer.Dispose();
-        }
-
         private static void Packet_Critical(ref byte[] data)
         {
-            GameState.ShakeTimerEnabled = Conversions.ToBoolean(1);
+            GameState.ShakeTimerEnabled = true;
             GameState.ShakeTimer = General.GetTickCount();
         }
 
@@ -1023,7 +1003,7 @@ namespace Client
         // *****************
         // ***  EDITORS  ***
         // *****************
-        private static void Packet_EditAnimation(ref byte[] data)
+        private static void Packet_AnimationEditor(ref byte[] data)
         {
             GameState.InitAnimationEditor = true;
         }

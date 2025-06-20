@@ -114,7 +114,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestItem);
             buffer.WriteInt32(itemNum);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

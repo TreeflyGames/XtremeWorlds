@@ -69,28 +69,30 @@ namespace Client
 
         public static void AddText(string text, int color, long alpha = 255L, byte channel = 0)
         {
-            GameState.Chat_HighIndex += 1;
+            // wordwrap
+            string[] wrappedLines = null;
+            WordWrap(text, Core.Enum.FontType.Georgia, Gui.Windows[Gui.GetWindowIndex("winChat")].Width, ref wrappedLines);
+
+            GameState.Chat_HighIndex += wrappedLines.Length;
 
             if (GameState.Chat_HighIndex > Constant.CHAT_LINES)
                 GameState.Chat_HighIndex = Constant.CHAT_LINES;
-
-            if (text == null)
-            {
-                return;
-            }
-
+            
             // Move the rest of the chat lines up
-            for (int i = (int)GameState.Chat_HighIndex - 1; i > 0; i--)
+            for (int i = (int)GameState.Chat_HighIndex - wrappedLines.Length; i > 0; i--)
             {
                 Core.Type.Chat[i] = Core.Type.Chat[i - 1];
             }
-
-            // Add the new text
-            Core.Type.Chat[0].Text = text;
-            Core.Type.Chat[0].Color = color;
-            Core.Type.Chat[0].Visible = true;
-            Core.Type.Chat[0].Timer = General.GetTickCount();
-            Core.Type.Chat[0].Channel = (byte)(channel);
+            
+            for (int i = (int)wrappedLines.Length - 1, chatIndex = 0; i >= 0; i--, chatIndex++)
+            {
+                // Add the wrapped line to the chat
+                Core.Type.Chat[chatIndex].Text = wrappedLines[i];
+                Core.Type.Chat[chatIndex].Color = color;
+                Core.Type.Chat[chatIndex].Visible = true;
+                Core.Type.Chat[chatIndex].Timer = General.GetTickCount();
+                Core.Type.Chat[chatIndex].Channel = channel;
+            }
         }
 
         public static void WordWrap(string text, Core.Enum.FontType font, long MaxLineLen, ref string[] theArray)
@@ -140,7 +142,7 @@ namespace Client
                     {
                         // Too far away to the last space, so break at the last character
                         lineCount = lineCount + 1L;
-                        Array.Resize(ref theArray, (int)(lineCount + 1));
+                        Array.Resize(ref theArray, (int)(lineCount));
                         theArray[(int)lineCount - 1] = Strings.Mid(text, (int)b, (int)(i - 1L - b));
                         b = i - 1L;
                         size = 0L;
@@ -149,7 +151,7 @@ namespace Client
                     {
                         // Break at the last space to preserve the word
                         lineCount = lineCount + 1L;
-                        Array.Resize(ref theArray, (int)(lineCount + 1));
+                        Array.Resize(ref theArray, (int)(lineCount));
 
                         // Ensure b is within valid range
                         if (b < 0L)
@@ -178,7 +180,7 @@ namespace Client
                     if (b != i)
                     {
                         lineCount = lineCount + 1L;
-                        Array.Resize(ref theArray, (int)(lineCount + 1));
+                        Array.Resize(ref theArray, (int)(lineCount));
                         theArray[(int)lineCount - 1] = Strings.Mid(text, (int)b, (int)i);
                     }
                 }
@@ -234,23 +236,23 @@ namespace Client
 
         public static void DrawMapAttributes()
         {
-            int X;
+            int x;
             int y;
             int tX;
             int tY;
             int tA;
 
             var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
-            for (X = (int)Math.Round(GameState.TileView.Left - 1d); X < loopTo; X++)
+            for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo; x++)
             {
                 var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
                 for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
                 {
-                    if (GameLogic.IsValidMapPoint(X, y))
+                    if (GameLogic.IsValidMapPoint(x, y))
                     {
                         {
-                            ref var withBlock = ref Core.Type.MyMap.Tile[X, y];
-                            tX = (int)Math.Round(GameLogic.ConvertMapX(X * GameState.PicX) - 4 + GameState.PicX * 0.5d);
+                            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                            tX = (int)Math.Round(GameLogic.ConvertMapX(x * GameState.PicX) - 4 + GameState.PicX * 0.5d);
                             tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.PicY) - 7 + GameState.PicY * 0.5d);
 
                             if (GameState.EditorAttribute == 1)
@@ -547,7 +549,7 @@ namespace Client
             rLines = 1;
             i = GameState.ChatScroll;
 
-            while (rLines <= 8)
+            while (rLines < 8)
             {
                 if (i >= Constant.CHAT_LINES)
                     break;
@@ -582,15 +584,11 @@ namespace Client
                         string[] wrappedLines = null;
                         WordWrap(Core.Type.Chat[(int)i].Text, Core.Enum.FontType.Georgia, width, ref wrappedLines);
 
-                        // can't have it going offscreen.
-                        if (rLines + wrappedLines.Length >= 9)
-                            break;
-
                         // continue on
-                        yOffset = yOffset - 14 * wrappedLines.Length;
+                        yOffset = yOffset - 10 * wrappedLines.Length;
                         for (int j = 0; j < wrappedLines.Length; j++)
                         {
-                            RenderText(wrappedLines[j], (int)xO, (int)(yO + yOffset + 14 * j), Color2, Color2);
+                            RenderText(wrappedLines[j], (int)xO, (int)(yO + yOffset + 10 * j), Color2, Color2);
                         }
                         rLines += wrappedLines.Length;
 
@@ -605,7 +603,7 @@ namespace Client
                     else
                     {
                         // normal
-                        yOffset = yOffset - 14L;
+                        yOffset = yOffset - 12L; // Adjusted spacing from 14 to 12
 
                         RenderText(Core.Type.Chat[(int)i].Text, (int)xO, (int)(yO + yOffset), Color2, Color2);
                         rLines = rLines + 1;
@@ -620,7 +618,7 @@ namespace Client
             }
 
             // get the height of the small chat box
-            GameLogic.SetChatHeight(rLines * 14);
+            GameLogic.SetChatHeight(rLines * 12); // Adjusted spacing from 14 to 12
             GameLogic.SetChatWidth(topWidth);
         }
 
@@ -638,7 +636,7 @@ namespace Client
             string name;
 
             // Check access level
-            if (GetPlayerPK(index) == 0)
+            if (GetPlayerPK(index) == false)
             {
                 switch (GetPlayerAccess(index))
                 {

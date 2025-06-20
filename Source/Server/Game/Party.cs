@@ -37,7 +37,7 @@ namespace Server
 
             buffer.WriteString(Core.Type.Player[target].Name);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -90,7 +90,7 @@ namespace Server
                 buffer.WriteInt32(0);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -492,7 +492,7 @@ namespace Server
             if (!(exp >= Core.Type.Party[partyNum].MemberCount))
             {
                 // no party - keep exp for self
-                Event.GivePlayerExp(index, exp);
+                SetPlayerExp(index, exp);
                 return;
             }
 
@@ -514,8 +514,17 @@ namespace Server
             }
 
             // find out the equal share
-            expShare = exp / (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
-            leftOver = exp % (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
+            if (Core.Type.Party[partyNum].MemberCount > 0)
+            {
+                expShare = exp / (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
+                leftOver = exp % (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
+
+            }
+            else
+            {
+                expShare = exp;
+                leftOver = 0;
+            }
 
             // loop through and give everyone exp
             var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS;
@@ -531,7 +540,7 @@ namespace Server
                         if (GetPlayerMap(tmpindex) == mapNum)
                         {
                             // give them their share
-                            Event.GivePlayerExp(tmpindex, expShare);
+                            SetPlayerExp(tmpindex, expShare);
                         }
                     }
                 }
@@ -542,7 +551,7 @@ namespace Server
             {
                 tmpindex = Core.Type.Party[partyNum].Member[(int)Math.Round(General.GetRandom.NextDouble(1d, Core.Type.Party[partyNum].MemberCount))];
                 // give the exp
-                Event.GivePlayerExp(tmpindex, leftOver);
+                SetPlayerExp(tmpindex, leftOver);
             }
 
         }
@@ -570,7 +579,7 @@ namespace Server
                 return IsPlayerInPartyRet;
 
             if (Core.Type.TempPlayer[index].InParty >= 0)
-                IsPlayerInPartyRet = Conversions.ToBoolean(1);
+                IsPlayerInPartyRet = true;
             return IsPlayerInPartyRet;
         }
 

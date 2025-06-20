@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Reoria.Engine.Container;
 
-namespace Server;
+namespace Client;
 
 public class XWContainer(IServiceCollection services) : EngineContainer(services)
 {

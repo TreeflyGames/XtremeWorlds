@@ -162,15 +162,12 @@ namespace Server
 
         #region Incoming Packets
 
-        public static void Packet_EditResource(int index, ref byte[] data)
+        public static void Packet_RequestEditResource(int index, ref byte[] data)
         {
             var buffer = new ByteStream(4);
 
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -190,7 +187,7 @@ namespace Server
             SendResources(index);
 
             buffer.WriteInt32((int) ServerPackets.SResourceEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -229,7 +226,7 @@ namespace Server
             SendUpdateResourceToAll(resourcenum);
             SaveResource(resourcenum);
 
-            Core.Log.Add(GetPlayerLogin(index) + " saved Resource #" + resourcenum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved Resource #" + resourcenum + ".", Constant.ADMIN_LOG);
 
             buffer.Dispose();
         }
@@ -274,7 +271,7 @@ namespace Server
 
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -299,7 +296,7 @@ namespace Server
 
             }
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -324,7 +321,7 @@ namespace Server
 
             buffer.WriteBlock(ResourceData(ResourceNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -336,7 +333,7 @@ namespace Server
 
             buffer.WriteBlock(ResourceData(ResourceNum));
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

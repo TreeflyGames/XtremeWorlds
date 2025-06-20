@@ -1,5 +1,7 @@
 ﻿using System.Data.Common;
 using Core;
+using Core.Localization;
+using Microsoft.Toolkit.HighPerformance;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -104,14 +106,11 @@ namespace Client
 
         public static bool GameStarted()
         {
-            bool GameStartedRet = default;
-            GameStartedRet = false;
-            if (GameState.InGame == false)
+            bool GameStartedRet = false;
+
+            if (GameState.InGame == false || GameState.MapData == false || GameState.PlayerData == false)
                 return GameStartedRet;
-            if (GameState.MapData == false)
-                return GameStartedRet;
-            if (GameState.PlayerData == false)
-                return GameStartedRet;
+
             GameStartedRet = true;
             return GameStartedRet;
         }
@@ -298,7 +297,7 @@ namespace Client
                 }
                 else
                 {
-                    Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "PlayerMsg"), (int)Core.Enum.ColorType.Yellow);
+                    Text.AddText(LocalesManager.Get("PlayerMsg"), (int)Core.Enum.ColorType.Yellow);
                 }
 
                 goto Continue1;
@@ -315,7 +314,7 @@ namespace Client
                             // Checks to make sure we have more than one string in the array
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "Emote"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Emote"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -325,12 +324,12 @@ namespace Client
 
                     case "/help":
                         {
-                            Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "Help1"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help2"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help3"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help4"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help5"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help6"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Help1"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Help2"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Help3"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Help4"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Help5"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Help6"), (int)Core.Enum.ColorType.Yellow);
                             break;
                         }
 
@@ -348,7 +347,7 @@ namespace Client
                             // Checks to make sure we have more than one string in the array
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Info"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Info"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -388,7 +387,7 @@ namespace Client
                         {
                             buffer = new ByteStream(4);
                             buffer.WriteInt32((int)Packets.ClientPackets.CGetStats);
-                            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+                            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
                             buffer.Dispose();
                             break;
                         }
@@ -407,7 +406,7 @@ namespace Client
                             // Make sure they are actually sending something
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Party"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Party"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -444,7 +443,7 @@ namespace Client
                             // Make sure they are actually sending something
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Trade"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Trade"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -458,14 +457,14 @@ namespace Client
                         {
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Admin1"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Admin2"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "AdminGblMsg"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AdminPvtMsg"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Admin1"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Admin2"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("AdminGblMsg"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("AdminPvtMsg"), (int)Core.Enum.ColorType.Yellow);
                             break;
                         }
 
@@ -481,13 +480,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "AccessAlert"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessAlert"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Kick"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Kick"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -502,7 +501,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -516,13 +515,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "WarpMeTo"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("WarpMeTo"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -536,13 +535,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "WarpToMe"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("WarpToMe"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -556,13 +555,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "WarpTo"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("WarpTo"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -575,7 +574,7 @@ namespace Client
                             }
                             else
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Game", "InvalidMap"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("InvalidMap"), (int)Core.Enum.ColorType.BrightRed);
                             }
 
                             break;
@@ -587,13 +586,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Sprite"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Sprite"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -607,7 +606,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -621,7 +620,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -634,11 +633,22 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             Map.SendRequestEditMap();
+                            break;
+                        }
+
+                    case "/editscript":
+                        {
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
+                            {
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                            }
+
+                            Script.SendRequestEditScript();
                             break;
                         }
 
@@ -649,13 +659,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1)
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Welcome"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Welcome"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -669,7 +679,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -683,13 +693,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1)
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Ban"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Ban"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -704,7 +714,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -717,13 +727,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if ((Information.UBound(command) < 2 || Information.IsNumeric(command[1])) | !Information.IsNumeric(command[2]))
                             {
-                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Access"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Access"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -737,7 +747,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -750,7 +760,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -763,7 +773,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -776,7 +786,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -789,7 +799,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -802,7 +812,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -815,7 +825,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -828,7 +838,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -840,7 +850,7 @@ namespace Client
                         {
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -852,7 +862,7 @@ namespace Client
                         {
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -867,7 +877,7 @@ namespace Client
 
                     default:
                         {
-                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "InvalidCmd"), (int)Core.Enum.ColorType.BrightRed);
+                            Text.AddText(LocalesManager.Get("InvalidCmd"), (int)Core.Enum.ColorType.BrightRed);
                             break;
                         }
                 }
@@ -893,7 +903,7 @@ namespace Client
             {
                 Core.Type.Player[GameState.MyIndex].MapGetTimer = General.GetTickCount();
                 buffer.WriteInt32((int)Packets.ClientPackets.CMapGetItem);
-                NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             }
 
             buffer.Dispose();
@@ -957,7 +967,7 @@ namespace Client
                 withBlock.Msg = msg;
                 withBlock.Color = Color;
                 withBlock.Timer = General.GetTickCount();
-                withBlock.Active = Conversions.ToBoolean(1);
+                withBlock.Active = true;
             }
 
         }
@@ -992,6 +1002,8 @@ namespace Client
                         header = "Invalid Connection";
                         body = "You lost connection to the game server.";
                         body2 = "Please try again later.";
+
+                        NetworkConfig.InitNetwork();
                         GameState.InGame = false;
                         break;
                     }
@@ -1485,7 +1497,7 @@ namespace Client
             if (GetPlayerInv(GameState.MyIndex, (int)invNum) >= 0)
             {
                 if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Type.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
-                    soulBound = Conversions.ToBoolean(1);
+                    soulBound = true;
                 ShowItemDesc(x, y, (long)GetPlayerInv(GameState.MyIndex, (int)invNum));
             }
         }
@@ -1997,7 +2009,7 @@ namespace Client
             if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]))
             {
                 if (Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]].BindType > 0)
-                    soulBound = Conversions.ToBoolean(1);
+                    soulBound = true;
                 ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]);
             }
         }
@@ -2006,7 +2018,7 @@ namespace Client
         {
             long count;
             count = Information.UBound(GameState.descText);
-            Array.Resize(ref GameState.descText, (int)(count + 1L));
+            Array.Resize(ref GameState.descText, (int)(count));
             GameState.descText[(int)(count)].Text = text;
             GameState.descText[(int)(count)].Color = GameClient.ToDrawingColor(color);
         }
@@ -2016,9 +2028,9 @@ namespace Client
             GameState.InMenu = true;
             GameState.InGame = false;
 
+            General.ClearGameData();
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();
-            General.ClearGameData();
         }
 
         public static void SetOptionsScreen()
@@ -2059,7 +2071,7 @@ namespace Client
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "chkBuying")].Value = 0L;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnSell")].Visible = false;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnBuy")].Visible = true;
-            GameState.shopIsSelling = Conversions.ToBoolean(0);
+            GameState.shopIsSelling = false;
 
             // set the current item
             Gui.UpdateShop();
@@ -2158,27 +2170,39 @@ namespace Client
         {
             long barDifference;
 
-            if (MaxWidth < Width)
+            if (MaxWidth <  Width)
             {
                 // find out the amount to increase per loop
-                barDifference = (long)Math.Round((Width - MaxWidth) / 100d * 10d);
+                barDifference = (long)Math.Round((double)(Width - MaxWidth) / 100L) * 10L;
 
                 // if it's less than 1 then default to 1
                 if (barDifference < 0L)
                     barDifference = 0L;
+                
+                if (Width != MaxWidth && barDifference == 0L)
+                {
+                    barDifference = Math.Clamp(Width - MaxWidth, 1, Width);
+                }
+                
                 // set the width
-                Width = Width - barDifference;
+                Width -= barDifference;
             }
             else if (MaxWidth > Width)
             {
                 // find out the amount to increase per loop
-                barDifference = (long)Math.Round((MaxWidth - Width) / 100d * 10d);
+                barDifference = (long)Math.Round((double)(MaxWidth - Width) / 100) * 10L;
 
                 // if it's less than 1 then default to 1
                 if (barDifference < 0L)
                     barDifference = 0L;
+
+                if (MaxWidth != Width && barDifference == 0L)
+                {
+                    barDifference = Math.Clamp(MaxWidth - Width, 1, MaxWidth);
+                }
+
                 // set the width
-                Width = Width + barDifference;
+                Width += barDifference;
             }
         }
 
@@ -2432,143 +2456,49 @@ namespace Client
 
         public static void UpdateCamera()
         {
-            long offsetX;
-            long offsetY;
-            long StartX;
-            long StartY;
-            long EndX;
-            long EndY;
-            long tileHeight;
-            long tileWidth;
-            long ScreenX;
-            long ScreenY;
+            float targetCameraX;
+            float targetCameraY;
 
-            tileWidth = (long)Math.Round(GameState.ResolutionWidth / 32d);
-            tileHeight = (long)Math.Round(GameState.ResolutionHeight / 32d);
+            int offsetX = Core.Type.Player[GameState.MyIndex].XOffset;
+            int offsetY = Core.Type.Player[GameState.MyIndex].YOffset;
 
-            ScreenX = (tileWidth + 1L) * GameState.PicX;
-            ScreenY = (tileHeight + 1L) * GameState.PicY;
+            // Calculate the target camera position based on the player's position  
+            targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2) + offsetX;
+            targetCameraY = GetPlayerY(GameState.MyIndex) * GameState.PicY - (GameState.ResolutionHeight / 2) + offsetY;
 
-            offsetX = Core.Type.Player[GameState.MyIndex].XOffset + GameState.PicX;
-            offsetY = Core.Type.Player[GameState.MyIndex].YOffset + GameState.PicY;
-            StartX = GetPlayerX(GameState.MyIndex) - (tileWidth + 1L) / 2L - 1L;
-            StartY = GetPlayerY(GameState.MyIndex) - (tileHeight + 1L) / 2L - 1L;
+            // Directly set the camera position to match the player's position for better sync  
+            GameState.Camera.Left = (long)Math.Round(targetCameraX);
+            GameState.Camera.Top = (long)Math.Round(targetCameraY);
 
-            // Ensure StartX and StartY do not go below 0
-            if (StartX < 0)
-            {
-                StartX = 0;
-                offsetX = 0; // Prevent shifting beyond the first tile
-            }
-            if (StartY < 0)
-            {
-                StartY = 0;
-                offsetY = 0; // Prevent shifting beyond the first tile
-            }
+            // Clamp the camera position to the map edges  
+            long mapWidth = Core.Type.MyMap.MaxX * GameState.PicX;
+            long mapHeight = Core.Type.MyMap.MaxY * GameState.PicY;
 
-            if (tileWidth + 1L <= Core.Type.MyMap.MaxX)
-            {
-                if (StartX < 0L)
-                {
-                    offsetX = 0L;
+            GameState.Camera.Left = Math.Max(0, Math.Min(GameState.Camera.Left, mapWidth - GameState.ResolutionWidth));
+            GameState.Camera.Top = Math.Max(0, Math.Min(GameState.Camera.Top, mapHeight - GameState.ResolutionHeight));
 
-                    if (StartX == -1)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].XOffset > 0)
-                        {
-                            offsetX = Core.Type.Player[GameState.MyIndex].XOffset;
-                        }
-                    }
+            // Calculate the visible tile range  
+            long tileWidth = (long)Math.Round(GameState.ResolutionWidth / 32d);
+            long tileHeight = (long)Math.Round(GameState.ResolutionHeight / 32d);
 
-                    StartX = 0L;
-                }
+            long StartX = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Left / (double)GameState.PicX), Core.Type.MyMap.MaxX - 1) / 32);
+            long StartY = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Top / (double)GameState.PicY), Core.Type.MyMap.MaxY - 1) / 32);
+            long EndX = Core.Type.MyMap.MaxX;
+            long EndY = Core.Type.MyMap.MaxY;
 
-                EndX = StartX + tileWidth + 1L + 1L;
-
-                if (EndX > Core.Type.MyMap.MaxX)
-                {
-                    offsetX = 32L;
-
-                    if (EndX == Core.Type.MyMap.MaxX)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].XOffset < 0)
-                        {
-                            offsetX = Core.Type.Player[GameState.MyIndex].XOffset + GameState.PicX;
-                        }
-                    }
-
-                    EndX = Core.Type.MyMap.MaxX;
-                    StartX = EndX - tileWidth - 1L;
-                }
-            }
-            else
-            {
-                EndX = StartX + tileWidth + 1L + 1L;
-            }
-
-            if (tileHeight + 1L <= Core.Type.MyMap.MaxY)
-            {
-                if (StartY < 0L)
-                {
-                    offsetY = 0L;
-
-                    if (StartY == -1)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].YOffset > 0)
-                        {
-                            offsetY = Core.Type.Player[GameState.MyIndex].YOffset;
-                        }
-                    }
-
-                    StartY = 0L;
-                }
-
-                EndY = StartY + tileHeight + 1L + 1L;
-
-                if (EndY > Core.Type.MyMap.MaxY)
-                {
-                    offsetY = 32L;
-
-                    if (EndY == Core.Type.MyMap.MaxY)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].YOffset < 0)
-                        {
-                            offsetY = Core.Type.Player[GameState.MyIndex].YOffset + GameState.PicY;
-                        }
-                    }
-
-                    EndY = Core.Type.MyMap.MaxY;
-                    StartY = EndY - tileHeight - 1L;
-                }
-            }
-            else
-            {
-                EndY = StartY + tileHeight + 1L + 1L;
-            }
-
-            if (tileWidth + 1L == Core.Type.MyMap.MaxX)
-            {
-                offsetX = 0L;
-            }
-
-            if (tileHeight + 1L == Core.Type.MyMap.MaxY)
-            {
-                offsetY = 0L;
-            }
-
+            // Update the tile view  
             ref var withBlock = ref GameState.TileView;
             withBlock.Top = StartY;
             withBlock.Bottom = EndY;
             withBlock.Left = StartX;
             withBlock.Right = EndX;
 
+            // Update the camera bounds  
             ref var withBlock1 = ref GameState.Camera;
-            withBlock1.Top = offsetY;
-            withBlock1.Bottom = withBlock1.Top + ScreenY;
-            withBlock1.Left = offsetX;
-            withBlock1.Right = withBlock1.Left + ScreenX;
-            
-            // Optional: Update the map name display
+            withBlock1.Right = withBlock1.Left;
+            withBlock1.Bottom = withBlock1.Top;
+
+            // Optional: Update the map name display  
             UpdateDrawMapName();
         }
 

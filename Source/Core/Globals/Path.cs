@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.Diagnostics.SymbolStore;
+using System.IO;
 using System.Reflection;
 
 #if ANDROID
@@ -20,7 +22,15 @@ namespace Core
 #else
                 string assemblyPath = Assembly.GetEntryAssembly().Location;
                 return Directory.GetParent(assemblyPath).FullName;
-#endif
+            }
+        }
+
+        /// <summary> Returns content directory </summary>
+        public static string Asset
+        {
+            get
+            {
+                return System.IO.Path.Combine(Local, "Content");
             }
         }
 
@@ -33,21 +43,12 @@ namespace Core
             }
         }
 
-        /// <summary> Returns scripts directory </summary>
-        public static string Scripts
-        {
-            get
-            {
-                return System.IO.Path.Combine(Local, "Scripting", "Scripts");
-            }
-        }
-
         /// <summary> Returns graphics directory </summary>
         public static string Graphics
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Graphics");
+                return System.IO.Path.Combine(Asset, "Graphics");
             }
         }
 
@@ -56,7 +57,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Fonts");
+                return System.IO.Path.Combine("", "Fonts");
             }
         }
 
@@ -182,7 +183,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Music");
+                return System.IO.Path.Combine(Asset, "Music");
             }
         }
 
@@ -191,7 +192,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Sounds");
+                return System.IO.Path.Combine(Asset, "Sounds");
             }
         }
 

@@ -146,6 +146,17 @@ namespace Client
 
                             alpha = 1.0f;
 
+                            if (GameState.MyEditorType == (int)EditorType.Map)
+                            {
+                                if (GameState.HideLayers)
+                                {
+                                    if (i != GameState.CurLayer)
+                                    {
+                                        alpha = 0.5f;
+                                    }
+                                }
+                            }
+
                             // Render the tile
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
                             GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
@@ -178,7 +189,7 @@ namespace Client
             float alpha;
             var rect = default(Rectangle);
 
-            // Exit earlyIf Type.Map is still loading or tile data is not available
+            // Exit early if map is still loading or tile data is not available
             if (GameState.GettingMap || !GameState.MapData)
                 return;
 
@@ -191,23 +202,23 @@ namespace Client
                 // Loop through the layers from Fringe to RoofAnim
                 for (i = (int)Core.Enum.LayerType.Fringe; i <= (int)Core.Enum.LayerType.RoofAnim; i++)
                 {
+                    int layerIndex = i;
+
                     // Handle animated layers
                     if (GameState.MapAnim)
                     {
                         switch (i)
                         {
                             case (int)Core.Enum.LayerType.Fringe:
-                                {
-                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
-                                        i = (int)Core.Enum.LayerType.FringeAnim;                                  
-                                    break;
-                                }
+                                if (Core.Type.MyMap.Tile[x, y].Layer?.Length > (int)Core.Enum.LayerType.FringeAnim &&
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
+                                    layerIndex = (int)Core.Enum.LayerType.FringeAnim;
+                                break;
                             case (int)Core.Enum.LayerType.Roof:
-                                {
-                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
-                                        i = (int)Core.Enum.LayerType.RoofAnim;
-                                    break;
-                                }
+                                if (Core.Type.MyMap.Tile[x, y].Layer.Length > (int)Core.Enum.LayerType.RoofAnim &&
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
+                                    layerIndex = (int)Core.Enum.LayerType.RoofAnim;
+                                break;
                         }
                     }
                     else
@@ -218,33 +229,45 @@ namespace Client
                     }
 
                     // Ensure the tileset is valid before proceeding
-                    if (Core.Type.MyMap.Tile[x, y].Layer[i].Tileset > 0 && Core.Type.MyMap.Tile[x, y].Layer[i].Tileset <= GameState.NumTileSets)
+                    if (Core.Type.MyMap.Tile[x, y].Layer?.Length > layerIndex &&
+                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
+                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
                     {
                         // Check if the render state is normal and render the tile
-                        if (Core.Type.Autotile[x, y].Layer[i].RenderState == GameState.RenderStateNormal)
+                        if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateNormal)
                         {
-                            rect.X = Core.Type.MyMap.Tile[x, y].Layer[i].X * GameState.PicX;
-                            rect.Y = Core.Type.MyMap.Tile[x, y].Layer[i].Y * GameState.PicY;
+                            rect.X = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].X * GameState.PicX;
+                            rect.Y = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Y * GameState.PicY;
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
                             alpha = 1.0f;
-                            
+
+                            if (GameState.MyEditorType == (int)EditorType.Map)
+                            {
+                                if (GameState.HideLayers)
+                                {
+                                    if (i != GameState.CurLayer)
+                                    {
+                                        alpha = 0.5f;
+                                    }
+                                }
+                            }
+
                             // Render the tile with the calculated rectangle and transparency
-                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
+                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset.ToString());
                             GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
                         }
-
                         // Handle autotile rendering
-                        else if (Core.Type.Autotile[x, y].Layer[i].RenderState == GameState.RenderStateAutotile)
+                        else if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateAutotile)
                         {
                             if (SettingsManager.Instance.Autotile)
                             {
                                 // Render autotiles
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), 1, x, y, 0, false);
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY), 2, x, y, 0, false);
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY) + 16, 3, x, y, 0, false);
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY) + 16, 4, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), 1, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY), 2, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY) + 16, 3, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY) + 16, 4, x, y, 0, false);
                             }
                         }
                     }
@@ -254,7 +277,6 @@ namespace Client
             {
                 Console.WriteLine(e.Message);
             }
-
         }
 
         public static void DrawAutoTile(int layerNum, int dX, int dY, int quarterNum, int x, int y, int forceFrame = 0, bool strict = true)
@@ -512,6 +534,12 @@ namespace Client
 
             // Initialize NPC and Tile arrays
             Core.Type.MyMap.NPC = new int[Constant.MAX_MAP_NPCS];
+
+            for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
+            {
+                Core.Type.MyMap.NPC[i] = -1;
+            }
+
             Core.Type.MyMap.Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
             Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory]; 
 
@@ -529,11 +557,6 @@ namespace Client
                 for (int y = 0; y < Core.Type.MyMap.MaxY; y++)
                 {
                     ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count));
-
-                    for (int i = 0; i < GameState.MaxTileHistory; i++)
-                    {
-                        ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count));
-                    }
                 }
             }
 
@@ -668,7 +691,7 @@ namespace Client
             buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CNeedMap);
             buffer.WriteInt32(needMap);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -953,7 +976,7 @@ namespace Client
             if (buffer.ReadInt32() == 1)
             {
                 GameState.ResourceIndex = buffer.ReadInt32();
-                GameState.ResourcesInit = Conversions.ToBoolean(0);
+                GameState.ResourcesInit = false;
                 Core.Type.MapResource = new Core.Type.MapResourceStruct[GameState.ResourceIndex];
                 Core.Type.MyMapResource = new Core.Type.MapResourceCacheStruct[Constant.MAX_RESOURCES];
 
@@ -967,7 +990,7 @@ namespace Client
                         Core.Type.MyMapResource[i].Y = buffer.ReadInt32();
                     }
 
-                    GameState.ResourcesInit = Conversions.ToBoolean(1);
+                    GameState.ResourcesInit = true;
                 }
             }
 
@@ -977,7 +1000,7 @@ namespace Client
 
             Autotile.InitAutotiles();
 
-            GameState.MapData = Conversions.ToBoolean(1);
+            GameState.MapData = true;
 
             for (i = 0; i < byte.MaxValue; i++)
                 GameLogic.ClearActionMsg((byte)i);
@@ -994,7 +1017,7 @@ namespace Client
 
             GameLogic.UpdateDrawMapName();
 
-            GameState.GettingMap = Conversions.ToBoolean(0);
+            GameState.GettingMap = false;
             GameState.CanMoveNow = true;
 
         }
@@ -1049,10 +1072,10 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestNewMap);
             buffer.WriteInt32(GetPlayerDir(GameState.MyIndex));
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
-            GameState.GettingMap = Conversions.ToBoolean(1);
+            GameState.GettingMap = true;
             GameState.CanMoveNow = false;
 
         }
@@ -1062,7 +1085,7 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditMap);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1270,7 +1293,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveMap);
             buffer.WriteBlock(Compression.CompressBytes(data));
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -1280,7 +1303,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CMapRespawn);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

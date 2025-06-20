@@ -117,7 +117,7 @@ namespace Server
                 buffer.WriteInt32((int)ServerPackets.SClock);
                 buffer.WriteInt32((int)_clock.GameSpeed);
                 buffer.WriteBytes(BitConverter.GetBytes(_clock.Time.Ticks));
-                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Server
         public void SendGameClockToAll()
         {
             var highIndex = NetworkConfig.Socket.HighIndex;
-            for (int i = 0; i <= highIndex; i++)
+            for (int i = 0; i < highIndex; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -141,7 +141,7 @@ namespace Server
             {
                 buffer.WriteInt32((int)ServerPackets.STime);
                 buffer.WriteByte((byte)_clock.TimeOfDay);
-                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             }
         }
 
@@ -149,7 +149,7 @@ namespace Server
         public void SendTimeToAll()
         {
             var highIndex = NetworkConfig.Socket.HighIndex;
-            for (int i = 0; i <= highIndex; i++)
+            for (int i = 0; i < highIndex; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {

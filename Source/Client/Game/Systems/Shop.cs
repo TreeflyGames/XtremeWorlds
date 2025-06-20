@@ -14,7 +14,7 @@ namespace Client
             Gui.HideWindow(Gui.GetWindowIndex("winDescription"));
             GameState.shopSelectedSlot = 0L;
             GameState.shopSelectedItem = 0L;
-            GameState.shopIsSelling = Conversions.ToBoolean(0);
+            GameState.shopIsSelling = false;
             GameState.InShop = -1;
         }
 
@@ -108,7 +108,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestShop);
             buffer.WriteInt32(shopNum);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -119,7 +119,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CBuyItem);
             buffer.WriteInt32(shopSlot);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -130,7 +130,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSellItem);
             buffer.WriteInt32(invslot);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

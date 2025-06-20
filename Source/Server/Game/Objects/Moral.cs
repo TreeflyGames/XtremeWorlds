@@ -19,15 +19,15 @@ namespace Server
         {
             Core.Type.Moral[moralNum].Name = "";
             Core.Type.Moral[moralNum].Color = 0;
-            Core.Type.Moral[moralNum].CanCast = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanDropItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanPK = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanPickupItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanUseItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].DropItems = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].LoseExp = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].NPCBlock = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].PlayerBlock = Conversions.ToBoolean(0);
+            Core.Type.Moral[moralNum].CanCast = false;
+            Core.Type.Moral[moralNum].CanDropItem = false;
+            Core.Type.Moral[moralNum].CanPK = false;
+            Core.Type.Moral[moralNum].CanPickupItem = false;
+            Core.Type.Moral[moralNum].CanUseItem = false;
+            Core.Type.Moral[moralNum].DropItems = false;
+            Core.Type.Moral[moralNum].LoseExp = false;
+            Core.Type.Moral[moralNum].NPCBlock = false;
+            Core.Type.Moral[moralNum].PlayerBlock = false;
         }
 
         public static async Task LoadMoralAsync(int moralNum)
@@ -125,7 +125,7 @@ namespace Server
 
             buffer.WriteBlock(MoralData(moralNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -137,7 +137,7 @@ namespace Server
 
             buffer.WriteBlock(MoralData(moralNum));
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -150,9 +150,6 @@ namespace Server
             var buffer = new ByteStream(4);
 
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -170,7 +167,7 @@ namespace Server
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Moral;
 
             buffer.WriteInt32((int) ServerPackets.SMoralEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
 
@@ -210,7 +207,7 @@ namespace Server
             // Save it
             SendUpdateMoralToAll(moralNum);
             SaveMoral(moralNum);
-            Core.Log.Add(GetPlayerLogin(index) + " saved moral #" + moralNum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved moral #" + moralNum + ".", Constant.ADMIN_LOG);
             SendMorals(index);
         }
 

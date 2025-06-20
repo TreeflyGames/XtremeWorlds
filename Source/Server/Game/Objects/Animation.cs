@@ -102,12 +102,10 @@ namespace Server
 
         #region Incoming Packets
 
-        public static void Packet_EditAnimation(int index, ref byte[] data)
+        public static void Packet_RequestEditAnimation(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -126,7 +124,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SAnimationEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -158,7 +156,7 @@ namespace Server
             // Save it
             SaveAnimation(AnimNum);
             SendUpdateAnimationToAll(AnimNum);
-            Core.Log.Add(GetPlayerLogin(index) + " saved Animation #" + AnimNum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved Animation #" + AnimNum + ".", Constant.ADMIN_LOG);
 
         }
 
@@ -189,7 +187,7 @@ namespace Server
             buffer.WriteInt32(LockType);
             buffer.WriteInt32(Lockindex);
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -219,7 +217,7 @@ namespace Server
 
             buffer.WriteBlock(AnimationData(AnimationNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -231,7 +229,7 @@ namespace Server
 
             buffer.WriteBlock(AnimationData(AnimationNum));
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

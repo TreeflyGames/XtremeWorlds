@@ -91,9 +91,6 @@ namespace Server
             if (GetPlayerAccess(index) < (byte)AccessType.Developer)
                 return;
 
-            if (Core.Type.TempPlayer[index].Editor > 0)
-                return;
-
             string user;
 
             user = IsEditorLocked(index, (byte)EditorType.Projectile);
@@ -110,7 +107,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SProjectileEditor);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -140,7 +137,7 @@ namespace Server
             // Save it
             SendUpdateProjectileToAll(ProjectileNum);
             SaveProjectile(ProjectileNum);
-            Core.Log.Add(GetPlayerLogin(index) + " saved Projectile #" + ProjectileNum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved Projectile #" + ProjectileNum + ".", Constant.ADMIN_LOG);
             buffer.Dispose();
 
         }
@@ -175,70 +172,6 @@ namespace Server
 
             mapNum = GetPlayerMap(index);
 
-            switch (Core.Type.MapProjectile[mapNum, ProjectileNum].OwnerType)
-            {
-                case (byte)TargetType.Player:
-                    {
-                        if (Core.Type.MapProjectile[mapNum, ProjectileNum].Owner == index)
-                        {
-                            switch (TargetType)
-                            {
-                                case TargetType.Player:
-                                    {
-
-                                        if (NetworkConfig.IsPlaying(Targetindex))
-                                        {
-                                            if (Targetindex != index)
-                                            {
-                                                if (Conversions.ToInteger(Player.CanPlayerAttackPlayer(index, Targetindex, true)) == 1)
-                                                {
-
-                                                    // Get the damage we can do
-                                                    Damage = Player.GetPlayerDamage(index) + Core.Type.Projectile[Core.Type.MapProjectile[mapNum, ProjectileNum].ProjectileNum].Damage;
-
-                                                    // if the npc blocks, take away the block amount
-                                                    armor = Conversions.ToInteger(Player.CanPlayerBlockHit(Targetindex));
-                                                    Damage = Damage - armor;
-
-                                                    // randomise for up to 10% lower than Core.Constant.MAX hit
-                                                    Damage = (int)Math.Round(General.GetRandom.NextDouble(1d, Damage));
-
-                                                    Player.AttackPlayer(index, Targetindex, Damage);
-                                                }
-                                            }
-                                        }
-
-                                        break;
-                                    }
-
-                                case TargetType.NPC:
-                                    {
-                                        NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[Targetindex].Num;
-                                        if (Conversions.ToInteger(Player.CanPlayerAttackNPC(index, Targetindex, true)) == 1)
-                                        {
-                                            // Get the damage we can do
-                                            Damage = Player.GetPlayerDamage(index) + Core.Type.Projectile[Core.Type.MapProjectile[mapNum, ProjectileNum].ProjectileNum].Damage;
-
-                                            // if the npc blocks, take away the block amount
-                                            armor = 0;
-                                            Damage = Damage - armor;
-
-                                            // randomise from 1 to Core.Constant.MAX hit
-                                            Damage = (int)Math.Round(General.GetRandom.NextDouble(1d, Damage));
-
-                                            Player.PlayerAttackNPC(index, Targetindex, Damage);
-                                        }
-
-                                        break;
-                                    }
-                            }
-                        }
-
-                        break;
-                    }
-
-            }
-
             ClearMapProjectile(mapNum, ProjectileNum);
 
         }
@@ -261,7 +194,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Speed);
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Damage);
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -280,7 +213,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Speed);
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Damage);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -321,7 +254,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.Y);
             }
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }

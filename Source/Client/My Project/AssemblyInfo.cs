@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -9,10 +9,10 @@ using System.Runtime.InteropServices;
 
 // Review the values of the assembly attributes
 
-[assembly: AssemblyTitle("XtremeWorlds Server")]
+[assembly: AssemblyTitle("XtremeWorlds Client")]
 [assembly: AssemblyDescription("2-D MMORPG Game Engine")]
 [assembly: AssemblyCompany("Treefly Studios")]
-[assembly: AssemblyProduct("Game Server")]
+[assembly: AssemblyProduct("Game Client")]
 [assembly: AssemblyCopyright("Copyright © 2025")]
 [assembly: AssemblyTrademark("Treefly Studios")]
 

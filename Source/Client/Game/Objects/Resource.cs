@@ -46,7 +46,7 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
             GameState.ResourceIndex = buffer.ReadInt32();
-            GameState.ResourcesInit = Conversions.ToBoolean(0);
+            GameState.ResourcesInit = false;
 
             if (GameState.ResourceIndex > 0)
             {
@@ -61,7 +61,7 @@ namespace Client
                     Core.Type.MyMapResource[i].Y = buffer.ReadInt32();
                 }
 
-                GameState.ResourcesInit = Conversions.ToBoolean(1);
+                GameState.ResourcesInit = true;
             }
 
             buffer.Dispose();
@@ -102,7 +102,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestResource);
 
             buffer.WriteInt32(resourceNum);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

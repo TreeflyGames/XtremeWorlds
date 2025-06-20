@@ -42,7 +42,6 @@ namespace Core
             CSearch,
             CSkills,
             CCast,
-            CQuit,
             CSwapInvSlots,
             CSwapSkillSlots,
 
@@ -92,12 +91,6 @@ namespace Core
             CLeaveParty,
             CPartyChatMsg,
             CRequestPets,
-            CSummonPet,
-            CPetMove,
-            CSetBehaviour,
-            CReleasePet,
-            CPetSkill,
-            CPetUseStatPoint,
             CRequestPet,
 
             // *************************
@@ -133,6 +126,9 @@ namespace Core
             CRequestMoral,
             CSaveMoral,
             CRequestEditMoral,
+
+            CSaveScript,
+            CRequestEditScript,
 
             CCloseEditor,
 
@@ -243,21 +239,15 @@ namespace Core
             SEmote,
             SPartyInvite,
             SPartyUpdate,
+            SUpdatePet,
             SPartyVitals,
             SPetEditor,
-            SUpdatePet,
-            SUpdatePlayerPet,
-            SPetMove,
-            SPetDir,
-            SPetVital,
-            SClearPetSkillBuffer,
-            SPetAttack,
-            SPetXY,
-            SPetExp,
             SMoralEditor,
 
             STime,
             SClock,
+
+            SScriptEditor,
 
             // Make sure COUNT is below everything else
             COUNT

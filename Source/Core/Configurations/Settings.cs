@@ -25,16 +25,14 @@ namespace Core
         public string SoundExt { get; set; } = ".ogg";
 
         public byte Resolution { get; set; } = 13;
-        public bool Vsync { get; set; } = true;
-        public bool ShowNPCBar { get; set; } = true;
+        public bool Vsync { get; set; } = false;
         public bool Fullscreen { get; set; } = false;
         public byte CameraWidth { get; set; } = 32;
         public byte CameraHeight { get; set; } = 24;
         public bool OpenAdminPanelOnLogin { get; set; } = true;
-        public bool DynamicLightRendering { get; set; } = true;
         public byte[] ChannelState { get; set; } = { 1, 1, 1, 1, 1, 1, 1 };
 
-        public string IP { get; set; } = "127.0.0.1";
+        public string IP { get; set; } = "51.222.200.12";
         public int Port { get; set; } = 7001;
 
         public string GameName { get; set; } = "XtremeWorlds";

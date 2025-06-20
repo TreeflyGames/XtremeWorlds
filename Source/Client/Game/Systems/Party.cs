@@ -104,7 +104,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestParty);
             buffer.WriteString(name);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -114,7 +114,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CAcceptParty);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -124,7 +124,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CDeclineParty);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -134,7 +134,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CLeaveParty);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -145,7 +145,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CPartyChatMsg);
             buffer.WriteString(text);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Path = System.IO.Path;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using Core;
+﻿using Core;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -14,13 +8,20 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Npgsql;
 using NpgsqlTypes;
-using static Core.Type;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using static Core.Enum;
 using static Core.Global.Command;
-using System.Reflection;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.Options;
+using static Core.Type;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Net.WebRequestMethods;
+using Path = System.IO.Path;
 
 namespace Server
 {
@@ -678,15 +679,15 @@ namespace Server
         {
             bool isInSection = false;
 
-            foreach (string line in File.ReadAllLines(filePath))
+            foreach (string line in System.IO.File.ReadAllLines(filePath))
             {
                 if (line.Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase))
                 {
-                    isInSection = Conversions.ToBoolean(1);
+                    isInSection = true;
                 }
                 else if (line.StartsWith("[") & line.EndsWith("]"))
                 {
-                    isInSection = Conversions.ToBoolean(0);
+                    isInSection = false;
                 }
                 else if (isInSection & line.Contains("="))
                 {
@@ -704,7 +705,7 @@ namespace Server
 
         public static void PutVar(string filePath, string section, string key, string value)
         {
-            var lines = new List<string>(File.ReadAllLines(filePath));
+            var lines = new List<string>(System.IO.File.ReadAllLines(filePath));
             bool updated = false;
             bool isInSection = false;
             int i = 0;
@@ -713,7 +714,7 @@ namespace Server
             {
                 if (lines[i].Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase))
                 {
-                    isInSection = Conversions.ToBoolean(1);
+                    isInSection = true;
                     i += 0;
                     while (i < lines.Count & !lines[i].StartsWith("["))
                     {
@@ -723,7 +724,7 @@ namespace Server
                             if (parts[0].Equals(key, StringComparison.OrdinalIgnoreCase))
                             {
                                 lines[i] = key + "=" + value;
-                                updated = Conversions.ToBoolean(1);
+                                updated = true;
                                 break;
                             }
                         }
@@ -741,7 +742,7 @@ namespace Server
                 lines.Add(key + "=" + value);
             }
 
-            File.WriteAllLines(filePath, lines);
+            System.IO.File.WriteAllLines(filePath, lines);
         }
 
 
@@ -757,7 +758,7 @@ namespace Server
 
             Core.Type.Job[jobNum].Name = "";
             Core.Type.Job[jobNum].Desc = "";
-            Core.Type.Job[jobNum].StartMap = 0;
+            Core.Type.Job[jobNum].StartMap = 1;
             Core.Type.Job[jobNum].MaleSprite = 0;
             Core.Type.Job[jobNum].FemaleSprite = 0;
         }
@@ -818,11 +819,16 @@ namespace Server
                     Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
             }
 
+            var loopTo2 = Core.Constant.MAX_MAP_NPCS;
+            for (x = 0; x < loopTo2; x++)
+            {
+                Core.Type.Map[mapNum].NPC[x] = -1;
+            }
+
             Core.Type.Map[mapNum].EventCount = 0;
             Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[1];
 
             // Reset the values for if a player is on the map or not
-            PlayersOnMap[mapNum] = false;
             Core.Type.Map[mapNum].Name = "";
             Core.Type.Map[mapNum].Music = "";
         }
@@ -872,28 +878,35 @@ namespace Server
 
             // Construct the path to the "maps" directory
             string mapsDir = Path.Combine(baseDir, "maps");
-            Directory.CreateDirectory(mapsDir);        
+            Directory.CreateDirectory(mapsDir);
 
-            if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
-            {
-                var csMap = LoadCSMap(mapNum);
-                Core.Type.Map[mapNum] = MapFromCSMap(csMap);
-                return;
-            }
+            //if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
+            //{
+            //var csMap = LoadCSMap(mapNum);
+            //Core.Type.Map[mapNum] = MapFromCSMap(csMap);
+            //    return;
+            //}
 
-            if (File.Exists(mapsDir + @"\xw\map" + mapNum + ".dat"))
-            {
-                var xwMap = LoadXWMap(mapsDir + @"\xw\map" + mapNum.ToString() + ".dat");
-                Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
-                return;
-            }
+                if (System.IO.File.Exists(mapsDir + @"\map" + mapNum + ".dat"))
+                {
+                    try
+                    {
+                        var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
+                        Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
+                        return;
+                    }
+                    catch { Exception e; }
+                    {
+                        Console.WriteLine(mapNum + " failed to load map!");
+                    }
+                }
 
-            if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
-            {
+            //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
+            //{
                 // Dim sdMap As SDMapStruct = loadsdmap(Type.MapsDir & "\sd\map" & mapNum.ToString() & ".dat")
                 // Type.Map(mapNum) = MapFromSDMap(sdMap)
-                return;
-            }
+            //    return;
+            //}
 
             JObject data;
 
@@ -1009,7 +1022,7 @@ namespace Server
             var xwMap = new XWMapStruct
             {
                 Tile = new XWTileStruct[16, 12],
-                NPC = new long[15]
+                NPC = new long[Core.Constant.MAX_MAP_NPCS]
             };
 
             using (var fs = new FileStream(fileName, FileMode.Open))
@@ -1205,47 +1218,50 @@ namespace Server
 
         public static MapStruct MapFromXWMap(XWMapStruct xwMap)
         {
-            var mwMap = new MapStruct
-            {
-                Tile = new TileStruct[16, 12],
-                NPC = new int[Core.Constant.MAX_MAP_NPCS]
-            };
+            var map = new MapStruct();
 
-            mwMap.Name = xwMap.Name;
-            mwMap.Music = "Music" + xwMap.Music.ToString() + ".mid";
-            mwMap.Revision = (int)xwMap.Revision;
-            mwMap.Moral = xwMap.Moral;
-            mwMap.Up = xwMap.Up;
-            mwMap.Down = xwMap.Down;
-            mwMap.Left = xwMap.Left;
-            mwMap.Right = xwMap.Right;
-            mwMap.BootMap = xwMap.BootMap;
-            mwMap.BootX = xwMap.BootX;
-            mwMap.BootY = xwMap.BootY;
-            mwMap.Shop = xwMap.Shop;
+            map.Tile = new TileStruct[16, 12];
+            map.NPC = new int[Core.Constant.MAX_MAP_NPCS];
+            map.Name = xwMap.Name;
+            map.Music = "Music" + xwMap.Music.ToString() + ".mid";
+            map.Revision = (int)xwMap.Revision;
+            map.Moral = xwMap.Moral;
+            map.Up = xwMap.Up;
+            map.Down = xwMap.Down;
+            map.Left = xwMap.Left;
+            map.Right = xwMap.Right;
+            map.BootMap = xwMap.BootMap;
+            map.BootX = xwMap.BootX;
+            map.BootY = xwMap.BootY;
+            map.Shop = xwMap.Shop;
 
             // Convert Byte to Boolean (False if 0, True otherwise)
-            mwMap.Indoors = xwMap.Indoors != 0;
+            map.Indoors = xwMap.Indoors != 0;
 
             // Loop through each tile in xwMap and copy the data to map
             for (int y = 0; y < 11; y++)
             {
                 for (int x = 0; x < 15; x++)
-                    mwMap.Tile[x, y] = ConvertXWTileToTile(xwMap.Tile[x, y]);
+                    map.Tile[x, y] = ConvertXWTileToTile(xwMap.Tile[x, y]);
             }
 
             // NPC array conversion (Long to Integer), if necessary
-            if (xwMap.NPC is not null)
+            //if (xwMap.NPC is not null)
+            //{
+            //    map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
+            //}
+
+            for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i ++)
             {
-                mwMap.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
+                map.NPC[i] = -1;
             }
 
-            mwMap.Weather = xwMap.Weather;
-            mwMap.NoRespawn = xwMap.Respawn == 0;
-            mwMap.MaxX = 15;
-            mwMap.MaxY = 11;
+            map.Weather = xwMap.Weather;
+            map.NoRespawn = xwMap.Respawn == 0;
+            map.MaxX = 15;
+            map.MaxY = 11;
 
-            return mwMap;
+            return map;
         }
 
         public static MapStruct MapFromCSMap(CSMapStruct csMap)
@@ -1364,6 +1380,7 @@ namespace Server
             Core.Type.MapNPC[mapNum].NPC[index].Vital = new int[(int)VitalType.Count];
             Core.Type.MapNPC[mapNum].NPC[index].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
             Core.Type.MapNPC[mapNum].NPC[index].Num = -1;
+            Core.Type.MapNPC[mapNum].NPC[index].SkillBuffer = -1;
         }
 
         public static void ClearNPC(int index)
@@ -1507,7 +1524,7 @@ namespace Server
         public static async Task SaveAccountAsync(int index)
         {
             string json = JsonConvert.SerializeObject(Core.Type.Account[index]).ToString();
-            string username = GetPlayerLogin(index);
+            string username = GetAccountLogin(index);
             long id = GetStringHash(username);
 
             if (await RowExistsAsync(id, "account"))
@@ -1568,6 +1585,7 @@ namespace Server
             Core.Type.TempPlayer[index].SkillBuffer = -1;
             Core.Type.TempPlayer[index].InShop = -1;
             Core.Type.TempPlayer[index].InTrade = -1;
+            Core.Type.TempPlayer[index].InParty = -1;
 
             for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
                 Core.Type.TempPlayer[index].EventProcessing[i].EventId = -1;
@@ -1581,7 +1599,7 @@ namespace Server
         public static void LoadBank(int index)
         {
             JObject data;
-            data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "bank");
+            data = SelectRowByColumn("id", GetStringHash(GetAccountLogin(index)), "account", "bank");
 
             if (data is null)
             {
@@ -1596,7 +1614,7 @@ namespace Server
         public static void SaveBank(int index)
         {
             string json = JsonConvert.SerializeObject(Bank[index]);
-            string username = GetPlayerLogin(index);
+            string username = GetAccountLogin(index);
             long id = GetStringHash(username);
 
             if (RowExistsByColumn("id", id, "account"))
@@ -1644,7 +1662,7 @@ namespace Server
             Core.Type.Player[index].Level = 0;
             Core.Type.Player[index].Map = 0;
             Core.Type.Player[index].Name = "";
-            Core.Type.Player[index].Pk = 0;
+            Core.Type.Player[index].PK = false;
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sex = 0;
 
@@ -1693,36 +1711,12 @@ namespace Server
 
             for (int i = 0, loopTo9 = (byte)EquipmentType.Count; i < loopTo9; i++)
                 Core.Type.Player[index].Equipment[i] = -1;
-
-            Core.Type.Player[index].Pet.Num = 0;
-            Core.Type.Player[index].Pet.Health = 0;
-            Core.Type.Player[index].Pet.Mana = 0;
-            Core.Type.Player[index].Pet.Level = 0;
-
-            Core.Type.Player[index].Pet.Stat = new byte[(byte)StatType.Count];
-
-            for (int i = 0, loopTo10 = (byte)StatType.Count; i < loopTo10; i++)
-                Core.Type.Player[index].Pet.Stat[i] = 0;
-
-            Core.Type.Player[index].Pet.Skill = new int[Core.Constant.MAX_PET_SKILLS];
-            for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
-                Core.Type.Player[index].Pet.Skill[i] = -1;
-
-            Core.Type.Player[index].Pet.Num = -1;
-            Core.Type.Player[index].Pet.X = 0;
-            Core.Type.Player[index].Pet.Y = 0;
-            Core.Type.Player[index].Pet.Dir = 0;
-            Core.Type.Player[index].Pet.Alive = 0;
-            Core.Type.Player[index].Pet.AttackBehaviour = 0;
-            Core.Type.Player[index].Pet.AdoptiveStats = 0;
-            Core.Type.Player[index].Pet.Points = 0;
-            Core.Type.Player[index].Pet.Exp = 0;
         }
 
         public static bool LoadCharacter(int index, int charNum)
         {
             JObject data;
-            data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "character" + charNum.ToString());
+            data = SelectRowByColumn("id", GetStringHash(GetAccountLogin(index)), "account", "character" + charNum.ToString());
 
             if (data is null)
             {
@@ -1737,13 +1731,14 @@ namespace Server
             }
 
             Core.Type.Player[index] = characterData;
+            Core.Type.TempPlayer[index].Slot = (byte)charNum;
             return true;
         }
 
         public static void SaveCharacter(int index, int slot)
         {
             string json = JsonConvert.SerializeObject(Core.Type.Player[index]).ToString();
-            long id = GetStringHash(GetPlayerLogin(index));
+            long id = GetStringHash(GetAccountLogin(index));
 
             if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                 return;
@@ -1827,7 +1822,7 @@ namespace Server
             filename = Path.Combine(Core.Path.Database, "banlist.txt");
 
             // Make sure the file exists
-            if (!File.Exists(filename))
+            if (!System.IO.File.Exists(filename))
             {
                 F = FileSystem.FreeFile();
             }
@@ -1845,7 +1840,7 @@ namespace Server
 
             }
 
-            Core.Type.Account[BanPlayerindex].Banned = Conversions.ToBoolean(1);
+            Core.Type.Account[BanPlayerindex].Banned = true;
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
@@ -1859,11 +1854,23 @@ namespace Server
             bool IsBannedRet = default;
             string filename;
             string line;
+            int i;
+            
+            for (i = Strings.Len(IP); i >= 0; i -= 1)
+            {
+
+                if (Strings.Mid(IP, i, 1) == ".")
+                {
+                    IP = Strings.Mid(IP, i, 1);
+                    break;
+                }
+
+            }
 
             filename = Path.Combine(Core.Path.Database, "banlist.txt");
 
             // Check if file exists
-            if (!File.Exists(filename))
+            if (!System.IO.File.Exists(filename))
             {
                 return false;
             }
@@ -1876,7 +1883,7 @@ namespace Server
                 line = sr.ReadLine();
                 if ((Strings.LCase(line) ?? "") == (Strings.LCase(Strings.Mid(IP, 1, Strings.Len(line))) ?? ""))
                 {
-                    IsBannedRet = Conversions.ToBoolean(1);
+                    IsBannedRet = true;
                 }
             }
 
@@ -1884,7 +1891,7 @@ namespace Server
 
             if (Core.Type.Account[index].Banned)
             {
-                IsBannedRet = Conversions.ToBoolean(1);
+                IsBannedRet = true;
             }
 
             return IsBannedRet;
@@ -1898,8 +1905,8 @@ namespace Server
             int i;
 
             // Make sure the file exists
-            if (!File.Exists(filename))
-                File.Create(filename).Dispose();
+            if (!System.IO.File.Exists(filename))
+                System.IO.File.Create(filename).Dispose();
 
             // Cut off last portion of ip
             IP = NetworkConfig.Socket.ClientIP(BanPlayerindex);

@@ -54,7 +54,6 @@ namespace Core
             WalkThrough,
             Arena,
             Roof,
-
             Count
         }
 
@@ -85,7 +84,7 @@ namespace Core
         {
             Equipment,
             Consumable,
-            CommonEvent,
+            Event,
             Currency,
             Skill,
             Projectile,
@@ -370,9 +369,6 @@ namespace Core
             PlaySound,
             StopSound,
 
-            // Etc...
-            CustomScript,
-
             SetAccess,
 
             // Shop/Bank
@@ -406,7 +402,6 @@ namespace Core
             Switch,
             Variable,
             Key,
-            CustomScript
         }
 
         public enum EditorType
@@ -422,7 +417,8 @@ namespace Core
             Quest,
             Job,
             Projectile,
-            Moral
+            Moral,
+            Script
         }
 
         public enum PictureType
@@ -661,5 +657,15 @@ namespace Core
             Font
         }
 
+        public enum  MapTab
+        {
+            Tiles,
+            Attributes,
+            NPCs,
+            Settings,
+            Directions,
+            Events,
+            Effects
+        }
     }
 }

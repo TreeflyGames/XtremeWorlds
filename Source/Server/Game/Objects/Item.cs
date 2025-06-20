@@ -67,6 +67,7 @@ namespace Server
         {
             Core.Type.Item[index].Name = "";
             Core.Type.Item[index].Description = "";
+            Core.Type.Item[index].Stackable = 1;
 
             for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < loopTo; i++)
             {
@@ -138,7 +139,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -160,7 +161,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
             }
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -207,7 +208,7 @@ namespace Server
                 buffer.WriteInt32(x);
                 buffer.WriteInt32(y);
 
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             }
 
             buffer.Dispose();
@@ -350,7 +351,7 @@ namespace Server
                 buffer.WriteInt32(x);
                 buffer.WriteInt32(y);
 
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             }
 
             buffer.Dispose();
@@ -438,12 +439,10 @@ namespace Server
             SendUpdateItemTo(index, n);
         }
 
-        public static void Packet_EditItem(int index, ref byte[] data)
+        public static void Packet_RequestEditItem(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
-                return;
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -466,7 +465,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SItemEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -526,7 +525,7 @@ namespace Server
             // Save it
             SaveItem(n);
             SendUpdateItemToAll(n);
-            Core.Log.Add(GetPlayerLogin(index) + " saved item #" + n + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved item #" + n + ".", Constant.ADMIN_LOG);
             buffer.Dispose();
         }
 
@@ -592,7 +591,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SUpdateItem);
             buffer.WriteBlock(ItemData(itemNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -604,7 +603,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SUpdateItem);
             buffer.WriteBlock(ItemData(itemNum));
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

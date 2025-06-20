@@ -1,7 +1,13 @@
 ﻿using Core;
+using Core.Localization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.CompilerServices;
+using Reoria.Engine.Container.Configuration.Interfaces;
+using Reoria.Engine.Container.Interfaces;
+using Reoria.Engine.Container.Logging;
+using Reoria.Engine.Container.Logging.Interfaces;
 using System.Runtime.InteropServices;
 using static Core.Global.Command;
 
@@ -16,14 +22,25 @@ namespace Client
         public static Gui Gui = new Gui();
         
         public static IConfiguration? Configuration;
-        
-		public static int GetTickCount()
+        public static ILogger<T> GetLogger<T>() where T : class => Container?.Provider.GetRequiredService<Logger<T>>() ?? throw new NullReferenceException();
+
+        public static int GetTickCount()
         {
             return Environment.TickCount;
         }
-
+        
         public static void Startup()
         {
+            IServiceCollection services = new ServiceCollection()
+                .AddSingleton<IEngineConfigurationProvider, XWConfigurationProvider>()
+                .AddSingleton<ILoggingInitializer, SerilogLoggingInitializer>();
+
+            Container = new XWContainer(services)
+                .CreateConfiguration()
+                .CreateServiceCollection()
+                .CreateServiceProvider();
+            Configuration = Container?.Provider.GetRequiredService<IConfiguration>() ?? throw new NullReferenceException();
+
             GameState.InMenu = true;
             ClearGameData();
             LoadGame();
@@ -32,7 +49,7 @@ namespace Client
         public static void LoadGame()
         {
             SettingsManager.Load();
-            LocalesManager.Load();
+            LocalesManager.Initialize();
             CheckAnimations();
             CheckCharacters();
             CheckEmotes();

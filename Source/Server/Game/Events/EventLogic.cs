@@ -39,7 +39,7 @@ namespace Server
         // 4. Code Clarity and Readability:
         //    - Improved code formatting for better readability (consistent indentation, spacing).
         //    - Added comments to explain complex logic sections.
-        //    - Replaced some verbose `Conversions.ToBoolean(0)` and `Conversions.ToBoolean(1)` with `false` and `true` respectively.
+        //    - Replaced some verbose `Conversions.ToBoolean(0)` and `true` with `false` and `true` respectively.
         //    - Replaced some older VB-style string functions (like `InStr`, `Mid`, `Len`, `Val`) with their C# equivalents (`Contains`,
         //      `Substring`, `Length`, `int.Parse` or `double.Parse`).
 
@@ -187,7 +187,7 @@ namespace Server
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].WalkThrough);
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].ShowName);
 
-                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                        NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                     }
                                 }
                             }
@@ -200,7 +200,7 @@ namespace Server
         public static void SpawnNewEvents()
         {
             // Use Parallel.For for potential performance gains on multi-core systems.
-            Parallel.For(0, NetworkConfig.Socket.HighIndex + 1, i =>
+            Parallel.For(0, NetworkConfig.Socket.HighIndex, i =>
             {
                 int mapNum = GetPlayerMap(i);
 
@@ -223,6 +223,11 @@ namespace Server
                             PageId = 0;
 
                         // Another bounds check.
+                        if (Map[mapNum].Event == null)
+                        {
+                            break;
+                        }
+
                         if (id >= Map[mapNum].Event.Length) continue;
 
                         // Iterate through event pages to find the highest-priority page that meets conditions
@@ -400,7 +405,7 @@ namespace Server
                                 buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
                                 buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
 
-                                NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                             }
                         }
                     }
@@ -413,8 +418,6 @@ namespace Server
             // Iterate through all maps.
             for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
-                if (!PlayersOnMap[i] || Event.TempEventMap[i].EventCount <= 0) continue;
-
                 // Process global events on this map.
                 for (int x = 0; x < Event.TempEventMap[i].EventCount; x++)
                 {
@@ -832,7 +835,7 @@ namespace Server
                                                 buffer.WriteInt32(withBlock1.FixedDir);
                                                 buffer.WriteInt32(withBlock1.WalkThrough);
                                                 buffer.WriteInt32(withBlock1.ShowName);
-                                                NetworkConfig.SendDataToMap(i, buffer.Data, buffer.Head);
+                                                NetworkConfig.SendDataToMap(i, buffer.UnreadData, buffer.WritePosition);
                                             }
                                         }
                                     }
@@ -1278,7 +1281,7 @@ namespace Server
                                                 buffer.WriteInt32(withBlock1.FixedDir);
                                                 buffer.WriteInt32(withBlock1.WalkThrough);
                                                 buffer.WriteInt32(withBlock1.ShowName);
-                                                NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                             }
                                         }
                                     }
@@ -1364,7 +1367,7 @@ namespace Server
                 do
                 {
                     restartloop = false;
-                    for (int x = 0; x < TempPlayer[i].EventProcessingCount; x++)
+                    for (int x = 0; x <= TempPlayer[i].EventProcessingCount; x++)
                     {
                         if (TempPlayer[i].EventProcessing[x].Active != 1) continue;
 
@@ -1540,7 +1543,7 @@ namespace Server
                                                         nextCommandType = 2;
 
                                                     buffer.WriteInt32(nextCommandType);
-                                                    NetworkConfig.Socket.SendDataTo((int)i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo((int)i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 withBlock1.WaitingForResponse = 0; // No response needed.
                                                 break;
@@ -1605,7 +1608,7 @@ namespace Server
                                                         nextCommandType = 2;
 
                                                     buffer.WriteInt32(nextCommandType);
-                                                    NetworkConfig.Socket.SendDataTo((int)i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo((int)i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 withBlock1.WaitingForResponse = 0; // No response needed (choices handled separately).
                                                 break;
@@ -1833,7 +1836,7 @@ namespace Server
                                             break;
 
                                         case (byte)EventType.ChangePk:
-                                            Core.Type.Player[i].Pk = (byte)(command.Data1 == 0 ? 0 : 1);
+                                            Core.Type.Player[i].PK = (command.Data1 == 0 ? false : true);
                                             NetworkSend.SendPlayerData((int)i);
                                             break;
 
@@ -1859,7 +1862,7 @@ namespace Server
                                                         globalEvent.MoveRouteCount = command.MoveRouteCount;
                                                         if (command.MoveRouteCount > 0)
                                                         {
-                                                            globalEvent.MoveRoute = new  MoveRouteStruct[command.MoveRouteCount];
+                                                            globalEvent.MoveRoute = new MoveRouteStruct[command.MoveRouteCount];
                                                             Array.Copy(command.MoveRoute, globalEvent.MoveRoute, command.MoveRouteCount);
                                                         }
                                                         globalEvent.MoveRouteStep = 0;
@@ -1927,17 +1930,13 @@ namespace Server
                                                 break;
                                             }
 
-                                        case (byte)EventType.CustomScript:
-                                            Event.CustomScript(i, command.Data1, mapNum, withBlock1.EventId);
-                                            break;
-
                                         case (byte)EventType.PlayBgm:
                                             {
                                                 using (var buffer = new ByteStream(4))
                                                 {
                                                     buffer.WriteInt32((int)ServerPackets.SPlayBGM);
                                                     buffer.WriteString(command.Text1);
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -1946,7 +1945,7 @@ namespace Server
                                                 using (var buffer = new ByteStream(4))
                                                 {
                                                     buffer.WriteInt32((int)ServerPackets.SFadeoutBGM);
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -1959,7 +1958,7 @@ namespace Server
                                                     buffer.WriteString(command.Text1);
                                                     buffer.WriteInt32(Map[mapNum].Event[withBlock1.EventId].X);
                                                     buffer.WriteInt32(Map[mapNum].Event[withBlock1.EventId].Y);
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -1969,7 +1968,7 @@ namespace Server
                                                 using (var buffer = new ByteStream(4))
                                                 {
                                                     buffer.WriteInt32((int)ServerPackets.SStopSound);
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -1996,7 +1995,7 @@ namespace Server
                                             break;
 
                                         case (byte)EventType.GiveExp:
-                                            Event.GivePlayerExp(i, command.Data1);
+                                            SetPlayerExp(i, command.Data1);
                                             break;
 
                                         case (byte)EventType.ShowChatBubble:
@@ -2071,7 +2070,7 @@ namespace Server
                                                     buffer.WriteByte((byte)command.Data2); // X
                                                     buffer.WriteByte((byte)command.Data3); // Y
                                                     buffer.WriteByte((byte)command.Data4); // Transparency
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -2081,7 +2080,7 @@ namespace Server
                                                 {
                                                     buffer.WriteInt32((int)ServerPackets.SPic);
                                                     buffer.WriteByte(0); // Hide picture.
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -2115,7 +2114,7 @@ namespace Server
                                                 {
                                                     buffer.WriteInt32((int)ServerPackets.SHoldPlayer);
                                                     buffer.WriteInt32(0); // Hold
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -2125,7 +2124,7 @@ namespace Server
                                                 {
                                                     buffer.WriteInt32((int)ServerPackets.SHoldPlayer);
                                                     buffer.WriteInt32(1); // Release
-                                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                    NetworkConfig.Socket.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                                                 }
                                                 break;
                                             }
@@ -2922,117 +2921,113 @@ namespace Server
                     buffer.WriteInt32(Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].DirFix);
                     buffer.WriteInt32(Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough);
                     buffer.WriteInt32(Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].ShowName);
-                    NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                    NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
                     buffer.Reset();
                 }
             }
         }
 
-        public static bool TriggerEvent(int index, int eventId, byte triggerType, int x, int y)
+        public static bool TriggerEvent(int playerIndex, int eventId, byte triggerType, int targetX, int targetY)
         {
-            // Check for valid player and map.
-            if (index < 0 || index > NetworkConfig.Socket.HighIndex)
-            {
+            // 1. Validate player and map
+            if (playerIndex < 0 || playerIndex > NetworkConfig.Socket.HighIndex)
                 return false;
-            }
 
-            int mapNum = GetPlayerMap(index);
+            int mapNum = GetPlayerMap(playerIndex);
             if (mapNum < 0 || mapNum >= Map.Length)
-            {
                 return false;
-            }
 
-            // Find the correct local event index.
+            // 2. Find the relevant event for the player
+            var eventMap = TempPlayer[playerIndex].EventMap;
             int localEventIndex = -1;
-            for (int z = 0; z < TempPlayer[index].EventMap.CurrentEvents; z++)
+            for (int i = 0; i < eventMap.CurrentEvents; i++)
             {
-                if (TempPlayer[index].EventMap.EventPages[z].EventId == eventId)
+                if (eventMap.EventPages[i].EventId == eventId)
                 {
-                    localEventIndex = z + 1;
+                    localEventIndex = i + 1;
                     break;
                 }
             }
+            if (localEventIndex == -1)
+                return false; // Event not found
 
-            if (localEventIndex == -1) return false; // Event not found for this player.
+            ref var eventPage = ref eventMap.EventPages[localEventIndex];
+            var mapEvent = Map[mapNum].Event[eventPage.EventId];
+            var page = mapEvent.Pages[eventPage.PageId];
 
-            // Get the event page data.
-            ref var eventPage = ref TempPlayer[index].EventMap.EventPages[localEventIndex];
+            // 3. Check trigger type
+            if (page.Trigger != triggerType)
+                return false;
 
-            // Check trigger type.
-            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].Trigger != triggerType)
+            // 4. Calculate intended tile based on player direction (if not walk-through)
+            if (page.WalkThrough == 0)
             {
-                return false; // Incorrect trigger.
+                (int x, int y)? offset = GetOffsetByDirection(GetPlayerDir(playerIndex), GetPlayerX(playerIndex), GetPlayerY(playerIndex), Map[mapNum]);
+                if (offset == null)
+                    return false;
+                (targetX, targetY) = offset.Value;
             }
 
-            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough == 0)
+            // 5. Validate player is at the event's coordinates
+            if (targetX != eventPage.X || targetY != eventPage.Y)
+                return false;
+
+            // 6. Begin event processing if applicable
+            if (page.CommandListCount > 0)
             {
-                // Adjust target coordinates based on player direction.
-                switch (GetPlayerDir(index))
+                ref var eventProcessing = ref TempPlayer[playerIndex].EventProcessing[localEventIndex];
+                if (eventProcessing.Active == 0)
                 {
-                    case (byte)DirectionType.Up:
-                        if (GetPlayerY(index) > 0) y = GetPlayerY(index) - 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.Down:
-                        if (GetPlayerY(index) < Map[mapNum].MaxY) y = GetPlayerY(index) + 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.Left:
-                        if (GetPlayerX(index) > 0) x = GetPlayerX(index) - 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.Right:
-                        if (GetPlayerX(index) < Map[mapNum].MaxX) x = GetPlayerX(index) + 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.UpRight:
-                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) > 0) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) - 1; }
-                        else return false;
-                        break;
-                    case (byte)DirectionType.UpLeft:
-                        if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) - 1; }
-                        else return false;
-                        break;
-                    case (byte)DirectionType.DownLeft:
-                        if (GetPlayerX(index) > 0 && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) + 1; }
-                        else return false;
-                        break;
-                    case (byte)DirectionType.DownRight:
-                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) + 1; }
-                        else return false;
-                        break;
-                }
-            }
-
-            // Check if the player is on the event's tile.
-            if (x != eventPage.X || y != eventPage.Y)
-            {
-                return false; // Not on the event tile.
-            }
-
-            // Check for event commands and start event processing.
-            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].CommandListCount > 0)
-            {
-                // Use map event ID for indexing.
-                if (TempPlayer[index].EventProcessing[eventPage.EventId].Active == 0)
-                {
-                    ref var eventProcessing = ref TempPlayer[index].EventProcessing[eventPage.EventId]; //And here.
                     eventProcessing.Active = 1;
                     eventProcessing.ActionTimer = General.GetTimeMs();
                     eventProcessing.CurList = 0;
                     eventProcessing.CurSlot = 0;
-                    eventProcessing.EventId = eventPage.EventId; // This should be map event ID.
+                    eventProcessing.EventId = eventPage.EventId;
                     eventProcessing.PageId = eventPage.PageId;
                     eventProcessing.WaitingForResponse = 0;
-
-                    // Allocate ListLeftOff array.
-                    eventProcessing.ListLeftOff = new int[Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].CommandListCount];
+                    eventProcessing.ListLeftOff = new int[page.CommandListCount];
+                    // Event successfully triggered and processing started.
+                    return true;
                 }
             }
-
-            return false; // Event triggered (or not), but return false as per the original function's signature.
+            return false;
         }
 
-    } // class EventLogic
-} // namespace Server 
+        // Helper to calculate tile offsets based on player direction and map bounds
+        private static (int, int)? GetOffsetByDirection(byte direction, int x, int y, MapStruct map)
+        {
+            int newX = x, newY = y;
+            switch ((DirectionType)direction)
+            {
+                case DirectionType.Up:
+                    if (y > 0) newY = y - 1; else return null;
+                    break;
+                case DirectionType.Down:
+                    if (y < map.MaxY) newY = y + 1; else return null;
+                    break;
+                case DirectionType.Left:
+                    if (x > 0) newX = x - 1; else return null;
+                    break;
+                case DirectionType.Right:
+                    if (x < map.MaxX) newX = x + 1; else return null;
+                    break;
+                case DirectionType.UpRight:
+                    if (x < map.MaxX && y > 0) { newX = x + 1; newY = y - 1; } else return null;
+                    break;
+                case DirectionType.UpLeft:
+                    if (x > 0 && y > 0) { newX = x - 1; newY = y - 1; } else return null;
+                    break;
+                case DirectionType.DownLeft:
+                    if (x > 0 && y < map.MaxY) { newX = x - 1; newY = y + 1; } else return null;
+                    break;
+                case DirectionType.DownRight:
+                    if (x < map.MaxX && y < map.MaxY) { newX = x + 1; newY = y + 1; } else return null;
+                    break;
+                default:
+                    return null;
+            }
+            return (newX, newY);
+        }
+    }
+}

@@ -188,24 +188,28 @@
     
         private int FindEmptySlot(int startIndex)
         {
-          using (List<int>.Enumerator enumerator = this._unsignedIndex.GetEnumerator())
-          {
-            if (enumerator.MoveNext())
+            using (List<int>.Enumerator enumerator = this._unsignedIndex.GetEnumerator())
             {
-              int current = enumerator.Current;
-              if (this.HighIndex < current)
-                this.HighIndex = current;
-              this._unsignedIndex.Remove(current);
-              return current;
+                if (enumerator.MoveNext())
+                {
+                    int current = enumerator.Current;
+                    if (this.HighIndex < current)
+                    {
+                        this.HighIndex = current;
+                    }
+                    this._unsignedIndex.Remove(current);
+                    return current;
+                }
             }
-          }
-          if (this._socket.Count == 0)
-          {
-            this.HighIndex = startIndex;
-            return startIndex;
-          }
-          ++this.HighIndex;
-          return this.HighIndex;
+
+            if (this._socket.Count == 0)
+            {
+                this.HighIndex = startIndex + 1;
+                return startIndex;
+            }
+
+            ++this.HighIndex;
+            return this.HighIndex;
         }
 
         public async Task StartListeningAsync(int port, int backlog)
@@ -266,18 +270,18 @@
 
         private Socket EndAccept(IAsyncResult ar = null)
         {
-          IAsyncResult asyncResult = ar ?? this._pendingAccept;
-          if (asyncResult == null || this._listener == null)
+            IAsyncResult asyncResult = ar ?? this._pendingAccept;
+            if (asyncResult == null || this._listener == null)
             return (Socket) null;
-          this._pendingAccept = (IAsyncResult) null;
-          return this._listener.EndAccept(asyncResult);
+            this._pendingAccept = (IAsyncResult) null;
+            return this._listener.EndAccept(asyncResult);
         }
 
         private void ListenManager()
         {
-          if (!this.IsListening || this._listener == null || this._pendingAccept != null || this.ClientLimit > 0 && this.ClientLimit <= this._socket.Count)
+            if (!this.IsListening || this._listener == null || this._pendingAccept != null || this.ClientLimit > 0 && this.ClientLimit <= this._socket.Count)
             return;
-          this._pendingAccept = this._listener.BeginAccept(new AsyncCallback(this.DoAcceptClient), (object) null);
+            this._pendingAccept = this._listener.BeginAccept(new AsyncCallback(this.DoAcceptClient), (object) null);
         }
 
         private void BeginReceiveData(int index)
@@ -370,25 +374,25 @@
         state.Dispose();
       }
   
-      // Append new data to the ring buffer safely
-      private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
-      {
-        if (state.RingBuffer == null)
+        // Append new data to the ring buffer safely
+         private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
         {
-          // Initialize RingBuffer if it's null
-          state.RingBuffer = new byte[length];
-          Buffer.BlockCopy(state.Buffer, 0, state.RingBuffer, 0, length);
-        }
-        else
-        {
-          // Expand RingBuffer if it already has data
-          int oldLength = state.RingBuffer.Length;
-          byte[] newBuffer = new byte[oldLength + length];
-          Buffer.BlockCopy(state.RingBuffer, 0, newBuffer, 0, oldLength);
-          Buffer.BlockCopy(state.Buffer, 0, newBuffer, oldLength, length);
-          state.RingBuffer = newBuffer;
-        }
-      }
+            if (state.RingBuffer == null)
+            {
+                // Initialize RingBuffer if it's null
+                state.RingBuffer = new byte[length];
+                Buffer.BlockCopy(state.Buffer, 0, state.RingBuffer, 0, length);
+            }
+            else
+            {
+                // Expand RingBuffer if it already has data
+                int oldLength = state.RingBuffer.Length;
+                byte[] newBuffer = new byte[oldLength + length];
+                Buffer.BlockCopy(state.RingBuffer, 0, newBuffer, 0, oldLength);
+                Buffer.BlockCopy(state.Buffer, 0, newBuffer, oldLength, length);
+                state.RingBuffer = newBuffer;
+            }
+          }
 
         private void PacketHandler(ref NetworkServer.ReceiveState so)
         {
@@ -560,7 +564,7 @@
 
         public void SendDataToAll(ReadOnlySpan<byte> data)
         {
-          for (int index = 0; index <= this.HighIndex; ++index)
+          for (int index = 0; index < this.HighIndex; ++index)
           {
             if (this._socket.ContainsKey(index))
               this.SendDataTo(index, data);
@@ -573,7 +577,7 @@
           Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
           Buffer.BlockCopy((Array) data.ToArray(), 0, (Array) numArray, 4, head);
       
-          for (int index = 0; index <= this.HighIndex; ++index)
+          for (int index = 0; index < this.HighIndex; ++index)
           {
             if (this._socket.ContainsKey(index))
               this.SendDataTo(index, numArray);
@@ -582,7 +586,7 @@
 
         public void SendDataToAllBut(int index, ref byte[] data)
         {
-          for (int index1 = 1; index1 <= this.HighIndex; ++index1)
+          for (int index1 = 0; index1 < this.HighIndex; ++index1)
           {
             if (this._socket.ContainsKey(index1) && index1 != index)
               this.SendDataTo(index1, data);
@@ -594,7 +598,7 @@
           byte[] numArray = new byte[head + 4];
           Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
           Buffer.BlockCopy((Array) data.ToArray(), 0, (Array) numArray, 4, head);
-          for (int index1 = 1; index1 <= this.HighIndex; ++index1)
+          for (int index1 = 0; index1 < this.HighIndex; ++index1)
           {
             if (this._socket.ContainsKey(index1) && index1 != index)
               this.SendDataTo(index1, numArray);

@@ -53,10 +53,10 @@ namespace Server
             // Establish some Rulez
             Socket = new NetworkServer((int)Packets.ClientPackets.Count, 8192, Core.Constant.MAX_PLAYERS)
             {
-                BufferLimit = 2048000, // <- this is 2mb Core.Constant.MAX data storage
+                BufferLimit = 2048000, // <- this is 2mb MAX data storage
                 MinimumIndex = 0, // <- this prevents the network from giving us 0 as an index
-                PacketAcceptLimit = 500, // Dunno what is a reasonable cap right now so why not? :P
-                PacketDisconnectCount = 100 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
+                PacketAcceptLimit = 1000, // Dunno what is a reasonable cap right now so why not? :P
+                PacketDisconnectCount = 1000 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
             };
             // END THE ESTABLISHMENT! WOOH ANARCHY! ~SpiceyWolf
 
@@ -78,9 +78,9 @@ namespace Server
             return Core.Type.TempPlayer[index].InGame;
         }
 
-        public static bool IsMultiAccounts(int index, string login)
+        public static bool IsMultiLogin(int index, string login)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
             {
                 if (i != index)
                 {
@@ -100,9 +100,9 @@ namespace Server
             return false;
         }
 
-        public static void CheckMultiAccounts(int index, string login)
+        public static bool IsMultiAccount(int index, string login)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
             {
                 if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
                 {
@@ -110,22 +110,27 @@ namespace Server
                     {
                         if (index != i)
                         {
-                            Player.LeftGame(i);
-                        }
+                            Core.Type.Player[index] = Core.Type.Player[i];
+                            Core.Type.TempPlayer[index].Slot = Core.Type.TempPlayer[i].Slot;
+                            Core.Type.Bank[index] = Core.Type.Bank[i];
+                            return true;
+                        }                       
                     }
                 }
             }
+
+            return false;
         }
 
         public static void SendDataToAll(ReadOnlySpan<byte> data, int head)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
                 Socket.SendDataTo(i, data, head);
         }
 
         public static void SendDataToAllBut(int index, ReadOnlySpan<byte> data, int head)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
             {
                 if (i != index)
                 {
@@ -136,7 +141,7 @@ namespace Server
 
         public static void SendDataToMapBut(int index, int mapNum, ReadOnlySpan<byte> data, int head)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
             {
                 if (IsPlaying(i))
                 {
@@ -155,7 +160,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = Socket.HighIndex + 1;
+            var loopTo = Socket.HighIndex;
             for (i = 0; i < loopTo; i++)
             {
                 if (IsPlaying(i))

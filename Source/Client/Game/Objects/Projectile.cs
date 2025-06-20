@@ -17,7 +17,7 @@ namespace Client
 
             buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditProjectile);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -37,7 +37,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Speed);
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Damage);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -49,7 +49,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestProjectile);
             buffer.WriteInt32(projectileNum);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -64,7 +64,7 @@ namespace Client
             buffer.WriteInt32(collisionType);
             buffer.WriteInt32(collisionZone);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -209,20 +209,20 @@ namespace Client
 
             // Check if its been going for over 1 minute, if so clear.
             if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Timer < General.GetTickCount())
-                canClearProjectile = Conversions.ToBoolean(1);
+                canClearProjectile = true;
 
             if (x > Core.Type.MyMap.MaxX | x < 0)
-                canClearProjectile = Conversions.ToBoolean(1);
+                canClearProjectile = true;
 
             if (y > Core.Type.MyMap.MaxY | y < 0)
-                canClearProjectile = Conversions.ToBoolean(1);
+                canClearProjectile = true;
 
             // Check for blocked wall collision
             if (Conversions.ToInteger(canClearProjectile) == 0) // Add a check to prevent crashing
             {
                 if (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Blocked | Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Blocked)
                 {
-                    canClearProjectile = Conversions.ToBoolean(1);
+                    canClearProjectile = true;
                 }
             }
 
@@ -231,7 +231,7 @@ namespace Client
             {
                 if (Core.Type.MyMapNPC[i].X == x & Core.Type.MyMapNPC[i].Y == y)
                 {
-                    canClearProjectile = Conversions.ToBoolean(1);
+                    canClearProjectile = true;
                     collisionindex = i;
                     collisionType = (byte)Core.Enum.TargetType.NPC;
                     collisionZone = -1;
@@ -246,14 +246,14 @@ namespace Client
                 {
                     if (GetPlayerX(i) == x & GetPlayerY(i) == y)
                     {
-                        canClearProjectile = Conversions.ToBoolean(1);
+                        canClearProjectile = true;
                         collisionindex = i;
                         collisionType = (byte)Core.Enum.TargetType.Player;
                         collisionZone = -1;
                         if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].OwnerType == (byte)Core.Enum.TargetType.Player)
                         {
                             if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Owner == i)
-                                canClearProjectile = Conversions.ToBoolean(0); // Reset if its the owner of projectile
+                                canClearProjectile = false; // Reset if its the owner of projectile
                         }
                         break;
                     }
@@ -263,7 +263,7 @@ namespace Client
 
             // Check if it has hit its maximum range
             if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Range >= Core.Type.Projectile[Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Range + 1)
-                canClearProjectile = Conversions.ToBoolean(1);
+                canClearProjectile = true;
 
             // Clear the projectile if possible
             if (Conversions.ToInteger(canClearProjectile) == 1)

@@ -1,5 +1,6 @@
 ﻿using Core;
 using Mirage.Sharp.Asfw.IO.Encryption;
+using static Core.Enum;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 
@@ -90,6 +91,8 @@ namespace Client
         public static int ChatBubbleindex;
 
         public static string chatShowLine;
+
+        public static string[] MapNames = new string[Constant.MAX_MAPS];
 
         // chat
         public static bool inSmallChat;
@@ -269,8 +272,6 @@ namespace Client
         public const int EffectTypeWeather = 5;
         public const int EffectTypeTint = 6;
 
-        public static string[] MapNames = new string[Constant.MAX_MAPS];
-
         // Bank constants
         public const long BankTop = 28L;
         public const long BankLeft = 9L;
@@ -327,8 +328,8 @@ namespace Client
         public static bool HideLayers;
 
         // Speed moving vars
-        public const byte WalkSpeed = 8;
-        public const byte RunSpeed = 16;
+        public const byte WalkSpeed = 4;
+        public const byte RunSpeed = 8;
 
         // Tile size constants
         public const int PicX = 32;
@@ -353,7 +354,7 @@ namespace Client
         // Autotile Type
         public const byte AutotileNone = 0;
 
-        public const byte AutotileNormal = 0;
+        public const byte AutotileNormal = 1;
         public const byte AutotileFake = 2;
         public const byte AutotileAnim = 3;
         public const byte AutotileCliff = 4;
@@ -372,8 +373,6 @@ namespace Client
 
         public static int NumProjectiles;
         public static bool InitProjectileEditor;
-        public const byte EditorProjectile = 10;
-        public static bool[] ProjectileChanged = new bool[256];
 
         public static int ResourceIndex;
         public static bool ResourcesInit;
@@ -398,6 +397,11 @@ namespace Client
         public static int InShop; // is the player in a shop?
         public static byte ShopAction; // stores the current shop action
 
+        public static int MapTab;
+        public static int CurLayer;
+        public static int CurAutotileType;
+        public static int CurTileset;
+
         // Editors
         public static bool InitEditor;
         public static bool InitMapEditor;
@@ -412,7 +416,8 @@ namespace Client
         public static bool InitMoralEditor;
         public static bool InitAdminForm;
         public static bool InitMapReport;
-        public static bool InitEventEditorForm;
+        public static bool InitEventEditor;
+        public static bool InitScriptEditor;
 
         // Editor edited items array
         public static bool[] Item_Changed = new bool[Constant.MAX_ITEMS];
@@ -424,6 +429,6 @@ namespace Client
         public static bool[] Pet_Changed = new bool[Constant.MAX_PETS];
         public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS)];
         public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS)];
-
+        public static bool[] ProjectileChanged = new bool[Core.Constant.MAX_PROJECTILES];
     }
 }
