@@ -93,4 +93,5 @@
    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
    <UserSecretsId>5e0352c8-3252-489f-98e0-182aab5d0588</UserSecretsId>
  </PropertyGroup>
+ <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
 </Project>
