@@ -20,7 +20,8 @@ namespace Client
         public static GameState State = new GameState();
         public static RandomUtility Random = new RandomUtility();
         public static Gui Gui = new Gui();
-        
+
+        public static IEngineContainer? Container;
         public static IConfiguration? Configuration;
         public static ILogger<T> GetLogger<T>() where T : class => Container?.Provider.GetRequiredService<Logger<T>>() ?? throw new NullReferenceException();
 
