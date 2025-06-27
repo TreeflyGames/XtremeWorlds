@@ -202,7 +202,6 @@ namespace Client
 
             LoadFonts();
             General.Startup();
-            IsLoaded = true;
         }
 
         public SpriteFont LoadFont(string path, FontType font)
