@@ -26,10 +26,6 @@ namespace Client
             base.OnCreate(savedInstanceState);
             Instance = this;
             var game = Client = new GameClient();
-            while (game == null)
-            {
-                
-            }
             SetContentView((View)game.Services.GetService(typeof(View)));
             game.Run();
         }
