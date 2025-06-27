@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
  <PropertyGroup>
-   <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-   <OutputType>Exe</OutputType>
-   <RootNamespace>Client</RootNamespace>
-   <ImplicitUsings>enable</ImplicitUsings>
-   <Nullable>enable</Nullable>
-   <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-   <GenerateManifests>false</GenerateManifests>
-   <LangVersion>latest</LangVersion>
-   <TargetFramework>net9.0-android</TargetFramework>
-   <TargetPlatformVersion>35</TargetPlatformVersion>
-   <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Client</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <GenerateManifests>false</GenerateManifests>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0-android</TargetFramework>
+    <TargetPlatformVersion>35</TargetPlatformVersion>
+    <AndroidMinSdkVersion>24</AndroidMinSdkVersion> <!-- or even 21 -->
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidFastDeployment>false</AndroidFastDeployment>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
@@ -83,9 +84,6 @@
      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net9.0\Microsoft.Extensions.Configuration.dll</HintPath>
    </Reference>
    <Reference Include="Microsoft.Extensions.Logging.Configuration" />
-   <Reference Include="MonoGame.Framework">
-     <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
-   </Reference>
  </ItemGroup>
  <PropertyGroup>
    <PackageLicenseFile>LICENSE</PackageLicenseFile>
