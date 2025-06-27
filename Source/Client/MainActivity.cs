@@ -24,9 +24,8 @@ namespace Client
         {
             base.OnCreate(savedInstanceState);
             Instance = this;
-            var game = General.Client;
-            SetContentView((View)game.Services.GetService(typeof(View)));
-            game.Run();
+            SetContentView((View)General.Client.Services.GetService(typeof(View)));
+            General.Client.Run();
         }
     }
 }
