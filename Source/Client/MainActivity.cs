@@ -18,12 +18,17 @@ namespace Client
         ScreenOrientation = ScreenOrientation.Landscape)]
     public class MainActivity : AndroidGameActivity
     {
-
+        public static MainActivity Instance { get; private set; }
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView((View)General.Client.Services.GetService(typeof(View)));
-            General.Client.Run();
+            
+            Instance = this;
+            var game = General.Client;
+            
+            SetContentView((View)game.Services.GetService(typeof(View)));
+            game.Run();
         }
     }
 }
