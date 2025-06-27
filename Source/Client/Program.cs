@@ -13,13 +13,6 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-using Java.IO;
-
-
-#if ANDROID
-using Android.App;
-using Android.Content.Res;
-#endif
 
 namespace Client
 {
@@ -204,9 +197,9 @@ namespace Client
             General.Startup();
         }
 
-        public SpriteFont LoadFont(string path, FontType font)
+        public static SpriteFont LoadFont(string path, FontType font)
         {
-            return Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
+            return MainActivity.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
         }
 
         public static Color ToXnaColor(System.Drawing.Color drawingColor)
