@@ -89,7 +89,7 @@
  </ItemGroup>
  <ItemGroup>
    <None Remove="appsettings.json" />
-   <AndroidResource Include="appsettings.json" />
+   <AndroidAsset Include="appsettings.json" />
  </ItemGroup>
  <PropertyGroup>
    <PackageLicenseFile>LICENSE</PackageLicenseFile>

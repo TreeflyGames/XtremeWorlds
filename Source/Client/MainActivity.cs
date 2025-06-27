@@ -26,9 +26,23 @@ namespace Client
             
             Instance = this;
             var game = General.Client;
+            EnsureAppSettingsInFilesDir(this);
             
             SetContentView((View)game.Services.GetService(typeof(View)));
             game.Run();
+        }
+        
+        public void EnsureAppSettingsInFilesDir(Activity activity)
+        {
+            string fileName = "appsettings.json";
+            string destPath = Path.Combine(activity.FilesDir.AbsolutePath, fileName);
+
+            if (!File.Exists(destPath))
+            {
+                using var assetStream = activity.Assets.Open(fileName);
+                using var fileStream = File.Create(destPath);
+                assetStream.CopyTo(fileStream);
+            }
         }
     }
 }
