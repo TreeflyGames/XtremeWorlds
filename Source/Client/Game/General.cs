@@ -16,6 +16,7 @@ namespace Client
 
     public class General
     {
+        public static GameClient Client = new GameClient();
         public static GameState State = new GameState();
         public static RandomUtility Random = new RandomUtility();
         public static Gui Gui = new Gui();

@@ -199,7 +199,7 @@ namespace Client
 
         public static SpriteFont LoadFont(string path, FontType font)
         {
-            return MainActivity.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
+            return General.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
         }
 
         public static Color ToXnaColor(System.Drawing.Color drawingColor)
@@ -953,7 +953,7 @@ namespace Client
             Graphics.GraphicsDevice.Clear(Color.Transparent);
 
             // Draw everything to the render target
-            MainActivity.Client.Draw(new GameTime()); // Assuming Draw handles your game rendering
+            General.Client.Draw(new GameTime()); // Assuming Draw handles your game rendering
 
             // Reset the render target to the back buffer (main display)
             Graphics.GraphicsDevice.SetRenderTarget(null);

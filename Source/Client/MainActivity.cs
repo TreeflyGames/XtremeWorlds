@@ -19,13 +19,12 @@ namespace Client
     public class MainActivity : Activity
     {
         public static MainActivity Instance { get; private set; }
-        public static GameClient Client { get; private set; }
-        
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Instance = this;
-            var game = Client = new GameClient();
+            var game = General.Client;
             SetContentView((View)game.Services.GetService(typeof(View)));
             game.Run();
         }
