@@ -58,9 +58,9 @@
    <PackageReference Include="Microsoft.NET.Runtime.MonoAOTCompiler.Task" />
    <PackageReference Include="MonoGame.Content.Builder.Task" />
    <PackageReference Include="MonoGame.Extended" />
-   <PackageReference Include="MonoGame.Framework.Android" />
    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+   <PackageReference Include="MonoGame.Framework.Android" />
    <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
    <PackageReference Include="Serilog" />
    <PackageReference Include="Serilog.Enrichers.Environment" />
