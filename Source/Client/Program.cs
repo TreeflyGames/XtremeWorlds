@@ -212,43 +212,52 @@ namespace Client
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
         
-        public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
+        public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight)
         {
-            // Calculate the texture aspect ratio
-            float textureAspect = (float)texWidth / texHeight;
+            // Fixed target aspect ratio of 16:9
+            float targetAspect = 16f / 9f;
+            float newAspectRatio = (float)screenWidth / screenHeight;
 
             int width, height;
 
-            // Scale texture to match target aspect ratio while fitting within screen
-            if (textureAspect > targetAspect)
+            // Scale texture to match 16:9 aspect ratio
+            if (newAspectRatio > targetAspect)
             {
-                // Texture is wider than target: scale to fit width, adjust height
+                // Texture is wider than 16:9: scale to fit width, adjust height
                 width = texWidth;
                 height = (int)(width / targetAspect);
             }
             else
             {
-                // Texture is taller than target: scale to fit height, adjust width
+                // Texture is taller than 16:9: scale to fit height, adjust width
                 height = texHeight;
                 width = (int)(height * targetAspect);
             }
 
-            // Ensure the scaled dimensions don't exceed screen boundaries
+            // Calculate scaling factors
+            float scaleX = (float)width / texWidth;
+            float scaleY = (float)height / texHeight;
+
+            // Adjust dimensions to fit within screen boundaries
             if (width > screenWidth)
             {
-                width = texWidth;
+                width = screenWidth;
                 height = (int)(width / targetAspect);
+                scaleX = (float)width / texWidth;
+                scaleY = (float)height / texHeight;
             }
             
             if (height > screenHeight)
             {
-                height = texHeight;
+                height = screenHeight;
                 width = (int)(height * targetAspect);
+                scaleX = (float)width / texWidth;
+                scaleY = (float)height / texHeight;
             }
 
-            // Center the rectangle
-            int destX = x + (screenWidth - width) / 2;
-            int destY = y + (screenHeight - height) / 2;
+            // Calculate position offset based on size difference
+            int destX = x + (int)((screenWidth - width) / 2 * scaleX);
+            int destY = y + (int)((screenHeight - height) / 2 * scaleY);
 
             return new Rectangle(destX, destY, width, height);
         }
@@ -266,8 +275,7 @@ namespace Client
                 return;
             }
             
-            float targetAspect = (float)Graphics.PreferredBackBufferWidth / Graphics.PreferredBackBufferHeight;
-            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH, targetAspect);
+            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH);
             var srcRect = new Rectangle(sX, sY, sW, sH);
             var color = new Color(red, green, blue, (byte)255) * alpha;
             
