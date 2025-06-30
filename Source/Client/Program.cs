@@ -219,12 +219,13 @@ namespace Client
             var dRect = new Rectangle(dX, dY, dW, dH);
             var sRect = new Rectangle(sX, sY, sW, sH);
             var color = new Color(red, green, blue, (byte)255);
-            color = color * alpha;
+            color *= alpha;
 
             path = Core.Path.EnsureFileExtension(path);
             
             // Retrieve the texture
             var texture = GetTexture(path);
+            
             if (texture is null)
             {
                 return;
