@@ -117,7 +117,7 @@ namespace Client
             return result;
         }
 
-        public GameClient()
+        public GameClient(int width, int height)
         {
             General.GetResolutionSize(SettingsManager.Instance.Resolution, ref GameState.ResolutionWidth,
                 ref GameState.ResolutionHeight);
@@ -127,9 +127,9 @@ namespace Client
             // Set basic properties for GraphicsDeviceManager
             ref var withBlock = ref Graphics;
             withBlock.GraphicsProfile = GraphicsProfile.Reach;
-            withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
-            withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
-            withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
+            withBlock.IsFullScreen = true;
+            withBlock.PreferredBackBufferWidth = width;
+            withBlock.PreferredBackBufferHeight = height;
             withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
             IsFixedTimeStep = false;
             withBlock.PreferHalfPixelOffset = true;
@@ -199,7 +199,7 @@ namespace Client
 
         public static SpriteFont LoadFont(string path, FontType font)
         {
-            return General.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
+            return MainActivity.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
         }
 
         public static Color ToXnaColor(System.Drawing.Color drawingColor)
@@ -950,7 +950,7 @@ namespace Client
             Graphics.GraphicsDevice.Clear(Color.Transparent);
 
             // Draw everything to the render target
-            General.Client.Draw(new GameTime()); // Assuming Draw handles your game rendering
+            MainActivity.Client.Draw(new GameTime()); // Assuming Draw handles your game rendering
 
             // Reset the render target to the back buffer (main display)
             Graphics.GraphicsDevice.SetRenderTarget(null);

@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Content;
 using Android.Runtime;
 using Client;
+using Point = Android.Graphics.Point;
 
 namespace Client
 {
@@ -18,18 +19,33 @@ namespace Client
         ScreenOrientation = ScreenOrientation.Landscape)]
     public class MainActivity : AndroidGameActivity
     {
-        public static MainActivity Instance { get; private set; }
+        public static GameClient? Client { get; private set; }
+        public static MainActivity? Instance { get; private set; }
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             
             Instance = this;
-            var game = General.Client;
+            
+            // Get initial screen size
+            GetDisplaySize(out int width, out int height);
+            
+            // Initialize the game client with the screen size
+            Client = new GameClient(width, height);
+            
             EnsureAppSettingsInFilesDir(this);
             
-            SetContentView((View)game.Services.GetService(typeof(View)));
-            game.Run();
+            SetContentView((View)Client.Services.GetService(typeof(View)));
+            Client.Run();
+        }
+        
+        private void GetDisplaySize(out int width, out int height)
+        {
+            var realSize = new Point();
+            WindowManager.DefaultDisplay.GetRealSize(realSize);
+            width = realSize.X;
+            height = realSize.Y;
         }
         
         public void EnsureAppSettingsInFilesDir(Activity activity)
