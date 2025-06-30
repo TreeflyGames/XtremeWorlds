@@ -34,7 +34,7 @@ namespace Client
             // Initialize the game client with the screen size
             Client = new GameClient(width, height);
             
-            EnsureAppSettingsInFilesDir(this);
+            MoveAppSettings(this);
             
             SetContentView((View)Client.Services.GetService(typeof(View)));
             Client.Run();
@@ -48,7 +48,7 @@ namespace Client
             height = realSize.Y;
         }
         
-        public void EnsureAppSettingsInFilesDir(Activity activity)
+        public void MoveAppSettings(Activity activity)
         {
             string fileName = "appsettings.json";
             string destPath = Path.Combine(activity.FilesDir.AbsolutePath, fileName);

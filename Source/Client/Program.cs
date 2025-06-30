@@ -211,16 +211,51 @@ namespace Client
         {
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
+        
+        public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
+        {
+            // Calculate the texture aspect ratio
+            float textureAspect = (float)texWidth / texHeight;
 
+            int width, height;
+
+            // Scale texture to match target aspect ratio while fitting within screen
+            if (textureAspect > targetAspect)
+            {
+                // Texture is wider than target: scale to fit width, adjust height
+                width = texWidth;
+                height = (int)(width / targetAspect);
+            }
+            else
+            {
+                // Texture is taller than target: scale to fit height, adjust width
+                height = texHeight;
+                width = (int)(height * targetAspect);
+            }
+
+            // Ensure the scaled dimensions don't exceed screen boundaries
+            if (width > screenWidth)
+            {
+                width = texWidth;
+                height = (int)(width / targetAspect);
+            }
+            
+            if (height > screenHeight)
+            {
+                height = texHeight;
+                width = (int)(height * targetAspect);
+            }
+
+            // Center the rectangle
+            int destX = x + (screenWidth - width) / 2;
+            int destY = y + (screenHeight - height) / 2;
+
+            return new Rectangle(destX, destY, width, height);
+        }
+        
         public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1,
             int sH = 1, float alpha = 1.0f, byte red = 255, byte green = 255, byte blue = 255)
         {
-            // Create destination and source rectangles
-            var dRect = new Rectangle(dX, dY, dW, dH);
-            var sRect = new Rectangle(sX, sY, sW, sH);
-            var color = new Color(red, green, blue, (byte)255);
-            color *= alpha;
-
             path = Core.Path.EnsureFileExtension(path);
             
             // Retrieve the texture
@@ -230,8 +265,13 @@ namespace Client
             {
                 return;
             }
-
-            SpriteBatch.Draw(texture, dRect, sRect, color);
+            
+            float targetAspect = (float)Graphics.PreferredBackBufferWidth / Graphics.PreferredBackBufferHeight;
+            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH, targetAspect);
+            var srcRect = new Rectangle(sX, sY, sW, sH);
+            var color = new Color(red, green, blue, (byte)255) * alpha;
+            
+            SpriteBatch.Draw(texture, destRect, srcRect, color);
         }
 
         public static Texture2D GetTexture(string path)
