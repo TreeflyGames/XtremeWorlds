@@ -1357,12 +1357,11 @@ namespace Server
             }
         }
 
-        public static void LeftGame(int index)
+        public static async Task LeftGame(int index)
         {
             try
             {
                 Script.Instance?.LeftGame(index);
-
             }
             catch (Exception e)
             {
@@ -1371,14 +1370,13 @@ namespace Server
 
             if (Core.Type.TempPlayer[index].InGame)
             {
-                Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);
-                Database.SaveBank(index);
+                await Database.SaveCharacterAsync(index, Core.Type.TempPlayer[index].Slot);
+                await Database.SaveBankAsync(index);
             }
 
             Database.ClearPlayer(index);
 
-            General.UpdateCaption();           
-
+            General.UpdateCaption();
         }
 
         public static int KillPlayer(int index)
