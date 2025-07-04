@@ -54,8 +54,7 @@ namespace Server
                 if (tick > tmr60000)
                 {
                     try
-                    {
-                    
+                    {                    
                         Script.Instance?.ServerMinute();
                     }
                     catch(Exception e)
