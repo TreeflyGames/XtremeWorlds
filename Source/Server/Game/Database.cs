@@ -1511,12 +1511,12 @@ namespace Server
             }
         }
 
-        private static async Task SaveCharacterAsync(int index, int slot)
+        public static async Task SaveCharacterAsync(int index, int slot)
         {
             await Task.Run(() => SaveCharacter(index, slot));
         }
 
-        private static async Task SaveBankAsync(int index)
+        public static async Task SaveBankAsync(int index)
         {
             await Task.Run(() => SaveBank(index));
         }
