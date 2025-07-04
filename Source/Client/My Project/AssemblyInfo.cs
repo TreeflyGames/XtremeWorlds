@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("2-D MMORPG Game Engine")]
 [assembly: AssemblyCompany("Treefly Studios")]
 [assembly: AssemblyProduct("Game Client")]
-[assembly: AssemblyCopyright("Copyright © 2025")]
+[assembly: AssemblyCopyright("Copyright © 2024")]
 [assembly: AssemblyTrademark("Treefly Studios")]
 
 [assembly: ComVisible(false)]
