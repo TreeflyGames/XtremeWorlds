@@ -11,10 +11,10 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("XtremeWorlds Client")]
 [assembly: AssemblyDescription("2-D MMORPG Game Engine")]
-[assembly: AssemblyCompany("Treefly Games")]
+[assembly: AssemblyCompany("Treefly Studios")]
 [assembly: AssemblyProduct("Game Client")]
 [assembly: AssemblyCopyright("Copyright © 2024")]
-[assembly: AssemblyTrademark("Treefly Games")]
+[assembly: AssemblyTrademark("Treefly Studios")]
 
 [assembly: ComVisible(false)]
 
