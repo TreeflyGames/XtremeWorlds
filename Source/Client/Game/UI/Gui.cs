@@ -3270,7 +3270,7 @@ namespace Client
 
             count = Information.UBound(textArray);
             y = yO + 60L;
-            var loopTo = count;
+            var loopTo = count + 1;
             for (i = 0L; i < loopTo; i++)
             {
                 x = xO + 118L + 200 / 2 - Text.GetTextWidth(textArray[(int)i], Windows[GetWindowIndex("winJobs")].Font) / 2;
