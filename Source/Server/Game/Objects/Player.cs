@@ -1694,20 +1694,22 @@ namespace Server
             {
                 Script.Instance?.LeftGame(index);
 
-                if (Core.Type.TempPlayer[index].InGame)
-                {
-                    Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);
-                    Database.SaveBank(index);
-                }
-
-                Database.ClearPlayer(index);
-
-                General.UpdateCaption();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+
+            if (Core.Type.TempPlayer[index].InGame)
+            {
+                Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);
+                Database.SaveBank(index);
+            }
+
+            Database.ClearPlayer(index);
+
+            General.UpdateCaption();           
+
         }
 
         public static int KillPlayer(int index)
