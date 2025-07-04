@@ -59,13 +59,49 @@ public class Script
         NetworkSend.SendHotbar(index);
         NetworkSend.SendPlayerSkills(index);
         NetworkSend.SendStats(index);
-        NetworkSend.SendJoinMap(index);
 
         // Send the flag so they know they can start doing stuff
         NetworkSend.SendInGame(index);
 
         // Send welcome messages
         NetworkSend.SendWelcome(index);
+    }
+
+    public void JoinMap(int index)
+    {
+        int i;
+        byte[] data;
+        int dataSize;
+        int mapNum = GetPlayerMap(index);
+
+        // Send all players on current map to index
+        var loopTo = NetworkConfig.Socket.HighIndex;
+        for (i = 0; i < loopTo; i++)
+        {
+            if (IsPlaying(i))
+            {
+                if (i != index)
+                {
+                    if (GetPlayerMap(i) == mapNum)
+                    {
+                        data = PlayerData(i);
+                        dataSize = data.Length;
+                        NetworkConfig.Socket.SendDataTo(index, data, dataSize);
+                        SendPlayerXYTo(index, i);
+                        NetworkSend.SendMapEquipmentTo(index, i);
+                    }
+                }
+            }
+        }
+
+        EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
+
+        // Send index's player data to everyone on the map including himself
+        data = PlayerData(index);
+        NetworkConfig.SendDataToMap(mapNum, data, data.Length);
+        SendPlayerXYToMap(index);
+        NetworkSend.SendMapEquipment(index);
+        NetworkSend.SendVitals(index);
     }
 
     public void LeftGame(int index)
