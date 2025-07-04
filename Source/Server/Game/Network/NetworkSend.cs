@@ -775,39 +775,14 @@ namespace Server
 
         public static void SendJoinMap(int index)
         {
-            int i;
-            byte[] data;
-            int dataSize;
-            int mapNum = GetPlayerMap(index);
-
-            // Send all players on current map to index
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i < loopTo; i++)
+            try
             {
-                if (IsPlaying(i))
-                {
-                    if (i != index)
-                    {
-                        if (GetPlayerMap(i) == mapNum)
-                        {
-                            data = PlayerData(i);
-                            dataSize = data.Length;
-                            NetworkConfig.Socket.SendDataTo(index, data, dataSize);
-                            SendPlayerXYTo(index, i);
-                            NetworkSend.SendMapEquipmentTo(index, i);
-                        }
-                    }
-                }
+                Script.Instance?.JoinMap(index);
             }
-
-            EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
-
-            // Send index's player data to everyone on the map including himself
-            data = PlayerData(index);
-            NetworkConfig.SendDataToMap(mapNum, data, data.Length);
-            SendPlayerXYToMap(index);
-            NetworkSend.SendMapEquipment(index);
-            NetworkSend.SendVitals(index);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public static byte[] PlayerData(int index)
