@@ -32,6 +32,17 @@ public class Script
 
     }
 
+    public void ServerSecond()
+    {
+
+    }
+
+
+    public void ServerMinute()
+    {
+
+    }
+
     public void JoinGame(int index)
     {
         // Warp the player to his saved location

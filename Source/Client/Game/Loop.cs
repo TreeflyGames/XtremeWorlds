@@ -1,5 +1,6 @@
 ﻿using Core;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
 using static Core.Global.Command;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Path = Core.Path;
