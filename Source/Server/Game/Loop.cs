@@ -53,13 +53,29 @@ namespace Server
 
                 if (tick > tmr60000)
                 {
-                    Script.Instance?.ServerMinute();
+                    try
+                    {
+                    
+                        Script.Instance?.ServerMinute();
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
                     tmr60000 = General.GetTimeMs() + 60000;
                 }
 
                 if (tick > tmr1000)
                 {
-                    Script.Instance?.ServerSecond();
+                    try
+                    {
+                        Script.Instance?.ServerSecond();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                     Clock.Instance.Tick();
 
                     // Move the timer up 1000ms.
