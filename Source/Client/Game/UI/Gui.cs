@@ -1705,10 +1705,6 @@ namespace Client
                                         }
                                         withBlock2.Value = 0L;
                                     }
-                                    else
-                                    {
-                                        withBlock2.Value = withBlock2.Value == 0L ? 1 : 0;
-                                    }
 
                                     break;
                                 }
