@@ -1,4 +1,5 @@
 ﻿    using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
@@ -101,33 +102,33 @@
 
         public void Disconnect(int index)
         {
-          if (_socket == null || !_socket.ContainsKey(index))
-            return;
+            if (_socket == null || !_socket.ContainsKey(index))
+                return;
 
-          // Retrieve the socket from the dictionary
-          Socket socket = _socket[index];
+            // Retrieve the socket from the dictionary
+            Socket socket = _socket[index];
 
-          if (socket == null)
-          {
-            // Remove the entry if the socket is null
-            _socket.Remove(index);
-            _unsignedIndex.Add(index);
-          }
-          else
-          {
-            try
+            if (socket == null)
             {
-              // Initiate the asynchronous disconnect
-              socket.BeginDisconnect(false, DoDisconnect, index);
+                // Remove the entry if the socket is null
+                _socket.Remove(index);
+                _unsignedIndex.Add(index);
             }
-            catch (Exception ex)
+            else
             {
-              Console.WriteLine($"Error during disconnect: {ex.Message}");
+                try
+                {
+                    // Initiate the asynchronous disconnect
+                    socket.BeginDisconnect(false, DoDisconnect, index);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error during disconnect: {ex.Message}");
 
-              // Ensure cleanup if an error occurs
-              ForceDisconnect(index);
+                    // Ensure cleanup if an error occurs
+                    ForceDisconnect(index);
+                }
             }
-          }
         }
 
         // Callback for handling the end of the disconnect
@@ -252,7 +253,7 @@
                     socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE for the client socket
     #endif
                     int emptySlot = this.FindEmptySlot(this.MinimumIndex);
-                    this._socket.Add(emptySlot, socket);
+                    this._socket.TryAdd(emptySlot, socket);
                     this._socket[emptySlot].ReceiveBufferSize = this._packetSize;
                     this._socket[emptySlot].SendBufferSize = this._packetSize;
                     this.BeginReceiveData(emptySlot);
@@ -302,6 +303,19 @@
             return;
         }
 
+        // Check if the socket exists and is valid
+        if (!_socket.ContainsKey(asyncState.Index))
+        {
+            HandleSocketError(asyncState, "Socket not found");
+            return;
+        }
+
+        if (!_socket.ContainsKey(asyncState.Index))
+        {
+            HandleSocketError(asyncState, "Socket not found");
+            return;
+        }         
+
         int receivedLength;
         try
         {
@@ -319,11 +333,11 @@
         asyncState.PacketCount++;
 
         // Disconnect if packet count exceeds the DDOS threshold
-        //if (this.PacketDisconnectCount > 0 && asyncState.PacketCount >= this.PacketDisconnectCount)
-        //{
-         //   HandleSocketError(asyncState, "Packet Spamming/DDOS");
-         //   return;
-        //}
+        if (this.PacketDisconnectCount > 0 && asyncState.PacketCount >= this.PacketDisconnectCount)
+        {
+            HandleSocketError(asyncState, "Packet Spamming/DDOS");
+            return;
+        }
 
         // Append received data to the ring buffer
         AppendToRingBuffer(ref asyncState, receivedLength);
@@ -375,8 +389,14 @@
       }
   
         // Append new data to the ring buffer safely
-         private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
+        private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
         {
+            if (length < 0 || length > this._packetSize)
+            {
+                HandleSocketError(state, "Invalid packet length");
+                return;
+            }
+
             if (state.RingBuffer == null)
             {
                 // Initialize RingBuffer if it's null
