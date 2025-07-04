@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw.Network;
+using Npgsql.Replication.PgOutput.Messages;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Server
             var tmr25 = default(int);
             var tmr500 = default(int);
             var tmr1000 = default(int);
+            var tmr60000 = default(int);
             var lastUpdateSavePlayers = default(int);
             var lastUpdateMapSpawnItems = default(int);
 
@@ -49,8 +51,15 @@ namespace Server
                     tmr25 = General.GetTimeMs() + 25;
                 }
 
+                if (tick > tmr60000)
+                {
+                    Script.Instance?.ServerMinute();
+                    tmr60000 = General.GetTimeMs() + 60000;
+                }
+
                 if (tick > tmr1000)
                 {
+                    Script.Instance?.ServerSecond();
                     Clock.Instance.Tick();
 
                     // Move the timer up 1000ms.
