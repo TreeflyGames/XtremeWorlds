@@ -214,25 +214,76 @@ namespace Client
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
 
+       public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
+        {
+            float newAspectRatio = (float)screenWidth / screenHeight;
+
+            int width, height;
+
+            // Scale texture to match the target aspect ratio
+            if (newAspectRatio > targetAspect)
+            {
+                // Texture is wider than target: scale to fit width, adjust height
+                width = texWidth;
+                height = (int)(width / targetAspect);
+            }
+            else
+            {
+                // Texture is taller than target: scale to fit height, adjust width
+                height = texHeight;
+                width = (int)(height * targetAspect);
+            }
+
+            // Calculate scaling factors
+            float scaleX = (float)width / texWidth;
+            float scaleY = (float)height / texHeight;
+
+            // Adjust dimensions to fit within screen boundaries
+            if (width > screenWidth)
+            {
+                width = screenWidth;
+                height = (int)(width / targetAspect);
+                scaleX = (float)width / texWidth;
+                scaleY = (float)height / texHeight;
+            }
+    
+            if (height > screenHeight)
+            {
+                height = screenHeight;
+                width = (int)(height * targetAspect);
+                scaleX = (float)width / texWidth;
+                scaleY = (float)height / texHeight;
+            }
+
+            // Calculate position offset based on size difference
+            int destX = x + (int)((screenWidth - width) / 2 * scaleX);
+            int destY = y + (int)((screenHeight - height) / 2 * scaleY);
+
+            return new Rectangle(destX, destY, width, height);
+        }
+        
         public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1,
             int sH = 1, float alpha = 1.0f, byte red = 255, byte green = 255, byte blue = 255)
         {
-            // Create destination and source rectangles
-            var dRect = new Rectangle(dX, dY, dW, dH);
-            var sRect = new Rectangle(sX, sY, sW, sH);
-            var color = new Color(red, green, blue, (byte)255);
-            color = color * alpha;
-
             path = Core.Path.EnsureFileExtension(path);
-
+            
             // Retrieve the texture
             var texture = GetTexture(path);
+            
             if (texture is null)
             {
                 return;
             }
-
-            SpriteBatch.Draw(texture, dRect, sRect, color);
+            
+            int targetWidth = 0, targetHeight = 0;
+            General.GetResolutionSize(SettingsManager.Instance.Resolution, ref targetWidth, ref targetHeight);
+            var targetAspect = (float)targetWidth / targetHeight;
+            
+            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH, targetAspect);
+            var srcRect = new Rectangle(sX, sY, sW, sH);
+            var color = new Color(red, green, blue, (byte)255) * alpha;
+            
+            SpriteBatch.Draw(texture, destRect, srcRect, color);
         }
 
         public static Texture2D GetTexture(string path)
