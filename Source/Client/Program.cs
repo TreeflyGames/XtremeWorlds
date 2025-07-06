@@ -212,24 +212,22 @@ namespace Client
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
         
-        public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight)
+        public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
         {
-            // Fixed target aspect ratio of 16:9
-            float targetAspect = 16f / 9f;
             float newAspectRatio = (float)screenWidth / screenHeight;
 
             int width, height;
 
-            // Scale texture to match 16:9 aspect ratio
+            // Scale texture to match the target aspect ratio
             if (newAspectRatio > targetAspect)
             {
-                // Texture is wider than 16:9: scale to fit width, adjust height
+                // Texture is wider than target: scale to fit width, adjust height
                 width = texWidth;
                 height = (int)(width / targetAspect);
             }
             else
             {
-                // Texture is taller than 16:9: scale to fit height, adjust width
+                // Texture is taller than target: scale to fit height, adjust width
                 height = texHeight;
                 width = (int)(height * targetAspect);
             }
@@ -246,7 +244,7 @@ namespace Client
                 scaleX = (float)width / texWidth;
                 scaleY = (float)height / texHeight;
             }
-            
+    
             if (height > screenHeight)
             {
                 height = screenHeight;
@@ -275,7 +273,11 @@ namespace Client
                 return;
             }
             
-            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH);
+            int targetWidth = 0, targetHeight = 0;
+            General.GetResolutionSize(SettingsManager.Instance.Resolution, ref targetWidth, ref targetHeight);
+            var targetAspect = (float)targetWidth / targetHeight;
+            
+            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH, targetAspect);
             var srcRect = new Rectangle(sX, sY, sW, sH);
             var color = new Color(red, green, blue, (byte)255) * alpha;
             
