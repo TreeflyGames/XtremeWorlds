@@ -170,7 +170,7 @@ namespace Client
             GameState.NumDesigns = GetFileCount(Core.Path.Designs);
         }
 
-        public static object GetResolutionSize(byte Resolution, ref int Width, ref int Height)
+        public static void GetResolutionSize(byte Resolution, ref int Width, ref int Height)
         {
             switch (Resolution)
             {
@@ -259,8 +259,6 @@ namespace Client
                         break;
                     }
             }
-
-            return default;
         }
 
         public static void ClearGameData()
