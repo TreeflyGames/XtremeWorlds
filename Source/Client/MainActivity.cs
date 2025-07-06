@@ -4,8 +4,12 @@ using Android.OS;
 using Microsoft.Xna.Framework;
 using Android.Views;
 using Android.Content;
+using Android.Print;
+using Android.Provider;
 using Android.Runtime;
 using Client;
+using Core;
+using Path = System.IO.Path;
 using Point = Android.Graphics.Point;
 
 namespace Client
@@ -33,6 +37,10 @@ namespace Client
             
             // Initialize the game client with the screen size
             Client = new GameClient(width, height);
+            
+            SettingsManager.Load();
+            SettingsManager.Instance.Resolution = 1;  
+            SettingsManager.Save();
             
             MoveAppSettings(this);
             
