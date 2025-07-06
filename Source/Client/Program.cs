@@ -214,12 +214,12 @@ namespace Client
         
         public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
         {
-            float newAspectRatio = (float)screenWidth / screenHeight;
+            float newAspect = (float)screenWidth / screenHeight;
 
             int width, height;
 
             // Scale texture to match the target aspect ratio
-            if (newAspectRatio > targetAspect)
+            if (newAspect > targetAspect)
             {
                 // Texture is wider than target: scale to fit width, adjust height
                 width = texWidth;
@@ -229,7 +229,7 @@ namespace Client
             {
                 // Texture is taller than target: scale to fit height, adjust width
                 height = texHeight;
-                width = (int)(height * targetAspect);
+                width = texWidth;
             }
 
             // Calculate scaling factors
@@ -253,9 +253,21 @@ namespace Client
                 scaleY = (float)height / texHeight;
             }
 
-            // Calculate position offset based on size difference
-            int destX = x + (int)((screenWidth - width) / 2 * scaleX);
-            int destY = y + (int)((screenHeight - height) / 2 * scaleY);
+            int destX = 0;
+            int destY = 0;
+
+            if (newAspect != targetAspect)
+            {
+                // Calculate position offset based on size difference
+                destX = x + (int)((screenWidth - width) / 2 * scaleX);
+                destY = y + (int)((screenHeight - height) / 2 * scaleY);
+            }
+            else
+            {
+                // Center the texture in the screen
+                destX = x;
+                destY = y;
+            }
 
             return new Rectangle(destX, destY, width, height);
         }
