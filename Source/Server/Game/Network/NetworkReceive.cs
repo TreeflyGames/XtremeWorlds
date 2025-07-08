@@ -1285,7 +1285,6 @@ namespace Server
                 }
             }
 
-            NetworkSend.SendJoinMap(index);
             Core.Type.TempPlayer[index].GettingMap = false;
         }
 

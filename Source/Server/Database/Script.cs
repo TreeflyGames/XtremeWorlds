@@ -59,6 +59,7 @@ public class Script
         NetworkSend.SendHotbar(index);
         NetworkSend.SendPlayerSkills(index);
         NetworkSend.SendStats(index);
+        NetworkSend.SendJoinMap(index);
 
         // Send the flag so they know they can start doing stuff
         NetworkSend.SendInGame(index);

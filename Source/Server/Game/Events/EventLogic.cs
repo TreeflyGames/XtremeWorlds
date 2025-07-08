@@ -1309,7 +1309,7 @@ namespace Server
         public static void ProcessEventCommands()
         {
             // Parallel processing for each player.
-            Parallel.For(0, NetworkConfig.Socket.HighIndex + 1, i =>
+            Parallel.For(0, NetworkConfig.Socket.HighIndex, i =>
             {
                 if (!NetworkConfig.IsPlaying(i) || TempPlayer[i].GettingMap || TempPlayer[i].EventMap.CurrentEvents <= 0) return;
 

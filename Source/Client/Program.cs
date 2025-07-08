@@ -2644,9 +2644,12 @@ namespace Client
             {
                 for (i = 0; i < byte.MaxValue; i++)
                 {
-                    if (Animation.AnimInstance[i].Used[0])
+                    if (Information.UBound(Animation.AnimInstance) >= i)
                     {
-                        Animation.DrawAnimation(i, 0);
+                        if (Animation.AnimInstance[i].Used[0])
+                        {
+                            Animation.DrawAnimation(i, 0);
+                        }
                     }
                 }
             }
@@ -2787,9 +2790,12 @@ namespace Client
             {
                 for (i = 0; i < byte.MaxValue; i++)
                 {
-                    if (Animation.AnimInstance[i].Used[1])
+                    if (Information.UBound(Animation.AnimInstance) >= i)
                     {
-                        Animation.DrawAnimation(i, 1);
+                        if (Animation.AnimInstance[i].Used[1])
+                        {
+                            Animation.DrawAnimation(i, 1);
+                        }
                     }
                 }
             }
