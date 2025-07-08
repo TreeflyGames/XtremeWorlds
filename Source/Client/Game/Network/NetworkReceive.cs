@@ -823,14 +823,14 @@ namespace Client
             string name;
             string message;
             string header;
-            int pk;
+            bool pk;
             byte channelType;
             byte color;
             var buffer = new ByteStream(data);
 
             name = buffer.ReadString();
             access = buffer.ReadInt32();
-            pk = buffer.ReadInt32();
+            pk = buffer.ReadBoolean();
             message = buffer.ReadString();
             header = buffer.ReadString();
 
@@ -870,7 +870,7 @@ namespace Client
                     }
             }
 
-            if (pk > 0)
+            if (pk)
                 color = (byte)Core.Enum.ColorType.BrightRed;
 
             // find channel
