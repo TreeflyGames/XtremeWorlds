@@ -200,6 +200,7 @@ namespace Server
 
             if (Core.Type.TempPlayer[index].InShop >= 0 || Core.Type.TempPlayer[index].InBank)
             {
+                NetworkSend.SendPlayerXY(index);
                 return;
             }
 
