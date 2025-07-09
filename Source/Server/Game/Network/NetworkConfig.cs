@@ -55,8 +55,8 @@ namespace Server
             {
                 BufferLimit = 2048000, // <- this is 2mb MAX data storage
                 MinimumIndex = 0, // <- this prevents the network from giving us 0 as an index
-                PacketAcceptLimit = 1000, // Dunno what is a reasonable cap right now so why not? :P
-                PacketDisconnectCount = 1000 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
+                PacketAcceptLimit = 5000, // Dunno what is a reasonable cap right now so why not? :P
+                PacketDisconnectCount = 5000 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
             };
             // END THE ESTABLISHMENT! WOOH ANARCHY! ~SpiceyWolf
 
@@ -183,7 +183,7 @@ namespace Server
 
         public static void Socket_ConnectionReceived(int index)
         {
-            Console.WriteLine("Connection received on index[" + index + "] - IP[" + Socket.ClientIP(index) + "]");
+            Console.WriteLine("Connection received on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
             NetworkSend.SendKeyPair(index);
         }
 
