@@ -92,7 +92,7 @@ namespace Client
         #region Movement
         public static void CheckMovement()
         {
-            if (IsTryingToMove() && CanMove())
+            if (IsTryingToMove() && CanMove() && Core.Type.Player[GameState.MyIndex].XOffset == 0 && Core.Type.Player[GameState.MyIndex].YOffset == 0)
             {
                 // Check if player has the shift key down for running
                 if (GameState.VbKeyShift)
