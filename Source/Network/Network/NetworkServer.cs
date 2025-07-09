@@ -29,8 +29,6 @@
 
         public List<int> ConnectionID() => this._socket == null ? new List<int>() : new List<int>((IEnumerable<int>) this._socket.Keys);
 
-        public int PacketAcceptLimit { get; set; }
-
         public event NetworkServer.AccessArgs AccessCheck;
 
         public event NetworkServer.ConnectionArgs ConnectionReceived;
