@@ -31,8 +31,6 @@
 
         public int PacketAcceptLimit { get; set; }
 
-        public int PacketDisconnectCount { get; set; }
-
         public event NetworkServer.AccessArgs AccessCheck;
 
         public event NetworkServer.ConnectionArgs ConnectionReceived;
@@ -331,13 +329,6 @@
         // Invoke traffic received event, if applicable
         this.TrafficReceived?.Invoke(receivedLength, ref asyncState.Buffer);
         asyncState.PacketCount++;
-
-        // Disconnect if packet count exceeds the DDOS threshold
-        if (this.PacketDisconnectCount > 0 && asyncState.PacketCount >= this.PacketDisconnectCount)
-        {
-            HandleSocketError(asyncState, "Packet Spamming/DDOS");
-            return;
-        }
 
         // Append received data to the ring buffer
         AppendToRingBuffer(ref asyncState, receivedLength);
