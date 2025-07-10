@@ -155,16 +155,16 @@ namespace Client
                         GameState.SkillBufferTimer = 0;
                     }
                 }
-
-                if (GameState.CanMoveNow)
-                {
-                    Player.CheckMovement(); // Check if player is trying to move
-                    Player.CheckAttack();   // Check to see if player is trying to attack
-                }
-
+                
                 // Process input before rendering, otherwise input will be behind by 1 frame
                 if (walkTimer < tick)
                 {
+                    if (GameState.CanMoveNow)
+                    {
+                        Player.CheckMovement(); // Check if player is trying to move
+                        Player.CheckAttack();   // Check to see if player is trying to attack
+                    }
+                    
                     // Process player movements
                     for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
