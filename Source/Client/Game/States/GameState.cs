@@ -328,8 +328,8 @@ namespace Client
         public static bool HideLayers;
 
         // Speed moving vars
-        public const byte WalkSpeed = 4;
-        public const byte RunSpeed = 8;
+        public const byte WalkSpeed = 8;
+        public const byte RunSpeed = 16;
 
         // Tile size constants
         public const int PicX = 32;
