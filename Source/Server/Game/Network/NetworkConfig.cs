@@ -1,8 +1,12 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Core;
+﻿using Core;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw.Network;
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
 
@@ -53,7 +57,7 @@ namespace Server
             // Establish some Rulez
             Socket = new NetworkServer((int)Packets.ClientPackets.Count, 8192, Core.Constant.MAX_PLAYERS)
             {
-                BufferLimit = 2048000, // <- this is 2mb MAX data storage
+                BufferLimit = 5048000, // <- this is 2mb MAX data storage
                 MinimumIndex = 0, // <- this prevents the network from giving us 0 as an index
             };
             // END THE ESTABLISHMENT! WOOH ANARCHY! ~SpiceyWolf
@@ -78,7 +82,7 @@ namespace Server
 
         public static bool IsMultiLogin(int index, string login)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
                 if (i != index)
                 {
@@ -98,9 +102,9 @@ namespace Server
             return false;
         }
 
-        public static bool IsMultiAccount(int index, string login)
+        public static async Task LoadAccount(int index, string login, byte slot)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
                 if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
                 {
@@ -108,16 +112,26 @@ namespace Server
                     {
                         if (index != i)
                         {
-                            Core.Type.Player[index] = Core.Type.Player[i];
-                            Core.Type.TempPlayer[index].Slot = Core.Type.TempPlayer[i].Slot;
-                            Core.Type.Bank[index] = Core.Type.Bank[i];
-                            return true;
-                        }                       
+                            await Player.LeftGame(i);
+                            break;
+                        }
                     }
                 }
             }
 
-            return false;
+            Database.LoadCharacter(index, slot);
+            Database.LoadBank(index);
+
+            // Check if character data has been created
+            if (Strings.Len(Core.Type.Player[index].Name) > 0)
+            {
+                // we have a char!                        
+                Player.HandleUseChar(index);
+            }
+            else
+            {
+                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Chars);
+            }
         }
 
         public static void SendDataToAll(ReadOnlySpan<byte> data, int head)

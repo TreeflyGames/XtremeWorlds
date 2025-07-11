@@ -202,7 +202,7 @@ namespace Server
                             else
                             {
                                 NetworkSend.AlertMsg(Pindex, (int)DialogueMsg.Kicked);
-                                Player.LeftGame(Pindex);
+                                await Player.LeftGame(Pindex);
                             }
 
                             break;

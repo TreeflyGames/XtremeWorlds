@@ -24,6 +24,7 @@ namespace Client
         public static void ClearAccount(int index)
         {
             Core.Type.Account[index].Login = "";
+            Core.Type.Account[index].Password = "";
         }
 
         public static void ClearPlayer(int index)

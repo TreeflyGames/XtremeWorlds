@@ -255,7 +255,7 @@ namespace Server
                 await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
                 {
                     NetworkSend.SendLeftGame(i);
-                    Player.LeftGame(i);
+                    await Player.LeftGame(i);
                 });
             }
             catch (TaskCanceledException)

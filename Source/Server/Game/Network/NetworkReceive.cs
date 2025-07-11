@@ -360,24 +360,7 @@ namespace Server
                         return;
                     }
 
-                    if (!NetworkConfig.IsMultiAccount(index, Account[index].Login))
-                    {
-                        Database.LoadCharacter(index, slot);
-                        Database.LoadBank(index);
-
-                    }
-
-                    // Check if character data has been created
-                    if (Strings.Len(Core.Type.Player[index].Name) > 0)
-                    {
-                        // we have a char!                        
-                        Player.HandleUseChar(index);
-                    }
-                    else
-                    {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Chars);
-                        return;
-                    }
+                    NetworkConfig.LoadAccount(index, Core.Type.Account[index].Login, slot);
                 }
             }
             else
