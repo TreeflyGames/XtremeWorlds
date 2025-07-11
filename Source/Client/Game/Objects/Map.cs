@@ -135,9 +135,11 @@ namespace Client
                             continue;
                     }
 
-                    // Check if this layer has a valid tileset
+                    // Check if this layer has a valid tileset and array is large enough
                     if (Core.Type.MyMap.Tile[x, y].Layer != null &&
-                            Core.Type.MyMap.Tile[x, y].Layer.Length > layerIndex &&
+                        Core.Type.MyMap.Tile[x, y].Layer.Length > layerIndex &&
+                        Core.Type.Autotile[x, y].Layer != null &&
+                        Core.Type.Autotile[x, y].Layer.Length > layerIndex &&
                         Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
                         Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
                     {
@@ -232,8 +234,11 @@ namespace Client
                             continue;
                     }
 
-                    // Ensure the tileset is valid before proceeding
-                    if (Core.Type.MyMap.Tile[x, y].Layer?.Length > layerIndex &&
+                    // Check if this layer has a valid tileset and array is large enough
+                    if (Core.Type.MyMap.Tile[x, y].Layer != null &&
+                        Core.Type.MyMap.Tile[x, y].Layer.Length > layerIndex &&
+                        Core.Type.Autotile[x, y].Layer != null &&
+                        Core.Type.Autotile[x, y].Layer.Length > layerIndex &&
                         Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
                         Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
                     {
