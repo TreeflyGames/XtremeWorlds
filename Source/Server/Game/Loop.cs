@@ -90,7 +90,7 @@ namespace Server
                         {
                             if (IsPlaying(i))
                             {
-                                Player.LeftGame(i);
+                                await Player.LeftGame(i);
                             }
                         }
                     }

@@ -26,9 +26,10 @@ namespace Server
             buffer.WriteInt32(menuReset);
             buffer.WriteInt32(kick ? 1 : 0);
 
-            Database.ClearAccount((int)index);
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
+
+            Player.LeftGame(index);
         }
 
         public static void GlobalMsg(string msg)
