@@ -40,26 +40,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public string ExportKeyString(bool exportPrivate = false)
         {
             CheckDisposed();
-
-            if (OperatingSystem.IsWindows())
-            {
-                return _rsa.ToXmlString(exportPrivate);
-            }
-            else
-            {
-                if (exportPrivate)
-                {
-                    // Export private key as PKCS#8 (Base64)
-                    var pkcs8 = _rsa.ExportPkcs8PrivateKey();
-                    return Convert.ToBase64String(pkcs8);
-                }
-                else
-                {
-                    // Export public key as X.509 SubjectPublicKeyInfo (Base64)
-                    var spki = _rsa.ExportSubjectPublicKeyInfo();
-                    return Convert.ToBase64String(spki);
-                }
-            }
+            byte[] keyBytes = exportPrivate ? _rsa.ExportRSAPrivateKey() : _rsa.ExportRSAPublicKey();
+            return Convert.ToBase64String(keyBytes);
         }
 
         public void ExportKey(string file, bool exportPrivate = true)
@@ -74,20 +56,24 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public void ImportKeyString(string key)
         {
             CheckDisposed();
-            _rsa = new RSACryptoServiceProvider();
-
-            // Check if the key is in XML format
-            bool isXml = key.TrimStart().StartsWith("<RSAKeyValue>", StringComparison.Ordinal);
-
-            if (isXml)
-            {
-                _rsa.FromXmlString(key);
-            }
-            else
+            try
             {
                 byte[] keyBytes = Convert.FromBase64String(key);
-                _rsa.ImportRSAPublicKey(keyBytes, out _);
-}
+                _rsa?.Dispose();
+                _rsa = RSA.Create();
+                try
+                {
+                    _rsa.ImportRSAPrivateKey(keyBytes, out _);
+                }
+                catch (CryptographicException)
+                {
+                    _rsa.ImportRSAPublicKey(keyBytes, out _);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new CryptographicException("Failed to import key.", ex);
+            }
         }
 
         public void ImportKey(string file)
@@ -217,7 +203,15 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             var encryptedBytes = EncryptBytes(Encoding.UTF8.GetBytes(value));
             return encryptedBytes != null ? Convert.ToBase64String(encryptedBytes) : string.Empty;
         }
-        
+
+        public async Task<string> EncryptStringAsync(string value)
+        {
+            CheckDisposed();
+            if (_rsa == null)
+                throw new CryptographicException("Key not set.");
+            return Convert.ToBase64String(await EncryptBytesAsync(Encoding.UTF8.GetBytes(value)));
+        }
+
         public string DecryptString(string value)
         {
             try
