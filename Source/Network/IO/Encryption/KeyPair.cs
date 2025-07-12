@@ -40,7 +40,26 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public string ExportKeyString(bool exportPrivate = false)
         {
             CheckDisposed();
-            return _rsa.ToXmlString(exportPrivate);
+
+            if (OperatingSystem.IsWindows())
+            {
+                return _rsa.ToXmlString(exportPrivate);
+            }
+            else
+            {
+                if (exportPrivate)
+                {
+                    // Export private key as PKCS#8 (Base64)
+                    var pkcs8 = _rsa.ExportPkcs8PrivateKey();
+                    return Convert.ToBase64String(pkcs8);
+                }
+                else
+                {
+                    // Export public key as X.509 SubjectPublicKeyInfo (Base64)
+                    var spki = _rsa.ExportSubjectPublicKeyInfo();
+                    return Convert.ToBase64String(spki);
+                }
+            }
         }
 
         public void ExportKey(string file, bool exportPrivate = true)
