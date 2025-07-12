@@ -48,16 +48,14 @@
 
           if (packetSize < 0)
             packetSize = 8192;
+
+          this._listener?.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
           this._socket = new Dictionary<int, Socket>();
           this._unsignedIndex = new List<int>();
           this.ClientLimit = clientLimit;
           this._packetCount = packetCount;
           this._packetSize = packetSize;
           this.PacketID = new NetworkServer.DataArgs[packetCount];
-#if WINDOWS
-          // Enable TCP keep-alive for the listener
-          this._listener?.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-#endif
         }
 
         public void Dispose()
@@ -219,9 +217,7 @@
                 return;
             this._listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             this._listener.NoDelay = true;
-    #if WINDOWS
-                this._listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE
-    #endif
+            this._listener?.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE
             this._listener.SendTimeout = 0; // No timeout
             this._listener.ReceiveTimeout = 0;
             this._listener.Bind(new IPEndPoint(IPAddress.Any, port));
@@ -249,9 +245,6 @@
                 Socket socket = this.EndAccept(ar);
                 if (socket != null)
                 {
-    #if WINDOWS
-                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE for the client socket
-    #endif
                     int emptySlot = this.FindEmptySlot(this.MinimumIndex);
                     this._socket.TryAdd(emptySlot, socket);
                     this._socket[emptySlot].ReceiveBufferSize = this._packetSize;
