@@ -196,7 +196,6 @@ namespace Server
         public static void Socket_ConnectionReceived(int index)
         {
             Console.WriteLine("Connection received on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
-            NetworkSend.SendKeyPair(index);
         }
 
         public static void Socket_ConnectionLost(int index)

@@ -1,5 +1,4 @@
 ﻿using Core;
-using Mirage.Sharp.Asfw.IO.Encryption;
 using static Core.Enum;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
@@ -210,8 +209,6 @@ namespace Client
 
         public static bool ShowAnimLayers;
         public static int ShowAnimTimer;
-
-        public static KeyPair EKeyPair = new KeyPair();
 
         // Stream Content
         public static int[] Item_Loaded = new int[Core.Constant.MAX_ITEMS];

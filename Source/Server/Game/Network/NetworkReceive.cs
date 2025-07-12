@@ -184,15 +184,15 @@ namespace Server
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
+                    username = buffer.ReadString().ToLower().Replace("\0", "");
+                    password = buffer.ReadString().Replace("\0", "");
 
                     // Get the current executing assembly
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
+                    var clientVersion = buffer.ReadString() ?? "";
                         
                     // Check versions
                     if (clientVersion != serverVersion)
@@ -283,15 +283,15 @@ namespace Server
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
+                    username = buffer.ReadString().ToLower().Replace("\0", "");
+                    password = buffer.ReadString().Replace("\0", "");
 
                     // Get the current executing assembly
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
+                    var clientVersion = buffer.ReadString() ?? "";
 
                     // Check versions
                     if (clientVersion != serverVersion)

@@ -52,15 +52,15 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CLogin);
-            buffer.WriteString(GameState.EKeyPair.EncryptString(name));
-            buffer.WriteString(GameState.EKeyPair.EncryptString(pass));
+            buffer.WriteString(name);
+            buffer.WriteString(pass);
 
             // Get the current executing assembly
             var @assembly = Assembly.GetExecutingAssembly();
 
             // Retrieve the version information
             var version = assembly.GetName().Version;
-            buffer.WriteString(GameState.EKeyPair.EncryptString(version.ToString()));
+            buffer.WriteString(version.ToString());
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -71,15 +71,15 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRegister);
-            buffer.WriteString(GameState.EKeyPair.EncryptString(name));
-            buffer.WriteString(GameState.EKeyPair.EncryptString(pass));
+            buffer.WriteString(name);
+            buffer.WriteString(pass);
 
             // Get the current executing assembly
             var @assembly = Assembly.GetExecutingAssembly();
 
             // Retrieve the version information
             var version = assembly.GetName().Version;
-            buffer.WriteString(GameState.EKeyPair.EncryptString(version.ToString()));
+            buffer.WriteString(version.ToString());
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
