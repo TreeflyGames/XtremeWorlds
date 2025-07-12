@@ -42,18 +42,6 @@ namespace Mirage.Sharp.Asfw.Network
 
             this._socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             this._socket.NoDelay = true;
-
-            // Enable TCP Keep-Alive on the client
-#if WINDOWS
-        this._socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-        byte[] keepAliveSettings = new byte[12];
-        BitConverter.GetBytes(1).CopyTo(keepAliveSettings, 0);  // Enable keep-alive
-        BitConverter.GetBytes(10000).CopyTo(keepAliveSettings, 4);  // Time (10 seconds)
-        BitConverter.GetBytes(1000).CopyTo(keepAliveSettings, 8);  // Interval (1 second)
-
-        this._socket.IOControl(IOControlCode.KeepAliveValues, keepAliveSettings, null);
-#endif
-
             this._packetCount = packetCount;
             this._packetSize = packetSize;
             this.PacketID = new NetworkClient.DataArgs[packetCount];
