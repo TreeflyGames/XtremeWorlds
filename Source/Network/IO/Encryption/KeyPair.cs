@@ -145,79 +145,13 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             }
         }
 
-        public async Task<byte[]> EncryptBytesAsync(byte[] value)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value), "Input data cannot be null.");
-
-            CheckDisposed();
-
-            if (_rsa == null)
-                throw new CryptographicException("Key not set.");
-
-            using (var rijndael = Aes.Create())
-            {
-                rijndael.KeySize = 256;
-                rijndael.BlockSize = 128;
-                rijndael.Mode = CipherMode.CBC;
-                rijndael.Padding = PaddingMode.PKCS7;
-
-                if (rijndael.Key == null || rijndael.IV == null)
-                    throw new CryptographicException("Failed to generate AES key or IV.");
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    try
-                    {
-                        // Encrypt AES key with RSA (using OAEP with SHA256)
-                        var encryptedKey = _rsa.Encrypt(rijndael.Key, RSAEncryptionPadding.OaepSHA256);
-
-                        if (encryptedKey.Length != 256)
-                            throw new CryptographicException("Invalid RSA-encrypted key length.");
-
-                        // Write encrypted key and IV to the output stream asynchronously
-                        await memoryStream.WriteAsync(encryptedKey, 0, encryptedKey.Length);
-                        await memoryStream.WriteAsync(rijndael.IV, 0, rijndael.IV.Length);
-
-                        // Encrypt the data using AES
-                        using (var encryptor = rijndael.CreateEncryptor())
-                        {
-                            await Task.Run(() =>
-                            {
-                                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                                {
-                                    cryptoStream.Write(value, 0, value.Length);
-                                    cryptoStream.FlushFinalBlock();
-                                }
-                            });
-                        }
-
-                        return memoryStream.ToArray();
-                    }
-                    catch (CryptographicException ex)
-                    {
-                        Console.WriteLine($"Encryption failed: {ex.Message}");
-                        return new byte[0];
-                    }
-                }
-            }
-        }
-
         public string EncryptString(string value)
         {
             CheckDisposed();
             var encryptedBytes = EncryptBytes(Encoding.UTF8.GetBytes(value));
             return encryptedBytes != null ? Convert.ToBase64String(encryptedBytes) : string.Empty;
         }
-
-        public async Task<string> EncryptStringAsync(string value)
-        {
-            CheckDisposed();
-            if (_rsa == null)
-                throw new CryptographicException("Key not set.");
-            return Convert.ToBase64String(await EncryptBytesAsync(Encoding.UTF8.GetBytes(value)));
-        }
-
+        
         public string DecryptString(string value)
         {
             try
