@@ -93,7 +93,7 @@ namespace Client
         #region Movement
         public static void CheckMovement()
         {
-            if (IsTryingToMove() && CanMove())
+            if (IsTryingToMove() && CanMove() && Core.Type.Player[GameState.MyIndex].XOffset == 0 && Core.Type.Player[GameState.MyIndex].YOffset == 0)
             {
                 // Check if player has the shift key down for running
                 if (GameState.VbKeyShift)
@@ -785,86 +785,120 @@ namespace Client
 
         public static void ProcessPlayerMovement(int index)
         {
-            // Early exit if player is not moving
-            if (Core.Type.Player[index].Moving == 0)
-                return;
-
-            // Calculate movement speed based on movement type
-            double movementSpeed;
+            // Check if player is walking or running, and if so process moving them over
             switch (Core.Type.Player[index].Moving)
             {
                 case (byte)Core.Enum.MovementType.Walking:
-                    movementSpeed = GameState.ElapsedTime / 1000.0 * GameState.WalkSpeed * GameState.SizeX;
-                    break;
+                    {
+                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * GameState.WalkSpeed * GameState.SizeX; // Adjust speed by elapsed time
+                        break;
+                    }
                 case (byte)Core.Enum.MovementType.Running:
-                    movementSpeed = GameState.ElapsedTime / 1000.0 * GameState.RunSpeed * GameState.SizeX;
-                    break;
+                    {
+                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * GameState.RunSpeed * GameState.SizeX; // Adjust speed by elapsed time
+                        break;
+                    }
+
                 default:
-                    return;
+                    {
+                        return;
+                    }
             }
 
-            // Normalize diagonal movement to maintain consistent speed
-            bool isDiagonal = false;
+            GameState.MovementSpeed = Math.Round(GameState.MovementSpeed);
+
+            // Update player offsets based on direction
             switch (GetPlayerDir(index))
             {
                 case (int)Core.Enum.DirectionType.Up:
-                    Core.Type.Player[index].YOffset -= (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset - GameState.MovementSpeed);
+                        if (Core.Type.Player[index].YOffset < 0)
+                            Core.Type.Player[index].YOffset = 0;
+                        break;
+                    }
                 case (int)Core.Enum.DirectionType.Down:
-                    Core.Type.Player[index].YOffset += (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset + GameState.MovementSpeed);
+                        if (Core.Type.Player[index].YOffset > 0)
+                            Core.Type.Player[index].YOffset = 0;
+                        break;
+                    }
                 case (int)Core.Enum.DirectionType.Left:
-                    Core.Type.Player[index].XOffset -= (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset - GameState.MovementSpeed);
+                        if (Core.Type.Player[index].XOffset < 0)
+                            Core.Type.Player[index].XOffset = 0;
+                        break;
+                    }
                 case (int)Core.Enum.DirectionType.Right:
-                    Core.Type.Player[index].XOffset += (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
+                        if (Core.Type.Player[index].XOffset > 0)
+                            Core.Type.Player[index].XOffset = 0;
+                        break;
+                    }
                 case (int)Core.Enum.DirectionType.UpRight:
-                    isDiagonal = true;
-                    Core.Type.Player[index].XOffset += (int)movementSpeed;
-                    Core.Type.Player[index].YOffset -= (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
+                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset - GameState.MovementSpeed);
+                        if (Core.Type.Player[index].XOffset > 0)
+                            Core.Type.Player[index].XOffset = 0;
+                        if (Core.Type.Player[index].YOffset < 0)
+                            Core.Type.Player[index].YOffset = 0;
+                        break;
+                    }
                 case (int)Core.Enum.DirectionType.UpLeft:
-                    isDiagonal = true;
-                    Core.Type.Player[index].XOffset -= (int)movementSpeed;
-                    Core.Type.Player[index].YOffset -= (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset - GameState.MovementSpeed);
+                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset - GameState.MovementSpeed);
+                        if (Core.Type.Player[index].XOffset < 0)
+                            Core.Type.Player[index].XOffset = 0;
+                        if (Core.Type.Player[index].YOffset < 0)
+                            Core.Type.Player[index].YOffset = 0;
+                        break;
+                    }
                 case (int)Core.Enum.DirectionType.DownRight:
-                    isDiagonal = true;
-                    Core.Type.Player[index].XOffset += (int)movementSpeed;
-                    Core.Type.Player[index].YOffset += (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
+                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset + GameState.MovementSpeed);
+                        if (Core.Type.Player[index].XOffset > 0)
+                            Core.Type.Player[index].XOffset = 0;
+                        if (Core.Type.Player[index].YOffset > 0)
+                            Core.Type.Player[index].YOffset = 0;
+                        break;
+                    }
                 case (int)Core.Enum.DirectionType.DownLeft:
-                    isDiagonal = true;
-                    Core.Type.Player[index].XOffset -= (int)movementSpeed;
-                    Core.Type.Player[index].YOffset += (int)movementSpeed;
-                    break;
+                    {
+                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset - GameState.MovementSpeed);
+                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset + GameState.MovementSpeed);
+                        if (Core.Type.Player[index].XOffset < 0)
+                            Core.Type.Player[index].XOffset = 0;
+                        if (Core.Type.Player[index].YOffset > 0)
+                            Core.Type.Player[index].YOffset = 0;
+                        break;
+                    }
             }
 
-            // Normalize diagonal speed (divide by sqrt(2) to maintain consistent speed)
-            if (isDiagonal)
+            // Check if completed walking over to the next tile
+            if (Core.Type.Player[index].Moving > 0)
             {
-                movementSpeed /= Math.Sqrt(2);
-                Core.Type.Player[index].XOffset = (int)Math.Round((double)Core.Type.Player[index].XOffset);
-                Core.Type.Player[index].YOffset = (int)Math.Round((double)Core.Type.Player[index].YOffset);
+                if (Core.Type.Player[index].XOffset == 0 & Core.Type.Player[index].YOffset == 0)
+                {
+                    Core.Type.Player[index].Moving = 0;
+                    if (Core.Type.Player[index].Steps == 1)
+                    {
+                        Core.Type.Player[index].Steps = 3;
+                    }
+                    else
+                    {
+                        Core.Type.Player[index].Steps = 1;
+                    }
+                }
             }
 
-            // Clamp offsets to tile boundaries (assuming tile size is GameState.SizeX)
-            const double tileSize = GameState.SizeX; // Adjust if SizeY differs
-            Core.Type.Player[index].XOffset = (int)Math.Clamp(Core.Type.Player[index].XOffset, -tileSize, tileSize);
-            Core.Type.Player[index].YOffset = (int)Math.Clamp(Core.Type.Player[index].YOffset, -tileSize, tileSize);
-
-            // Check if player has reached the next tile
-            if (Core.Type.Player[index].Moving > 0 && Math.Abs(Core.Type.Player[index].XOffset) < 0.01 && Math.Abs(Core.Type.Player[index].YOffset) < 0.01)
-            {
-                Core.Type.Player[index].XOffset = 0;
-                Core.Type.Player[index].YOffset = 0;
-                Core.Type.Player[index].Moving = 0;
-
-                // Update step animation (cycle between 1 and 3 for walking animation)
-                Core.Type.Player[index].Steps = (byte)(Core.Type.Player[index].Steps == 1 ? 3 : 1);
-            }
         }
+
 
         #endregion
 
