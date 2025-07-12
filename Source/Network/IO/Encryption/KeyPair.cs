@@ -213,15 +213,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             var encryptedBytes = EncryptBytes(Encoding.UTF8.GetBytes(value));
             return encryptedBytes != null ? Convert.ToBase64String(encryptedBytes) : string.Empty;
         }
-
-        public async Task<string> EncryptStringAsync(string value)
-        {
-            CheckDisposed();
-            if (_rsa == null)
-                throw new CryptographicException("Key not set.");
-            return Convert.ToBase64String(await EncryptBytesAsync(Encoding.UTF8.GetBytes(value)));
-        }
-
+        
         public string DecryptString(string value)
         {
             try
