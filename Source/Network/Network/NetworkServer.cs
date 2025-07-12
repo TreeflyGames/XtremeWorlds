@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Net;
@@ -54,10 +54,6 @@
           this._packetCount = packetCount;
           this._packetSize = packetSize;
           this.PacketID = new NetworkServer.DataArgs[packetCount];
-#if WINDOWS
-          // Enable TCP keep-alive for the listener
-          this._listener?.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-#endif
         }
 
         public void Dispose()
@@ -222,8 +218,8 @@
     #if WINDOWS
                 this._listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE
     #endif
-            this._listener.SendTimeout = 0; // No timeout
-            this._listener.ReceiveTimeout = 0;
+            this._listener.SendTimeout = 5000; // 5 seconds
+            this._listener.ReceiveTimeout = 5000;
             this._listener.Bind(new IPEndPoint(IPAddress.Any, port));
             this.IsListening = true;
             this._listener.Listen(backlog);
@@ -291,105 +287,95 @@
             this._socket[index].BeginReceive(state.Buffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object) state);
         }
 
-        private void DoReceive(IAsyncResult ar)
+     private void DoReceive(IAsyncResult ar)
+    {
+        if (this._socket == null)
+            return; // Exit early if the socket dictionary is not initialized
+
+        // Ensure asyncState is not null (compare with default struct value)
+        if (!(ar.AsyncState is NetworkServer.ReceiveState asyncState))
         {
-            if (this._socket == null)
-                return;
-
-            if (!(ar.AsyncState is NetworkServer.ReceiveState asyncState))
-            {
-                Console.WriteLine("Error: AsyncState is not of type ReceiveState.");
-                return;
-            }
-
-            if (!_socket.ContainsKey(asyncState.Index))
-            {
-                // Do not disconnect here, just return
-                return;
-            }
-
-            int receivedLength;
-            try
-            {
-                receivedLength = _socket[asyncState.Index].EndReceive(ar);
-            }
-            catch (SocketException ex)
-            {
-                // Only disconnect for fatal errors
-                if (ex.SocketErrorCode == SocketError.ConnectionReset ||
-                    ex.SocketErrorCode == SocketError.ConnectionAborted ||
-                    ex.SocketErrorCode == SocketError.Shutdown)
-                {
-                    HandleSocketError(asyncState, "ConnectionForciblyClosedException", ex);
-                    return;
-                }
-                // For other errors, you may want to log and try to continue
-                Console.WriteLine($"Non-fatal SocketException: {ex.Message}");
-                return;
-            }
-            catch (Exception ex)
-            {
-                HandleSocketError(asyncState, "ConnectionForciblyClosedException", ex);
-                return;
-            }
-
-            // If 0 bytes received, the connection is closed by the client
-            if (receivedLength == 0)
-            {
-                // Do not disconnect immediately, just return
-                return;
-            }
-
-            this.TrafficReceived?.Invoke(receivedLength, ref asyncState.Buffer);
-            asyncState.PacketCount++;
-
-            AppendToRingBuffer(ref asyncState, receivedLength);
-
-            if (this.BufferLimit > 0 && asyncState.RingBuffer.Length > this.BufferLimit)
-            {
-                DisconnectAndDispose(asyncState.Index, asyncState);
-                return;
-            }
-
-            if (!_socket[asyncState.Index].Connected)
-            {
-                DisconnectAndDispose(asyncState.Index, asyncState);
-                return;
-            }
-
-            this.PacketHandler(ref asyncState);
-
-            asyncState.Buffer = new byte[this._packetSize];
-
-            try
-            {
-                if (_socket.ContainsKey(asyncState.Index) && _socket[asyncState.Index].Connected)
-                {
-                    _socket[asyncState.Index].BeginReceive(
-                        asyncState.Buffer, 0, this._packetSize, SocketFlags.None,
-                        new AsyncCallback(this.DoReceive), asyncState);
-                }
-            }
-            catch (Exception ex)
-            {
-                HandleSocketError(asyncState, "BeginReceiveException", ex);
-            }
+            Console.WriteLine("Error: AsyncState is not of type ReceiveState.");
+            return;
         }
 
-        // Helper to handle socket errors and cleanup
-        private void HandleSocketError(NetworkServer.ReceiveState state, string error, Exception ex = null)
+        // Check if the socket exists and is valid
+        if (!_socket.ContainsKey(asyncState.Index))
         {
-            this.CrashReport?.Invoke(state.Index, error);
-            if (ex != null) Console.WriteLine($"Exception: {ex.Message}");
-            DisconnectAndDispose(state.Index, state);
+            HandleSocketError(asyncState, "Socket not found");
+            return;
         }
 
-        // Helper to disconnect and dispose
-        private void DisconnectAndDispose(int index, NetworkServer.ReceiveState state)
+        if (!_socket.ContainsKey(asyncState.Index))
         {
-          this.Disconnect(index);
-          state.Dispose();
+            HandleSocketError(asyncState, "Socket not found");
+            return;
+        }         
+
+        int receivedLength;
+        try
+        {
+            // Attempt to receive data from the socket
+            receivedLength = _socket[asyncState.Index].EndReceive(ar);
         }
+        catch (Exception ex)
+        {
+            HandleSocketError(asyncState, "ConnectionForciblyClosedException", ex);
+            return;
+        }
+
+        // Invoke traffic received event, if applicable
+        this.TrafficReceived?.Invoke(receivedLength, ref asyncState.Buffer);
+        asyncState.PacketCount++;
+
+        // Append received data to the ring buffer
+        AppendToRingBuffer(ref asyncState, receivedLength);
+
+        // Check for buffer overflow
+        if (this.BufferLimit > 0 && asyncState.RingBuffer.Length > this.BufferLimit)
+        {
+            DisconnectAndDispose(asyncState.Index, asyncState);
+            return;
+        }
+
+        // Validate the socket connection
+        if (!_socket[asyncState.Index].Connected)
+        {
+            DisconnectAndDispose(asyncState.Index, asyncState);
+            return;
+        }
+
+        // Process the packet
+        this.PacketHandler(ref asyncState);
+
+        // Prepare for the next packet
+        asyncState.Buffer = new byte[this._packetSize];
+
+        try
+        {
+            // Begin receiving the next packet
+            _socket[asyncState.Index].BeginReceive(asyncState.Buffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), asyncState);
+        }
+        catch (Exception ex)
+        {
+            HandleSocketError(asyncState, "BeginReceiveException", ex);
+        }
+      }
+
+      // Helper to handle socket errors and cleanup
+      private void HandleSocketError(NetworkServer.ReceiveState state, string error, Exception ex = null)
+      {
+          this.CrashReport?.Invoke(state.Index, error);
+          if (ex != null) Console.WriteLine($"Exception: {ex.Message}");
+          DisconnectAndDispose(state.Index, state);
+      }
+
+      // Helper to disconnect and dispose
+      private void DisconnectAndDispose(int index, NetworkServer.ReceiveState state)
+      {
+        this.Disconnect(index);
+        state.Dispose();
+      }
   
         // Append new data to the ring buffer safely
         private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
@@ -430,30 +416,32 @@
                 count = length1 - num;
                 if (count >= 4)
                 {
-                    int packetLength = BitConverter.ToInt32(so.RingBuffer, num);
-                    if (packetLength >= 4)
+                    int int32_1 = BitConverter.ToInt32(so.RingBuffer, num);
+                    if (int32_1 >= 4)
                     {
-                        if (packetLength <= count)
+                        if (int32_1 <= count)
                         {
                             int startIndex = num + 4;
-                            int packetId = BitConverter.ToInt32(so.RingBuffer, startIndex);
-                            if (packetId >= 0 && packetId < this._packetCount)
+                            int int32_2 = BitConverter.ToInt32(so.RingBuffer, startIndex);
+                            if (int32_2 >= 0 && int32_2 < this._packetCount)
                             {
-                                if (this.PacketID[packetId] != null)
+                                if (this.PacketID[int32_2] != null)
                                 {
                                     if (this.AccessCheck != null)
                                     {
-                                        this.AccessCheck(index, packetId);
+                                        this.AccessCheck(index, int32_2);
                                         if (!this._socket.ContainsKey(index))
                                             break;
                                     }
-                                    int dataLength = packetLength - 4;
-                                    byte[] data = new byte[dataLength];
-                                    if (dataLength > 0)
-                                        Buffer.BlockCopy(so.RingBuffer, startIndex + 4, data, 0, dataLength);
-                                    this.PacketReceived?.Invoke(dataLength, packetId, ref data);
-                                    this.PacketID[packetId](index, ref data);
-                                    num = startIndex + packetLength;
+                                    int length2 = int32_1 - 4;
+                                    byte[] data = new byte[length2];
+                                    if (length2 > 0)
+                                        Buffer.BlockCopy((Array)so.RingBuffer, startIndex + 4, (Array)data, 0, length2);
+                                    NetworkServer.PacketInfoArgs packetReceived = this.PacketReceived;
+                                    if (packetReceived != null)
+                                        packetReceived(length2, int32_2, ref data);
+                                    this.PacketID[int32_2](index, ref data);
+                                    num = startIndex + int32_1;
                                     --so.PacketCount;
                                     flag = true;
                                 }
@@ -470,33 +458,19 @@
                         goto BrokenPacket;
                 }
                 else
-                    break; // Not enough data for packet size
+                    break; // Exit the loop if there are not enough bytes to read the packet size
             }
-
-            // If all data processed, clear buffer, else keep remaining
-            if (num == length1)
-            {
-                so.RingBuffer = null;
-                so.PacketCount = 0;
-            }
-            else if (num > 0)
-            {
-                int remaining = length1 - num;
-                byte[] dst = new byte[remaining];
-                Buffer.BlockCopy(so.RingBuffer, num, dst, 0, remaining);
-                so.RingBuffer = dst;
-                so.PacketCount = flag ? 1 : so.PacketCount;
-            }
-
+            so.Dispose();
             return;
-
         NullReference:
             if (!this._socket.ContainsKey(index))
             {
                 so.Dispose();
                 return;
             }
-            this.CrashReport?.Invoke(index, "NullReferenceException");
+            NetworkServer.CrashReportArgs crashReport1 = this.CrashReport;
+            if (crashReport1 != null)
+                crashReport1(index, "NullReferenceException");
             this.Disconnect(index);
             so.Dispose();
             return;
@@ -506,7 +480,9 @@
                 so.Dispose();
                 return;
             }
-            this.CrashReport?.Invoke(index, "IndexOutOfRangeException");
+            NetworkServer.CrashReportArgs crashReport2 = this.CrashReport;
+            if (crashReport2 != null)
+                crashReport2(index, "IndexOutOfRangeException");
             this.Disconnect(index);
             so.Dispose();
             return;
@@ -516,20 +492,22 @@
                 so.Dispose();
                 return;
             }
-            this.CrashReport?.Invoke(index, "BrokenPacketException");
+            NetworkServer.CrashReportArgs crashReport3 = this.CrashReport;
+            if (crashReport3 != null)
+                crashReport3(index, "BrokenPacketException");
             this.Disconnect(index);
             so.Dispose();
             return;
         Overflow:
             if (count == 0)
             {
-                so.RingBuffer = null;
+                so.RingBuffer = (byte[])null;
                 so.PacketCount = 0;
             }
             else
             {
                 byte[] dst = new byte[count];
-                Buffer.BlockCopy(so.RingBuffer, num, dst, 0, count);
+                Buffer.BlockCopy((Array)so.RingBuffer, num, (Array)dst, 0, count);
                 so.RingBuffer = dst;
                 if (!flag)
                     return;
