@@ -85,26 +85,9 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             }
             else
             {
-                // Assume Base64-encoded PKCS#8 (private) or X.509 (public) for non-Windows
-                try
-                {
-                    byte[] keyBytes = Convert.FromBase64String(key);
-                    try
-                    {
-                        // Try import as private key (PKCS#8)
-                        _rsa.ImportPkcs8PrivateKey(keyBytes, out _);
-                    }
-                    catch (CryptographicException)
-                    {
-                        // If fails, try import as public key (X.509)
-                        _rsa.ImportSubjectPublicKeyInfo(keyBytes, out _);
-                    }
-                }
-                catch (FormatException ex)
-                {
-                    throw new CryptographicException("Invalid key format.", ex);
-                }
-            }
+                byte[] keyBytes = Convert.FromBase64String(key);
+                _rsa.ImportRSAPublicKey(keyBytes, out _);
+}
         }
 
         public void ImportKey(string file)
