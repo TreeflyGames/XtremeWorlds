@@ -16,7 +16,6 @@ namespace Client
         public static void PacketRouter()
         {
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAlertMsg] = Packet_AlertMsg;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SKeyPair] = Packet_KeyPair;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SLoginOK] = Packet_LoginOk;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerChars] = Packet_PlayerChars;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateJob] = Packet_UpdateJob;
@@ -192,14 +191,6 @@ namespace Client
             }
 
             GameLogic.DialogueAlert(dialogueIndex);
-            buffer.Dispose();
-        }
-
-        private static void Packet_KeyPair(ref byte[] data)
-        {
-            var buffer = new ByteStream(data);
-
-            GameState.EKeyPair.ImportKeyString(buffer.ReadString());
             buffer.Dispose();
         }
 

@@ -140,7 +140,6 @@ namespace Core
         public enum ServerPackets
         {
             SAlertMsg,
-            SKeyPair,
             SLoginOK,
             SPlayerChars,
             SJobData,

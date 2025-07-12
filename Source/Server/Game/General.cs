@@ -295,7 +295,6 @@ namespace Server
 
         private static async Task InitializeNetworkAsync()
         {
-            Global.EKeyPair.GenerateKeys();
             NetworkConfig.InitNetwork();
         }
 

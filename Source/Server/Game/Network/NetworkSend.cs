@@ -1302,17 +1302,6 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendKeyPair(int index)
-        {
-            var buffer = new ByteStream(4);
-
-            buffer.WriteInt32((int)ServerPackets.SKeyPair);
-            buffer.WriteString(Global.EKeyPair.ExportKeyString(false));
-            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
-
-            buffer.Dispose();
-        }
-
         public static void SendRightClick(int index)
         {
             var buffer = new ByteStream(4);
