@@ -3,13 +3,17 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Sources;
 
 namespace Mirage.Sharp.Asfw.IO.Encryption
 {
     public sealed class KeyPair : IDisposable
     {
-        private RSACryptoServiceProvider _rsa;
+        private RSA _rsa;
+
+        public KeyPair()
+        {
+            GenerateKeys();
+        }
 
         public void Dispose()
         {
@@ -28,13 +32,23 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             get
             {
                 CheckDisposed();
-                return _rsa != null ? _rsa.PublicOnly : throw new CryptographicException("Key(s) not found!");
+                try
+                {
+                    _rsa.ExportParameters(true); // Attempt to export private key parameters
+                    return false;
+                }
+                catch (CryptographicException)
+                {
+                    return true;
+                }
             }
         }
 
         public void GenerateKeys()
         {
-            _rsa = new RSACryptoServiceProvider(2048);
+            _rsa?.Dispose();
+            _rsa = RSA.Create();
+            _rsa.KeySize = 2048;
         }
 
         public string ExportKeyString(bool exportPrivate = false)
@@ -47,10 +61,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public void ExportKey(string file, bool exportPrivate = true)
         {
             CheckDisposed();
-            using (var streamWriter = new StreamWriter(file, false))
-            {
-                streamWriter.Write(_rsa.ToXmlString(exportPrivate));
-            }
+            string keyString = ExportKeyString(exportPrivate);
+            File.WriteAllText(file, keyString);
         }
 
         public void ImportKeyString(string key)
@@ -79,11 +91,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public void ImportKey(string file)
         {
             CheckDisposed();
-            using (var streamReader = new StreamReader(file))
-            {
-                _rsa = new RSACryptoServiceProvider();
-                _rsa.FromXmlString(streamReader.ReadToEnd());
-            }
+            string keyString = File.ReadAllText(file);
+            ImportKeyString(keyString);
         }
 
         public byte[] EncryptBytes(byte[] value)
@@ -92,7 +101,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                 throw new ArgumentNullException(nameof(value), "Input data cannot be null.");
 
             CheckDisposed();
-            
+
             using (var rijndael = Aes.Create())
             {
                 rijndael.KeySize = 256;
@@ -100,17 +109,15 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                 rijndael.Mode = CipherMode.CBC;
                 rijndael.Padding = PaddingMode.PKCS7;
 
-                CheckDisposed();
-
                 if (rijndael.Key == null || rijndael.IV == null)
                     throw new CryptographicException("Failed to generate AES key or IV.");
 
                 using (var memoryStream = new MemoryStream())
                 {
                     try
-                    {                    
+                    {
                         // Encrypt AES key with RSA
-                        var encryptedKey = _rsa.Encrypt(rijndael?.Key, RSAEncryptionPadding.OaepSHA1);
+                        var encryptedKey = _rsa.Encrypt(rijndael.Key, RSAEncryptionPadding.OaepSHA256);
 
                         if (encryptedKey.Length != 256)
                             throw new CryptographicException("Invalid RSA-encrypted key length.");
@@ -138,107 +145,29 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             }
         }
 
-        public async Task<byte[]> EncryptBytesAsync(byte[] value)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value), "Input data cannot be null.");
-
-            CheckDisposed();
-
-            if (_rsa == null)
-                throw new CryptographicException("Key not set.");
-
-            using (var rijndael = Aes.Create())
-            {
-                rijndael.KeySize = 256;
-                rijndael.BlockSize = 128;
-                rijndael.Mode = CipherMode.CBC;
-                rijndael.Padding = PaddingMode.PKCS7;
-
-                if (rijndael.Key == null || rijndael.IV == null)
-                    throw new CryptographicException("Failed to generate AES key or IV.");
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    try
-                    {
-                        // Encrypt AES key with RSA (using OAEP padding)
-                        var encryptedKey = _rsa?.Encrypt(rijndael.Key, RSAEncryptionPadding.OaepSHA1);
-
-                        if (encryptedKey.Length != 256)
-                            throw new CryptographicException("Invalid RSA-encrypted key length.");
-
-                        // Write encrypted key and IV to the output stream asynchronously
-                        await memoryStream.WriteAsync(encryptedKey, 0, encryptedKey.Length);
-                        await memoryStream.WriteAsync(rijndael.IV, 0, rijndael.IV.Length);
-
-                        // Encrypt the data using AES
-                        using (var encryptor = rijndael.CreateEncryptor())
-                        {
-                            // Perform synchronous encryption in a separate task
-                            await Task.Run(() =>
-                            {
-                                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                                {
-                                    cryptoStream.Write(value, 0, value.Length);
-                                    cryptoStream.FlushFinalBlock();
-                                }
-                            });
-                        }
-
-                        return memoryStream.ToArray();
-                    }
-                    catch (CryptographicException ex)
-                    {
-                        Console.WriteLine($"Encryption failed: {ex.Message}");
-                        return new byte[0];
-                    }
-                }
-            }
-        }
-
         public string EncryptString(string value)
         {
             CheckDisposed();
             var encryptedBytes = EncryptBytes(Encoding.UTF8.GetBytes(value));
             return encryptedBytes != null ? Convert.ToBase64String(encryptedBytes) : string.Empty;
         }
-
-        public async Task<string> EncryptStringAsync(string value)
-        {
-            CheckDisposed();
-            if (_rsa == null)
-                throw new CryptographicException("Key not set.");
-            return Convert.ToBase64String(await EncryptBytesAsync(Encoding.UTF8.GetBytes(value)));
-        }
-
+        
         public string DecryptString(string value)
         {
             try
             {
-                if (_rsa == null || _rsa.PublicOnly)
-                {
-                    CheckDisposed();
-                    return "";
-
-                }
+                CheckDisposed();
+                if (_rsa == null || PublicOnly)
+                    return string.Empty;
 
                 byte[] numArray = Convert.FromBase64String(value);
+                byte[] decryptedBytes = DecryptBytes(numArray);
 
-                byte[] decryptedBytes = this.DecryptBytes(numArray);
-
-                if (decryptedBytes == null)
-                {
-                    CheckDisposed();
-                    return "";
-
-                }
-                return numArray.Length >= 272 ? Encoding.UTF8.GetString(decryptedBytes) : "";     
+                return decryptedBytes != null && numArray.Length >= 272 ? Encoding.UTF8.GetString(decryptedBytes) : string.Empty;
             }
-            catch (CryptographicException ex)
+            catch (CryptographicException)
             {
-                CheckDisposed();
-                return "";
+                return string.Empty;
             }
         }
 
@@ -249,9 +178,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             if (value.Length < 272)
                 throw new ArgumentException("Input data is too short to contain RSA-encrypted key, IV, and payload.", nameof(value));
 
-            if (_rsa == null)
-                throw new CryptographicException("Key not set.");
-            if (_rsa.PublicOnly)
+            CheckDisposed();
+            if (_rsa == null || PublicOnly)
                 throw new CryptographicException("Private key is required for decryption.");
 
             try
@@ -266,20 +194,18 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                 Buffer.BlockCopy(value, 272, encryptedPayload, 0, payloadLength);
 
                 // Initialize AES
-                using (var rijndaelManaged = Aes.Create())
+                using (var rijndael = Aes.Create())
                 {
-                    rijndaelManaged.KeySize = 256;
-                    rijndaelManaged.BlockSize = 128;
-                    rijndaelManaged.Mode = CipherMode.CBC;
-                    rijndaelManaged.Padding = PaddingMode.PKCS7;
+                    rijndael.KeySize = 256;
+                    rijndael.BlockSize = 128;
+                    rijndael.Mode = CipherMode.CBC;
+                    rijndael.Padding = PaddingMode.PKCS7;
 
                     // Decrypt AES key
-                    byte[] aesKey;
-
-                    aesKey = _rsa?.Decrypt(encryptedKey, RSAEncryptionPadding.OaepSHA1);
+                    byte[] aesKey = _rsa.Decrypt(encryptedKey, RSAEncryptionPadding.OaepSHA256);
 
                     // Decrypt payload
-                    using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(aesKey, iv))
+                    using (var decryptor = rijndael.CreateDecryptor(aesKey, iv))
                     using (var memoryStream = new MemoryStream())
                     using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
                     {
@@ -289,9 +215,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                     }
                 }
             }
-            catch (CryptographicException ex)
+            catch (CryptographicException)
             {
-                CheckDisposed();
                 return null;
             }
         }
