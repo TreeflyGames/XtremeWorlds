@@ -61,18 +61,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             }
             else
             {
-                if (exportPrivate)
-                {
-                    // Export private key as PKCS#8 (Base64)
-                    var pkcs8 = _rsa.ExportPkcs8PrivateKey();
-                    return Convert.ToBase64String(pkcs8);
-                }
-                else
-                {
-                    // Export public key as X.509 SubjectPublicKeyInfo (Base64)
-                    var spki = _rsa.ExportSubjectPublicKeyInfo();
-                    return Convert.ToBase64String(spki);
-                }
+                byte[] keyBytes = exportPrivate ? _rsa.ExportRSAPrivateKey() : _rsa.ExportRSAPublicKey();
+                return Convert.ToBase64String(keyBytes);
             }
         }
 
