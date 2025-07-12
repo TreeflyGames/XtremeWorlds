@@ -415,7 +415,7 @@ namespace Mirage.Sharp.Asfw.Network
             if (!this.ThreadControl)
                 return;
             this._receiveBuffer = new byte[this._packetSize];
-            this._socket.ReceiveTimeout = 1;
+
             try
             {
                 SocketError errorCode;
@@ -460,20 +460,20 @@ namespace Mirage.Sharp.Asfw.Network
             if (this._socket == null || !this._socket.Connected)
             {
                 Console.WriteLine("Socket is not connected.");
-                return; // Exit the method if the socket is not connected
-            }  
+                return;
+            }
 
-            if (data == null || data.Length < head)
+            if (data.Length < head)
             {
                 Console.WriteLine("Invalid data length.");
-                return; // Exit the method if data is null or the length is less than expected
+                return;
             }
 
             try
             {
                 byte[] numArray = new byte[head + 4];
                 Buffer.BlockCopy(BitConverter.GetBytes(head), 0, numArray, 0, 4);
-                Buffer.BlockCopy(data.ToArray(), 0, numArray, 4, head);
+                Buffer.BlockCopy(data.Slice(0, head).ToArray(), 0, numArray, 4, head);
                 this._socket.BeginSend(numArray, 0, head + 4, SocketFlags.None, new AsyncCallback(this.DoSend), null);
             }
             catch (Exception ex)
