@@ -86,23 +86,36 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public void ImportKeyString(string key)
         {
             CheckDisposed();
-            try
+            _rsa = new RSACryptoServiceProvider();
+
+            // Check if the key is in XML format
+            bool isXml = key.TrimStart().StartsWith("<RSAKeyValue>", StringComparison.Ordinal);
+
+            if (isXml)
             {
-                byte[] keyBytes = Convert.FromBase64String(key);
-                _rsa?.Dispose();
-                _rsa = RSA.Create();
+                _rsa.FromXmlString(key);
+            }
+            else
+            {
+                // Assume Base64-encoded PKCS#8 (private) or X.509 (public) for non-Windows
                 try
                 {
-                    _rsa.ImportRSAPrivateKey(keyBytes, out _);
+                    byte[] keyBytes = Convert.FromBase64String(key);
+                    try
+                    {
+                        // Try import as private key (PKCS#8)
+                        _rsa.ImportPkcs8PrivateKey(keyBytes, out _);
+                    }
+                    catch (CryptographicException)
+                    {
+                        // If fails, try import as public key (X.509)
+                        _rsa.ImportSubjectPublicKeyInfo(keyBytes, out _);
+                    }
                 }
-                catch (CryptographicException)
+                catch (FormatException ex)
                 {
-                    _rsa.ImportRSAPublicKey(keyBytes, out _);
+                    throw new CryptographicException("Invalid key format.", ex);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new CryptographicException("Failed to import key.", ex);
             }
         }
 
