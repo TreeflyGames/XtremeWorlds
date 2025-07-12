@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -306,6 +307,8 @@ namespace Mirage.Sharp.Asfw.Network
             int length1 = this._packetRing.Length;
             int num = 0;
             int count;
+            // Track which packet IDs have been processed in this loop
+            var processedPacketIds = new HashSet<int>();
 
             try
             {
@@ -325,6 +328,13 @@ namespace Mirage.Sharp.Asfw.Network
                                     int int32_2 = BitConverter.ToInt32(this._packetRing, startIndex);
                                     if (int32_2 >= 0 && int32_2 < this._packetCount)
                                     {
+                                        if (processedPacketIds.Contains(int32_2))
+                                        {
+                                            Console.WriteLine("[PacketHandler] Duplicate packet id {0} detected in the same loop, skipping.", int32_2);
+                                            // Skip this packet, move to next
+                                            num = startIndex + int32_1;
+                                            continue;
+                                        }
                                         if (this.PacketID[int32_2] != null)
                                         {
                                             int length2 = int32_1 - 4;
@@ -335,11 +345,9 @@ namespace Mirage.Sharp.Asfw.Network
                                             }
                                             else
                                             {
-                                                // Handle the error, e.g., log it or throw an exception
-                                                NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-                                                if (crashReport != null)
-                                                    crashReport("BufferOverflowException");
+                                                Console.WriteLine("[PacketHandler] Buffer overflow: startIndex={0}, length2={1}, packetRing.Length={2}", startIndex, length2, this._packetRing.Length);
                                                 this.Disconnect();
+                                                return;
                                             }
                                             NetworkClient.PacketInfoArgs packetReceived = this.PacketReceived;
                                             if (packetReceived != null)
@@ -349,68 +357,56 @@ namespace Mirage.Sharp.Asfw.Network
                                                 break;
 
                                             this.PacketID[int32_2](ref data);
+                                            processedPacketIds.Add(int32_2);
                                             num = startIndex + int32_1;
                                         }
                                         else
+                                        {
+                                            Console.WriteLine("[PacketHandler] PacketID[{0}] is null.", int32_2);
                                             break;
+                                        }
                                     }
                                     else
-                                        goto IndexOutOfRange;
+                                    {
+                                        Console.WriteLine("[PacketHandler] Packet header index out of range: {0}", int32_2);
+                                        this.Disconnect();
+                                        return;
+                                    }
                                 }
                                 else
-                                    goto EmptyPacket;
+                                {
+                                    // Not enough data for a full packet, break and wait for more
+                                    break;
+                                }
                             }
                             catch (Exception ex)
                             {
-                                NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-                                if (crashReport != null)
-                                    crashReport(ex.Message);
+                                Console.WriteLine("[PacketHandler] Exception in inner packet processing: " + ex);
                                 this.Disconnect();
                                 return;
                             }
                         }
                         else
-                            goto BrokenPacket;
+                        {
+                            Console.WriteLine("[PacketHandler] Broken packet: int32_1={0}", int32_1);
+                            this.Disconnect();
+                            return;
+                        }
                     }
                     else
-                        goto EmptyPacket;
+                    {
+                        // Not enough data for even a header, break and wait for more
+                        break;
+                    }
                 }
-                NetworkClient.CrashReportArgs crashReport1 = this.CrashReport;
 
-                if (crashReport1 != null)
-                    crashReport1("NullReferenceException");
-                this.Disconnect();
-                return;
-
-            IndexOutOfRange:
-                NetworkClient.CrashReportArgs crashReport2 = this.CrashReport;
-                if (crashReport2 != null)
-                    crashReport2("IndexOutOfRangeException");
-                this.Disconnect();
-                return;
-
-            BrokenPacket:
-                NetworkClient.CrashReportArgs crashReport3 = this.CrashReport;
-                if (crashReport3 != null)
-                    crashReport3("BrokenPacketException");
-                this.Disconnect();
-                return;
-
-            EmptyPacket:
-                if (count == 0)
-                {
-                    this._packetRing = null;
-                }
-                else
-                {
-                    byte[] dst = new byte[count];
-                    Buffer.BlockCopy((Array)this._packetRing, num, (Array)dst, 0, count);
-                    this._packetRing = dst;
-                }
+                // Always reset the ring buffer after the loop
+                this._packetRing = null;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Invalid packet: " + e.Message);
+                Console.WriteLine("[PacketHandler] Invalid packet: " + e);
+                this.Disconnect();
             }
         }
 
@@ -419,7 +415,7 @@ namespace Mirage.Sharp.Asfw.Network
             if (!this.ThreadControl)
                 return;
             this._receiveBuffer = new byte[this._packetSize];
-            this._socket.ReceiveTimeout = 1;
+
             try
             {
                 SocketError errorCode;
@@ -464,20 +460,20 @@ namespace Mirage.Sharp.Asfw.Network
             if (this._socket == null || !this._socket.Connected)
             {
                 Console.WriteLine("Socket is not connected.");
-                return; // Exit the method if the socket is not connected
-            }  
+                return;
+            }
 
-            if (data == null || data.Length < head)
+            if (data.Length < head)
             {
                 Console.WriteLine("Invalid data length.");
-                return; // Exit the method if data is null or the length is less than expected
+                return;
             }
 
             try
             {
                 byte[] numArray = new byte[head + 4];
                 Buffer.BlockCopy(BitConverter.GetBytes(head), 0, numArray, 0, 4);
-                Buffer.BlockCopy(data.ToArray(), 0, numArray, 4, head);
+                Buffer.BlockCopy(data.Slice(0, head).ToArray(), 0, numArray, 4, head);
                 this._socket.BeginSend(numArray, 0, head + 4, SocketFlags.None, new AsyncCallback(this.DoSend), null);
             }
             catch (Exception ex)
