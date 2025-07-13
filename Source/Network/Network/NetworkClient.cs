@@ -261,10 +261,6 @@ namespace Mirage.Sharp.Asfw.Network
                     Console.WriteLine("Socket is null after receiving data.");
                     return;
                 }
-                NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-                if (crashReport != null)
-                    crashReport("BufferUnderflowException");
-                this.Disconnect();
             }
             else
             {
