@@ -12,12 +12,15 @@ namespace Server
     public class Server
     {
         private static bool consoleExit;
-        private static Thread threadConsole;
 
         public static async Task Main()
         {
-            threadConsole = new Thread(new ThreadStart(() => ConsoleThreadAsync().GetAwaiter().GetResult()));
-            threadConsole.Start();
+            // Only spin the console thread for dev sessions
+            if (!Console.IsInputRedirected &&
+                Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") != "Production")
+            {
+                _ = Task.Run(ConsoleThreadAsync);
+            }
 
             AppDomain.CurrentDomain.ProcessExit += ProcessExitHandler;
 
@@ -34,7 +37,6 @@ namespace Server
             }
             
             consoleExit = true;
-            threadConsole.Join();
         }
 
         private static async Task ConsoleThreadAsync()
