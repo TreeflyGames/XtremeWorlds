@@ -3,8 +3,10 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw.Network;
+using Reoria.Engine.Common.Security.Encryption;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using static Core.Enum;
 using static Core.Global.Command;
@@ -196,12 +198,16 @@ namespace Server
         public static void Socket_ConnectionReceived(int index)
         {
             Console.WriteLine("Connection received on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
+            General.Aes.TryAdd(index, new AesEncryption());
+            NetworkSend.AesKeyIV(index);
+
         }
 
         public static void Socket_ConnectionLost(int index)
         {
             Console.WriteLine("Connection lost on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
             Player.LeftGame(index);
+            General.Aes.Remove(index);
         }
 
         public static void Socket_CrashReport(int index, string err)

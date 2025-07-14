@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.CompilerServices;
+using Reoria.Engine.Common.Security.Encryption;
 using Reoria.Engine.Container.Configuration.Interfaces;
 using Reoria.Engine.Container.Interfaces;
 using Reoria.Engine.Container.Logging;
@@ -20,6 +21,8 @@ namespace Client
         public static GameState State = new GameState();
         public static RandomUtility Random = new RandomUtility();
         public static Gui Gui = new Gui();
+
+        public static AesEncryption Aes = new Reoria.Engine.Common.Security.Encryption.AesEncryption();
 
         public static IEngineContainer? Container;
         public static IConfiguration? Configuration;
