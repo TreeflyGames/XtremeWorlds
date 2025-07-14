@@ -1,18 +1,20 @@
-﻿using System;
+﻿using Core;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using Mirage.Sharp.Asfw;
+using Mirage.Sharp.Asfw.Network;
+using Newtonsoft.Json.Linq;
+using Npgsql.Replication.PgOutput.Messages;
+using Server;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Runtime.Intrinsics.Arm;
 using System.Xml.Linq;
-using Core;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-using Mirage.Sharp.Asfw;
-using Newtonsoft.Json.Linq;
-using Npgsql.Replication.PgOutput.Messages;
-using Server;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -184,16 +186,23 @@ namespace Server
                     }
 
                     // Get the data
-                    username = buffer.ReadString().ToLower().Replace("\0", "");
-                    password = buffer.ReadString().Replace("\0", "");
+                    // Use the same pattern as Packet_Register for AES lookup
+                    Reoria.Engine.Common.Security.Encryption.AesEncryption aes;
+                    General.Aes.TryGetValue(index, out aes);
+                    byte[] usernameBytes = buffer.ReadBytes().ToArray();
+                    username = System.Text.Encoding.UTF8.GetString(aes.Decrypt(usernameBytes)).ToLower().Replace("\0", "");
+
+                    byte[] passwordBytes = buffer.ReadBytes().ToArray();
+                    password = System.Text.Encoding.UTF8.GetString(aes.Decrypt(passwordBytes)).Replace("\0", "");
 
                     // Get the current executing assembly
-                    var @assembly = Assembly.GetExecutingAssembly();
+                    var assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
+                    byte[] clientVersionBytes = buffer.ReadBytes().ToArray();
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = buffer.ReadString() ?? "";
-                        
+                    var clientVersion = System.Text.Encoding.UTF8.GetString(aes.Decrypt(clientVersionBytes));
+
                     // Check versions
                     if (clientVersion != serverVersion)
                     {
@@ -283,15 +292,21 @@ namespace Server
                     }
 
                     // Get the data
-                    username = buffer.ReadString().ToLower().Replace("\0", "");
-                    password = buffer.ReadString().Replace("\0", "");
+                    Reoria.Engine.Common.Security.Encryption.AesEncryption aes;
+                    General.Aes.TryGetValue(index, out aes);
+                    byte[] usernameBytes = buffer.ReadBytes().ToArray();
+                    username = System.Text.Encoding.UTF8.GetString(aes.Decrypt(usernameBytes)).ToLower().Replace("\0", "");
+
+                    byte[] passwordBytes = buffer.ReadBytes().ToArray();
+                    password = System.Text.Encoding.UTF8.GetString(aes.Decrypt(passwordBytes)).Replace("\0", "");
 
                     // Get the current executing assembly
-                    var @assembly = Assembly.GetExecutingAssembly();
+                    var assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
+                    byte[] clientVersionBytes = buffer.ReadBytes().ToArray();
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = buffer.ReadString() ?? "";
+                    var clientVersion = System.Text.Encoding.UTF8.GetString(aes.Decrypt(clientVersionBytes));
 
                     // Check versions
                     if (clientVersion != serverVersion)

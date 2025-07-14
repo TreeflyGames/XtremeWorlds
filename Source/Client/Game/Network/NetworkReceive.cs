@@ -15,6 +15,7 @@ namespace Client
 
         public static void PacketRouter()
         {
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAes] = Packet_Aes;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAlertMsg] = Packet_AlertMsg;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SLoginOK] = Packet_LoginOk;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerChars] = Packet_PlayerChars;
@@ -131,6 +132,29 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateMoral] = Packet_UpdateMoral;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMoralEditor] = Packet_EditMoral;
 
+        }
+
+        /// <summary>
+        /// Parses an AES packet to extract the key and IV.
+        /// </summary>
+        /// <param name="data">The packet data to parse.</param>
+        /// <returns>An AesEncryption instance with the parsed key and IV, or null if parsing fails.</returns>
+        private static void Packet_Aes(ref byte[] data)
+        {
+            var buffer = new ByteStream(data);
+
+            // Read key length
+            byte keyLength = buffer.ReadByte();
+
+            // Read key
+            byte[] key = buffer.ReadBlock(keyLength).ToArray();
+
+            byte ivLength = buffer.ReadByte();
+
+            // Read IV
+            byte[] iv = buffer.ReadBlock(ivLength).ToArray();
+
+            General.Aes = new Reoria.Engine.Common.Security.Encryption.AesEncryption(key, iv);
         }
 
         private static void Packet_AlertMsg(ref byte[] data)

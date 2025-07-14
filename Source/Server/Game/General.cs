@@ -3,6 +3,7 @@ using Core.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Reoria.Engine.Common.Security.Encryption;
 using Reoria.Engine.Container.Configuration.Interfaces;
 using Reoria.Engine.Container.Interfaces;
 using Reoria.Engine.Container.Logging;
@@ -17,6 +18,7 @@ namespace Server
 {
     public class General
     {
+        public static Dictionary<int, AesEncryption> Aes = new Dictionary<int, AesEncryption>();
         private static readonly RandomUtility Random = new RandomUtility();
         private static readonly IEngineContainer? Container;
         private static readonly IConfiguration? Configuration;
