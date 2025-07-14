@@ -106,14 +106,11 @@ namespace Client
 
         public static bool GameStarted()
         {
-            bool GameStartedRet = default;
-            GameStartedRet = false;
-            if (GameState.InGame == false)
+            bool GameStartedRet = false;
+
+            if (GameState.InGame == false || GameState.MapData == false || GameState.PlayerData == false)
                 return GameStartedRet;
-            if (GameState.MapData == false)
-                return GameStartedRet;
-            if (GameState.PlayerData == false)
-                return GameStartedRet;
+
             GameStartedRet = true;
             return GameStartedRet;
         }
@@ -970,7 +967,7 @@ namespace Client
                 withBlock.Msg = msg;
                 withBlock.Color = Color;
                 withBlock.Timer = General.GetTickCount();
-                withBlock.Active = Conversions.ToBoolean(1);
+                withBlock.Active = true;
             }
 
         }
@@ -1005,6 +1002,8 @@ namespace Client
                         header = "Invalid Connection";
                         body = "You lost connection to the game server.";
                         body2 = "Please try again later.";
+
+                        NetworkConfig.InitNetwork();
                         GameState.InGame = false;
                         break;
                     }
@@ -1597,7 +1596,7 @@ namespace Client
             if (GetPlayerInv(GameState.MyIndex, (int)invNum) >= 0)
             {
                 if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Type.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
-                    soulBound = Conversions.ToBoolean(1);
+                    soulBound = true;
                 ShowItemDesc(x, y, (long)GetPlayerInv(GameState.MyIndex, (int)invNum));
             }
         }
@@ -2109,7 +2108,7 @@ namespace Client
             if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]))
             {
                 if (Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]].BindType > 0)
-                    soulBound = Conversions.ToBoolean(1);
+                    soulBound = true;
                 ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]);
             }
         }
@@ -2118,7 +2117,7 @@ namespace Client
         {
             long count;
             count = Information.UBound(GameState.descText);
-            Array.Resize(ref GameState.descText, (int)(count + 1L));
+            Array.Resize(ref GameState.descText, (int)(count));
             GameState.descText[(int)(count)].Text = text;
             GameState.descText[(int)(count)].Color = GameClient.ToDrawingColor(color);
         }
@@ -2128,74 +2127,9 @@ namespace Client
             GameState.InMenu = true;
             GameState.InGame = false;
 
-            switch (GameState.MyEditorType)
-            {
-                case (int)Core.Enum.EditorType.Item:
-                    {
-                         frmEditor_Item.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Job:
-                    {
-                        frmEditor_Job.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Map:
-                    {
-                        frmEditor_Map.Instance.Dispose();
-                        frmEditor_Event.Instance.Dispose();
-                        break;
-                     }
-                case (int)Core.Enum.EditorType.NPC:
-                    {
-                        frmEditor_NPC.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Pet:
-                    {
-                        frmEditor_Pet.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Projectile:
-                    {
-                        frmEditor_Projectile.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Resource:
-                    {
-                        frmEditor_Resource.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Shop:
-                    {
-                        frmEditor_Shop.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Skill:
-                    {
-                        frmEditor_Skill.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Animation:
-                    {
-                        frmEditor_Animation.Instance.Dispose();
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Moral:
-                    {
-                        frmEditor_Moral.Instance.Dispose();
-                        break;
-                    }
-            }
-
-            if (GameState.AdminPanel)
-            {
-                FrmAdmin.Instance.Dispose();
-            }
-
+            General.ClearGameData();
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();
-            General.ClearGameData();
         }
 
         public static void SetOptionsScreen()
@@ -2236,7 +2170,7 @@ namespace Client
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "chkBuying")].Value = 0L;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnSell")].Visible = false;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnBuy")].Visible = true;
-            GameState.shopIsSelling = Conversions.ToBoolean(0);
+            GameState.shopIsSelling = false;
 
             // set the current item
             Gui.UpdateShop();

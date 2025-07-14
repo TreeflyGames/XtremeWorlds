@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Core.Database;
+using Core.Globals;
 using MonoGame.Extended.Content.Tiled;
 
 namespace Core
@@ -22,7 +23,6 @@ namespace Core
         public static MapStruct[] Map = new MapStruct[Constant.MAX_MAPS];
         public static MapStruct MyMap;
         public static TileStruct[,] TempTile;
-        public static bool[] PlayersOnMap = new bool[Constant.MAX_MAPS];
         public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, Constant.MAX_MAP_ITEMS];
         public static MapItemStruct[] MyMapItem = new MapItemStruct[Constant.MAX_MAP_ITEMS];
         public static MapDataStruct[] MapNPC = new MapDataStruct[Constant.MAX_MAPS];
@@ -43,7 +43,6 @@ namespace Core
         public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[byte.MaxValue];
         public static ScriptStruct Script = new ScriptStruct(); 
 
-        // New feature arrays
         public static QuestStruct[] Quests = new QuestStruct[Constant.MAX_QUESTS];
         public static EventStruct[] Events = new EventStruct[Constant.MAX_EVENTS];
         public static GuildStruct[] Guilds = new GuildStruct[Constant.MAX_GUILDS];
@@ -236,7 +235,7 @@ namespace Core
             public int Exp;
             public int Animation;
             public byte[] Skill;
-            public int Level;
+            public byte Level;
             public int Damage;
         }
 
@@ -269,10 +268,10 @@ namespace Core
             public string Name;
             public int Sprite;
             public int Range;
-            public int Level;
+            public byte Level;
             public int MaxLevel;
             public int ExpGain;
-            public int LevelPnts;
+            public byte Points;
             public byte StatType;
             public byte LevelingType;
             public byte[] Stat;
@@ -280,34 +279,6 @@ namespace Core
             public byte Evolvable;
             public int EvolveLevel;
             public int EvolveNum;
-        }
-
-        public struct PlayerPetStruct
-        {
-            public int Num;
-            public int Health;
-            public int Mana;
-            public int Level;
-            public byte[] Stat;
-            public int[] Skill;
-            public int Points;
-            public int X;
-            public int Y;
-            public int Dir;
-            public int MaxHp;
-            public int MaxMp;
-            public byte Alive;
-            public int AttackBehaviour;
-            public int AdoptiveStats;
-            public int Exp;
-            public int Tnl;
-            public int XOffset;
-            public int YOffset;
-            public byte Moving;
-            public byte Attacking;
-            public int AttackTimer;
-            public byte Steps;
-            public int Damage;
         }
 
         public struct AccountStruct
@@ -326,7 +297,7 @@ namespace Core
             public byte Level;
             public int Exp;
             public byte Access;
-            public byte Pk;
+            public bool PK;
             public int[] Vital;
             public byte[] Stat;
             public byte Points;
@@ -341,7 +312,6 @@ namespace Core
             public byte[] Switches;
             public int[] Variables;
             public ResourceTypetruct[] GatherSkills;
-            public PlayerPetStruct Pet;
             public int XOffset;
             public int YOffset;
             public byte Moving;
@@ -352,8 +322,8 @@ namespace Core
             public int Emote;
             public int EmoteTimer;
             public int EventTimer;
-            public PlayerQuestStruct[] Quests; // New: Quest progress tracking
-            public int GuildId; // New: Guild affiliation
+            public PlayerQuestStruct[] Quests;
+            public int GuildId;
         }
 
         public struct TempPlayerStruct
@@ -448,7 +418,7 @@ namespace Core
 
         public struct MapItemStruct
         {
-            public double Num;
+            public int Num;
             public int Value;
             public byte X;
             public byte Y;
@@ -460,7 +430,7 @@ namespace Core
 
         public struct MapNPCStruct
         {
-            public double Num;
+            public int Num;
             public int Target;
             public byte TargetType;
             public int[] Vital;
@@ -1113,7 +1083,7 @@ namespace Core
 
         public struct ScriptStruct
         {
-            public string Code;
+            public string[] Code;
         }
 
         #endregion

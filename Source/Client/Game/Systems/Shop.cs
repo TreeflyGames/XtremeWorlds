@@ -14,7 +14,7 @@ namespace Client
             Gui.HideWindow(Gui.GetWindowIndex("winDescription"));
             GameState.shopSelectedSlot = 0L;
             GameState.shopSelectedItem = 0L;
-            GameState.shopIsSelling = Conversions.ToBoolean(0);
+            GameState.shopIsSelling = false;
             GameState.InShop = -1;
         }
 

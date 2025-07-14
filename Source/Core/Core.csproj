@@ -17,6 +17,7 @@
     <DefineConstants>CORE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+	<PackageReference Include="CS-Script" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />

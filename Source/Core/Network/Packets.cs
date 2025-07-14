@@ -42,7 +42,6 @@ namespace Core
             CSearch,
             CSkills,
             CCast,
-            CQuit,
             CSwapInvSlots,
             CSwapSkillSlots,
 
@@ -92,12 +91,6 @@ namespace Core
             CLeaveParty,
             CPartyChatMsg,
             CRequestPets,
-            CSummonPet,
-            CPetMove,
-            CSetBehaviour,
-            CReleasePet,
-            CPetSkill,
-            CPetUseStatPoint,
             CRequestPet,
 
             // *************************
@@ -147,7 +140,6 @@ namespace Core
         public enum ServerPackets
         {
             SAlertMsg,
-            SKeyPair,
             SLoginOK,
             SPlayerChars,
             SJobData,
@@ -246,17 +238,9 @@ namespace Core
             SEmote,
             SPartyInvite,
             SPartyUpdate,
+            SUpdatePet,
             SPartyVitals,
             SPetEditor,
-            SUpdatePet,
-            SUpdatePlayerPet,
-            SPetMove,
-            SPetDir,
-            SPetVital,
-            SClearPetSkillBuffer,
-            SPetAttack,
-            SPetXY,
-            SPetExp,
             SMoralEditor,
 
             STime,

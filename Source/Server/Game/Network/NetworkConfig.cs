@@ -1,8 +1,12 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Core;
+﻿using Core;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw.Network;
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
 
@@ -53,10 +57,8 @@ namespace Server
             // Establish some Rulez
             Socket = new NetworkServer((int)Packets.ClientPackets.Count, 8192, Core.Constant.MAX_PLAYERS)
             {
-                BufferLimit = 2048000, // <- this is 2mb Core.Constant.MAX data storage
+                BufferLimit = 5048000, // <- this is 2mb MAX data storage
                 MinimumIndex = 0, // <- this prevents the network from giving us 0 as an index
-                PacketAcceptLimit = 500, // Dunno what is a reasonable cap right now so why not? :P
-                PacketDisconnectCount = 100 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
             };
             // END THE ESTABLISHMENT! WOOH ANARCHY! ~SpiceyWolf
 
@@ -78,7 +80,7 @@ namespace Server
             return Core.Type.TempPlayer[index].InGame;
         }
 
-        public static bool IsMultiAccounts(int index, string login)
+        public static bool IsMultiLogin(int index, string login)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
@@ -100,7 +102,7 @@ namespace Server
             return false;
         }
 
-        public static void CheckMultiAccounts(int index, string login)
+        public static async Task LoadAccount(int index, string login, byte slot)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
@@ -110,10 +112,25 @@ namespace Server
                     {
                         if (index != i)
                         {
-                            Player.LeftGame(i);
+                            await Player.LeftGame(i);
+                            break;
                         }
                     }
                 }
+            }
+
+            Database.LoadCharacter(index, slot);
+            Database.LoadBank(index);
+
+            // Check if character data has been created
+            if (Strings.Len(Core.Type.Player[index].Name) > 0)
+            {
+                // we have a char!                        
+                Player.HandleUseChar(index);
+            }
+            else
+            {
+                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Chars);
             }
         }
 
@@ -155,8 +172,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Socket.HighIndex + 1;
-            for (i = 0; i < loopTo; i++)
+            var loopTo = Socket.HighIndex;
+            for (i = 0; i <= loopTo; i++)
             {
                 if (IsPlaying(i))
                 {
@@ -178,8 +195,7 @@ namespace Server
 
         public static void Socket_ConnectionReceived(int index)
         {
-            Console.WriteLine("Connection received on index[" + index + "] - IP[" + Socket.ClientIP(index) + "]");
-            NetworkSend.SendKeyPair(index);
+            Console.WriteLine("Connection received on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
         }
 
         public static void Socket_ConnectionLost(int index)

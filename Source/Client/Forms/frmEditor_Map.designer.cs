@@ -68,14 +68,7 @@ namespace Client
             optBlocked = new DarkRadioButton();
             pnlBack = new Panel();
             picBackSelect = new PictureBox();
-            Label1 = new DarkLabel();
             pnlAttributes = new Panel();
-            fraMapLight = new DarkGroupBox();
-            lblRadius = new DarkLabel();
-            scrlLight = new HScrollBar();
-            chkShadow = new DarkCheckBox();
-            chkFlicker = new DarkCheckBox();
-            btnLight = new DarkButton();
             fraAnimation = new DarkGroupBox();
             cmbAnimation = new DarkComboBox();
             brnAnimation = new DarkButton();
@@ -223,7 +216,6 @@ namespace Client
             pnlBack.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picBackSelect).BeginInit();
             pnlAttributes.SuspendLayout();
-            fraMapLight.SuspendLayout();
             fraAnimation.SuspendLayout();
             fraMapWarp.SuspendLayout();
             fraNPCSpawn.SuspendLayout();
@@ -398,20 +390,8 @@ namespace Client
             picBackSelect.MouseDown += PicBackSelect_MouseDown;
             picBackSelect.MouseMove += PicBackSelect_MouseMove;
             // 
-            // Label1
-            // 
-            Label1.AutoSize = true;
-            Label1.ForeColor = Color.FromArgb(220, 220, 220);
-            Label1.Location = new Point(8, 544);
-            Label1.Margin = new Padding(4, 0, 4, 0);
-            Label1.Name = "Label1";
-            Label1.Size = new Size(192, 15);
-            Label1.TabIndex = 11;
-            Label1.Text = "Drag Mouse to Select Multiple Tiles";
-            // 
             // pnlAttributes
             // 
-            pnlAttributes.Controls.Add(fraMapLight);
             pnlAttributes.Controls.Add(fraAnimation);
             pnlAttributes.Controls.Add(fraMapWarp);
             pnlAttributes.Controls.Add(fraNPCSpawn);
@@ -426,69 +406,6 @@ namespace Client
             pnlAttributes.Size = new Size(586, 567);
             pnlAttributes.TabIndex = 12;
             pnlAttributes.Visible = false;
-            // 
-            // fraMapLight
-            // 
-            fraMapLight.BorderColor = Color.FromArgb(51, 51, 51);
-            fraMapLight.Controls.Add(lblRadius);
-            fraMapLight.Controls.Add(scrlLight);
-            fraMapLight.Controls.Add(chkShadow);
-            fraMapLight.Controls.Add(chkFlicker);
-            fraMapLight.Controls.Add(btnLight);
-            fraMapLight.Location = new Point(394, 147);
-            fraMapLight.Margin = new Padding(4, 3, 4, 3);
-            fraMapLight.Name = "fraMapLight";
-            fraMapLight.Padding = new Padding(4, 3, 4, 3);
-            fraMapLight.Size = new Size(172, 138);
-            fraMapLight.TabIndex = 19;
-            fraMapLight.TabStop = false;
-            fraMapLight.Text = "Light";
-            fraMapLight.Visible = false;
-            // 
-            // lblRadius
-            // 
-            lblRadius.AutoSize = true;
-            lblRadius.ForeColor = Color.FromArgb(220, 220, 220);
-            lblRadius.Location = new Point(8, 16);
-            lblRadius.Margin = new Padding(4, 0, 4, 0);
-            lblRadius.Name = "lblRadius";
-            lblRadius.Size = new Size(54, 15);
-            lblRadius.TabIndex = 41;
-            lblRadius.Text = "Radius: 0";
-            // 
-            // scrlLight
-            // 
-            scrlLight.Location = new Point(7, 31);
-            scrlLight.Name = "scrlLight";
-            scrlLight.Size = new Size(165, 17);
-            scrlLight.TabIndex = 40;
-            scrlLight.ValueChanged += scrlLight_ValueChanged;
-            // 
-            // chkShadow
-            // 
-            chkShadow.AutoSize = true;
-            chkShadow.Location = new Point(7, 73);
-            chkShadow.Name = "chkShadow";
-            chkShadow.Size = new Size(73, 19);
-            chkShadow.TabIndex = 39;
-            chkShadow.Text = "Shadows";
-            // 
-            // chkFlicker
-            // 
-            chkFlicker.AutoSize = true;
-            chkFlicker.Location = new Point(7, 51);
-            chkFlicker.Name = "chkFlicker";
-            chkFlicker.Size = new Size(60, 19);
-            chkFlicker.TabIndex = 38;
-            chkFlicker.Text = "Flicker";
-            // 
-            // btnLight
-            // 
-            btnLight.Location = new Point(0, 0);
-            btnLight.Name = "btnLight";
-            btnLight.Padding = new Padding(5);
-            btnLight.Size = new Size(75, 23);
-            btnLight.TabIndex = 42;
             // 
             // fraAnimation
             // 
@@ -1026,7 +943,7 @@ namespace Client
             tsbDeleteMap.ImageTransparentColor = Color.Magenta;
             tsbDeleteMap.Name = "tsbDeleteMap";
             tsbDeleteMap.Size = new Size(28, 25);
-            tsbDeleteMap.ToolTipText = "Delete Map";
+            tsbDeleteMap.ToolTipText = "Clear Map";
             tsbDeleteMap.Click += tsbDeleteMap_Click;
             // 
             // tsbUndo
@@ -1086,7 +1003,6 @@ namespace Client
             tpTiles.Controls.Add(Label9);
             tpTiles.Controls.Add(cmbTileSets);
             tpTiles.Controls.Add(pnlBack);
-            tpTiles.Controls.Add(Label1);
             tpTiles.Location = new Point(4, 24);
             tpTiles.Margin = new Padding(4, 3, 4, 3);
             tpTiles.Name = "tpTiles";
@@ -1100,7 +1016,7 @@ namespace Client
             cmbAutoTile.DrawMode = DrawMode.OwnerDrawVariable;
             cmbAutoTile.FormattingEnabled = true;
             cmbAutoTile.Items.AddRange(new object[] { "Normal", "AutoTile (VX)", "Fake (VX)", "Animated (VX)", "Cliff (VX)", "Waterfall (VX)" });
-            cmbAutoTile.Location = new Point(428, 566);
+            cmbAutoTile.Location = new Point(398, 547);
             cmbAutoTile.Margin = new Padding(4, 3, 4, 3);
             cmbAutoTile.Name = "cmbAutoTile";
             cmbAutoTile.Size = new Size(110, 24);
@@ -1111,7 +1027,7 @@ namespace Client
             // 
             Label11.AutoSize = true;
             Label11.ForeColor = Color.FromArgb(220, 220, 220);
-            Label11.Location = new Point(364, 570);
+            Label11.Location = new Point(334, 551);
             Label11.Margin = new Padding(4, 0, 4, 0);
             Label11.Name = "Label11";
             Label11.Size = new Size(52, 15);
@@ -1122,7 +1038,7 @@ namespace Client
             // 
             Label10.AutoSize = true;
             Label10.ForeColor = Color.FromArgb(220, 220, 220);
-            Label10.Location = new Point(167, 570);
+            Label10.Location = new Point(149, 551);
             Label10.Margin = new Padding(4, 0, 4, 0);
             Label10.Name = "Label10";
             Label10.Size = new Size(38, 15);
@@ -1134,7 +1050,7 @@ namespace Client
             cmbLayers.DrawMode = DrawMode.OwnerDrawVariable;
             cmbLayers.FormattingEnabled = true;
             cmbLayers.Items.AddRange(new object[] { "Ground", "Mask", "Mask Anim", "Cover", "Cover Anim", "Fringe", "Fringe Anim", "Roof", "Roof Anim" });
-            cmbLayers.Location = new Point(216, 566);
+            cmbLayers.Location = new Point(198, 547);
             cmbLayers.Margin = new Padding(4, 3, 4, 3);
             cmbLayers.Name = "cmbLayers";
             cmbLayers.Size = new Size(112, 24);
@@ -1145,7 +1061,7 @@ namespace Client
             // 
             Label9.AutoSize = true;
             Label9.ForeColor = Color.FromArgb(220, 220, 220);
-            Label9.Location = new Point(8, 570);
+            Label9.Location = new Point(9, 551);
             Label9.Margin = new Padding(4, 0, 4, 0);
             Label9.Name = "Label9";
             Label9.Size = new Size(43, 15);
@@ -1156,7 +1072,7 @@ namespace Client
             // 
             cmbTileSets.DrawMode = DrawMode.OwnerDrawVariable;
             cmbTileSets.FormattingEnabled = true;
-            cmbTileSets.Location = new Point(63, 566);
+            cmbTileSets.Location = new Point(64, 547);
             cmbTileSets.Margin = new Padding(4, 3, 4, 3);
             cmbTileSets.Name = "cmbTileSets";
             cmbTileSets.Size = new Size(68, 24);
@@ -2179,7 +2095,7 @@ namespace Client
             AutoScroll = true;
             AutoSize = true;
             BackColor = Color.FromArgb(45, 45, 48);
-            ClientSize = new Size(552, 658);
+            ClientSize = new Size(552, 605);
             Controls.Add(tabpages);
             Controls.Add(ToolStrip);
             Controls.Add(pnlAttributes);
@@ -2195,8 +2111,6 @@ namespace Client
             pnlBack.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picBackSelect).EndInit();
             pnlAttributes.ResumeLayout(false);
-            fraMapLight.ResumeLayout(false);
-            fraMapLight.PerformLayout();
             fraAnimation.ResumeLayout(false);
             fraMapWarp.ResumeLayout(false);
             fraMapWarp.PerformLayout();
@@ -2259,7 +2173,6 @@ namespace Client
         internal DarkRadioButton optItem;
         internal DarkRadioButton optWarp;
         internal DarkRadioButton optBlocked;
-        internal DarkLabel Label1;
         internal DarkButton btnClearAttribute;
         internal Panel pnlAttributes;
         internal DarkGroupBox fraMapWarp;
@@ -2400,13 +2313,7 @@ namespace Client
         internal DarkGroupBox fraAnimation;
         internal DarkComboBox cmbAnimation;
         internal DarkButton brnAnimation;
-        internal DarkGroupBox fraMapLight;
-        internal DarkButton btnLight;
-        internal HScrollBar scrlLight;
-        internal DarkCheckBox chkShadow;
-        internal DarkCheckBox chkFlicker;
         internal DarkLabel Label21;
-        internal DarkLabel lblRadius;
         internal DarkLabel Label22;
         internal DarkComboBox lstShop;
         internal DarkCheckBox chkNoMapRespawn;

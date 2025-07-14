@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Xml.Linq;
@@ -56,7 +57,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CBanDestroy] = Packet_DestroyBans;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CBanPlayer] = Packet_BanPlayer;
 
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMap] = Packet_EditMapRequest;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMap] = Packet_RequestEditMap;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetAccess] = Packet_SetAccess;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CWhosOnline] = Packet_WhosOnline;
@@ -64,7 +65,6 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSearch] = Packet_PlayerSearch;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSkills] = Packet_Skills;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCast] = Packet_Cast;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CQuit] = Packet_QuitGame;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwapInvSlots] = Packet_SwapInvSlots;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwapSkillSlots] = Packet_SwapSkillSlots;
 
@@ -123,25 +123,19 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPartyChatMsg] = Party.Packet_PartyChatMsg;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPets] = Pet.Packet_RequestPets;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSummonPet] = Pet.Packet_SummonPet;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetMove] = Pet.Packet_PetMove;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetBehaviour] = Pet.Packet_SetPetBehaviour;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CReleasePet] = Pet.Packet_ReleasePet;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetSkill] = Pet.Packet_PetSkill;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetUseStatPoint] = Pet.Packet_UsePetStatPoint;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPet] = Pet.Packet_RequestPet;
 
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_EditItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_RequestEditItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveItem] = Item.Packet_SaveItem;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNPC] = NPC.Packet_EditNPC;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNPC] = NPC.Packet_RequestEditNPC;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveNPC] = NPC.Packet_SaveNPC;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditShop] = Packet_EditShop;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditShop] = Packet_RequestEditShop;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveShop] = Packet_SaveShop;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditSkill] = Packet_EditSkill;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditSkill] = Packet_RequestEditSkill;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveSkill] = Packet_SaveSkill;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditResource] = Resource.Packet_EditResource;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditResource] = Resource.Packet_RequestEditResource;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveResource] = Resource.Packet_SaveResource;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditAnimation] = Animation.Packet_EditAnimation;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditAnimation] = Animation.Packet_RequestEditAnimation;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveAnimation] = Animation.Packet_SaveAnimation;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditProjectile] = Projectile.HandleRequestEditProjectile;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveProjectile] = Projectile.HandleSaveProjectile;
@@ -183,36 +177,25 @@ namespace Server
                     // Cut off last portion of ip
                     IP = NetworkConfig.Socket.ClientIP(index);
 
-                    for (i = Strings.Len(IP); i >= 0; i -= 1)
-                    {
-
-                        if (Strings.Mid(IP, i, 1) == ".")
-                        {
-                            break;
-                        }
-
-                    }
-
-                    IP = Strings.Mid(IP, 1, i);
-
-                    if (General.GetShutDownTimer.IsRunning)
+                    if (General.GetShutDownTimer != null && General.GetShutDownTimer.IsRunning)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Login);
                         return;
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
+                    username = buffer.ReadString().ToLower().Replace("\0", "");
+                    password = buffer.ReadString().Replace("\0", "");
 
                     // Get the current executing assembly
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
-                    var version = assembly.GetName().Version;
-
+                    var serverVersion = assembly.GetName().Version.ToString();
+                    var clientVersion = buffer.ReadString() ?? "";
+                        
                     // Check versions
-                    if ((Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "") != (version.ToString() ?? ""))
+                    if (clientVersion != serverVersion)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Login);
                         return;
@@ -224,13 +207,11 @@ namespace Server
                         return;
                     }
 
-                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    if (NetworkConfig.IsMultiLogin(index, username))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Login);
                         return;
                     }
-
-                    NetworkConfig.CheckMultiAccounts(index, username);
 
                     if (!Database.LoadAccount(index, username))
                     {
@@ -250,15 +231,15 @@ namespace Server
                         return;
                     }
 
-                    if (GetPlayerLogin(index) == "")
+                    if (GetAccountLogin(index) == "")
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Login);
                         return;
                     }
 
                     // Show the player up on the socket status
-                    Log.Add(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".", Constant.PLAYER_LOG);
-                    Console.WriteLine(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".");
+                    Log.Add(GetAccountLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".", Constant.PLAYER_LOG);
+                    Console.WriteLine(GetAccountLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".");
 
                     // send them to the character portal
                     NetworkSend.SendPlayerChars(index);
@@ -289,18 +270,6 @@ namespace Server
                     // Cut off last portion of ip
                     IP = NetworkConfig.Socket.ClientIP(index);
 
-                    for (i = Strings.Len(IP); i >= 0; i -= 1)
-                    {
-
-                        if (Strings.Mid(IP, i, 1) == ".")
-                        {
-                            break;
-                        }
-
-                    }
-
-                    IP = Strings.Mid(IP, 1, i);
-
                     if (Database.IsBanned(index, IP))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Banned, (byte)MenuType.Register);
@@ -314,17 +283,18 @@ namespace Server
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
+                    username = buffer.ReadString().ToLower().Replace("\0", "");
+                    password = buffer.ReadString().Replace("\0", "");
 
                     // Get the current executing assembly
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
-                    var version = assembly.GetName().Version;
+                    var serverVersion = assembly.GetName().Version.ToString();
+                    var clientVersion = buffer.ReadString() ?? "";
 
                     // Check versions
-                    if ((Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "") != (version.ToString() ?? ""))
+                    if (clientVersion != serverVersion)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Register);
                         return;
@@ -344,13 +314,17 @@ namespace Server
                         return;
                     }
 
-                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    if (NetworkConfig.IsMultiLogin(index, username))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
                         return;
                     }
 
-                    NetworkConfig.CheckMultiAccounts(index, username);
+                    if (NetworkConfig.IsMultiLogin(index, username))
+                    {
+                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
+                        return;
+                    }
 
                     userData = Database.SelectRowByColumn("id", Database.GetStringHash(username), "account", "data");
 
@@ -386,21 +360,7 @@ namespace Server
                         return;
                     }
 
-                    Database.LoadCharacter(index, slot);
-                    Database.LoadBank(index);
-
-                    // Check if character data has been created
-                    if (Strings.Len(Core.Type.Player[index].Name) > 0)
-                    {
-                        // we have a char!
-                        Core.Type.TempPlayer[index].Slot = slot;
-                        Player.HandleUseChar(index);
-                    }
-                    else
-                    {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Chars);
-                        return;
-                    }
+                    NetworkConfig.LoadAccount(index, Core.Type.Account[index].Login, slot);
                 }
             }
             else
@@ -487,7 +447,7 @@ namespace Server
                 if (Core.Type.Char.Count == 1)
                     SetPlayerAccess(index, (int)AccessType.Owner);
 
-                Log.Add("Character " + name + " added to " + GetPlayerLogin(index) + "'s account.", Constant.PLAYER_LOG);
+                Log.Add("Character " + name + " added to " + GetAccountLogin(index) + "'s account.", Constant.PLAYER_LOG);
                 Player.HandleUseChar(index);
 
                 buffer.Dispose();
@@ -693,12 +653,7 @@ namespace Server
             if (Core.Type.TempPlayer[index].StunDuration > 0)
                 return;
 
-            // Send this packet so they can see the person attacking
-            buffer = new ByteStream(4);
-            buffer.WriteInt32((int) ServerPackets.SAttack);
-            buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
-            buffer.Dispose();
+            NetworkSend.SendPlayerAttack(index);
 
             // Projectile check
             if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
@@ -715,7 +670,7 @@ namespace Server
                         }
                         else
                         {
-                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "No more " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int)ColorType.BrightRed);
                             return;
                         }
                     }
@@ -727,31 +682,10 @@ namespace Server
                 }
             }
 
-            // Try to attack a player
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo; i++)
-            {
-                Tempindex = i;
-
-                // Make sure we dont try to attack ourselves
-                if (Tempindex != index)
-                {
-                    if (NetworkConfig.IsPlaying(Tempindex))
-                    {
-                        Player.TryPlayerAttackPlayer(index, i);
-                    }
-                }
-            }
-
-            // Try to attack a npc
-            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
-            for (i = 0; i < loopTo1; i++)
-                Player.TryPlayerAttackNPC(index, i);
-
             // Check tradeskills
             switch (GetPlayerDir(index))
             {
-                case var @case when @case == (byte) DirectionType.Up:
+                case  (byte) DirectionType.Up:
                     {
 
                         if (GetPlayerY(index) == 0)
@@ -760,7 +694,7 @@ namespace Server
                         y = GetPlayerY(index) - 1;
                         break;
                     }
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
 
                         if (GetPlayerY(index) == Core.Type.Map[GetPlayerMap(index)].MaxY)
@@ -769,7 +703,7 @@ namespace Server
                         y = GetPlayerY(index) + 1;
                         break;
                     }
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte) DirectionType.Left:
                     {
 
                         if (GetPlayerX(index) == 0)
@@ -778,7 +712,7 @@ namespace Server
                         y = GetPlayerY(index);
                         break;
                     }
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte) DirectionType.Right:
                     {
 
                         if (GetPlayerX(index) == Core.Type.Map[GetPlayerMap(index)].MaxX)
@@ -854,7 +788,7 @@ namespace Server
 
             if (i >= 0)
             {
-                NetworkSend.PlayerMsg(index, "Account:  " + GetPlayerLogin(i) + ", Name: " + GetPlayerName(i), (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "Account:  " + GetAccountLogin(i) + ", Name: " + GetPlayerName(i), (int) ColorType.Yellow);
 
                 if (GetPlayerAccess(index) > (byte)AccessType.Moderator)
                 {
@@ -1269,7 +1203,7 @@ namespace Server
             EventLogic.SpawnGlobalEvents(mapNum);
             
             var loopTo10 = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo10; i++)
+            for (i = 0; i < loopTo10; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -1294,12 +1228,11 @@ namespace Server
 
             // Refresh map for everyone online
             var loopTo12 = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo12; i++)
+            for (i = 0; i < loopTo12; i++)
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                 {
                     Player.PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i), (byte)Core.Enum.DirectionType.Down);
-                    // Send map
                     NetworkSend.SendMapData(i, mapNum, true);
                 }
             }
@@ -1309,15 +1242,15 @@ namespace Server
 
         private static void Packet_NeedMap(int index, ref byte[] data)
         {
-            string s;
+            int s;
             var buffer = new ByteStream(data);
 
             // Get yes/no value
-            s = buffer.ReadInt32().ToString();
+            s = buffer.ReadInt32();
             buffer.Dispose();
 
             // Check if data is needed to be sent
-            if (Conversions.ToDouble(s) == 1d)
+            if (s == 1)
             {
                 NetworkSend.SendMapData(index, GetPlayerMap(index), true);
             }
@@ -1326,7 +1259,7 @@ namespace Server
                 NetworkSend.SendMapData(index, GetPlayerMap(index), false);
             }
 
-            if (Core.Type.Map[GetPlayerMap(index)].Shop >= 0)
+            if (Core.Type.Map[GetPlayerMap(index)].Shop >= 0 && Core.Type.Map[GetPlayerMap(index)].Shop < Core.Constant.MAX_SHOPS)
             {
                 if (!string.IsNullOrEmpty(Core.Type.Shop[Core.Type.Map[GetPlayerMap(index)].Shop].Name))
                 {
@@ -1335,7 +1268,6 @@ namespace Server
                 }
             }
 
-            NetworkSend.SendJoinMap(index);
             Core.Type.TempPlayer[index].GettingMap = false;
         }
 
@@ -1479,13 +1411,10 @@ namespace Server
 
         }
 
-        private static void Packet_EditMapRequest(int index, ref byte[] data)
+        private static void Packet_RequestEditMap(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -1515,13 +1444,10 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void Packet_EditShop(int index, ref byte[] data)
+        public static void Packet_RequestEditShop(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -1577,16 +1503,13 @@ namespace Server
             // Save it
             NetworkSend.SendUpdateShopToAll(ShopNum);
             Database.SaveShop(ShopNum);
-            Log.Add(GetPlayerLogin(index) + " saving shop #" + ShopNum + ".", Constant.ADMIN_LOG);
+            Log.Add(GetAccountLogin(index) + " saving shop #" + ShopNum + ".", Constant.ADMIN_LOG);
         }
 
-        public static void Packet_EditSkill(int index, ref byte[] data)
+        public static void Packet_RequestEditSkill(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -1657,7 +1580,7 @@ namespace Server
             // Save it
             NetworkSend.SendUpdateSkillToAll(skillNum);
             Database.SaveSkill(skillNum);
-            Log.Add(GetPlayerLogin(index) + " saved Skill #" + skillNum + ".", Constant.ADMIN_LOG);
+            Log.Add(GetAccountLogin(index) + " saved Skill #" + skillNum + ".", Constant.ADMIN_LOG);
 
             buffer.Dispose();
         }
@@ -1756,7 +1679,7 @@ namespace Server
 
             // Check for a player   
             var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (GetPlayerMap(index) == GetPlayerMap(i))
                 {
@@ -1896,16 +1819,16 @@ namespace Server
             {
                 if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanCast)
                 {
-                    // set the skill buffer before casting
-                    Player.bufferSkill(index, n);
+                    try
+                    {
+                        Script.Instance?.BufferSkill(index, n);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
             }
-        }
-
-        public static void Packet_QuitGame(int index, ref byte[] data)
-        {
-            NetworkSend.SendLeftGame(index);
-            Player.LeftGame(index);
         }
 
         public static void Packet_SwapInvSlots(int index, ref byte[] data)
@@ -2003,7 +1926,7 @@ namespace Server
 
         public static void Packet_TrainStat(int index, ref byte[] data)
         {
-            int tmpstat;
+            int tmpStat;
             var buffer = new ByteStream(data);
 
             // check points
@@ -2011,23 +1934,17 @@ namespace Server
                 return;
 
             // stat
-            tmpstat = buffer.ReadInt32();
+            tmpStat = buffer.ReadInt32();
 
-            // make sure there stats are not maxed
-            if (GetPlayerRawStat(index, (StatType)tmpstat) >= Core.Constant.MAX_STATS)
+            try
             {
-                NetworkSend.PlayerMsg(index, "You cannot spend any more points on that stat.", (int)ColorType.BrightRed);
-                return;
+                Script.Instance?.TrainStat(index, tmpStat);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-            // increment stat
-            SetPlayerStat(index, (StatType)tmpstat, GetPlayerRawStat(index, (StatType)tmpstat) + 1);
-
-            // decrement points
-            SetPlayerPoints(index, GetPlayerPoints(index) - 1);
-
-            // send player new data
-            NetworkSend.SendPlayerData(index);
             buffer.Dispose();
         }
 
@@ -2105,20 +2022,20 @@ namespace Server
 
         public static void Packet_BuyItem(int index, ref byte[] data)
         {
-            int shopslot;
-            double shopnum;
+            int shopSlot;
+            double shopMum;
             int itemAmount;
             var buffer = new ByteStream(data);
 
-            shopslot = buffer.ReadInt32();
+            shopSlot = buffer.ReadInt32();
 
             // not in shop, exit out
-            shopnum = Core.Type.TempPlayer[index].InShop;
+            shopMum = Core.Type.TempPlayer[index].InShop;
 
-            if (shopnum < 0 | shopnum > Core.Constant.MAX_SHOPS)
+            if (shopMum < 0 | shopMum > Core.Constant.MAX_SHOPS)
                 return;
 
-            ref var withBlock = ref Core.Type.Shop[(int)shopnum].TradeItem[shopslot];
+            ref var withBlock = ref Core.Type.Shop[(int)shopMum].TradeItem[shopSlot];
 
             // check trade exists
             if (withBlock.Item < 0)
@@ -2624,7 +2541,7 @@ namespace Server
 
             if (index > 0 & NetworkConfig.IsPlaying(index))
             {
-                NetworkSend.GlobalMsg(GetPlayerLogin(index) + "/" + GetPlayerName(index) + " has been booted for (" + Reason + ")");
+                NetworkSend.GlobalMsg(GetAccountLogin(index) + "/" + GetPlayerName(index) + " has been booted for (" + Reason + ")");
 
                 NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
             }
@@ -2743,16 +2660,21 @@ namespace Server
 
             skillNum = buffer.ReadInt32();
 
-            Player.PlayerLearnSkill(index, -1, skillNum);
+            try
+            {
+                Script.Instance?.LearnSkill(index, -1, skillNum);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
         public static void Packet_RequestEditJob(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte)AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;

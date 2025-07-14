@@ -171,15 +171,6 @@ namespace Core
             }
         }
 
-        /// <summary> Returns scripts directory </summary>
-        public static string Scripts
-        {
-            get
-            {
-                return System.IO.Path.Combine(Database, "Scripts");
-            }
-        }
-
         /// <summary> Returns music directory </summary>
         public static string Music
         {

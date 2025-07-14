@@ -11,10 +11,10 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("XtremeWorlds Server")]
 [assembly: AssemblyDescription("2-D MMORPG Game Engine")]
-[assembly: AssemblyCompany("Treefly Games")]
+[assembly: AssemblyCompany("Treefly Studios")]
 [assembly: AssemblyProduct("Game Server")]
-[assembly: AssemblyCopyright("Copyright © 2024")]
-[assembly: AssemblyTrademark("Treefly Games")]
+[assembly: AssemblyCopyright("Copyright © 2025")]
+[assembly: AssemblyTrademark("Treefly Studios")]
 
 [assembly: ComVisible(false)]
 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // <Assembly: AssemblyVersion("1.0.*")>
 
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyVersion("2.1.2.0")]
+[assembly: AssemblyFileVersion("2.1.2.0")]

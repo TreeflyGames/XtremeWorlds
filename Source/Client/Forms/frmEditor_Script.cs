@@ -1,4 +1,5 @@
 ﻿using Assimp;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +22,7 @@ namespace Client
         private void btnOpenScript_Click(object sender, EventArgs e)
         {
             // Open code in temp file
-            System.IO.File.WriteAllText(Script.TempFile, Core.Type.Script.Code);
+            System.IO.File.WriteAllLines(Script.TempFile, Core.Type.Script.Code);
 
             // Open with default text editor
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
@@ -33,6 +34,14 @@ namespace Client
 
         private void buttonSaveScript_Click(object sender, EventArgs e)
         {
+            if (!File.Exists(Script.TempFile))
+            {
+                Interaction.MsgBox("Open a sript before saving.");
+                return;
+            }
+
+            // Read the script file and set the script code to the file contents
+            Core.Type.Script.Code = File.ReadAllLines(Script.TempFile);
             Script.SendSaveScript();
         }
 

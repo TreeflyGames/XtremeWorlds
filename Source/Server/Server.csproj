@@ -53,7 +53,6 @@
     <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CS-Script.Core" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />
@@ -85,6 +84,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Database\Script.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
   <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
 </Project>

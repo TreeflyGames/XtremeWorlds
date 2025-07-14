@@ -514,15 +514,15 @@ namespace Client
 
             // North West
             if (CheckTileMatch(layerNum, x, y, x - 1, y - 1))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // North
             if (CheckTileMatch(layerNum, x, y, x, y - 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // West
             if (CheckTileMatch(layerNum, x, y, x - 1, y))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
 
             // Calculate Situation - Inner
             if (!tmpTile[2] & !tmpTile[3])
@@ -583,15 +583,15 @@ namespace Client
 
             // North
             if (CheckTileMatch(layerNum, x, y, x, y - 1))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // North East
             if (CheckTileMatch(layerNum, x, y, x + 1, y - 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // East
             if (CheckTileMatch(layerNum, x, y, x + 1, y))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
 
             // Calculate Situation - Inner
             if (!tmpTile[1] & !tmpTile[3])
@@ -650,15 +650,15 @@ namespace Client
 
             // West
             if (CheckTileMatch(layerNum, x, y, x - 1, y))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // South West
             if (CheckTileMatch(layerNum, x, y, x - 1, y + 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // South
             if (CheckTileMatch(layerNum, x, y, x, y + 1))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
 
             // Calculate Situation - Inner
             if (!tmpTile[1] & !tmpTile[3])
@@ -719,15 +719,15 @@ namespace Client
 
             // South
             if (CheckTileMatch(layerNum, x, y, x, y + 1))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // South East
             if (CheckTileMatch(layerNum, x, y, x + 1, y + 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // East
             if (CheckTileMatch(layerNum, x, y, x + 1, y))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
 
             // Calculate Situation - Inner
             if (!tmpTile[1] & !tmpTile[3])
@@ -788,7 +788,7 @@ namespace Client
 
             // West
             if (CheckTileMatch(layerNum, x, y, x - 1, y))
-                tmpTile = Conversions.ToBoolean(1);
+                tmpTile = true;
 
             // Actually place the subtile
             if (tmpTile)
@@ -810,7 +810,7 @@ namespace Client
 
             // East
             if (CheckTileMatch(layerNum, x, y, x + 1, y))
-                tmpTile = Conversions.ToBoolean(1);
+                tmpTile = true;
             // Actually place the subtile
             if (tmpTile)
             {
@@ -831,7 +831,7 @@ namespace Client
 
             // West
             if (CheckTileMatch(layerNum, x, y, x - 1, y))
-                tmpTile = Conversions.ToBoolean(1);
+                tmpTile = true;
             // Actually place the subtile
             if (tmpTile)
             {
@@ -852,7 +852,7 @@ namespace Client
 
             // East
             if (CheckTileMatch(layerNum, x, y, x + 1, y))
-                tmpTile = Conversions.ToBoolean(1);
+                tmpTile = true;
             // Actually place the subtile
             if (tmpTile)
             {
@@ -875,15 +875,15 @@ namespace Client
 
             // North West
             if (CheckTileMatch(layerNum, x, y, x - 1, y - 1))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // North
             if (CheckTileMatch(layerNum, x, y, x, y - 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // West
             if (CheckTileMatch(layerNum, x, y, x - 1, y))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
             situation = GameState.AutoFill;
 
             // Calculate Situation - Horizontal
@@ -936,15 +936,15 @@ namespace Client
 
             // North
             if (CheckTileMatch(layerNum, x, y, x, y - 1))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // North East
             if (CheckTileMatch(layerNum, x, y, x + 1, y - 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // East
             if (CheckTileMatch(layerNum, x, y, x + 1, y))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
             situation = GameState.AutoFill;
 
             // Calculate Situation - Horizontal
@@ -997,15 +997,15 @@ namespace Client
 
             // West
             if (CheckTileMatch(layerNum, x, y, x - 1, y))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // South West
             if (CheckTileMatch(layerNum, x, y, x - 1, y + 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // South
             if (CheckTileMatch(layerNum, x, y, x, y + 1))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
             situation = GameState.AutoFill;
 
             // Calculate Situation - Horizontal
@@ -1057,15 +1057,15 @@ namespace Client
 
             // South
             if (CheckTileMatch(layerNum, x, y, x, y + 1))
-                tmpTile[1] = Conversions.ToBoolean(1);
+                tmpTile[1] = true;
 
             // South East
             if (CheckTileMatch(layerNum, x, y, x + 1, y + 1))
-                tmpTile[2] = Conversions.ToBoolean(1);
+                tmpTile[2] = true;
 
             // East
             if (CheckTileMatch(layerNum, x, y, x + 1, y))
-                tmpTile[3] = Conversions.ToBoolean(1);
+                tmpTile[3] = true;
 
             situation = GameState.AutoFill;
             // Calculate Situation -  Horizontal
@@ -1114,45 +1114,45 @@ namespace Client
         private static bool CheckTileMatch(int layerNum, int x1, int y1, int x2, int y2)
         {
             bool CheckTileMatchRet = default;
-            CheckTileMatchRet = Conversions.ToBoolean(1);
+            CheckTileMatchRet = true;
 
             // if it's off the map then set it as autotile and exit out early
             if (x2 < 0 | x2 > Core.Type.MyMap.MaxX | y2 < 0 | y2 > Core.Type.MyMap.MaxY)
             {
-                CheckTileMatchRet = Conversions.ToBoolean(1);
+                CheckTileMatchRet = true;
                 return CheckTileMatchRet;
             }
 
             // fakes ALWAYS return true
             if (Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].AutoTile == GameState.AutotileFake)
             {
-                CheckTileMatchRet = Conversions.ToBoolean(1);
+                CheckTileMatchRet = true;
                 return CheckTileMatchRet;
             }
 
             // check neighbour is an autotile
             if (Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].AutoTile == 0)
             {
-                CheckTileMatchRet = Conversions.ToBoolean(0);
+                CheckTileMatchRet = false;
                 return CheckTileMatchRet;
             }
 
             // check we're a matching
             if (Core.Type.MyMap.Tile[x1, y1].Layer[layerNum].Tileset != Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].Tileset)
             {
-                CheckTileMatchRet = Conversions.ToBoolean(0);
+                CheckTileMatchRet = false;
                 return CheckTileMatchRet;
             }
 
             // check tiles match
             if (Core.Type.MyMap.Tile[x1, y1].Layer[layerNum].X != Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].X)
             {
-                CheckTileMatchRet = Conversions.ToBoolean(0);
+                CheckTileMatchRet = false;
                 return CheckTileMatchRet;
             }
             else if (Core.Type.MyMap.Tile[x1, y1].Layer[layerNum].Y != Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].Y)
             {
-                CheckTileMatchRet = Conversions.ToBoolean(0);
+                CheckTileMatchRet = false;
                 return CheckTileMatchRet;
             }
 

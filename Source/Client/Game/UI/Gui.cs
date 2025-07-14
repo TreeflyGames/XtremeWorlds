@@ -500,7 +500,7 @@ namespace Client
                     {
                         Windows[curWindow].LastControl = Windows[curWindow].ActiveControl;
                         Windows[curWindow].ActiveControl = (int)curControl;
-                        SetActiveControlRet = Conversions.ToBoolean(1);
+                        SetActiveControlRet = true;
                         break;
                     }
             }
@@ -1705,10 +1705,6 @@ namespace Client
                                         }
                                         withBlock2.Value = 0L;
                                     }
-                                    else
-                                    {
-                                        withBlock2.Value = withBlock2.Value == 0L ? 1 : 0;
-                                    }
 
                                     break;
                                 }
@@ -2884,13 +2880,13 @@ namespace Client
                 var withBlock = Windows[GetWindowIndex("winLogin")].Controls[GetControlIndex("winLogin", "chkSaveUsername")];
                 if (withBlock.Value == 0L) // set as false
                 {
-                    SettingsManager.Instance.SaveUsername = Conversions.ToBoolean(0);
+                    SettingsManager.Instance.SaveUsername = false;
                     SettingsManager.Instance.Username = "";
                     SettingsManager.Save();
                 }
                 else
                 {
-                    SettingsManager.Instance.SaveUsername = Conversions.ToBoolean(1);
+                    SettingsManager.Instance.SaveUsername = true;
                     SettingsManager.Save();
                 }
             }
@@ -3270,7 +3266,7 @@ namespace Client
 
             count = Information.UBound(textArray);
             y = yO + 60L;
-            var loopTo = count;
+            var loopTo = count + 1;
             for (i = 0L; i < loopTo; i++)
             {
                 x = xO + 118L + 200 / 2 - Text.GetTextWidth(textArray[(int)i], Windows[GetWindowIndex("winJobs")].Font) / 2;
@@ -3413,22 +3409,22 @@ namespace Client
 
         public static void btnChat_Up()
         {
-            GameState.ChatButtonUp = Conversions.ToBoolean(1);
+            GameState.ChatButtonUp = true;
         }
 
         public static void btnChat_Down()
         {
-            GameState.ChatButtonDown = Conversions.ToBoolean(1);
+            GameState.ChatButtonDown = true;
         }
 
         public static void btnChat_Up_MouseUp()
         {
-            GameState.ChatButtonUp = Conversions.ToBoolean(0);
+            GameState.ChatButtonUp = false;
         }
 
         public static void btnChat_Down_MouseUp()
         {
-            GameState.ChatButtonDown = Conversions.ToBoolean(0);
+            GameState.ChatButtonDown = false;
         }
 
         // ###################
@@ -5276,12 +5272,12 @@ namespace Client
                                         if (!(Core.Type.Item[(int)tmpItem].Type == (byte)Core.Enum.ItemType.Currency))
                                         {
                                             // normal item, exit out
-                                            skipItem = Conversions.ToBoolean(1);
+                                            skipItem = true;
                                         }
                                         // if amount = all currency, remove from inventory
                                         else if (Core.Type.TradeYourOffer[(int)x].Value == GetPlayerInvValue(GameState.MyIndex, (int)i))
                                         {
-                                            skipItem = Conversions.ToBoolean(1);
+                                            skipItem = true;
                                         }
                                         else
                                         {
@@ -5331,7 +5327,7 @@ namespace Client
                         }
 
                         // reset
-                        skipItem = Conversions.ToBoolean(0);
+                        skipItem = false;
                     }
                 }
             }
@@ -5727,7 +5723,7 @@ namespace Client
             }
 
             // update the shop
-            GameState.shopIsSelling = Conversions.ToBoolean(0);
+            GameState.shopIsSelling = false;
             GameState.shopSelectedSlot = 0L;
             UpdateShop();
         }
@@ -5756,7 +5752,7 @@ namespace Client
             }
 
             // update the shop
-            GameState.shopIsSelling = Conversions.ToBoolean(1);
+            GameState.shopIsSelling = true;
             GameState.shopSelectedSlot = 0L;
             UpdateShop();
         }
@@ -6037,7 +6033,7 @@ namespace Client
             if (Conversions.ToLong(SettingsManager.Instance.Fullscreen) != Value)
             {
                 SettingsManager.Instance.Fullscreen = Conversions.ToBoolean(Value);
-                message = Conversions.ToBoolean(1);
+                message = true;
             }
 
             // resolution
@@ -6045,7 +6041,7 @@ namespace Client
                 var withBlock = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "cmbRes")];
                 if (withBlock.Value > 0L & withBlock.Value <= 13L)
                 {
-                    message = Conversions.ToBoolean(1);
+                    message = true;
                 }
             }
 
@@ -6956,7 +6952,7 @@ namespace Client
             ActiveWindow = GetWindowIndex("winChat");
             SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"));
             Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "txtChat")].Visible = true;
-            GameState.inSmallChat = Conversions.ToBoolean(0);
+            GameState.inSmallChat = false;
             GameState.ChatScroll = 0L;
         }
 
@@ -6970,7 +6966,7 @@ namespace Client
             SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"));
             Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "txtChat")].Visible = false;
 
-            GameState.inSmallChat = Conversions.ToBoolean(1);
+            GameState.inSmallChat = true;
             GameState.ChatScroll = 0L;
         }
 

@@ -102,12 +102,10 @@ namespace Server
 
         #region Incoming Packets
 
-        public static void Packet_EditAnimation(int index, ref byte[] data)
+        public static void Packet_RequestEditAnimation(int index, ref byte[] data)
         {
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -158,7 +156,7 @@ namespace Server
             // Save it
             SaveAnimation(AnimNum);
             SendUpdateAnimationToAll(AnimNum);
-            Core.Log.Add(GetPlayerLogin(index) + " saved Animation #" + AnimNum + ".", Constant.ADMIN_LOG);
+            Core.Log.Add(GetAccountLogin(index) + " saved Animation #" + AnimNum + ".", Constant.ADMIN_LOG);
 
         }
 

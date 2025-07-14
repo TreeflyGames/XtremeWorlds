@@ -683,11 +683,11 @@ namespace Server
             {
                 if (line.Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase))
                 {
-                    isInSection = Conversions.ToBoolean(1);
+                    isInSection = true;
                 }
                 else if (line.StartsWith("[") & line.EndsWith("]"))
                 {
-                    isInSection = Conversions.ToBoolean(0);
+                    isInSection = false;
                 }
                 else if (isInSection & line.Contains("="))
                 {
@@ -714,7 +714,7 @@ namespace Server
             {
                 if (lines[i].Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase))
                 {
-                    isInSection = Conversions.ToBoolean(1);
+                    isInSection = true;
                     i += 0;
                     while (i < lines.Count & !lines[i].StartsWith("["))
                     {
@@ -724,7 +724,7 @@ namespace Server
                             if (parts[0].Equals(key, StringComparison.OrdinalIgnoreCase))
                             {
                                 lines[i] = key + "=" + value;
-                                updated = Conversions.ToBoolean(1);
+                                updated = true;
                                 break;
                             }
                         }
@@ -829,7 +829,6 @@ namespace Server
             Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[1];
 
             // Reset the values for if a player is on the map or not
-            PlayersOnMap[mapNum] = false;
             Core.Type.Map[mapNum].Name = "";
             Core.Type.Map[mapNum].Music = "";
         }
@@ -888,19 +887,19 @@ namespace Server
             //    return;
             //}
 
-            try
-            {
                 if (System.IO.File.Exists(mapsDir + @"\map" + mapNum + ".dat"))
                 {
-                    var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
-                    Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
-                    return;
+                    try
+                    {
+                        var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
+                        Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
+                        return;
+                    }
+                    catch { Exception e; }
+                    {
+                        Console.WriteLine(mapNum + " failed to load map!");
+                    }
                 }
-            }
-            catch { Exception e; }
-            {
-                Console.WriteLine(mapNum + " failed to load map!");
-            }
 
             //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
             //{
@@ -1512,12 +1511,12 @@ namespace Server
             }
         }
 
-        private static async Task SaveCharacterAsync(int index, int slot)
+        public static async Task SaveCharacterAsync(int index, int slot)
         {
             await Task.Run(() => SaveCharacter(index, slot));
         }
 
-        private static async Task SaveBankAsync(int index)
+        public static async Task SaveBankAsync(int index)
         {
             await Task.Run(() => SaveBank(index));
         }
@@ -1525,7 +1524,7 @@ namespace Server
         public static async Task SaveAccountAsync(int index)
         {
             string json = JsonConvert.SerializeObject(Core.Type.Account[index]).ToString();
-            string username = GetPlayerLogin(index);
+            string username = GetAccountLogin(index);
             long id = GetStringHash(username);
 
             if (await RowExistsAsync(id, "account"))
@@ -1600,7 +1599,7 @@ namespace Server
         public static void LoadBank(int index)
         {
             JObject data;
-            data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "bank");
+            data = SelectRowByColumn("id", GetStringHash(GetAccountLogin(index)), "account", "bank");
 
             if (data is null)
             {
@@ -1615,7 +1614,7 @@ namespace Server
         public static void SaveBank(int index)
         {
             string json = JsonConvert.SerializeObject(Bank[index]);
-            string username = GetPlayerLogin(index);
+            string username = GetAccountLogin(index);
             long id = GetStringHash(username);
 
             if (RowExistsByColumn("id", id, "account"))
@@ -1663,7 +1662,7 @@ namespace Server
             Core.Type.Player[index].Level = 0;
             Core.Type.Player[index].Map = 0;
             Core.Type.Player[index].Name = "";
-            Core.Type.Player[index].Pk = 0;
+            Core.Type.Player[index].PK = false;
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sex = 0;
 
@@ -1712,36 +1711,12 @@ namespace Server
 
             for (int i = 0, loopTo9 = (byte)EquipmentType.Count; i < loopTo9; i++)
                 Core.Type.Player[index].Equipment[i] = -1;
-
-            Core.Type.Player[index].Pet.Num = 0;
-            Core.Type.Player[index].Pet.Health = 0;
-            Core.Type.Player[index].Pet.Mana = 0;
-            Core.Type.Player[index].Pet.Level = 0;
-
-            Core.Type.Player[index].Pet.Stat = new byte[(byte)StatType.Count];
-
-            for (int i = 0, loopTo10 = (byte)StatType.Count; i < loopTo10; i++)
-                Core.Type.Player[index].Pet.Stat[i] = 0;
-
-            Core.Type.Player[index].Pet.Skill = new int[Core.Constant.MAX_PET_SKILLS];
-            for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
-                Core.Type.Player[index].Pet.Skill[i] = -1;
-
-            Core.Type.Player[index].Pet.Num = -1;
-            Core.Type.Player[index].Pet.X = 0;
-            Core.Type.Player[index].Pet.Y = 0;
-            Core.Type.Player[index].Pet.Dir = 0;
-            Core.Type.Player[index].Pet.Alive = 0;
-            Core.Type.Player[index].Pet.AttackBehaviour = 0;
-            Core.Type.Player[index].Pet.AdoptiveStats = 0;
-            Core.Type.Player[index].Pet.Points = 0;
-            Core.Type.Player[index].Pet.Exp = 0;
         }
 
         public static bool LoadCharacter(int index, int charNum)
         {
             JObject data;
-            data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "character" + charNum.ToString());
+            data = SelectRowByColumn("id", GetStringHash(GetAccountLogin(index)), "account", "character" + charNum.ToString());
 
             if (data is null)
             {
@@ -1756,13 +1731,14 @@ namespace Server
             }
 
             Core.Type.Player[index] = characterData;
+            Core.Type.TempPlayer[index].Slot = (byte)charNum;
             return true;
         }
 
         public static void SaveCharacter(int index, int slot)
         {
             string json = JsonConvert.SerializeObject(Core.Type.Player[index]).ToString();
-            long id = GetStringHash(GetPlayerLogin(index));
+            long id = GetStringHash(GetAccountLogin(index));
 
             if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                 return;
@@ -1864,7 +1840,7 @@ namespace Server
 
             }
 
-            Core.Type.Account[BanPlayerindex].Banned = Conversions.ToBoolean(1);
+            Core.Type.Account[BanPlayerindex].Banned = true;
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
@@ -1878,6 +1854,18 @@ namespace Server
             bool IsBannedRet = default;
             string filename;
             string line;
+            int i;
+            
+            for (i = Strings.Len(IP); i >= 0; i -= 1)
+            {
+
+                if (Strings.Mid(IP, i, 1) == ".")
+                {
+                    IP = Strings.Mid(IP, i, 1);
+                    break;
+                }
+
+            }
 
             filename = Path.Combine(Core.Path.Database, "banlist.txt");
 
@@ -1895,7 +1883,7 @@ namespace Server
                 line = sr.ReadLine();
                 if ((Strings.LCase(line) ?? "") == (Strings.LCase(Strings.Mid(IP, 1, Strings.Len(line))) ?? ""))
                 {
-                    IsBannedRet = Conversions.ToBoolean(1);
+                    IsBannedRet = true;
                 }
             }
 
@@ -1903,7 +1891,7 @@ namespace Server
 
             if (Core.Type.Account[index].Banned)
             {
-                IsBannedRet = Conversions.ToBoolean(1);
+                IsBannedRet = true;
             }
 
             return IsBannedRet;

@@ -1116,11 +1116,6 @@ namespace Client
 
                                         break;
                                     }
-                                case (byte)Core.Enum.EventType.CustomScript:
-                                    {
-                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Execute Custom Script Case: " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1);
-                                        break;
-                                    }
                                 case (byte)Core.Enum.EventType.PlayBgm:
                                     {
                                         frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play BGM [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1 + "]");
@@ -1799,13 +1794,6 @@ namespace Client
                             TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data4 = (int)Math.Round(frmEditor_Event.Instance.nudPlayAnimTileY.Value);
                         }
 
-                        break;
-                    }
-
-                case (int)Core.Enum.EventType.CustomScript:
-                    {
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = (int)Math.Round(frmEditor_Event.Instance.nudCustomScript.Value);
                         break;
                     }
 
@@ -2655,15 +2643,7 @@ namespace Client
                         frmEditor_Event.Instance.fraCommands.Visible = false;
                         break;
                     }
-                case (byte)Core.Enum.EventType.CustomScript:
-                    {
-                        IsEdit = true;
-                        frmEditor_Event.Instance.nudCustomScript.Value = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
-                        frmEditor_Event.Instance.fraDialogue.Visible = true;
-                        frmEditor_Event.Instance.fraCustomScript.Visible = true;
-                        frmEditor_Event.Instance.fraCommands.Visible = false;
-                        break;
-                    }
+
                 case (byte)Core.Enum.EventType.PlayBgm:
                     {
                         IsEdit = true;
@@ -3193,11 +3173,6 @@ namespace Client
 
                         break;
                     }
-                case (byte)Core.Enum.EventType.CustomScript:
-                    {
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = (int)Math.Round(frmEditor_Event.Instance.nudCustomScript.Value);
-                        break;
-                    }
                 case (byte)Core.Enum.EventType.PlayBgm:
                     {
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = Sound.MusicCache[frmEditor_Event.Instance.cmbPlayBGM.SelectedIndex];
@@ -3591,14 +3566,14 @@ namespace Client
             EventText = buffer.ReadString();
             if (string.IsNullOrEmpty(EventText))
                 EventText = " ";
-            EventChat = Conversions.ToBoolean(1);
-            ShowEventLbl = Conversions.ToBoolean(1);
+            EventChat = true;
+            ShowEventLbl = true;
             choices = buffer.ReadInt32();
-            InEvent = Conversions.ToBoolean(1);
+            InEvent = true;
             for (i = 0; i < Core.Constant.MAX_EVENT_CHOICES; i++)
             {
                 EventChoices[i] = "";
-                EventChoiceVisible[i] = Conversions.ToBoolean(0);
+                EventChoiceVisible[i] = false;
             }
             EventChatType = 0;
             if (choices == 0)
@@ -3611,7 +3586,7 @@ namespace Client
                 for (i = 0; i < loopTo; i++)
                 {
                     EventChoices[i] = buffer.ReadString();
-                    EventChoiceVisible[i] = Conversions.ToBoolean(1);
+                    EventChoiceVisible[i] = true;
                 }
             }
             AnotherChat = buffer.ReadInt32();
@@ -3622,12 +3597,12 @@ namespace Client
 
         public static void Packet_EventStart(ref byte[] data)
         {
-            InEvent = Conversions.ToBoolean(1);
+            InEvent = true;
         }
 
         public static void Packet_EventEnd(ref byte[] data)
         {
-            InEvent = Conversions.ToBoolean(0);
+            InEvent = false;
         }
 
         public static void Packet_Picture(ref byte[] data)
@@ -3678,11 +3653,11 @@ namespace Client
             var buffer = new ByteStream(data);
             if (buffer.ReadInt32() == 0)
             {
-                HoldPlayer = Conversions.ToBoolean(1);
+                HoldPlayer = true;
             }
             else
             {
-                HoldPlayer = Conversions.ToBoolean(0);
+                HoldPlayer = false;
             }
 
             buffer.Dispose();
@@ -3703,7 +3678,7 @@ namespace Client
         public static void Packet_FadeOutBGM(ref byte[] data)
         {
             Sound.CurrentMusic = "";
-            Sound.FadeOutSwitch = Conversions.ToBoolean(1);
+            Sound.FadeOutSwitch = true;
         }
 
         public static void Packet_PlaySound(ref byte[] data)
@@ -3737,14 +3712,14 @@ namespace Client
             {
                 case GameState.EffectTypeFadein:
                     {
-                        GameState.UseFade = Conversions.ToBoolean(1);
+                        GameState.UseFade = true;
                         GameState.FadeType = 1;
                         GameState.FadeAmount = 0;
                         break;
                     }
                 case GameState.EffectTypeFadeout:
                     {
-                        GameState.UseFade = Conversions.ToBoolean(1);
+                        GameState.UseFade = true;
                         GameState.FadeType = 0;
                         GameState.FadeAmount = 255;
                         break;
@@ -3769,7 +3744,7 @@ namespace Client
                     }
                 case GameState.EffectTypeTint:
                     {
-                        Core.Type.MyMap.MapTint = Conversions.ToBoolean(1);
+                        Core.Type.MyMap.MapTint = true;
                         GameState.CurrentTintR = buffer.ReadInt32();
                         GameState.CurrentTintG = buffer.ReadInt32();
                         GameState.CurrentTintB = buffer.ReadInt32();
@@ -4002,7 +3977,7 @@ namespace Client
             if (AnotherChat == 1)
             {
                 for (i = 0; i < Core.Constant.MAX_EVENT_CHOICES; i++)
-                    EventChoiceVisible[i] = Conversions.ToBoolean(0);
+                    EventChoiceVisible[i] = false;
                 EventText = "";
                 EventChatType = 1;
                 EventChatTimer = General.GetTickCount() + 100;
@@ -4010,14 +3985,14 @@ namespace Client
             else if (AnotherChat == 2)
             {
                 for (i = 0; i < Core.Constant.MAX_EVENT_CHOICES; i++)
-                    EventChoiceVisible[i] = Conversions.ToBoolean(0);
+                    EventChoiceVisible[i] = false;
                 EventText = "";
                 EventChatType = 1;
                 EventChatTimer = General.GetTickCount() + 100;
             }
             else
             {
-                EventChat = Conversions.ToBoolean(0);
+                EventChat = false;
             }
         }
 

@@ -19,8 +19,14 @@ namespace Client
 
             buffer = new ByteStream(data);
 
-            var code = buffer.ReadString();
-            Core.Type.Script.Code = code;
+            // Read the number of lines first
+            int lineCount = buffer.ReadInt32();
+            var lines = new string[lineCount];
+            for (int i = 0; i < lineCount; i++)
+            {
+                lines[i] = buffer.ReadString();
+            }
+            Core.Type.Script.Code = lines;
 
             buffer.Dispose();
 
@@ -45,7 +51,7 @@ namespace Client
             buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveScript);
-            buffer.WriteString(Core.Type.Script.Code);
+            buffer.WriteString(string.Join(Environment.NewLine, Core.Type.Script.Code));
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -54,8 +60,7 @@ namespace Client
 
         public static void ScriptEditorInit()
         {
-            ref var withBlock = ref Core.Type.Script;
-            string code = withBlock.Code;
+
         }
     }
 }

@@ -55,11 +55,11 @@ namespace Client
             try
             {
                 if (GameState.InitEventEditor)
-                {                 
+                {
                     var withBlock = frmEditor_Event.Instance;
                     withBlock.Owner = (Form)Control.FromHandle(General.Client.Window?.Handle ?? IntPtr.Zero);
                     withBlock.Show();
-                    
+
                     GameState.InitEventEditor = false;
                 }
 
@@ -87,7 +87,7 @@ namespace Client
                 }
 
                 if (GameState.InitMapEditor)
-                {              
+                {
                     var withBlock2 = frmEditor_Map.Instance;
                     GameState.MyEditorType = (int)EditorType.Map;
                     GameState.EditorIndex = 1;
@@ -95,7 +95,7 @@ namespace Client
                     withBlock2.Show();
                     frmEditor_Map.MapEditorInit();
                     General.SetWindowFocus(General.Client.Window.Handle);
-                    
+
                     GameState.InitMapEditor = false;
                 }
 
@@ -113,7 +113,7 @@ namespace Client
                 }
 
                 if (GameState.InitAnimationEditor)
-                {                   
+                {
                     var withBlock4 = frmEditor_Animation.Instance;
                     GameState.MyEditorType = (int)EditorType.Animation;
                     GameState.EditorIndex = 1;
@@ -121,12 +121,12 @@ namespace Client
                     withBlock4.Show();
                     withBlock4.lstIndex.SelectedIndex = 0;
                     Editors.AnimationEditorInit();
-                    
+
                     GameState.InitAnimationEditor = false;
                 }
 
                 if (GameState.InitItemEditor)
-                {                 
+                {
                     var withBlock5 = frmEditor_Item.Instance;
                     GameState.MyEditorType = (int)EditorType.Item;
                     GameState.EditorIndex = 1;
@@ -134,12 +134,12 @@ namespace Client
                     withBlock5.Show();
                     withBlock5.lstIndex.SelectedIndex = 0;
                     Editors.ItemEditorInit();
-                    
+
                     GameState.InitItemEditor = false;
                 }
 
                 if (GameState.InitJobEditor)
-                {                 
+                {
                     var withBlock6 = frmEditor_Job.Instance;
                     GameState.MyEditorType = (int)EditorType.Job;
                     GameState.EditorIndex = 1;
@@ -147,7 +147,7 @@ namespace Client
                     withBlock6.Show();
                     withBlock6.lstIndex.SelectedIndex = 0;
                     Editors.JobEditorInit();
-                    
+
                     GameState.InitJobEditor = false;
                 }
 
@@ -173,7 +173,7 @@ namespace Client
                     withBlock8.Show();
                     withBlock8.lstIndex.SelectedIndex = 0;
                     Editors.ResourceEditorInit();
-                    
+
                     GameState.InitResourceEditor = false;
                 }
 
@@ -186,7 +186,7 @@ namespace Client
                     withBlock9.Show();
                     withBlock9.lstIndex.SelectedIndex = 0;
                     Editors.NPCEditorInit();
-                    
+
                     GameState.InitNPCEditor = false;
                 }
 
@@ -199,7 +199,7 @@ namespace Client
                     withBlock10.Show();
                     withBlock10.lstIndex.SelectedIndex = 0;
                     Editors.SkillEditorInit();
-                    
+
                     GameState.InitSkillEditor = false;
                 }
 
@@ -212,7 +212,7 @@ namespace Client
                     withBlock11.Show();
                     withBlock11.lstIndex.SelectedIndex = 0;
                     Editors.ShopEditorInit();
-                    
+
                     GameState.InitShopEditor = false;
                 }
 
@@ -225,7 +225,6 @@ namespace Client
                     withBlock12.Show();
                     withBlock12.lstIndex.SelectedIndex = 0;
                     Editors.ProjectileEditorInit();
-                    
 
                     GameState.InitProjectileEditor = false;
                 }
@@ -247,7 +246,30 @@ namespace Client
                 frmEditor_Animation.Instance.picSprite0.Invalidate();
                 frmEditor_Animation.Instance.picSprite1.Invalidate();
 
-                Application.DoEvents();
+                if (GameState.InGame == false)
+                {
+                    // Close all open editor forms, not just the last opened one
+                    frmEditor_Item.Instance.Dispose();
+                    frmEditor_Job.Instance.Dispose();
+                    frmEditor_Map.Instance.Dispose();
+                    frmEditor_Event.Instance.Dispose();
+                    frmEditor_NPC.Instance.Dispose();
+                    frmEditor_Pet.Instance.Dispose();
+                    frmEditor_Projectile.Instance.Dispose();
+                    frmEditor_Resource.Instance.Dispose();
+                    frmEditor_Shop.Instance.Dispose();
+                    frmEditor_Skill.Instance.Dispose();
+                    frmEditor_Animation.Instance.Dispose();
+                    frmEditor_Moral.Instance.Dispose();
+                    frmEditor_Script.Instance.Dispose();
+
+                    if (GameState.AdminPanel)
+                    {
+                        FrmAdmin.Instance.Dispose();
+                    }
+
+                    Application.DoEvents();
+                }
             }
 
             catch (InvalidOperationException)

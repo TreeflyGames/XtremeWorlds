@@ -1,5 +1,4 @@
 ﻿using Core;
-using Mirage.Sharp.Asfw.IO.Encryption;
 using static Core.Enum;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
@@ -211,8 +210,6 @@ namespace Client
         public static bool ShowAnimLayers;
         public static int ShowAnimTimer;
 
-        public static KeyPair EKeyPair = new KeyPair();
-
         // Stream Content
         public static int[] Item_Loaded = new int[Core.Constant.MAX_ITEMS];
         public static int[] NPC_Loaded = new int[Core.Constant.MAX_NPCS];
@@ -328,8 +325,8 @@ namespace Client
         public static bool HideLayers;
 
         // Speed moving vars
-        public const byte WalkSpeed = 4;
-        public const byte RunSpeed = 8;
+        public const byte WalkSpeed = 8;
+        public const byte RunSpeed = 16;
 
         // Tile size constants
         public const int PicX = 32;

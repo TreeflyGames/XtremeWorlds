@@ -32,7 +32,7 @@ namespace Client
             {
                 if (keys.Contains(Microsoft.Xna.Framework.Input.Keys.Enter))
                 {
-                    Active = Conversions.ToBoolean(1);
+                    Active = true;
                     return true;
                 }
 
@@ -54,7 +54,7 @@ namespace Client
                                 History.RemoveRange(0, History.Count - HistoryLimit);
                             }
                             Cursor.Y = History.Count;
-                            Active = Conversions.ToBoolean(0);
+                            Active = false;
                             return true;
                         }
 

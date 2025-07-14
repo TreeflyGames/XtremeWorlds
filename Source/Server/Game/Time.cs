@@ -125,7 +125,7 @@ namespace Server
         public void SendGameClockToAll()
         {
             var highIndex = NetworkConfig.Socket.HighIndex;
-            for (int i = 0; i <= highIndex; i++)
+            for (int i = 0; i < highIndex; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -149,7 +149,7 @@ namespace Server
         public void SendTimeToAll()
         {
             var highIndex = NetworkConfig.Socket.HighIndex;
-            for (int i = 0; i <= highIndex; i++)
+            for (int i = 0; i < highIndex; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {

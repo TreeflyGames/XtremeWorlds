@@ -255,7 +255,7 @@ namespace Server
                 await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
                 {
                     NetworkSend.SendLeftGame(i);
-                    Player.LeftGame(i);
+                    await Player.LeftGame(i);
                 });
             }
             catch (TaskCanceledException)
@@ -295,7 +295,6 @@ namespace Server
 
         private static async Task InitializeNetworkAsync()
         {
-            Global.EKeyPair.GenerateKeys();
             NetworkConfig.InitNetwork();
         }
 
@@ -440,7 +439,7 @@ namespace Server
         {
             lock (SyncLock)
             {
-                return Enumerable.Range(0, NetworkConfig.Socket.HighIndex + 1)
+                return Enumerable.Range(0, NetworkConfig.Socket.HighIndex)
                     .Count(i => NetworkConfig.IsPlaying(i));
             }
         }

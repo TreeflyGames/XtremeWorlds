@@ -1,5 +1,6 @@
 ﻿using Core;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
 using static Core.Global.Command;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Path = Core.Path;
@@ -94,7 +95,7 @@ namespace Client
                     {
                         if (Conversions.ToInteger(Event.EventChat) == 1)
                         {
-                            Event.EventChat = Conversions.ToBoolean(0);
+                            Event.EventChat = false;
                         }
                     }
                 }
@@ -118,7 +119,7 @@ namespace Client
                         else
                         {
                             GameState.ShakeCount = 0;
-                            GameState.ShakeTimerEnabled = Conversions.ToBoolean(0);
+                            GameState.ShakeTimerEnabled = false;
                         }
 
                         GameState.ShakeCount += 1;
@@ -154,38 +155,22 @@ namespace Client
                         GameState.SkillBufferTimer = 0;
                     }
                 }
-
-                // check if we need to unlock the pets's Skill casting restriction
-                if (Pet.PetSkillBuffer >= 0)
-                {
-                    if (Core.Type.Player[GameState.MyIndex].Pet.Num >= 0 || Core.Type.Player[GameState.MyIndex].Pet.Num <= Constant.MAX_PETS)
-                    {
-                        if (Pet.PetSkillBufferTimer + Core.Type.Skill[Core.Type.Pet[(int)Core.Type.Player[GameState.MyIndex].Pet.Num].Skill[(int)Pet.PetSkillBuffer]].CastTime * 1000 < tick)
-                        {
-                            Pet.PetSkillBuffer = -1;
-                            Pet.PetSkillBufferTimer = 0;
-                        }
-                    }
-                }
-
-                if (GameState.CanMoveNow)
-                {
-                    Player.CheckMovement(); // Check if player is trying to move
-                    Player.CheckAttack();   // Check to see if player is trying to attack
-                }
-
+                
                 // Process input before rendering, otherwise input will be behind by 1 frame
                 if (walkTimer < tick)
                 {
+                    if (GameState.CanMoveNow)
+                    {
+                        Player.CheckMovement(); // Check if player is trying to move
+                        Player.CheckAttack();   // Check to see if player is trying to attack
+                    }
+                    
+                    // Process player movements
                     for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i))
                         {
                             Player.ProcessPlayerMovement(i);
-                            if (Pet.PetAlive(i))
-                            {
-                                Pet.ProcessPetMovement(i);
-                            }
                         }
                     }
 
@@ -234,8 +219,10 @@ namespace Client
                         // reset
                         if (GameState.FogOffsetX < -255)
                             GameState.FogOffsetX = 1;
+
                         if (GameState.FogOffsetY < -255)
                             GameState.FogOffsetY = 1;
+
                         fogtmr = tick + 255 - GameState.CurrentFogSpeed;
                     }
                 }
@@ -387,7 +374,7 @@ namespace Client
                     {
                         if (GameState.FadeAmount == 0)
                         {
-                            GameState.UseFade = Conversions.ToBoolean(0);
+                            GameState.UseFade = false;
                         }
                         else
                         {

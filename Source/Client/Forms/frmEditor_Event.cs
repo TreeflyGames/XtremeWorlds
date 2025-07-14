@@ -773,8 +773,8 @@ namespace Client
                             }
                         }
                         Event.IsMoveRouteCommand = true;
-                        chkIgnoreMove.Checked = Conversions.ToBoolean(0);
-                        chkRepeatRoute.Checked = Conversions.ToBoolean(0);
+                        chkIgnoreMove.Checked = false;
+                        chkRepeatRoute.Checked = false;
                         Event.TempMoveRouteCount = 0;
                         Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
                         fraMoveRoute.Visible = true;
@@ -951,16 +951,6 @@ namespace Client
                         fraCommands.Visible = false;
                         break;
                     }
-                // Custom Script
-                case "Custom Script":
-                    {
-                        nudCustomScript.Value = 0m;
-                        fraDialogue.Visible = true;
-                        fraCustomScript.Visible = true;
-                        fraCommands.Visible = false;
-                        break;
-                    }
-
                 // Shop, bank etc
 
                 // Open bank
@@ -3438,36 +3428,6 @@ namespace Client
                 fraCommands.Visible = false;
             fraDialogue.Visible = false;
             fraSetAccess.Visible = false;
-        }
-
-        #endregion
-
-        #region Custom Script
-
-        private void BtnCustomScriptOK_Click(object sender, EventArgs e)
-        {
-            if (!Event.IsEdit)
-            {
-                Event.AddCommand((int)Core.Enum.EventType.CustomScript);
-            }
-            else
-            {
-                Event.EditCommand();
-            }
-            // hide
-            fraDialogue.Visible = false;
-            fraCustomScript.Visible = false;
-            fraCommands.Visible = false;
-        }
-
-        private void BtnCustomScriptCancel_Click(object sender, EventArgs e)
-        {
-            if (!Event.IsEdit)
-                fraCommands.Visible = true;
-            else
-                fraCommands.Visible = false;
-            fraDialogue.Visible = false;
-            fraCustomScript.Visible = false;
         }
 
         #endregion

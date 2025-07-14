@@ -68,7 +68,6 @@ namespace Client
 
         // Minimum interval (in milliseconds) between repeated key inputs
         private const byte KeyRepeatInterval = 200;
-        private const byte MouseRepeatInterval = 75;
 
         // Lock object to ensure thread safety
         public static readonly object InputLock = new object();
@@ -81,9 +80,7 @@ namespace Client
         public static RenderTarget2D RenderTarget;
         public static Texture2D TransparentTexture;
         public static Texture2D PixelTexture;
-
-        public static bool IsLoaded;
-
+        
         // Add a timer to prevent spam
         private static DateTime lastInputTime = DateTime.MinValue;
         private const int inputCooldown = 250;
@@ -181,21 +178,7 @@ namespace Client
 
             base.Initialize();
         }
-
-        public class RenderCommand
-        {
-            public byte Type { get; set; }
-            public string Path { get; set; }
-            public string Text { get; set; }
-            public Rectangle sRect { get; set; }
-            public Rectangle dRect { get; set; }
-            public int X { get; set; }
-            public int Y { get; set; }
-            public Color Color { get; set; }
-            public Color Color2 { get; set; }
-            public int EntityID { get; set; }
-            public int TextureID { get; set; }
-        }
+        
 
         private static void LoadFonts()
         {
@@ -214,7 +197,6 @@ namespace Client
 
             LoadFonts();
             General.Startup();
-            IsLoaded = true;
         }
 
         public static SpriteFont LoadFont(string path, FontType font)
@@ -232,25 +214,88 @@ namespace Client
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
 
+       public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
+        {
+            float newAspect = (float)screenWidth / screenHeight;
+
+            int width, height;
+
+            // Scale texture to match the target aspect ratio
+            if (newAspect > targetAspect)
+            {
+                // Texture is wider than target: scale to fit width, adjust height
+                width = texWidth;
+                height = (int)(width / targetAspect);
+            }
+            else
+            {
+                // Texture is taller than target: scale to fit height, adjust width
+                height = texHeight;
+                width = texWidth;
+            }
+
+            // Calculate scaling factors
+            float scaleX = (float)width / texWidth;
+            float scaleY = (float)height / texHeight;
+
+            // Adjust dimensions to fit within screen boundaries
+            if (width > screenWidth)
+            {
+                width = screenWidth;
+                height = (int)(width / targetAspect);
+                scaleX = (float)width / texWidth;
+                scaleY = (float)height / texHeight;
+            }
+    
+            if (height > screenHeight)
+            {
+                height = screenHeight;
+                width = (int)(height * targetAspect);
+                scaleX = (float)width / texWidth;
+                scaleY = (float)height / texHeight;
+            }
+
+            int destX = 0;
+            int destY = 0;
+
+            if (newAspect != targetAspect)
+            {
+                // Calculate position offset based on size difference
+                destX = x + (int)((screenWidth - width) / 2 * scaleX);
+                destY = y + (int)((screenHeight - height) / 2 * scaleY);
+            }
+            else
+            {
+                // Center the texture in the screen
+                destX = x;
+                destY = y;
+            }
+
+            return new Rectangle(destX, destY, width, height);
+        }
+        
         public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1,
             int sH = 1, float alpha = 1.0f, byte red = 255, byte green = 255, byte blue = 255)
         {
-            // Create destination and source rectangles
-            var dRect = new Rectangle(dX, dY, dW, dH);
-            var sRect = new Rectangle(sX, sY, sW, sH);
-            var color = new Color(red, green, blue, (byte)255);
-            color = color * alpha;
-
             path = Core.Path.EnsureFileExtension(path);
-
+            
             // Retrieve the texture
             var texture = GetTexture(path);
+            
             if (texture is null)
             {
                 return;
             }
-
-            SpriteBatch.Draw(texture, dRect, sRect, color);
+            
+            int targetWidth = 0, targetHeight = 0;
+            General.GetResolutionSize(SettingsManager.Instance.Resolution, ref targetWidth, ref targetHeight);
+            var targetAspect = (float)targetWidth / targetHeight;
+            
+            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH, targetAspect);
+            var srcRect = new Rectangle(sX, sY, sW, sH);
+            var color = new Color(red, green, blue, (byte)255) * alpha;
+            
+            SpriteBatch.Draw(texture, destRect, srcRect, color);
         }
 
         public static Texture2D GetTexture(string path)
@@ -320,8 +365,6 @@ namespace Client
 
         protected override void Update(GameTime gameTime)
         {
-            var mouseState = Mouse.GetState();
-
             // Ignore input if the window is minimized or inactive
             if ((!IsActive || Window.ClientBounds.Width == 0) | Window.ClientBounds.Height == 0)
             {
@@ -592,7 +635,7 @@ namespace Client
                     if (IsWindowVisible("winChatSmall"))
                     {
                         Gui.ShowChat();
-                        GameState.inSmallChat = Conversions.ToBoolean(0);
+                        GameState.inSmallChat = false;
                     }
                     else
                     {
@@ -830,17 +873,17 @@ namespace Client
 
                 if (GameState.MyEditorType == (int)EditorType.Map)
                 {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
+                    if (GameClient.CurrentKeyboardState.IsKeyDown(Keys.LeftShift))
                     {
-                        if (GameState.CurLayer < (int)LayerType.Count)
+                        if (GameState.CurLayer > 0)
                         {
-                            GameState.CurLayer = GameState.CurLayer;
+                            GameState.CurLayer -= 1;
                         }
                     }
 
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
+                    else if (GameState.CurTileset > 0)
                     {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                        GameState.CurTileset -= 1;
                     }
 
                 }
@@ -851,16 +894,16 @@ namespace Client
 
                 if (GameState.MyEditorType == (int)EditorType.Map)
                 {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
+                    if (GameClient.CurrentKeyboardState.IsKeyDown(Keys.LeftShift))
                     {
-                        if (GameState.CurLayer > 0)
+                        if (GameState.CurLayer < (int)Core.Enum.LayerType.Count)
                         {
-                            GameState.CurLayer = GameState.CurLayer - 1;
+                            GameState.CurLayer += 1;
                         }
                     }
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
+                    else if (GameState.CurTileset < GameState.NumTileSets)
                     {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                        GameState.CurTileset += 1;
                     }
                 }
 
@@ -935,22 +978,13 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (IsMouseButtonDown(MouseButton.Left))
+                if (GameState.MyEditorType == (int)EditorType.Map)
                 {
-                    if (GameState.MyEditorType == (int)EditorType.Map)
-                    {
-                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                    }
-                }
+                    frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                }             
                 
                 if (IsSeartchCooldownElapsed())
                 {
-                    if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
-                    {
-                        Pet.PetMove(GameState.CurX, GameState.CurY);
-                    }
-
-
                     if (IsMouseButtonDown(MouseButton.Left))
                     {
                         Player.CheckAttack(true);
@@ -968,14 +1002,6 @@ namespace Client
                     if (slotNum >= 0L)
                     {
                         NetworkSend.SendDeleteHotbar(slotNum);
-                    }
-
-                    if (GameState.MyEditorType == (int)EditorType.Map)
-                    {
-                        if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameClient.MouseRepeatInterval)
-                        {
-                            frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                        }
                     }
 
                     if (GameState.VbKeyShift == true)
@@ -1841,8 +1867,8 @@ namespace Client
         public static void DrawChatBubble(long Index)
         {
             var theArray = default(string[]);
-            long x;
-            long y;
+            int x;
+            int y;
             long i;
             var MaxWidth = default(long);
             long x2;
@@ -1891,13 +1917,15 @@ namespace Client
 
                     case (byte)TargetType.Pet:
                     {
-                        x = GameLogic.ConvertMapX(Core.Type.Player[GameState.MyIndex].Pet.X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Core.Type.Player[GameState.MyIndex].Pet.Y * 32) - 32;
+                        x = 0;
+                        y = 0;
                         break;
                     }
 
                     default:
                     {
+                        x = 0;
+                        y = 0;
                         return;
                     }
                 }
@@ -1917,7 +1945,7 @@ namespace Client
                         MaxWidth = Text.GetTextWidth(theArray[(int)i], FontType.Georgia);
                 }
 
-                // calculate the new position
+                // calculate the new position 
                 x2 = x - MaxWidth / 2L;
                 y2 = y - (Information.UBound(theArray) + 1) * 12;
 
@@ -1977,7 +2005,7 @@ namespace Client
                 for (i = 0; i <= loopTo1; i++)
                 {
                     if (theArray[(int)i] == null)
-                        break;
+                        continue;
 
                     // Measure button text size and apply padding
                     var textSize = Text.Fonts[FontType.Georgia].MeasureString(theArray[(int)i]);
@@ -1997,7 +2025,7 @@ namespace Client
                 // check if it's timed out - close it if so
                 if (withBlock.Timer + 5000 < General.GetTickCount())
                 {
-                    withBlock.Active = Conversions.ToBoolean(0);
+                    withBlock.Active = false;
                 }
             }
         }
@@ -2616,9 +2644,12 @@ namespace Client
             {
                 for (i = 0; i < byte.MaxValue; i++)
                 {
-                    if (Animation.AnimInstance[i].Used[0])
+                    if (Information.UBound(Animation.AnimInstance) >= i)
                     {
-                        Animation.DrawAnimation(i, 0);
+                        if (Animation.AnimInstance[i].Used[0])
+                        {
+                            Animation.DrawAnimation(i, 0);
+                        }
                     }
                 }
             }
@@ -2643,14 +2674,6 @@ namespace Client
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
-                            if (Pet.PetAlive(i))
-                            {
-                                if (Core.Type.Player[i].Pet.Y == y)
-                                {
-                                    Pet.DrawPet(i);
-                                }
-                            }
-
                             if (Core.Type.Player[i].Y == y)
                             {
                                 DrawPlayer(i);
@@ -2710,11 +2733,6 @@ namespace Client
                                 break;
 
                             case (int)TargetType.Pet:
-                                DrawTarget(
-                                    Core.Type.Player[GameState.MyTarget].Pet.X * 32 - 16 +
-                                    Core.Type.Player[GameState.MyTarget].Pet.XOffset,
-                                    Core.Type.Player[GameState.MyTarget].Pet.Y * 32 +
-                                    Core.Type.Player[GameState.MyTarget].Pet.YOffset);
                                 break;
 
                         }
@@ -2772,9 +2790,12 @@ namespace Client
             {
                 for (i = 0; i < byte.MaxValue; i++)
                 {
-                    if (Animation.AnimInstance[i].Used[1])
+                    if (Information.UBound(Animation.AnimInstance) >= i)
                     {
-                        Animation.DrawAnimation(i, 1);
+                        if (Animation.AnimInstance[i].Used[1])
+                        {
+                            Animation.DrawAnimation(i, 1);
+                        }
                     }
                 }
             }
@@ -2833,10 +2854,6 @@ namespace Client
                 if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                 {
                     Text.DrawPlayerName(i);
-                    if (Pet.PetAlive(i))
-                    {
-                        Pet.DrawPlayerPetName(i);
-                    }
                 }
             }
 

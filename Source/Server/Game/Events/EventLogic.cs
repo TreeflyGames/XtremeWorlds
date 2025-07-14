@@ -39,7 +39,7 @@ namespace Server
         // 4. Code Clarity and Readability:
         //    - Improved code formatting for better readability (consistent indentation, spacing).
         //    - Added comments to explain complex logic sections.
-        //    - Replaced some verbose `Conversions.ToBoolean(0)` and `Conversions.ToBoolean(1)` with `false` and `true` respectively.
+        //    - Replaced some verbose `Conversions.ToBoolean(0)` and `true` with `false` and `true` respectively.
         //    - Replaced some older VB-style string functions (like `InStr`, `Mid`, `Len`, `Val`) with their C# equivalents (`Contains`,
         //      `Substring`, `Length`, `int.Parse` or `double.Parse`).
 
@@ -200,7 +200,7 @@ namespace Server
         public static void SpawnNewEvents()
         {
             // Use Parallel.For for potential performance gains on multi-core systems.
-            Parallel.For(0, NetworkConfig.Socket.HighIndex + 1, i =>
+            Parallel.For(0, NetworkConfig.Socket.HighIndex, i =>
             {
                 int mapNum = GetPlayerMap(i);
 
@@ -418,8 +418,6 @@ namespace Server
             // Iterate through all maps.
             for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
-                if (!PlayersOnMap[i] || Event.TempEventMap[i].EventCount <= 0) continue;
-
                 // Process global events on this map.
                 for (int x = 0; x < Event.TempEventMap[i].EventCount; x++)
                 {
@@ -1311,7 +1309,7 @@ namespace Server
         public static void ProcessEventCommands()
         {
             // Parallel processing for each player.
-            Parallel.For(0, NetworkConfig.Socket.HighIndex + 1, i =>
+            Parallel.For(0, NetworkConfig.Socket.HighIndex, i =>
             {
                 if (!NetworkConfig.IsPlaying(i) || TempPlayer[i].GettingMap || TempPlayer[i].EventMap.CurrentEvents <= 0) return;
 
@@ -1838,7 +1836,7 @@ namespace Server
                                             break;
 
                                         case (byte)EventType.ChangePk:
-                                            Core.Type.Player[i].Pk = (byte)(command.Data1 == 0 ? 0 : 1);
+                                            Core.Type.Player[i].PK = (command.Data1 == 0 ? false : true);
                                             NetworkSend.SendPlayerData((int)i);
                                             break;
 
@@ -1932,10 +1930,6 @@ namespace Server
                                                 break;
                                             }
 
-                                        case (byte)EventType.CustomScript:
-                                            Event.CustomScript(i, command.Data1, mapNum, withBlock1.EventId);
-                                            break;
-
                                         case (byte)EventType.PlayBgm:
                                             {
                                                 using (var buffer = new ByteStream(4))
@@ -2001,7 +1995,7 @@ namespace Server
                                             break;
 
                                         case (byte)EventType.GiveExp:
-                                            Event.GivePlayerExp(i, command.Data1);
+                                            SetPlayerExp(i, command.Data1);
                                             break;
 
                                         case (byte)EventType.ShowChatBubble:

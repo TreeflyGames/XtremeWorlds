@@ -186,7 +186,7 @@ namespace Client
 
         private void NudLevel_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.NPC[GameState.EditorIndex].Level = (int)Math.Round(nudLevel.Value);
+            Core.Type.NPC[GameState.EditorIndex].Level = (byte)Math.Round(nudLevel.Value);
         }
 
         private void NudDamage_ValueChanged(object sender, EventArgs e)
