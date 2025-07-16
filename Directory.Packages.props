@@ -5,6 +5,8 @@
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Autofac" Version="8.3.0" />
+    <PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Include="CS-Script" Version="4.9.7" />
     <PackageVersion Include="CS-Script.Core" Version="2.0.0" />
     <PackageVersion Include="DarkUI" Version="2.0.2" />

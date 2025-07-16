@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.CompilerServices;
 using Reoria.Engine.Common.Security.Encryption;
+using Reoria.Engine.Container;
+using Reoria.Engine.Container.Configuration;
 using Reoria.Engine.Container.Configuration.Interfaces;
 using Reoria.Engine.Container.Interfaces;
 using Reoria.Engine.Container.Logging;
@@ -36,13 +38,12 @@ namespace Client
         public static void Startup()
         {
             IServiceCollection services = new ServiceCollection()
-                .AddSingleton<IEngineConfigurationProvider, XWConfigurationProvider>()
-                .AddSingleton<ILoggingInitializer, SerilogLoggingInitializer>();
+                .AddTransient<IEngineConfigurationSources, EngineConfigurationSources>()
+                .AddTransient<IEngineConfigurationProvider, EngineConfigurationProvider>()
+                .AddTransient<IEngineLoggerFactory, SerilogLoggerFactory>();
 
-            Container = new XWContainer(services)
-                .CreateConfiguration()
-                .CreateServiceCollection()
-                .CreateServiceProvider();
+            Container = new EngineContainer(services);
+
             Configuration = Container?.Provider.GetRequiredService<IConfiguration>() ?? throw new NullReferenceException();
 
             GameState.InMenu = true;
