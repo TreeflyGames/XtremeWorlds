@@ -28,7 +28,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -555,7 +555,7 @@ namespace Server
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine(e.Message);
                 }
 
                 if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
@@ -1135,7 +1135,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
 
         }
@@ -1354,7 +1354,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -1366,7 +1366,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
 
             if (Core.Type.TempPlayer[index].InGame)
@@ -1390,7 +1390,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
 
             return 0;
@@ -1410,7 +1410,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
 
         }

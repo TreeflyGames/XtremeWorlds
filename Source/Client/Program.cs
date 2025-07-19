@@ -2467,7 +2467,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
         }
 

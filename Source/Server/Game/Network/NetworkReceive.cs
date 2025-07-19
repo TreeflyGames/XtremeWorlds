@@ -1870,7 +1870,7 @@ namespace Server
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.StackTrace);
+                        Console.WriteLine(e.Message);
                     }
                 }
             }
@@ -1987,7 +1987,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
 
             buffer.Dispose();
@@ -2712,7 +2712,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
 
         }

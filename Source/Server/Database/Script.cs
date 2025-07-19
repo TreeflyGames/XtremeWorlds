@@ -25,6 +25,7 @@ using static Server.Projectile;
 using static Server.Resource;
 using static System.Net.Mime.MediaTypeNames;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 public class Script
 {
@@ -589,11 +590,12 @@ public class Script
 
             // Use entities from Entity class
             var entities = Core.Globals.Entity.Instances;
+            entities.Clear();
 
             // Add NPCs
             if (Core.Type.MapNPC[mapNum].NPC != null)
             {
-                for (int i = 0; i < Core.Type.MapNPC[mapNum].NPC.Length; i++)
+                for (int i = 0; i < Core.Constant.MAX_NPCS; i++)
                 {
                     var npc = Entity.FromNPC(i, Core.Type.MapNPC[mapNum].NPC[i]);
                     if (npc != null)
@@ -601,7 +603,7 @@ public class Script
                 }
             }
             // Add Players
-            for (int i = 0; i < Core.Type.Player.Length; i++)
+            for (int i = 0; i < NetworkConfig.Socket.HighIndex; i++)
             {
                 // PlayerStruct is a struct, cannot be null, so just check map
                 if (Core.Type.Player[i].Map == mapNum)
@@ -612,7 +614,7 @@ public class Script
                 }
             }
             // Add Pets
-            for (int i = 0; i < Core.Type.Pet.Length; i++)
+            for (int i = 0; i < Core.Constant.MAX_PETS; i++)
             {
                 // PetStruct is a struct, cannot be null, so just check Num and map
                 if (Core.Type.Pet[i].Num > 0)
