@@ -75,6 +75,13 @@ namespace Server
                     {
                         Console.WriteLine(e.Message);
                     }
+
+                    for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
+                    {
+                        if (Core.Type.Player[index].Moving > 0)
+                            Player.PlayerMove(index, Core.Type.Player[index].Dir, Core.Type.Player[index].Moving, false);
+                    }
+
                     Clock.Instance.Tick();
 
                     // Move the timer up 1000ms.

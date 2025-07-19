@@ -23,7 +23,7 @@ namespace Client
                 {
                     case (int)Core.Enum.DirectionType.Up:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
+                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
                             if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset < 0)
                                 Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
                             break;
@@ -31,7 +31,7 @@ namespace Client
 
                     case (int)Core.Enum.DirectionType.Down:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
+                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
                             if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset > 0)
                                 Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
                             break;
@@ -39,7 +39,7 @@ namespace Client
 
                     case (int)Core.Enum.DirectionType.Left:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
+                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
                             if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset < 0)
                                 Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
                             break;
@@ -47,7 +47,7 @@ namespace Client
 
                     case (int)Core.Enum.DirectionType.Right:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
+                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
                             if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset > 0)
                                 Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
                             break;

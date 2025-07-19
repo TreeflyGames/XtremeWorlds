@@ -155,6 +155,7 @@ namespace Core
             SPlayerMove,
             SNPCMove,
             SPlayerDir,
+            SPlayerXYOffset,
             SNPCDir,
             SPlayerXY,
             SAttack,

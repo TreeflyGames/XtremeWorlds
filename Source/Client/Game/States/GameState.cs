@@ -324,10 +324,6 @@ namespace Client
         public static int TileHistoryHighIndex;
         public static bool HideLayers;
 
-        // Speed moving vars
-        public const byte WalkSpeed = 32;
-        public const byte RunSpeed = 48;
-
         // Tile size constants
         public const int PicX = 32;
         public const int PicY = 32;

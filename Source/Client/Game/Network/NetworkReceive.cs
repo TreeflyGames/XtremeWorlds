@@ -32,6 +32,7 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerMove] = Player.Packet_PlayerMove;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCMove] = Packet_NPCMove;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerDir] = Player.Packet_PlayerDir;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerXYOffset] = Player.Packet_PlayerXYOffset;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCDir] = Packet_NPCDir;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerXY] = Player.Packet_PlayerXY;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAttack] = Packet_Attack;
