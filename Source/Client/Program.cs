@@ -1414,34 +1414,7 @@ namespace Client
             }
             else
             {
-                // Walking animation based on direction
-                switch (Core.Type.MyMapNPC[(int)MapNPCNum].Dir)
-                {
-                    case (int)DirectionType.Up:
-                    {
-                        if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset > 8)
-                            anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
-                        break;
-                    }
-                    case (int)DirectionType.Down:
-                    {
-                        if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset < -8)
-                            anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
-                        break;
-                    }
-                    case (int)DirectionType.Left:
-                    {
-                        if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset > 8)
-                            anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
-                        break;
-                    }
-                    case (int)DirectionType.Right:
-                    {
-                        if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset < -8)
-                            anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
-                        break;
-                    }
-                }
+                anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
             }
 
             // Reset attacking state if attack timer has passed
