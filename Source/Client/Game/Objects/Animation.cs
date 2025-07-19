@@ -141,7 +141,7 @@ namespace Client
                 return;
 
             // Get dimensions and column count from controls and graphic info
-            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] .ToString())).Width;
+            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Width;
             int totalHeight = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Height;
             int columns = Core.Type.Animation[AnimInstance[index].Animation].Frames[layer];
 
@@ -214,7 +214,7 @@ namespace Client
             }
 
             // if neither layer is used, clear
-            if (Conversions.ToInteger(AnimInstance[index].Used[0]) == 0 & Conversions.ToInteger(AnimInstance[index].Used[1]) == 0)
+            if ((AnimInstance[index].Used[0] == false & AnimInstance[index].Used[1] == false))
             {
                 ClearAnimInstance(index);
             }
