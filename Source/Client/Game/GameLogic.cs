@@ -1207,7 +1207,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
             }
 
             // make the Gui.Windows visible

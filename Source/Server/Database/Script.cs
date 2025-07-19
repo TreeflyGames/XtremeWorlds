@@ -24,6 +24,7 @@ using static Server.Player;
 using static Server.Projectile;
 using static Server.Resource;
 using static System.Net.Mime.MediaTypeNames;
+using System.Collections.Generic;
 
 public class Script
 {
@@ -588,6 +589,40 @@ public class Script
 
             // Use entities from Entity class
             var entities = Core.Globals.Entity.Instances;
+
+            // Add NPCs
+            if (Core.Type.MapNPC[mapNum].NPC != null)
+            {
+                for (int i = 0; i < Core.Type.MapNPC[mapNum].NPC.Length; i++)
+                {
+                    var npc = Entity.FromNPC(i, Core.Type.MapNPC[mapNum].NPC[i]);
+                    if (npc != null)
+                        entities.Add(npc);
+                }
+            }
+            // Add Players
+            for (int i = 0; i < Core.Type.Player.Length; i++)
+            {
+                // PlayerStruct is a struct, cannot be null, so just check map
+                if (Core.Type.Player[i].Map == mapNum)
+                {
+                    var player = Entity.FromPlayer(i, Core.Type.Player[i]);
+                    if (player != null)
+                        entities.Add(player);
+                }
+            }
+            // Add Pets
+            for (int i = 0; i < Core.Type.Pet.Length; i++)
+            {
+                // PetStruct is a struct, cannot be null, so just check Num and map
+                if (Core.Type.Pet[i].Num > 0)
+                {
+                    var petEntity = Entity.FromPet(i, Core.Type.Pet[i]);
+                    if (petEntity != null && petEntity.Map == mapNum)
+                        entities.Add(petEntity);
+                }
+            }
+
             for (int x = 0; x < entities.Count; x++)
             {
                 var entity = entities[x];
@@ -718,8 +753,8 @@ public class Script
                             {
                                 if (target > 0 && target < entities.Count)
                                 {
-                                    var targetEntity = entities[target];
-                                    if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
+                                    var targetEntity = Core.Type.MapNPC[mapNum].NPC[target];
+                                    if (targetEntity.Num >= 0)
                                     {
                                         targetVerify = true;
                                         targetY = targetEntity.Y;
@@ -735,7 +770,7 @@ public class Script
 
                             if (entity.Type == Entity.EntityType.NPC)
                             {
-                                 if (targetVerify)
+                                if (targetVerify)
                                 {
                                     if (!Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
                                     {
@@ -870,13 +905,13 @@ public class Script
                 switch (entity.Type)
                 {
                     case Entity.EntityType.NPC:
-                        Core.Type.MapNPC[mapNum].NPC[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNPC(entity.Id, entity);
+                        Core.Type.MapNPC[mapNum].NPC[Entity.Index(entity)] = Entity.ToNPC(entity.Id, entity);
                         break;
                     case Entity.EntityType.Player:
-                        Core.Type.Player[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPlayer(entity.Id, entity);
+                        Core.Type.Player[Entity.Index(entity)] = Entity.ToPlayer(entity.Id, entity);
                         break;
                     case Entity.EntityType.Pet:
-                        Core.Type.Pet[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPet(entity.Id, entity);
+                        Core.Type.Pet[Entity.Index(entity)] = Entity.ToPet(entity.Id, entity);
                         break;
                 }
             }
