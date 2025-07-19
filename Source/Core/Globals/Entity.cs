@@ -166,28 +166,24 @@ namespace Core.Globals
             };
         }
 
-        public static Entity FromNPC(int id, Type.NPCStruct npc)
+        public static Entity FromNPC(int id, Type.MapNPCStruct npc)
         {
             var entity = new Entity(EntityType.NPC, id, npc)
             {
-                Name = npc.Name,
-                AttackSay = npc.AttackSay,
-                Sprite = npc.Sprite,
-                SpawnTime = npc.SpawnTime,
-                SpawnSecs = npc.SpawnSecs,
-                Behaviour = npc.Behaviour,
-                Range = npc.Range,
-                DropChance = npc.DropChance,
-                DropItem = npc.DropItem,
-                DropItemValue = npc.DropItemValue,
-                Stat = npc.Stat,
-                Faction = npc.Faction,
-                HP = npc.HP,
-                Exp = npc.Exp,
-                Animation = npc.Animation,
-                Skill = npc.Skill != null ? Array.ConvertAll(npc.Skill, b => (int)b) : null,
-                Level = npc.Level,
-                Damage = npc.Damage
+                Num = npc.Num,
+                Target = npc.Target,
+                TargetType = npc.TargetType,
+                Vital = npc.Vital,
+                Dir = (byte)npc.Dir,
+                AttackTimer = npc.AttackTimer,
+                SpawnWait = npc.SpawnWait,
+                StunDuration = npc.StunDuration,
+                StunTimer = npc.StunTimer,
+                SkillBuffer = npc.SkillBuffer,
+                SkillBufferTimer = npc.SkillBufferTimer,
+                Skill = npc.SkillCD != null ? (int[])npc.SkillCD.Clone() : null,
+                XOffset = npc.XOffset,
+                YOffset = npc.YOffset,
             };
             Instances.Add(entity);
             return entity;
@@ -230,7 +226,7 @@ namespace Core.Globals
                 Num = entity.Num,
                 Target = entity.Target,
                 TargetType = entity.TargetType,
-                Vital = entity.Vital != null ? (int[])entity.Vital.Clone() : new int[0], // Clone to prevent shared reference
+                Vital = entity.Vital != null ? (int[])entity.Vital.Clone() : new int[0],
                 X = entity.X,
                 Y = entity.Y,
                 Dir = entity.Dir,
@@ -240,9 +236,9 @@ namespace Core.Globals
                 StunTimer = entity.StunTimer,
                 SkillBuffer = entity.SkillBuffer,
                 SkillBufferTimer = entity.SkillBufferTimer,
-                SkillCD = entity.Skill != null ? (int[])entity.Skill.Clone() : new int[0], // Map NPC skills to cooldowns
-                StopRegen = entity.StopRegen, // Default, as Entity lacks this property
-                StopRegenTimer = 0, // Default, as Entity lacks this property
+                SkillCD = entity.Skill != null ? (int[])entity.Skill.Clone() : new int[0],
+                StopRegen = entity.StopRegen,
+                StopRegenTimer = 0,
                 XOffset = entity.XOffset,
                 YOffset = entity.YOffset,
                 Moving = entity.Moving,

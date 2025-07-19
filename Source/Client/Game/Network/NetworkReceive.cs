@@ -461,7 +461,7 @@ namespace Client
                 ref var withBlock = ref Core.Type.MyMapNPC[(int)MapNPCNum];
                 withBlock.X = (byte)x;
                 withBlock.Y = (byte)y;
-                withBlock.Dir = dir;
+                withBlock.Dir = (byte)dir;
                 withBlock.XOffset = 0;
                 withBlock.YOffset = 0;
                 withBlock.Moving = (byte)movement;
