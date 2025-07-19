@@ -59,7 +59,7 @@ namespace Server
                     }
                     catch(Exception e)
                     {
-                        Console.WriteLine(e.StackTrace);
+                        Console.WriteLine(e.Message);
                     }
 
                     tmr60000 = General.GetTimeMs() + 60000;
@@ -73,7 +73,7 @@ namespace Server
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.StackTrace);
+                        Console.WriteLine(e.Message);
                     }
 
                     for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
@@ -131,7 +131,7 @@ namespace Server
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine(e.Message);
                 }
 
                 await Task.Delay(1);
@@ -189,7 +189,7 @@ namespace Server
             }
             catch(Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -201,7 +201,7 @@ namespace Server
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
         }
     }
