@@ -157,13 +157,6 @@ namespace Client
                 return CanMoveRet;
             }
 
-            // Make sure they aren't trying to move when they are already moving
-            if (Core.Type.Player[GameState.MyIndex].Moving != 0)
-            {
-                CanMoveRet = false;
-                return CanMoveRet;
-            }
-
             // Make sure they haven't just casted a skill
             if (GameState.SkillBuffer >= 0)
             {
@@ -815,23 +808,6 @@ namespace Client
                     }
             }
 
-            // Check if completed walking over to the next tile
-            if (Core.Type.Player[index].Moving > 0)
-            {
-                if (Core.Type.Player[index].XOffset == 0 & Core.Type.Player[index].YOffset == 0)
-                {
-                    Core.Type.Player[index].Moving = 0;
-                    if (Core.Type.Player[index].Steps == 1)
-                    {
-                        Core.Type.Player[index].Steps = 3;
-                    }
-                    else
-                    {
-                        Core.Type.Player[index].Steps = 1;
-                    }
-                }
-            }
-
         }
 
 
@@ -1126,6 +1102,7 @@ namespace Client
             SetPlayerMap(i, buffer.ReadInt32());
             SetPlayerAccess(i, buffer.ReadInt32());
             SetPlayerPK(i, buffer.ReadBoolean());
+            Core.Type.Player[i].Moving = 0;
 
             for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());

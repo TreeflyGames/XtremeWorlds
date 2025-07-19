@@ -78,8 +78,11 @@ namespace Server
 
                     for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
                     {
-                        if (Core.Type.Player[index].Moving > 0)
+                        if (Core.Type.Player[index].Moving > 0 && Core.Type.Player[index].IsMoving)
+                        {
                             Player.PlayerMove(index, Core.Type.Player[index].Dir, Core.Type.Player[index].Moving, false);
+                            Core.Type.Player[index].IsMoving = false;
+                        }
                     }
 
                     Clock.Instance.Tick();

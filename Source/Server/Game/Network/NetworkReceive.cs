@@ -596,6 +596,7 @@ namespace Server
 
             SetPlayerDir(index, Dir);
             Core.Type.Player[index].Moving = movement;
+            Core.Type.Player[index].IsMoving = true;
 
             // Set movement offset directly to 32 or -32 based on direction
             int offset = Core.Constant.TILE_SIZE;
