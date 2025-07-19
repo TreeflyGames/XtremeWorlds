@@ -139,11 +139,6 @@ namespace Client
 
             CanMoveRet = true;
 
-            if (Core.Type.Player[GameState.MyIndex].XOffset != 0 | Core.Type.Player[GameState.MyIndex].YOffset != 0)
-            {
-                CanMoveRet = false;
-                return CanMoveRet;
-            }
 
             if (Conversions.ToInteger(Event.HoldPlayer) == 1)
             {
