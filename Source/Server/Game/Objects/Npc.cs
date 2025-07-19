@@ -414,7 +414,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             // Check for subscript out of range
-            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Dir < (byte)DirectionType.Up | Dir > (byte) DirectionType.Left | Movement < 0 | Movement > 2)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Dir < (byte)DirectionType.Up | Dir > (byte) DirectionType.DownRight | Movement < 0 | Movement > 2)
             {
                 return;
             }
@@ -489,7 +489,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             // Check for subscript out of range
-            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Dir < (byte)DirectionType.Up | Dir > (byte) DirectionType.Left)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Dir < (byte)DirectionType.Up | Dir > (byte) DirectionType.DownRight)
             {
                 return;
             }

@@ -208,7 +208,7 @@ namespace Server
         }
 
         private static bool IsValidMapAndDirection(int mapNum, byte dir) =>
-            mapNum >= 0 && mapNum <= Core.Constant.MAX_MAPS && dir >= (byte)DirectionType.Up && dir <= (byte)DirectionType.Left;
+            mapNum >= 0 && mapNum <= Core.Constant.MAX_MAPS && dir >= (byte)DirectionType.Up && dir <= (byte)DirectionType.DownRight;
 
         public static void EventDir(int playerIndex, int mapNum, int eventId, int dir, bool globalEvent = false)
         {
