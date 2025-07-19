@@ -617,12 +617,12 @@ namespace Client
             withBlock.Dir = 0;
             withBlock.Moving = 0;
             withBlock.Num = -1;
+            withBlock.SkillBuffer = -1;
             withBlock.Steps = 0;
             withBlock.Target = 0;
             withBlock.TargetType = 0;
-            withBlock.Vital = new int[3];
+            withBlock.Vital = new int[(byte)VitalType.Count];
             withBlock.Vital[(int)Core.Enum.VitalType.HP] = 0;
-            withBlock.Vital[(int)Core.Enum.VitalType.SP] = 0;
             withBlock.Vital[(int)Core.Enum.VitalType.SP] = 0;
             withBlock.X = 0;
             withBlock.XOffset = 0;

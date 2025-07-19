@@ -388,6 +388,7 @@ namespace Client
                     {
                         if (GameState.FadeAmount == 255)
                         {
+
                         }
                         else
                         {
