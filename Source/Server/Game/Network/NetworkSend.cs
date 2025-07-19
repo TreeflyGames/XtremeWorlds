@@ -843,7 +843,7 @@ namespace Server
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerX(index));
             buffer.WriteInt32(GetPlayerY(index));
-            buffer.WriteInt32(GetPlayerDir(index));
+            buffer.WriteByte(GetPlayerDir(index));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -858,7 +858,7 @@ namespace Server
             buffer.WriteInt32(playerNum);
             buffer.WriteInt32(GetPlayerX(playerNum));
             buffer.WriteInt32(GetPlayerY(playerNum));
-            buffer.WriteInt32(GetPlayerDir(playerNum));
+            buffer.WriteByte(GetPlayerDir(playerNum));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -873,7 +873,7 @@ namespace Server
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerX(index));
             buffer.WriteInt32(GetPlayerY(index));
-            buffer.WriteInt32(GetPlayerDir(index));
+            buffer.WriteByte(GetPlayerDir(index));
 
             NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 

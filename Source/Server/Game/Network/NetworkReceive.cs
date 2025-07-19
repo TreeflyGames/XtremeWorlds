@@ -2219,12 +2219,13 @@ namespace Server
 
             if (GetPlayerAccess(index) >= (byte) AccessType.Mapper)
             {
+                Core.Type.Player[index].IsMoving = false;
                 // Set the information
                 SetPlayerX(index, x);
                 SetPlayerY(index, y);
+                SetPlayerDir(index, (byte)DirectionType.Down);
 
-                // send the stuff
-                NetworkSend.SendPlayerXY(index);
+                NetworkSend.SendPlayerMove(index, 0);
             }
 
             buffer.Dispose();

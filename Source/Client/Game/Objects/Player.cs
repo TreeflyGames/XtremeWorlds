@@ -1322,7 +1322,7 @@ namespace Client
             index = buffer.ReadInt32();
             x = buffer.ReadInt32();
             y = buffer.ReadInt32();
-            dir = buffer.ReadInt32();
+            dir = buffer.ReadByte();
 
             SetPlayerX(index, x);
             SetPlayerY(index, y);
