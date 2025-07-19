@@ -160,7 +160,7 @@ namespace Server
             int i;
             NPCTileIsOpenRet = true;
 
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i < loopTo; i++)
             {
                 if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == x & GetPlayerY(i) == y)
@@ -198,7 +198,7 @@ namespace Server
             int y;
 
             // Check for subscript out of range
-            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Dir < (byte) DirectionType.Up | Dir > (byte) DirectionType.Left)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Dir < (byte) DirectionType.Up | Dir > (byte) DirectionType.DownRight)
             {
                 return CanNPCMoveRet;
             }
@@ -225,7 +225,7 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                            var loopTo = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i < loopTo; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
@@ -273,7 +273,7 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo2 = NetworkConfig.Socket.HighIndex + 1;
+                            var loopTo2 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i < loopTo2; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
@@ -321,7 +321,7 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo4 = NetworkConfig.Socket.HighIndex + 1;
+                            var loopTo4 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i < loopTo4; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
@@ -369,7 +369,7 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo6 = NetworkConfig.Socket.HighIndex + 1;
+                            var loopTo6 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i < loopTo6; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
