@@ -132,8 +132,8 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CPlayerMove);
-            buffer.WriteInt32(GetPlayerDir(GameState.MyIndex));
-            buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].Moving);
+            buffer.WriteByte(GetPlayerDir(GameState.MyIndex));
+            buffer.WriteByte(Core.Type.Player[GameState.MyIndex].Moving);
             buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].X);
             buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].Y);
 

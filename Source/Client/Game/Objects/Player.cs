@@ -1,6 +1,7 @@
 ﻿using Core;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using System.Net.Security;
 using static Core.Global.Command;
 
 namespace Client
@@ -105,73 +106,7 @@ namespace Client
                     Core.Type.Player[GameState.MyIndex].Moving = (byte)Core.Enum.MovementType.Running;
                 }
 
-                switch (GetPlayerDir(GameState.MyIndex))
-                {
-                    case (int)Core.Enum.DirectionType.Up:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].YOffset = GameState.PicY;
-                            SetPlayerY(GameState.MyIndex, GetPlayerY(GameState.MyIndex) - 1);
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Down:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].YOffset = GameState.PicY * -1;
-                            SetPlayerY(GameState.MyIndex, GetPlayerY(GameState.MyIndex) + 1);
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Left:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].XOffset = GameState.PicX;
-                            SetPlayerX(GameState.MyIndex, GetPlayerX(GameState.MyIndex) - 1);
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Right:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].XOffset = GameState.PicX * -1;
-                            SetPlayerX(GameState.MyIndex, GetPlayerX(GameState.MyIndex) + 1);
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.UpLeft:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].XOffset = GameState.PicX;
-                            SetPlayerX(GameState.MyIndex, GetPlayerX(GameState.MyIndex) - 1);
-                            Core.Type.Player[GameState.MyIndex].YOffset = GameState.PicY;
-                            SetPlayerY(GameState.MyIndex, GetPlayerY(GameState.MyIndex) - 1);
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.UpRight:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].XOffset = GameState.PicX * -1;
-                            SetPlayerX(GameState.MyIndex, GetPlayerX(GameState.MyIndex) + 1);
-                            Core.Type.Player[GameState.MyIndex].YOffset = GameState.PicY;
-                            SetPlayerY(GameState.MyIndex, GetPlayerY(GameState.MyIndex) - 1);
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.DownLeft:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].XOffset = GameState.PicX;
-                            SetPlayerX(GameState.MyIndex, GetPlayerX(GameState.MyIndex) - 1);
-                            Core.Type.Player[GameState.MyIndex].YOffset = GameState.PicY * -1;
-                            SetPlayerY(GameState.MyIndex, GetPlayerY(GameState.MyIndex) + 1);
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.DownRight:
-                        {
-                            NetworkSend.SendPlayerMove();
-                            Core.Type.Player[GameState.MyIndex].XOffset = GameState.PicX * -1;
-                            SetPlayerX(GameState.MyIndex, GetPlayerX(GameState.MyIndex) + 1);
-                            Core.Type.Player[GameState.MyIndex].YOffset = GameState.PicY * -1;
-                            SetPlayerY(GameState.MyIndex, GetPlayerY(GameState.MyIndex) + 1);
-                            break;
-                        }
-                }
+                NetworkSend.SendPlayerMove();
 
                 if (Core.Type.Player[GameState.MyIndex].XOffset == 0 & Core.Type.Player[GameState.MyIndex].YOffset == 0)
                 {
@@ -790,12 +725,12 @@ namespace Client
             {
                 case (byte)Core.Enum.MovementType.Walking:
                     {
-                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * GameState.WalkSpeed * GameState.SizeX; // Adjust speed by elapsed time
+                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * Core.Constant.WALK_SPEED * GameState.SizeX; // Adjust speed by elapsed time
                         break;
                     }
                 case (byte)Core.Enum.MovementType.Running:
                     {
-                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * GameState.RunSpeed * GameState.SizeX; // Adjust speed by elapsed time
+                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * Core.Constant.RUN_SPEED * GameState.SizeX; // Adjust speed by elapsed time
                         break;
                     }
 
@@ -1320,6 +1255,8 @@ namespace Client
                     }
             }
 
+            
+
             buffer.Dispose();
         }
 
@@ -1328,8 +1265,9 @@ namespace Client
             int dir;
             int i;
             var buffer = new ByteStream(data);
+
             i = buffer.ReadInt32();
-            dir = buffer.ReadInt32();
+            dir = buffer.ReadByte();
 
             SetPlayerDir(i, dir);
 
@@ -1337,6 +1275,25 @@ namespace Client
             withBlock.XOffset = 0;
             withBlock.YOffset = 0;
             withBlock.Moving = 0;
+
+            buffer.Dispose();
+        }
+
+        public static void Packet_PlayerXYOffset(ref byte[] data)
+        {
+            int dir;
+            int i;
+            var buffer = new ByteStream(data);
+
+            i = buffer.ReadInt32();
+            dir = buffer.ReadByte();
+
+            SetPlayerDir(i, dir);
+
+            ref var withBlock = ref Core.Type.Player[i];
+            withBlock.XOffset = buffer.ReadInt32();
+            withBlock.YOffset = buffer.ReadInt32();
+            withBlock.Moving = buffer.ReadByte();
 
             buffer.Dispose();
         }
@@ -1382,6 +1339,7 @@ namespace Client
             int y;
             int dir;
             int index;
+            return;
             var buffer = new ByteStream(data);
 
             index = buffer.ReadInt32();
