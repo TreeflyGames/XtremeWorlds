@@ -2083,75 +2083,7 @@ namespace Client
             }
             else
             {
-                // If not attacking, walk normally
-                switch (GetPlayerDir(index))
-                {
-                    case (int)DirectionType.Up:
-                    {
-
-                        if (Core.Type.Player[index].YOffset > 8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-                    case (int)DirectionType.Down:
-                    {
-
-                        if (Core.Type.Player[index].YOffset < -8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-                    case (int)DirectionType.Left:
-                    {
-
-                        if (Core.Type.Player[index].XOffset > 8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-                    case (int)DirectionType.Right:
-                    {
-
-                        if (Core.Type.Player[index].XOffset < -8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-                    case (int)DirectionType.UpRight:
-                    {
-                        if (Core.Type.Player[index].XOffset < -8)
-                            anim = Core.Type.Player[index].Steps;
-                        if (Core.Type.Player[index].YOffset > 8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-
-                    case (int)DirectionType.UpLeft:
-                    {
-                        if (Core.Type.Player[index].XOffset > 8)
-                            anim = Core.Type.Player[index].Steps;
-                        if (Core.Type.Player[index].YOffset > 8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-
-                    case (int)DirectionType.DownRight:
-                    {
-                        if (Core.Type.Player[index].XOffset < -8)
-                            anim = Core.Type.Player[index].Steps;
-                        if (Core.Type.Player[index].YOffset < -8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-
-                    case (int)DirectionType.DownLeft:
-                    {
-                        if (Core.Type.Player[index].XOffset > 8)
-                            anim = Core.Type.Player[index].Steps;
-                        if (Core.Type.Player[index].YOffset < -8)
-                            anim = Core.Type.Player[index].Steps;
-                        break;
-                    }
-
-                }
-
+                anim = Core.Type.Player[index].Steps;
             }
 
             // Check to see if we want to stop making him attack
