@@ -198,7 +198,7 @@ namespace Server
             int y;
 
             // Check for subscript out of range
-            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Dir < (byte) DirectionType.Up | Dir > (byte) DirectionType.DownRight)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNPCNum < 0 | MapNPCNum >= Core.Constant.MAX_MAP_NPCS | Dir < (byte) DirectionType.Up | Dir > (byte) DirectionType.DownRight)
             {
                 return CanNPCMoveRet;
             }
@@ -260,7 +260,7 @@ namespace Server
                 case (byte) DirectionType.Down:
                     {
                         // Check to make sure not outside of boundaries
-                        if (y < Core.Type.Map[mapNum].MaxY)
+                        if (y < Core.Type.Map[mapNum].MaxY - 1)
                         {
                             n = (int)Core.Type.Map[mapNum].Tile[x, y + 1].Type;
                             n2 = (int)Core.Type.Map[mapNum].Tile[x, y + 1].Type2;
@@ -356,7 +356,7 @@ namespace Server
                 case (byte)DirectionType.Right:
                     {
                         // Check to make sure not outside of boundaries
-                        if (x < Core.Type.Map[mapNum].MaxX)
+                        if (x < Core.Type.Map[mapNum].MaxX - 1)
                         {
                             n = (int)Core.Type.Map[mapNum].Tile[x + 1, y].Type;
                             n2 = (int)Core.Type.Map[mapNum].Tile[x + 1, y].Type2;

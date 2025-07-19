@@ -185,7 +185,6 @@ namespace Core.Globals
                 XOffset = npc.XOffset,
                 YOffset = npc.YOffset,
             };
-            Instances.Add(entity);
             return entity;
         }
 
@@ -209,7 +208,6 @@ namespace Core.Globals
                 EvolveLevel = pet.EvolveLevel,
                 EvolveNum = pet.EvolveNum
             };
-            Instances.Add(entity);
             return entity;
         }
 
