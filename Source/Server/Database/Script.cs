@@ -738,43 +738,19 @@ public class Script
                     byte attackTargetType = entity.TargetType;
 
                     if (attackTarget > 0)
-                    {
-                        if (attackTargetType == (byte)Core.Enum.TargetType.Player)
+                    {                    
+                        if (GetPlayerMap(attackTarget) == mapNum)
                         {
-                            if (GetPlayerMap(attackTarget) == mapNum)
-                            {
-                                // Placeholder for attack logic
-                            }
-                            else
-                            {
-                                entity.Target = 0;
-                                entity.TargetType = 0;
-                            }
+                            // Placeholder for attack logic
                         }
-                        else if (attackTargetType == (byte)Core.Enum.TargetType.NPC)
+                        else
                         {
-                            if (attackTarget < entities.Count)
-                            {
-                                var targetEntity = entities[attackTarget];
-                                if (targetEntity != null && targetEntity.Num >= 0 && targetEntity.Map == mapNum)
-                                {
-                                    // Placeholder for NPC vs NPC attack logic
-                                }
-                                else
-                                {
-                                    entity.Target = 0;
-                                    entity.TargetType = 0;
-                                }
-                            }
-                            else
-                            {
-                                entity.Target = 0;
-                                entity.TargetType = 0;
-                            }
-                        }
+                            entity.Target = 0;
+                            entity.TargetType = 0;
+                        }                        
                     }
 
-                    // Regenerate NPC's HP
+                    // Regenerate HP/MP
                     if (entity.Vital[(byte)VitalType.HP] > 0)
                     {
                         // Placeholder for HP regen
