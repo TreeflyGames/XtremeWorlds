@@ -1,11 +1,14 @@
 ﻿using Core;
+using Core.Globals;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw.Network;
+using MonoGame.Extended.ECS;
 using Npgsql.Replication.PgOutput.Messages;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
@@ -75,6 +78,16 @@ namespace Server
                     {
                         Console.WriteLine(e.Message);
                     }
+
+                    for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
+                    {
+                        if (Core.Type.Player[index].Moving > 0 && Core.Type.Player[index].IsMoving)
+                        {
+                            Player.PlayerMove(index, Core.Type.Player[index].Dir, Core.Type.Player[index].Moving, false);
+                            Core.Type.Player[index].IsMoving = false;
+                        }
+                    }
+
                     Clock.Instance.Tick();
 
                     // Move the timer up 1000ms.
@@ -173,13 +186,54 @@ namespace Server
 
         private static void UpdateMapAI()
         {
-            try
+            // Clear the entity list before repopulating to avoid accumulating instances
+            Core.Globals.Entity.Instances.Clear();
+
+            var entities = Core.Globals.Entity.Instances;
+            var mapCount = Core.Constant.MAX_MAPS;
+
+            // Use entities from Core.Globals.Entity class
+            for (int mapNum = 0; mapNum < mapCount; mapNum++)
             {
-                Script.Instance?.UpdateMapAI();
+                // Add NPCs
+                for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i++)
+                {
+                    var npc = Core.Globals.Entity.FromNPC(i, Core.Type.MapNPC[mapNum].NPC[i]);
+                    if (npc.Num >= 0)
+                    {
+                        npc.Map = mapNum;
+                        entities.Add(npc);
+                    }
+                }
+
+                // Add Players
+                for (int i = 0; i < NetworkConfig.Socket.HighIndex; i++)
+                {
+                    if (Core.Type.Player[i].Map == mapNum)
+                    {
+                        var player = Core.Globals.Entity.FromPlayer(i, Core.Type.Player[i]);
+                        if (player.Num >= 0)
+                        {
+                            player.Map = mapNum;
+                            entities.Add(player);
+                        }
+                    }
+                }
             }
-            catch(Exception e)
+            
+            Script.Instance?.UpdateMapAI();
+
+            foreach (Core.Globals.Entity entity in Core.Globals.Entity.Instances)
             {
-                Console.WriteLine(e.Message);
+                switch (entity.Type)
+                {
+                    case Core.Globals.Entity.EntityType.NPC:
+                        Core.Type.MapNPC[entity.Map].NPC[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNPC(entity.Id, entity);
+                        break;
+                    case Core.Globals.Entity.EntityType.Player:
+                        Core.Type.Player[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPlayer(entity.Id, entity);
+                        break;
+                }
             }
         }
 

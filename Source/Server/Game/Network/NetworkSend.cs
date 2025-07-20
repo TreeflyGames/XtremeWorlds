@@ -17,6 +17,20 @@ namespace Server
     public class NetworkSend
     {
 
+        public static void AesKeyIV(int index)
+        {
+            var buffer = new ByteStream(4);
+
+            buffer.WriteInt32((int)ServerPackets.SAes);
+            buffer.WriteByte((byte)General.Aes[index].Key.Length);
+            buffer.WriteBlock(General.Aes[index].Key);
+            buffer.WriteByte((byte)General.Aes[index].IV.Length);
+            buffer.WriteBlock(General.Aes[index].IV);
+
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
+            buffer.Dispose();
+        }
+
         public static void AlertMsg(int index, byte menuNo, int menuReset = 0, bool kick = true)
         {
             var buffer = new ByteStream(4);
@@ -829,7 +843,7 @@ namespace Server
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerX(index));
             buffer.WriteInt32(GetPlayerY(index));
-            buffer.WriteInt32(GetPlayerDir(index));
+            buffer.WriteByte(GetPlayerDir(index));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -844,7 +858,7 @@ namespace Server
             buffer.WriteInt32(playerNum);
             buffer.WriteInt32(GetPlayerX(playerNum));
             buffer.WriteInt32(GetPlayerY(playerNum));
-            buffer.WriteInt32(GetPlayerDir(playerNum));
+            buffer.WriteByte(GetPlayerDir(playerNum));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -859,7 +873,7 @@ namespace Server
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerX(index));
             buffer.WriteInt32(GetPlayerY(index));
-            buffer.WriteInt32(GetPlayerDir(index));
+            buffer.WriteByte(GetPlayerDir(index));
 
             NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 

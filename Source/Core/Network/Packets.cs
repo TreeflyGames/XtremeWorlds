@@ -139,6 +139,7 @@ namespace Core
         // Packets sent by server to client
         public enum ServerPackets
         {
+            SAes,
             SAlertMsg,
             SLoginOK,
             SPlayerChars,
@@ -154,6 +155,7 @@ namespace Core
             SPlayerMove,
             SNPCMove,
             SPlayerDir,
+            SPlayerXYOffset,
             SNPCDir,
             SPlayerXY,
             SAttack,

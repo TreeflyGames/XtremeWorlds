@@ -5,12 +5,14 @@
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Autofac" Version="8.3.0" />
+    <PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Include="CS-Script" Version="4.9.7" />
     <PackageVersion Include="CS-Script.Core" Version="2.0.0" />
     <PackageVersion Include="DarkUI" Version="2.0.2" />
     <PackageVersion Include="ManagedBass" Version="3.1.1" />
     <PackageVersion Include="ManagedBass.Midi" Version="3.1.1" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.6" />
@@ -31,5 +33,6 @@
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageVersion Include="System.Reflection.Extensions" Version="4.3.0" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.7" />
   </ItemGroup>
 </Project>

@@ -53,6 +53,8 @@
     <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />

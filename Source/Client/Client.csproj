@@ -74,6 +74,8 @@
     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
     <PackageReference Include="ManagedBass" />
     <PackageReference Include="ManagedBass.Midi" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />

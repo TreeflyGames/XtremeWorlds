@@ -52,15 +52,20 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CLogin);
-            buffer.WriteString(name);
-            buffer.WriteString(pass);
+
+            byte[] encryptedName = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(name));
+            byte[] encryptedPass = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(pass));
 
             // Get the current executing assembly
-            var @assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
             // Retrieve the version information
-            var version = assembly.GetName().Version;
-            buffer.WriteString(version.ToString());
+            var version = assembly?.GetName()?.Version;
+            byte[] encryptedVersion = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(version?.ToString()));
+
+            buffer.WriteBytes(encryptedName);
+            buffer.WriteBytes(encryptedPass);
+            buffer.WriteBytes(encryptedVersion);
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -71,15 +76,20 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRegister);
-            buffer.WriteString(name);
-            buffer.WriteString(pass);
+
+            byte[] encryptedName = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(name));
+            byte[] encryptedPass = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(pass));
 
             // Get the current executing assembly
-            var @assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
             // Retrieve the version information
-            var version = assembly.GetName().Version;
-            buffer.WriteString(version.ToString());
+            var version = assembly?.GetName()?.Version;
+            byte[] encryptedVersion = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(version?.ToString()));
+
+            buffer.WriteBytes(encryptedName);
+            buffer.WriteBytes(encryptedPass);
+            buffer.WriteBytes(encryptedVersion);
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -122,8 +132,8 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CPlayerMove);
-            buffer.WriteInt32(GetPlayerDir(GameState.MyIndex));
-            buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].Moving);
+            buffer.WriteByte(GetPlayerDir(GameState.MyIndex));
+            buffer.WriteByte(Core.Type.Player[GameState.MyIndex].Moving);
             buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].X);
             buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].Y);
 

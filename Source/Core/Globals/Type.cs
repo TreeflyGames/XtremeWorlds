@@ -315,6 +315,7 @@ namespace Core
             public int XOffset;
             public int YOffset;
             public byte Moving;
+            public bool IsMoving;
             public byte Attacking;
             public int AttackTimer;
             public int MapGetTimer;

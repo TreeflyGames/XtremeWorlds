@@ -1,18 +1,20 @@
-﻿using System;
+﻿using Core;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using Mirage.Sharp.Asfw;
+using Mirage.Sharp.Asfw.Network;
+using Newtonsoft.Json.Linq;
+using Npgsql.Replication.PgOutput.Messages;
+using Server;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Runtime.Intrinsics.Arm;
 using System.Xml.Linq;
-using Core;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-using Mirage.Sharp.Asfw;
-using Newtonsoft.Json.Linq;
-using Npgsql.Replication.PgOutput.Messages;
-using Server;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -184,16 +186,23 @@ namespace Server
                     }
 
                     // Get the data
-                    username = buffer.ReadString().ToLower().Replace("\0", "");
-                    password = buffer.ReadString().Replace("\0", "");
+                    // Use the same pattern as Packet_Register for AES lookup
+                    Reoria.Engine.Common.Security.Encryption.AesEncryption aes;
+                    General.Aes.TryGetValue(index, out aes);
+                    byte[] usernameBytes = buffer.ReadBytes().ToArray();
+                    username = System.Text.Encoding.UTF8.GetString(aes.Decrypt(usernameBytes)).ToLower().Replace("\0", "");
+
+                    byte[] passwordBytes = buffer.ReadBytes().ToArray();
+                    password = System.Text.Encoding.UTF8.GetString(aes.Decrypt(passwordBytes)).Replace("\0", "");
 
                     // Get the current executing assembly
-                    var @assembly = Assembly.GetExecutingAssembly();
+                    var assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
+                    byte[] clientVersionBytes = buffer.ReadBytes().ToArray();
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = buffer.ReadString() ?? "";
-                        
+                    var clientVersion = System.Text.Encoding.UTF8.GetString(aes.Decrypt(clientVersionBytes));
+
                     // Check versions
                     if (clientVersion != serverVersion)
                     {
@@ -283,15 +292,21 @@ namespace Server
                     }
 
                     // Get the data
-                    username = buffer.ReadString().ToLower().Replace("\0", "");
-                    password = buffer.ReadString().Replace("\0", "");
+                    Reoria.Engine.Common.Security.Encryption.AesEncryption aes;
+                    General.Aes.TryGetValue(index, out aes);
+                    byte[] usernameBytes = buffer.ReadBytes().ToArray();
+                    username = System.Text.Encoding.UTF8.GetString(aes.Decrypt(usernameBytes)).ToLower().Replace("\0", "");
+
+                    byte[] passwordBytes = buffer.ReadBytes().ToArray();
+                    password = System.Text.Encoding.UTF8.GetString(aes.Decrypt(passwordBytes)).Replace("\0", "");
 
                     // Get the current executing assembly
-                    var @assembly = Assembly.GetExecutingAssembly();
+                    var assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
+                    byte[] clientVersionBytes = buffer.ReadBytes().ToArray();
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = buffer.ReadString() ?? "";
+                    var clientVersion = System.Text.Encoding.UTF8.GetString(aes.Decrypt(clientVersionBytes));
 
                     // Check versions
                     if (clientVersion != serverVersion)
@@ -564,8 +579,8 @@ namespace Server
 
         private static void Packet_PlayerMove(int index, ref byte[] data)
         {
-            int Dir;
-            int movement;
+            byte Dir;
+            byte movement;
             int tmpX;
             int tmpY;
             var buffer = new ByteStream(data);
@@ -573,28 +588,58 @@ namespace Server
             if (Core.Type.TempPlayer[index].GettingMap)
                 return;
 
-            Dir = buffer.ReadInt32();
-            movement = buffer.ReadInt32();
+            Dir = buffer.ReadByte();
+            movement = buffer.ReadByte();
             tmpX = buffer.ReadInt32();
             tmpY = buffer.ReadInt32();
             buffer.Dispose();
 
-            // Desynced
-            int x = GetPlayerX(index);
-            if (x != tmpX)
+            SetPlayerDir(index, Dir);
+            Core.Type.Player[index].Moving = movement;
+            Core.Type.Player[index].IsMoving = true;
+
+            // Set movement offset directly to 32 or -32 based on direction
+            int offset = Core.Constant.TILE_SIZE;
+
+            switch (Dir)
             {
-                NetworkSend.SendPlayerXY(index);
-                return;
+                case (int)Core.Enum.DirectionType.Up:
+                    Core.Type.Player[index].YOffset -= offset;
+                    break;
+                case (int)Core.Enum.DirectionType.Down:
+                    Core.Type.Player[index].YOffset += offset;
+                    break;
+                case (int)Core.Enum.DirectionType.Left:
+                    Core.Type.Player[index].XOffset -= offset;
+                    break;
+                case (int)Core.Enum.DirectionType.Right:
+                    Core.Type.Player[index].XOffset += offset;
+                    break;
+                case (int)Core.Enum.DirectionType.UpRight:
+                    Core.Type.Player[index].XOffset += offset;
+                    Core.Type.Player[index].YOffset -= offset;
+                    break;
+                case (int)Core.Enum.DirectionType.UpLeft:
+                    Core.Type.Player[index].XOffset -= offset;
+                    Core.Type.Player[index].YOffset -= offset;
+                    break;
+                case (int)Core.Enum.DirectionType.DownRight:
+                    Core.Type.Player[index].XOffset += offset;
+                    Core.Type.Player[index].YOffset += offset;
+                    break;
+                case (int)Core.Enum.DirectionType.DownLeft:
+                    Core.Type.Player[index].XOffset -= offset;
+                    Core.Type.Player[index].YOffset += offset;
+                    break;
             }
 
-            int y = GetPlayerY(index);
-            if (y != tmpY)
-            {
-                NetworkSend.SendPlayerXY(index);
-                return;
-            }
-
-            Player.PlayerMove(index, Dir, movement, false);
+            buffer = new ByteStream(4);
+            buffer.WriteInt32((int)ServerPackets.SPlayerXYOffset);
+            buffer.WriteByte(GetPlayerDir(index));
+            buffer.WriteInt32(Core.Type.Player[index].XOffset);
+            buffer.WriteInt32(Core.Type.Player[index].YOffset);
+            buffer.WriteByte(Core.Type.Player[index].Moving);
+            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -611,7 +656,7 @@ namespace Server
             buffer.Dispose();
 
             // Prevent hacking
-            if (dir < (byte) DirectionType.Up | dir > (byte) DirectionType.Left)
+            if (dir < (byte) DirectionType.Up | dir > (byte) DirectionType.DownRight)
                 return;
 
             SetPlayerDir(index, dir);
@@ -619,7 +664,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SPlayerDir);
             buffer.WriteInt32(index);
-            buffer.WriteInt32(GetPlayerDir(index));
+            buffer.WriteByte(GetPlayerDir(index));
             NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -2174,12 +2219,13 @@ namespace Server
 
             if (GetPlayerAccess(index) >= (byte) AccessType.Mapper)
             {
+                Core.Type.Player[index].IsMoving = false;
                 // Set the information
                 SetPlayerX(index, x);
                 SetPlayerY(index, y);
+                SetPlayerDir(index, (byte)DirectionType.Down);
 
-                // send the stuff
-                NetworkSend.SendPlayerXY(index);
+                NetworkSend.SendPlayerMove(index, 0);
             }
 
             buffer.Dispose();

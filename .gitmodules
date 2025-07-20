@@ -1,6 +1,6 @@
 [submodule "Source/Modules/Reoria.Engine"]
 	path = Source/Modules/Reoria.Engine
-	url = https://github.com/XerShade/Reoria.Engine.git
+	url = https://github.com/XSArchive/Reoria.Engine.Legacy.git
 [submodule "Source/Modules/DarkUI"]
 	path = Source/Modules/DarkUI
 	url = https://github.com/TreeflyStudios/DarkUI.git

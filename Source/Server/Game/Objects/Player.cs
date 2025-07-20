@@ -634,7 +634,7 @@ namespace Server
                 }
             }
 
-            // Check to make sure that the tile is walkable  
+            // Check to make sure that the tile is walkable
             if (IsDirBlocked(ref Map[mapNum].Tile[x, y].DirBlock, (byte)dir))
             {
                 return true;

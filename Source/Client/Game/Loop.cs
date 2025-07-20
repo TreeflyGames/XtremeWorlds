@@ -312,6 +312,41 @@ namespace Client
                 // Change map animation
                 if (tmr250 < tick)
                 {
+                    for (int i = 0; i < Constant.MAX_PLAYERS; i++)
+                    {
+                        if (IsPlaying(i))
+                        {
+                            if (GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
+                            {
+                                // Check if completed walking over to the next tile
+                                if (Core.Type.Player[i].Steps == 3)
+                                {
+                                    Core.Type.Player[i].Steps = 0;
+                                }
+                                else
+                                {
+                                    Core.Type.Player[i].Steps++;
+                                }                              
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
+                    {
+                        if (Core.Type.MyMapNPC[i].Num >= 0)
+                        {
+                            // Check if completed walking over to the next tile
+                            if (Core.Type.MyMapNPC[i].Steps == 3)
+                            {
+                                Core.Type.MyMapNPC[i].Steps = 0;
+                            }
+                            else
+                            {
+                                Core.Type.MyMapNPC[i].Steps++;
+                            }
+                        }
+                    }
+
                     GameState.MapAnim = !GameState.MapAnim;
                     tmr250 = tick + 250;
                 }
@@ -364,6 +399,7 @@ namespace Client
                     {
                         if (GameState.FadeAmount == 255)
                         {
+
                         }
                         else
                         {

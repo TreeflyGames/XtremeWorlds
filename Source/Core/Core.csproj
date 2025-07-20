@@ -17,6 +17,8 @@
     <DefineConstants>CORE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+	<PackageReference Include="Autofac" />
+	<PackageReference Include="Autofac.Extensions.DependencyInjection" />
 	<PackageReference Include="CS-Script" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
