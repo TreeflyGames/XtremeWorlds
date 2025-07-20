@@ -650,39 +650,18 @@ public class Script
 
                     if (entity.Behaviour != (byte)NPCBehavior.ShopKeeper && entity.Behaviour != (byte)NPCBehavior.Quest)
                     {
-                        if (targetType == (byte)Core.Enum.TargetType.Player)
+                        if (target > 0)
                         {
-                            if (target > 0)
+                            if (entities[mapNum].Map == mapNum)
                             {
-                                if (GetPlayerMap(target) == mapNum)
-                                {
-                                    targetVerify = true;
-                                    targetY = GetPlayerY(target);
-                                    targetX = GetPlayerX(target);
-                                }
-                                else
-                                {
-                                    entity.TargetType = 0;
-                                    entity.Target = 0;
-                                }
+                                targetVerify = true;
+                                targetX = entities[target].X;
+                                targetY = entities[target].Y;
                             }
-                        }
-                        else if (targetType == (byte)Core.Enum.TargetType.NPC)
-                        {
-                            if (target > 0 && target < entities.Count)
+                            else
                             {
-                                var targetEntity = Core.Type.MapNPC[mapNum].NPC[target];
-                                if (targetEntity.Num >= 0)
-                                {
-                                    targetVerify = true;
-                                    targetY = targetEntity.Y;
-                                    targetX = targetEntity.X;
-                                }
-                                else
-                                {
-                                    entity.TargetType = 0;
-                                    entity.Target = 0;
-                                }
+                                entity.TargetType = 0;
+                                entity.Target = 0;
                             }
                         }
 
