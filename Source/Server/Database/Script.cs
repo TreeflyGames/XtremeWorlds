@@ -648,25 +648,25 @@ public class Script
                     byte targetType = entity.TargetType;
                     int targetX = 0, targetY = 0;
 
-                    if (entity.Behaviour != (byte)NPCBehavior.ShopKeeper && entity.Behaviour != (byte)NPCBehavior.Quest)
+                    if (entity.Type == Core.Globals.Entity.EntityType.NPC)
                     {
-                        if (target > 0)
+                        if (entity.Behaviour != (byte)NPCBehavior.ShopKeeper && entity.Behaviour != (byte)NPCBehavior.Quest)
                         {
-                            if (entities[mapNum].Map == mapNum)
+                            if (target > 0)
                             {
-                                targetVerify = true;
-                                targetX = entities[target].X;
-                                targetY = entities[target].Y;
+                                if (entities[mapNum].Map == mapNum)
+                                {
+                                    targetVerify = true;
+                                    targetX = entities[target].X;
+                                    targetY = entities[target].Y;
+                                }
+                                else
+                                {
+                                    entity.TargetType = 0;
+                                    entity.Target = 0;
+                                }
                             }
-                            else
-                            {
-                                entity.TargetType = 0;
-                                entity.Target = 0;
-                            }
-                        }
 
-                        if (entity.Type == Core.Globals.Entity.EntityType.NPC)
-                        {
                             if (targetVerify)
                             {
                                 if (!Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
