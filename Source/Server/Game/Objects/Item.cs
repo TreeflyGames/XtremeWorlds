@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static Core.Enum;
-using static Core.Packets;
+using System;
+using System.Linq;
 using static Core.Global.Command;
+using static Core.Packets;
 
 namespace Server
 {
@@ -29,7 +29,7 @@ namespace Server
 
         public static void SaveItem(int itemNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Item[itemNum]).ToString();
+            string json = JsonConvert.SerializeObject(Core.Data.Item[itemNum]).ToString();
 
             if (Database.RowExists(itemNum, "item"))
             {
@@ -41,13 +41,13 @@ namespace Server
             }
         }
 
-        public static async Task LoadItemsAsync()
+        public static async System.Threading.Tasks.Task LoadItemsAsync()
         {
             var tasks = Enumerable.Range(0, Core.Constant.MAX_ITEMS).Select(i => Task.Run(() => LoadItemAsync(i)));
-            await Task.WhenAll(tasks);
+            await System.Threading.Tasks.Task.WhenAll(tasks);
         }
 
-        public static async Task LoadItemAsync(int itemNum)
+        public static async System.Threading.Tasks.Task LoadItemAsync(int itemNum)
         {
             JObject data;
 
@@ -59,20 +59,21 @@ namespace Server
                 return;
             }
 
-            var itemData = JObject.FromObject(data).ToObject<Core.Type.ItemStruct>();
-            Core.Type.Item[itemNum] = itemData;
+            var itemData = JObject.FromObject(data).ToObject<Core.Type.Item>();
+            Core.Data.Item[itemNum] = itemData;
         }
 
         public static void ClearItem(int index)
         {
-            Core.Type.Item[index].Name = "";
-            Core.Type.Item[index].Description = "";
-            Core.Type.Item[index].Stackable = 1;
+            Core.Data.Item[index].Name = "";
+            Core.Data.Item[index].Description = "";
+            Core.Data.Item[index].Stackable = 1;
 
+            var statCount = Enum.GetNames(typeof(Stat)).Length;
             for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < loopTo; i++)
             {
-                Core.Type.Item[(i)].Add_Stat = new byte[(int)Core.Enum.StatType.Count];
-                Core.Type.Item[i].Stat_Req = new byte[(int)Core.Enum.StatType.Count];
+                Core.Data.Item[(i)].Add_Stat = new byte[statCount];
+                Core.Data.Item[i].Stat_Req = new byte[statCount];
             }
         }
 
@@ -81,41 +82,42 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32(itemNum);
-            buffer.WriteInt32(Core.Type.Item[itemNum].AccessReq);
+            buffer.WriteInt32(Core.Data.Item[itemNum].AccessReq);
 
-            for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
-                buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[i]);
+            var statCount = Enum.GetNames(typeof(Stat)).Length;
+            for (int i = 0, loopTo = statCount; i < loopTo; i++)
+                buffer.WriteInt32(Core.Data.Item[itemNum].Add_Stat[i]);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].Animation);
-            buffer.WriteInt32(Core.Type.Item[itemNum].BindType);
-            buffer.WriteInt32(Core.Type.Item[itemNum].JobReq);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Data1);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Data2);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Data3);
-            buffer.WriteInt32(Core.Type.Item[itemNum].LevelReq);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Mastery);
-            buffer.WriteString(Core.Type.Item[itemNum].Name);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Paperdoll);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Icon);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Price);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Rarity);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Speed);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Animation);
+            buffer.WriteInt32(Core.Data.Item[itemNum].BindType);
+            buffer.WriteInt32(Core.Data.Item[itemNum].JobReq);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Data1);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Data2);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Data3);
+            buffer.WriteInt32(Core.Data.Item[itemNum].LevelReq);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Mastery);
+            buffer.WriteString(Core.Data.Item[itemNum].Name);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Paperdoll);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Icon);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Price);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Rarity);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Speed);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].Stackable);
-            buffer.WriteString(Core.Type.Item[itemNum].Description);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Stackable);
+            buffer.WriteString(Core.Data.Item[itemNum].Description);
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
-                buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[i]);
+            for (int i = 0, loopTo1 = statCount; i < loopTo1; i++)
+                buffer.WriteInt32(Core.Data.Item[itemNum].Stat_Req[i]);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].Type);
-            buffer.WriteInt32(Core.Type.Item[itemNum].SubType);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Type);
+            buffer.WriteInt32(Core.Data.Item[itemNum].SubType);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].ItemLevel);
+            buffer.WriteInt32(Core.Data.Item[itemNum].ItemLevel);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].KnockBack);
-            buffer.WriteInt32(Core.Type.Item[itemNum].KnockBackTiles);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Projectile);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Ammo);
+            buffer.WriteInt32(Core.Data.Item[itemNum].KnockBack);
+            buffer.WriteInt32(Core.Data.Item[itemNum].KnockBackTiles);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Projectile);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Ammo);
             return buffer.ToArray();
         }
 
@@ -133,10 +135,10 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, i].Num);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].X);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
+                buffer.WriteInt32((int)Data.MapItem[mapNum, i].Num);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].Value);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].X);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].Y);
             }
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -155,10 +157,10 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, i].Num);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].X);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
+                buffer.WriteInt32((int)Data.MapItem[mapNum, i].Num);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].Value);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].X);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].Y);
             }
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
@@ -196,10 +198,10 @@ namespace Server
 
             if (i != -1)
             {
-                Core.Type.MapItem[mapNum, i].Num = itemNum;
-                Core.Type.MapItem[mapNum, i].Value = ItemVal;
-                Core.Type.MapItem[mapNum, i].X = (byte)x;
-                Core.Type.MapItem[mapNum, i].Y = (byte)y;
+                Data.MapItem[mapNum, i].Num = itemNum;
+                Data.MapItem[mapNum, i].Value = ItemVal;
+                Data.MapItem[mapNum, i].X = (byte)x;
+                Data.MapItem[mapNum, i].Y = (byte)y;
 
                 buffer.WriteInt32((int) ServerPackets.SSpawnItem);
                 buffer.WriteInt32(i);
@@ -228,7 +230,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.MapItem[mapNum, i].Num == -1)
+                if (Data.MapItem[mapNum, i].Num == -1)
                 {
                     FindOpenMapItemSlotRet = i;
                     return FindOpenMapItemSlotRet;
@@ -239,7 +241,7 @@ namespace Server
 
         }
 
-        public static async Task SpawnAllMapsItemsAsync()
+        public static async System.Threading.Tasks.Task SpawnAllMapsItemsAsync()
         {
             int i;
 
@@ -248,7 +250,7 @@ namespace Server
                 await SpawnMapItemsAsync(i);
         }
 
-        public static async Task SpawnMapItemsAsync(int mapNum)
+        public static async System.Threading.Tasks.Task SpawnMapItemsAsync(int mapNum)
         {
             int x;
             int y;
@@ -257,62 +259,62 @@ namespace Server
             if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return;
 
-            if (Core.Type.Map[mapNum].NoRespawn)
+            if (Data.Map[mapNum].NoRespawn)
                 return;
 
             // Spawn what we have  
-            var loopTo = (int)Core.Type.Map[mapNum].MaxX;
+            var loopTo = (int)Data.Map[mapNum].MaxX;
             for (x = 0; x < (int)loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY;
+                var loopTo1 = (int)Data.Map[mapNum].MaxY;
                 for (y = 0; y < (int)loopTo1; y++)
                 {
                     // Check if the tile type is an item or a saved tile incase someone drops something  
-                    if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Item)
+                    if (Data.Map[mapNum].Tile[x, y].Type == Core.TileType.Item)
                     {
                         // Check to see if its a currency and if they set the value to 0 set it to 1 automatically  
-                        if (Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Stackable == 1)
+                        if (Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1].Type == (byte)ItemCategory.Currency | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1].Stackable == 1)
                         {
-                            if (Core.Type.Map[mapNum].Tile[x, y].Data2 < 1)
+                            if (Data.Map[mapNum].Tile[x, y].Data2 < 1)
                             {
-                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1, 1, mapNum, x, y);
+                                await SpawnItemAsync(Data.Map[mapNum].Tile[x, y].Data1, 1, mapNum, x, y);
                             }
                             else
                             {
-                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1, Core.Type.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
+                                await SpawnItemAsync(Data.Map[mapNum].Tile[x, y].Data1, Data.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
                             }
                         }
                         else
                         {
-                            await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1, Core.Type.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
+                            await SpawnItemAsync(Data.Map[mapNum].Tile[x, y].Data1, Data.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
                         }
                     }
 
                     // Check if the tile type is an item or a saved tile incase someone drops something  
-                    if (Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Item)
+                    if (Data.Map[mapNum].Tile[x, y].Type2 == Core.TileType.Item)
                     {
                         // Check to see if its a currency and if they set the value to 0 set it to 1 automatically  
-                        if (Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1 | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1)
+                        if (Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)Core.ItemCategory.Currency | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1 | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemCategory.Currency | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1)
                         {
-                            if (Core.Type.Map[mapNum].Tile[x, y].Data2_2 < 1)
+                            if (Data.Map[mapNum].Tile[x, y].Data2_2 < 1)
                             {
-                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1_2, 1, mapNum, x, y);
+                                await SpawnItemAsync(Data.Map[mapNum].Tile[x, y].Data1_2, 1, mapNum, x, y);
                             }
                             else
                             {
-                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1_2, Core.Type.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
+                                await SpawnItemAsync(Data.Map[mapNum].Tile[x, y].Data1_2, Data.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
                             }
                         }
                         else
                         {
-                            await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1_2, Core.Type.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
+                            await SpawnItemAsync(Data.Map[mapNum].Tile[x, y].Data1_2, Data.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
                         }
                     }
                 }
             }
         }
 
-        public static async Task SpawnItemAsync(int itemNum, int ItemVal, int mapNum, int x, int y)
+        public static async System.Threading.Tasks.Task SpawnItemAsync(int itemNum, int ItemVal, int mapNum, int x, int y)
         {
             int i;
 
@@ -329,7 +331,7 @@ namespace Server
             await SpawnItemSlotAsync(i, itemNum, ItemVal, mapNum, x, y);
         }
 
-        public static async Task SpawnItemSlotAsync(int MapItemSlot, int itemNum, int ItemVal, int mapNum, int x, int y)
+        public static async System.Threading.Tasks.Task SpawnItemSlotAsync(int MapItemSlot, int itemNum, int ItemVal, int mapNum, int x, int y)
         {
             var buffer = new ByteStream(4);
 
@@ -339,10 +341,10 @@ namespace Server
 
             if (MapItemSlot != -1)
             {
-                Core.Type.MapItem[mapNum, MapItemSlot].Num = itemNum;
-                Core.Type.MapItem[mapNum, MapItemSlot].Value = ItemVal;
-                Core.Type.MapItem[mapNum, MapItemSlot].X = (byte)x;
-                Core.Type.MapItem[mapNum, MapItemSlot].Y = (byte)y;
+                Data.MapItem[mapNum, MapItemSlot].Num = itemNum;
+                Data.MapItem[mapNum, MapItemSlot].Value = ItemVal;
+                Data.MapItem[mapNum, MapItemSlot].X = (byte)x;
+                Data.MapItem[mapNum, MapItemSlot].Y = (byte)y;
 
                 buffer.WriteInt32((int)ServerPackets.SSpawnItem);
                 buffer.WriteInt32(MapItemSlot);
@@ -366,55 +368,55 @@ namespace Server
             if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return;
 
-            if (Core.Type.Map[mapNum].NoRespawn)
+            if (Data.Map[mapNum].NoRespawn)
                 return;
 
             // Spawn what we have
-            var loopTo = (int)Core.Type.Map[mapNum].MaxX;
+            var loopTo = (int)Data.Map[mapNum].MaxX;
             for (x = 0; x < (int)loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY;
+                var loopTo1 = (int)Data.Map[mapNum].MaxY;
                 for (y = 0; y < (int)loopTo1; y++)
                 {
                     // Check if the tile type is an item or a saved tile incase someone drops something
-                    if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Item)
+                    if (Data.Map[mapNum].Tile[x, y].Type == Core.TileType.Item)
                     {
                         // Check to see if its a currency and if they set the value to 0 set it to 1 automatically
-                        if (Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Stackable == 1)
+                        if (Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1].Type == (byte)ItemCategory.Currency | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1].Stackable == 1)
                         {
-                            if (Core.Type.Map[mapNum].Tile[x, y].Data2 < 1)
+                            if (Data.Map[mapNum].Tile[x, y].Data2 < 1)
                             {
-                                SpawnItem(Core.Type.Map[mapNum].Tile[x, y].Data1, 1, mapNum, x, y);
+                                SpawnItem(Data.Map[mapNum].Tile[x, y].Data1, 1, mapNum, x, y);
                             }
                             else
                             {
-                                SpawnItem(Core.Type.Map[mapNum].Tile[x, y].Data1, Core.Type.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
+                                SpawnItem(Data.Map[mapNum].Tile[x, y].Data1, Data.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
                             }
                         }
                         else
                         {
-                            SpawnItem(Core.Type.Map[mapNum].Tile[x, y].Data1, Core.Type.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
+                            SpawnItem(Data.Map[mapNum].Tile[x, y].Data1, Data.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
                         }
                     }
 
                     // Check if the tile type is an item or a saved tile incase someone drops something
-                    if (Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Item)
+                    if (Data.Map[mapNum].Tile[x, y].Type2 == Core.TileType.Item)
                     {
                         // Check to see if its a currency and if they set the value to 0 set it to 1 automatically
-                        if (Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1 | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1)
+                        if (Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemCategory.Currency | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1 | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemCategory.Currency | Core.Data.Item[Data.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1)
                         {
-                            if (Core.Type.Map[mapNum].Tile[x, y].Data2_2 < 1)
+                            if (Data.Map[mapNum].Tile[x, y].Data2_2 < 1)
                             {
-                                SpawnItem(Core.Type.Map[mapNum].Tile[x, y].Data1_2, 1, mapNum, x, y);
+                                SpawnItem(Data.Map[mapNum].Tile[x, y].Data1_2, 1, mapNum, x, y);
                             }
                             else
                             {
-                                SpawnItem(Core.Type.Map[mapNum].Tile[x, y].Data1_2, Core.Type.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
+                                SpawnItem(Data.Map[mapNum].Tile[x, y].Data1_2, Data.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
                             }
                         }
                         else
                         {
-                            SpawnItem(Core.Type.Map[mapNum].Tile[x, y].Data1_2, Core.Type.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
+                            SpawnItem(Data.Map[mapNum].Tile[x, y].Data1_2, Data.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
                         }
                     }
                 }
@@ -442,20 +444,20 @@ namespace Server
         public static void Packet_RequestEditItem(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Mapper)
                 return;
 
             string user;
 
-            user = IsEditorLocked(index, (byte) EditorType.Item);
+            user = IsEditorLocked(index, (byte) Core.EditorType.Item);
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Color.BrightRed);
                 return;
             }
 
-            Core.Type.TempPlayer[index].Editor = (byte) EditorType.Item;
+            Core.Data.TempPlayer[index].Editor = (byte) Core.EditorType.Item;
 
             Animation.SendAnimations(index);
             Projectile.SendProjectiles(index);
@@ -476,7 +478,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             n = buffer.ReadInt32();
@@ -485,42 +487,43 @@ namespace Server
                 return;
 
             // Update the item
-            Core.Type.Item[n].AccessReq = buffer.ReadInt32();
+            Core.Data.Item[n].AccessReq = buffer.ReadInt32();
 
-            for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
-                Core.Type.Item[n].Add_Stat[i] = (byte)buffer.ReadInt32();
+            var statCount = Enum.GetNames(typeof(Stat)).Length;
+            for (int i = 0, loopTo = statCount; i < loopTo; i++)
+                Core.Data.Item[n].Add_Stat[i] = (byte)buffer.ReadInt32();
 
-            Core.Type.Item[n].Animation = buffer.ReadInt32();
-            Core.Type.Item[n].BindType = (byte)buffer.ReadInt32();
-            Core.Type.Item[n].JobReq = buffer.ReadInt32();
-            Core.Type.Item[n].Data1 = buffer.ReadInt32();
-            Core.Type.Item[n].Data2 = buffer.ReadInt32();
-            Core.Type.Item[n].Data3 = buffer.ReadInt32();
-            Core.Type.Item[n].LevelReq = buffer.ReadInt32();
-            Core.Type.Item[n].Mastery = (byte)buffer.ReadInt32();
-            Core.Type.Item[n].Name = buffer.ReadString();
-            Core.Type.Item[n].Paperdoll = buffer.ReadInt32();
-            Core.Type.Item[n].Icon = buffer.ReadInt32();
-            Core.Type.Item[n].Price = buffer.ReadInt32();
-            Core.Type.Item[n].Rarity = (byte)buffer.ReadInt32();
-            Core.Type.Item[n].Speed = buffer.ReadInt32();
+            Core.Data.Item[n].Animation = buffer.ReadInt32();
+            Core.Data.Item[n].BindType = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].JobReq = buffer.ReadInt32();
+            Core.Data.Item[n].Data1 = buffer.ReadInt32();
+            Core.Data.Item[n].Data2 = buffer.ReadInt32();
+            Core.Data.Item[n].Data3 = buffer.ReadInt32();
+            Core.Data.Item[n].LevelReq = buffer.ReadInt32();
+            Core.Data.Item[n].Mastery = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].Name = buffer.ReadString();
+            Core.Data.Item[n].Paperdoll = buffer.ReadInt32();
+            Core.Data.Item[n].Icon = buffer.ReadInt32();
+            Core.Data.Item[n].Price = buffer.ReadInt32();
+            Core.Data.Item[n].Rarity = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].Speed = buffer.ReadInt32();
 
-            Core.Type.Item[n].Stackable = (byte)buffer.ReadInt32();
-            Core.Type.Item[n].Description = buffer.ReadString();
+            Core.Data.Item[n].Stackable = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].Description = buffer.ReadString();
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
-                Core.Type.Item[n].Stat_Req[i] = (byte)buffer.ReadInt32();
+            for (int i = 0, loopTo1 = statCount; i < loopTo1; i++)
+                Core.Data.Item[n].Stat_Req[i] = (byte)buffer.ReadInt32();
 
-            Core.Type.Item[n].Type = (byte)buffer.ReadInt32();
-            Core.Type.Item[n].SubType = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].Type = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].SubType = (byte)buffer.ReadInt32();
 
-            Core.Type.Item[n].ItemLevel = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].ItemLevel = (byte)buffer.ReadInt32();
 
-            Core.Type.Item[n].KnockBack = (byte)buffer.ReadInt32();
-            Core.Type.Item[n].KnockBackTiles = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].KnockBack = (byte)buffer.ReadInt32();
+            Core.Data.Item[n].KnockBackTiles = (byte)buffer.ReadInt32();
 
-            Core.Type.Item[n].Projectile = buffer.ReadInt32();
-            Core.Type.Item[n].Ammo = buffer.ReadInt32();
+            Core.Data.Item[n].Projectile = buffer.ReadInt32();
+            Core.Data.Item[n].Ammo = buffer.ReadInt32();
 
             // Save it
             SaveItem(n);
@@ -544,7 +547,7 @@ namespace Server
             amount = buffer.ReadInt32();
             buffer.Dispose();
 
-            if (Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
+            if (Core.Data.TempPlayer[index].InBank | Core.Data.TempPlayer[index].InShop >= 0)
                 return;
 
             // Prevent hacking
@@ -554,7 +557,7 @@ namespace Server
             if (GetPlayerInv(index, invNum) < 0 | GetPlayerInv(index, invNum) > Core.Constant.MAX_ITEMS)
                 return;
 
-            if (Core.Type.Item[(int)GetPlayerInv(index, invNum)].Type == (byte)ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(index, invNum)].Stackable == 1)
+            if (Core.Data.Item[(int)GetPlayerInv(index, invNum)].Type == (byte)ItemCategory.Currency | Core.Data.Item[(int)GetPlayerInv(index, invNum)].Stackable == 1)
             {
                 if (amount < 0 | amount > GetPlayerInvValue(index, invNum))
                     return;
@@ -575,7 +578,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_ITEMS - 1;
             for (i = 0; i < loopTo; i++)
             {
-                if (Strings.Len(Core.Type.Item[i].Name) > 0)
+                if (Strings.Len(Core.Data.Item[i].Name) > 0)
                 {
                     SendUpdateItemTo(index, i);
                 }

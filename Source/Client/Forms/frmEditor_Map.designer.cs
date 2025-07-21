@@ -60,9 +60,9 @@ namespace Client
             optHeal = new DarkRadioButton();
             optBank = new DarkRadioButton();
             optShop = new DarkRadioButton();
-            optNPCSpawn = new DarkRadioButton();
+            optNpcSpawn = new DarkRadioButton();
             optResource = new DarkRadioButton();
-            optNPCAvoid = new DarkRadioButton();
+            optNpcAvoid = new DarkRadioButton();
             optItem = new DarkRadioButton();
             optWarp = new DarkRadioButton();
             optBlocked = new DarkRadioButton();
@@ -80,11 +80,11 @@ namespace Client
             lblMapWarpY = new DarkLabel();
             lblMapWarpX = new DarkLabel();
             lblMapWarpMap = new DarkLabel();
-            fraNPCSpawn = new DarkGroupBox();
-            lstNPC = new DarkComboBox();
-            btnNPCSpawn = new DarkButton();
-            scrlNPCDir = new HScrollBar();
-            lblNPCDir = new DarkLabel();
+            fraNpcSpawn = new DarkGroupBox();
+            lstNpc = new DarkComboBox();
+            btnNpcSpawn = new DarkButton();
+            scrlNpcDir = new HScrollBar();
+            lblNpcDir = new DarkLabel();
             fraHeal = new DarkGroupBox();
             scrlHeal = new HScrollBar();
             lblHeal = new DarkLabel();
@@ -131,18 +131,18 @@ namespace Client
             Label9 = new DarkLabel();
             cmbTileSets = new DarkComboBox();
             tpAttributes = new TabPage();
-            optNoXing = new DarkRadioButton();
+            optNoCrossing = new DarkRadioButton();
             btnFillAttributes = new DarkButton();
             optInfo = new DarkRadioButton();
             Label23 = new DarkLabel();
             cmbAttribute = new DarkComboBox();
             optAnimation = new DarkRadioButton();
-            tpNPCs = new TabPage();
-            fraNPCs = new DarkGroupBox();
+            tpNpcs = new TabPage();
+            fraNpcs = new DarkGroupBox();
             Label18 = new DarkLabel();
             Label17 = new DarkLabel();
-            cmbNPCList = new DarkComboBox();
-            lstMapNPC = new ListBox();
+            cmbNpcList = new DarkComboBox();
+            lstMapNpc = new ListBox();
             ComboBox23 = new DarkComboBox();
             tpSettings = new TabPage();
             fraMapSettings = new DarkGroupBox();
@@ -218,7 +218,7 @@ namespace Client
             pnlAttributes.SuspendLayout();
             fraAnimation.SuspendLayout();
             fraMapWarp.SuspendLayout();
-            fraNPCSpawn.SuspendLayout();
+            fraNpcSpawn.SuspendLayout();
             fraHeal.SuspendLayout();
             fraShop.SuspendLayout();
             fraResource.SuspendLayout();
@@ -229,8 +229,8 @@ namespace Client
             tabpages.SuspendLayout();
             tpTiles.SuspendLayout();
             tpAttributes.SuspendLayout();
-            tpNPCs.SuspendLayout();
-            fraNPCs.SuspendLayout();
+            tpNpcs.SuspendLayout();
+            fraNpcs.SuspendLayout();
             tpSettings.SuspendLayout();
             fraMapSettings.SuspendLayout();
             fraMapLinks.SuspendLayout();
@@ -301,16 +301,16 @@ namespace Client
             optShop.Text = "Shop";
             optShop.CheckedChanged += OptShop_CheckedChanged;
             // 
-            // optNPCSpawn
+            // optNpcSpawn
             // 
-            optNPCSpawn.AutoSize = true;
-            optNPCSpawn.Location = new Point(373, 16);
-            optNPCSpawn.Margin = new Padding(4, 3, 4, 3);
-            optNPCSpawn.Name = "optNPCSpawn";
-            optNPCSpawn.Size = new Size(87, 19);
-            optNPCSpawn.TabIndex = 8;
-            optNPCSpawn.Text = "NPC Spawn";
-            optNPCSpawn.CheckedChanged += OptNPCSpawn_CheckedChanged;
+            optNpcSpawn.AutoSize = true;
+            optNpcSpawn.Location = new Point(373, 16);
+            optNpcSpawn.Margin = new Padding(4, 3, 4, 3);
+            optNpcSpawn.Name = "optNpcSpawn";
+            optNpcSpawn.Size = new Size(87, 19);
+            optNpcSpawn.TabIndex = 8;
+            optNpcSpawn.Text = "Npc Spawn";
+            optNpcSpawn.CheckedChanged += OptNpcSpawn_CheckedChanged;
             // 
             // optResource
             // 
@@ -323,15 +323,15 @@ namespace Client
             optResource.Text = "Resource";
             optResource.CheckedChanged += OptResource_CheckedChanged;
             // 
-            // optNPCAvoid
+            // optNpcAvoid
             // 
-            optNPCAvoid.AutoSize = true;
-            optNPCAvoid.Location = new Point(276, 16);
-            optNPCAvoid.Margin = new Padding(4, 3, 4, 3);
-            optNPCAvoid.Name = "optNPCAvoid";
-            optNPCAvoid.Size = new Size(83, 19);
-            optNPCAvoid.TabIndex = 3;
-            optNPCAvoid.Text = "NPC Avoid";
+            optNpcAvoid.AutoSize = true;
+            optNpcAvoid.Location = new Point(276, 16);
+            optNpcAvoid.Margin = new Padding(4, 3, 4, 3);
+            optNpcAvoid.Name = "optNpcAvoid";
+            optNpcAvoid.Size = new Size(83, 19);
+            optNpcAvoid.TabIndex = 3;
+            optNpcAvoid.Text = "Npc Avoid";
             // 
             // optItem
             // 
@@ -394,7 +394,7 @@ namespace Client
             // 
             pnlAttributes.Controls.Add(fraAnimation);
             pnlAttributes.Controls.Add(fraMapWarp);
-            pnlAttributes.Controls.Add(fraNPCSpawn);
+            pnlAttributes.Controls.Add(fraNpcSpawn);
             pnlAttributes.Controls.Add(fraHeal);
             pnlAttributes.Controls.Add(fraShop);
             pnlAttributes.Controls.Add(fraResource);
@@ -531,63 +531,63 @@ namespace Client
             lblMapWarpMap.TabIndex = 0;
             lblMapWarpMap.Text = "Map: 1";
             // 
-            // fraNPCSpawn
+            // fraNpcSpawn
             // 
-            fraNPCSpawn.BorderColor = Color.FromArgb(51, 51, 51);
-            fraNPCSpawn.Controls.Add(lstNPC);
-            fraNPCSpawn.Controls.Add(btnNPCSpawn);
-            fraNPCSpawn.Controls.Add(scrlNPCDir);
-            fraNPCSpawn.Controls.Add(lblNPCDir);
-            fraNPCSpawn.Location = new Point(4, 7);
-            fraNPCSpawn.Margin = new Padding(4, 3, 4, 3);
-            fraNPCSpawn.Name = "fraNPCSpawn";
-            fraNPCSpawn.Padding = new Padding(4, 3, 4, 3);
-            fraNPCSpawn.Size = new Size(203, 130);
-            fraNPCSpawn.TabIndex = 11;
-            fraNPCSpawn.TabStop = false;
-            fraNPCSpawn.Text = "NPC Spawn";
+            fraNpcSpawn.BorderColor = Color.FromArgb(51, 51, 51);
+            fraNpcSpawn.Controls.Add(lstNpc);
+            fraNpcSpawn.Controls.Add(btnNpcSpawn);
+            fraNpcSpawn.Controls.Add(scrlNpcDir);
+            fraNpcSpawn.Controls.Add(lblNpcDir);
+            fraNpcSpawn.Location = new Point(4, 7);
+            fraNpcSpawn.Margin = new Padding(4, 3, 4, 3);
+            fraNpcSpawn.Name = "fraNpcSpawn";
+            fraNpcSpawn.Padding = new Padding(4, 3, 4, 3);
+            fraNpcSpawn.Size = new Size(203, 130);
+            fraNpcSpawn.TabIndex = 11;
+            fraNpcSpawn.TabStop = false;
+            fraNpcSpawn.Text = "Npc Spawn";
             // 
-            // lstNPC
+            // lstNpc
             // 
-            lstNPC.DrawMode = DrawMode.OwnerDrawVariable;
-            lstNPC.FormattingEnabled = true;
-            lstNPC.Location = new Point(7, 18);
-            lstNPC.Margin = new Padding(4, 3, 4, 3);
-            lstNPC.Name = "lstNPC";
-            lstNPC.Size = new Size(180, 24);
-            lstNPC.TabIndex = 37;
+            lstNpc.DrawMode = DrawMode.OwnerDrawVariable;
+            lstNpc.FormattingEnabled = true;
+            lstNpc.Location = new Point(7, 18);
+            lstNpc.Margin = new Padding(4, 3, 4, 3);
+            lstNpc.Name = "lstNpc";
+            lstNpc.Size = new Size(180, 24);
+            lstNpc.TabIndex = 37;
             // 
-            // btnNPCSpawn
+            // btnNpcSpawn
             // 
-            btnNPCSpawn.Location = new Point(46, 88);
-            btnNPCSpawn.Margin = new Padding(4, 3, 4, 3);
-            btnNPCSpawn.Name = "btnNPCSpawn";
-            btnNPCSpawn.Padding = new Padding(5);
-            btnNPCSpawn.Size = new Size(105, 32);
-            btnNPCSpawn.TabIndex = 6;
-            btnNPCSpawn.Text = "Accept";
-            btnNPCSpawn.Click += BtnNPCSpawn_Click;
+            btnNpcSpawn.Location = new Point(46, 88);
+            btnNpcSpawn.Margin = new Padding(4, 3, 4, 3);
+            btnNpcSpawn.Name = "btnNpcSpawn";
+            btnNpcSpawn.Padding = new Padding(5);
+            btnNpcSpawn.Size = new Size(105, 32);
+            btnNpcSpawn.TabIndex = 6;
+            btnNpcSpawn.Text = "Accept";
+            btnNpcSpawn.Click += BtnNpcSpawn_Click;
             // 
-            // scrlNPCDir
+            // scrlNpcDir
             // 
-            scrlNPCDir.LargeChange = 1;
-            scrlNPCDir.Location = new Point(9, 63);
-            scrlNPCDir.Maximum = 3;
-            scrlNPCDir.Name = "scrlNPCDir";
-            scrlNPCDir.Size = new Size(178, 18);
-            scrlNPCDir.TabIndex = 3;
-            scrlNPCDir.ValueChanged += ScrlNPCDir_Scroll;
+            scrlNpcDir.LargeChange = 1;
+            scrlNpcDir.Location = new Point(9, 63);
+            scrlNpcDir.Maximum = 3;
+            scrlNpcDir.Name = "scrlNpcDir";
+            scrlNpcDir.Size = new Size(178, 18);
+            scrlNpcDir.TabIndex = 3;
+            scrlNpcDir.ValueChanged += ScrlNpcDir_Scroll;
             // 
-            // lblNPCDir
+            // lblNpcDir
             // 
-            lblNPCDir.AutoSize = true;
-            lblNPCDir.ForeColor = Color.FromArgb(220, 220, 220);
-            lblNPCDir.Location = new Point(6, 46);
-            lblNPCDir.Margin = new Padding(4, 0, 4, 0);
-            lblNPCDir.Name = "lblNPCDir";
-            lblNPCDir.Size = new Size(76, 15);
-            lblNPCDir.TabIndex = 0;
-            lblNPCDir.Text = "Direction: Up";
+            lblNpcDir.AutoSize = true;
+            lblNpcDir.ForeColor = Color.FromArgb(220, 220, 220);
+            lblNpcDir.Location = new Point(6, 46);
+            lblNpcDir.Margin = new Padding(4, 0, 4, 0);
+            lblNpcDir.Name = "lblNpcDir";
+            lblNpcDir.Size = new Size(76, 15);
+            lblNpcDir.TabIndex = 0;
+            lblNpcDir.Text = "Direction: Up";
             // 
             // fraHeal
             // 
@@ -980,7 +980,7 @@ namespace Client
             // 
             tabpages.Controls.Add(tpTiles);
             tabpages.Controls.Add(tpAttributes);
-            tabpages.Controls.Add(tpNPCs);
+            tabpages.Controls.Add(tpNpcs);
             tabpages.Controls.Add(tpSettings);
             tabpages.Controls.Add(tpDirBlock);
             tabpages.Controls.Add(tpEvents);
@@ -1083,7 +1083,7 @@ namespace Client
             // tpAttributes
             // 
             tpAttributes.BackColor = Color.FromArgb(45, 45, 48);
-            tpAttributes.Controls.Add(optNoXing);
+            tpAttributes.Controls.Add(optNoCrossing);
             tpAttributes.Controls.Add(btnFillAttributes);
             tpAttributes.Controls.Add(optInfo);
             tpAttributes.Controls.Add(Label23);
@@ -1097,8 +1097,8 @@ namespace Client
             tpAttributes.Controls.Add(optBank);
             tpAttributes.Controls.Add(optItem);
             tpAttributes.Controls.Add(optShop);
-            tpAttributes.Controls.Add(optNPCAvoid);
-            tpAttributes.Controls.Add(optNPCSpawn);
+            tpAttributes.Controls.Add(optNpcAvoid);
+            tpAttributes.Controls.Add(optNpcSpawn);
             tpAttributes.Controls.Add(optResource);
             tpAttributes.Location = new Point(4, 24);
             tpAttributes.Margin = new Padding(4, 3, 4, 3);
@@ -1108,15 +1108,15 @@ namespace Client
             tpAttributes.TabIndex = 3;
             tpAttributes.Text = "Attributes";
             // 
-            // optNoXing
+            // optNoCrossing
             // 
-            optNoXing.AutoSize = true;
-            optNoXing.Location = new Point(12, 95);
-            optNoXing.Margin = new Padding(4, 3, 4, 3);
-            optNoXing.Name = "optNoXing";
-            optNoXing.Size = new Size(68, 19);
-            optNoXing.TabIndex = 25;
-            optNoXing.Text = "No Xing";
+            optNoCrossing.AutoSize = true;
+            optNoCrossing.Location = new Point(12, 95);
+            optNoCrossing.Margin = new Padding(4, 3, 4, 3);
+            optNoCrossing.Name = "optNoCrossing";
+            optNoCrossing.Size = new Size(68, 19);
+            optNoCrossing.TabIndex = 25;
+            optNoCrossing.Text = "No Xing";
             // 
             // btnFillAttributes
             // 
@@ -1173,35 +1173,35 @@ namespace Client
             optAnimation.Text = "Animation";
             optAnimation.CheckedChanged += optAnimation_CheckedChanged;
             // 
-            // tpNPCs
+            // tpNpcs
             // 
-            tpNPCs.BackColor = Color.FromArgb(45, 45, 48);
-            tpNPCs.Controls.Add(fraNPCs);
-            tpNPCs.Location = new Point(4, 24);
-            tpNPCs.Margin = new Padding(4, 3, 4, 3);
-            tpNPCs.Name = "tpNPCs";
-            tpNPCs.Padding = new Padding(4, 3, 4, 3);
-            tpNPCs.Size = new Size(542, 601);
-            tpNPCs.TabIndex = 1;
-            tpNPCs.Text = "NPCs";
+            tpNpcs.BackColor = Color.FromArgb(45, 45, 48);
+            tpNpcs.Controls.Add(fraNpcs);
+            tpNpcs.Location = new Point(4, 24);
+            tpNpcs.Margin = new Padding(4, 3, 4, 3);
+            tpNpcs.Name = "tpNpcs";
+            tpNpcs.Padding = new Padding(4, 3, 4, 3);
+            tpNpcs.Size = new Size(542, 601);
+            tpNpcs.TabIndex = 1;
+            tpNpcs.Text = "Npcs";
             // 
-            // fraNPCs
+            // fraNpcs
             // 
-            fraNPCs.BackColor = Color.FromArgb(45, 45, 48);
-            fraNPCs.BorderColor = Color.FromArgb(51, 51, 51);
-            fraNPCs.Controls.Add(Label18);
-            fraNPCs.Controls.Add(Label17);
-            fraNPCs.Controls.Add(cmbNPCList);
-            fraNPCs.Controls.Add(lstMapNPC);
-            fraNPCs.Controls.Add(ComboBox23);
-            fraNPCs.Location = new Point(7, 9);
-            fraNPCs.Margin = new Padding(4, 3, 4, 3);
-            fraNPCs.Name = "fraNPCs";
-            fraNPCs.Padding = new Padding(4, 3, 4, 3);
-            fraNPCs.Size = new Size(559, 492);
-            fraNPCs.TabIndex = 11;
-            fraNPCs.TabStop = false;
-            fraNPCs.Text = "NPCs";
+            fraNpcs.BackColor = Color.FromArgb(45, 45, 48);
+            fraNpcs.BorderColor = Color.FromArgb(51, 51, 51);
+            fraNpcs.Controls.Add(Label18);
+            fraNpcs.Controls.Add(Label17);
+            fraNpcs.Controls.Add(cmbNpcList);
+            fraNpcs.Controls.Add(lstMapNpc);
+            fraNpcs.Controls.Add(ComboBox23);
+            fraNpcs.Location = new Point(7, 9);
+            fraNpcs.Margin = new Padding(4, 3, 4, 3);
+            fraNpcs.Name = "fraNpcs";
+            fraNpcs.Padding = new Padding(4, 3, 4, 3);
+            fraNpcs.Size = new Size(559, 492);
+            fraNpcs.TabIndex = 11;
+            fraNpcs.TabStop = false;
+            fraNpcs.Text = "Npcs";
             // 
             // Label18
             // 
@@ -1212,7 +1212,7 @@ namespace Client
             Label18.Name = "Label18";
             Label18.Size = new Size(77, 15);
             Label18.TabIndex = 72;
-            Label18.Text = "2. Select NPC";
+            Label18.Text = "2. Select Npc";
             // 
             // Label17
             // 
@@ -1223,28 +1223,28 @@ namespace Client
             Label17.Name = "Label17";
             Label17.Size = new Size(64, 15);
             Label17.TabIndex = 71;
-            Label17.Text = "1. NPC LIst";
+            Label17.Text = "1. Npc LIst";
             // 
-            // cmbNPCList
+            // cmbNpcList
             // 
-            cmbNPCList.DrawMode = DrawMode.OwnerDrawVariable;
-            cmbNPCList.FormattingEnabled = true;
-            cmbNPCList.Location = new Point(228, 52);
-            cmbNPCList.Margin = new Padding(4, 3, 4, 3);
-            cmbNPCList.Name = "cmbNPCList";
-            cmbNPCList.Size = new Size(299, 24);
-            cmbNPCList.TabIndex = 70;
-            cmbNPCList.SelectedIndexChanged += CmbNPCList_SelectedIndexChanged;
+            cmbNpcList.DrawMode = DrawMode.OwnerDrawVariable;
+            cmbNpcList.FormattingEnabled = true;
+            cmbNpcList.Location = new Point(228, 52);
+            cmbNpcList.Margin = new Padding(4, 3, 4, 3);
+            cmbNpcList.Name = "cmbNpcList";
+            cmbNpcList.Size = new Size(299, 24);
+            cmbNpcList.TabIndex = 70;
+            cmbNpcList.SelectedIndexChanged += CmbNpcList_SelectedIndexChanged;
             // 
-            // lstMapNPC
+            // lstMapNpc
             // 
-            lstMapNPC.BackColor = Color.FromArgb(45, 45, 48);
-            lstMapNPC.FormattingEnabled = true;
-            lstMapNPC.Location = new Point(10, 52);
-            lstMapNPC.Margin = new Padding(4, 3, 4, 3);
-            lstMapNPC.Name = "lstMapNPC";
-            lstMapNPC.Size = new Size(210, 424);
-            lstMapNPC.TabIndex = 69;
+            lstMapNpc.BackColor = Color.FromArgb(45, 45, 48);
+            lstMapNpc.FormattingEnabled = true;
+            lstMapNpc.Location = new Point(10, 52);
+            lstMapNpc.Margin = new Padding(4, 3, 4, 3);
+            lstMapNpc.Name = "lstMapNpc";
+            lstMapNpc.Size = new Size(210, 424);
+            lstMapNpc.TabIndex = 69;
             // 
             // ComboBox23
             // 
@@ -2114,8 +2114,8 @@ namespace Client
             fraAnimation.ResumeLayout(false);
             fraMapWarp.ResumeLayout(false);
             fraMapWarp.PerformLayout();
-            fraNPCSpawn.ResumeLayout(false);
-            fraNPCSpawn.PerformLayout();
+            fraNpcSpawn.ResumeLayout(false);
+            fraNpcSpawn.PerformLayout();
             fraHeal.ResumeLayout(false);
             fraHeal.PerformLayout();
             fraShop.ResumeLayout(false);
@@ -2133,9 +2133,9 @@ namespace Client
             tpTiles.PerformLayout();
             tpAttributes.ResumeLayout(false);
             tpAttributes.PerformLayout();
-            tpNPCs.ResumeLayout(false);
-            fraNPCs.ResumeLayout(false);
-            fraNPCs.PerformLayout();
+            tpNpcs.ResumeLayout(false);
+            fraNpcs.ResumeLayout(false);
+            fraNpcs.PerformLayout();
             tpSettings.ResumeLayout(false);
             tpSettings.PerformLayout();
             fraMapSettings.ResumeLayout(false);
@@ -2167,9 +2167,9 @@ namespace Client
         internal DarkRadioButton optHeal;
         internal DarkRadioButton optBank;
         internal DarkRadioButton optShop;
-        internal DarkRadioButton optNPCSpawn;
+        internal DarkRadioButton optNpcSpawn;
         internal DarkRadioButton optResource;
-        internal DarkRadioButton optNPCAvoid;
+        internal DarkRadioButton optNpcAvoid;
         internal DarkRadioButton optItem;
         internal DarkRadioButton optWarp;
         internal DarkRadioButton optBlocked;
@@ -2193,11 +2193,11 @@ namespace Client
         internal DarkButton btnResourceOk;
         internal HScrollBar scrlResource;
         internal DarkLabel lblResource;
-        internal DarkGroupBox fraNPCSpawn;
-        internal DarkButton btnNPCSpawn;
-        internal HScrollBar scrlNPCDir;
-        internal DarkLabel lblNPCDir;
-        internal DarkComboBox lstNPC;
+        internal DarkGroupBox fraNpcSpawn;
+        internal DarkButton btnNpcSpawn;
+        internal HScrollBar scrlNpcDir;
+        internal DarkLabel lblNpcDir;
+        internal DarkComboBox lstNpc;
         internal DarkGroupBox fraShop;
         internal DarkComboBox cmbShop;
         internal DarkButton btnShop;
@@ -2215,9 +2215,9 @@ namespace Client
         internal ToolStripButton tsbDiscard;
         internal TabControl tabpages;
         internal TabPage tpTiles;
-        internal TabPage tpNPCs;
+        internal TabPage tpNpcs;
         internal TabPage tpSettings;
-        internal DarkGroupBox fraNPCs;
+        internal DarkGroupBox fraNpcs;
         internal DarkComboBox ComboBox23;
         internal DarkTextBox txtName;
         internal DarkLabel Label6;
@@ -2245,8 +2245,8 @@ namespace Client
         internal DarkLabel Label8;
         internal DarkComboBox lstMoral;
         internal ToolStripSeparator ToolStripSeparator1;
-        internal DarkComboBox cmbNPCList;
-        internal ListBox lstMapNPC;
+        internal DarkComboBox cmbNpcList;
+        internal ListBox lstMapNpc;
         internal TabPage tpAttributes;
         internal DarkComboBox cmbTileSets;
         internal DarkComboBox cmbAutoTile;
@@ -2323,6 +2323,6 @@ namespace Client
         internal ToolStripButton tsbDeleteMap;
         internal DarkRadioButton optInfo;
         internal DarkButton btnFillAttributes;
-        internal DarkRadioButton optNoXing;
+        internal DarkRadioButton optNoCrossing;
     }
 }

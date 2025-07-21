@@ -108,7 +108,7 @@ namespace Core
     {
         RestoresHealth,
         RestoresMana,
-        RestoresStamina, // Renamed for clarity
+        RestoresStamina,
         GrantsExperience
     }
     
@@ -125,7 +125,7 @@ namespace Core
         Shield,
         Shoes,
         Gloves,
-        
+
         // Consumable Effect Sub-types
         RestoresHealth,
         RestoresMana,
@@ -139,6 +139,15 @@ namespace Core
         CommonEvent,
         Currency,
         SkillBook
+    }
+
+    /// <Summary> Equipment used by Players </Summary>
+    public enum Equipment : byte
+    {
+        Weapon,
+        Armor,
+        Helmet,
+        Shield
     }
 
     /// <summary>
@@ -180,7 +189,7 @@ namespace Core
     }
 
     /// <summary>
-    /// Defines the behavior patterns for NPCs.
+    /// Defines the behavior patterns for Npcs.
     /// </summary>
     public enum NpcBehavior : byte
     {
@@ -215,7 +224,7 @@ namespace Core
         Npc,
         Event,
         Pet,
-        Self // Added for clarity in skill targeting
+        Self
     }
 
     /// <summary>
@@ -246,7 +255,7 @@ namespace Core
     public enum Vital : byte
     {
         Health,
-        Mana, // Added for consistency
+        Mana,
         Stamina
     }
 
@@ -380,13 +389,15 @@ namespace Core
 
         // Player
         ChangeItems,
-        ChangeGold, // Assumed, often needed
+        ChangeGold,
         RestoreHealth,
+        RestoreStamina,
         RestoreMana,
         GiveExperience,
+        LevelUp,
         ChangeLevel,
         ChangeSkills,
-        ChangeClass,
+        ChangeJob,
         ChangeSprite,
         ChangeSex,
         SetPlayerKillable,
@@ -421,7 +432,7 @@ namespace Core
         OpenShop,
         SetAccessLevel,
         SpawnNpc,
-        CustomScript
+        Key,
     }
 
     /// <summary>
@@ -431,7 +442,7 @@ namespace Core
     {
         Switch,
         Variable,
-        ItemUsed, // Renamed for clarity
+        ItemUsed,
         CustomScript
     }
 
@@ -449,9 +460,9 @@ namespace Core
         Animation,
         Pet,
         Quest,
-        Class, // Renamed from Job
+        Job,
         Projectile,
-        Faction, // Renamed from Moral
+        Moral,
         Script
     }
 
@@ -615,7 +626,7 @@ namespace Core
         Login,
         Register,
         Credits,
-        ClassSelection,
+        JobSelection,
         NewCharacter,
         CharacterSelect
     }

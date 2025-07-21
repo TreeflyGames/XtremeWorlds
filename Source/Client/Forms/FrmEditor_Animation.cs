@@ -36,42 +36,42 @@ namespace Client
 
         private void NudSprite0_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].Sprite[0] = (int)Math.Round(nudSprite0.Value);
+            Core.Data.Animation[GameState.EditorIndex].Sprite[0] = (int)Math.Round(nudSprite0.Value);
         }
 
         private void NudSprite1_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].Sprite[1] = (int)Math.Round(nudSprite1.Value);
+            Core.Data.Animation[GameState.EditorIndex].Sprite[1] = (int)Math.Round(nudSprite1.Value);
         }
 
         private void NudLoopCount0_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].LoopCount[0] = (int)Math.Round(nudLoopCount0.Value);
+            Core.Data.Animation[GameState.EditorIndex].LoopCount[0] = (int)Math.Round(nudLoopCount0.Value);
         }
 
         private void NudLoopCount1_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].LoopCount[1] = (int)Math.Round(nudLoopCount1.Value);
+            Core.Data.Animation[GameState.EditorIndex].LoopCount[1] = (int)Math.Round(nudLoopCount1.Value);
         }
 
         private void NudFrameCount0_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].Frames[0] = (int)Math.Round(nudFrameCount0.Value);
+            Core.Data.Animation[GameState.EditorIndex].Frames[0] = (int)Math.Round(nudFrameCount0.Value);
         }
 
         private void NudFrameCount1_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].Frames[1] = (int)Math.Round(nudFrameCount1.Value);
+            Core.Data.Animation[GameState.EditorIndex].Frames[1] = (int)Math.Round(nudFrameCount1.Value);
         }
 
         private void NudLoopTime0_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].LoopTime[0] = (int)Math.Round(nudLoopTime0.Value);
+            Core.Data.Animation[GameState.EditorIndex].LoopTime[0] = (int)Math.Round(nudLoopTime0.Value);
         }
 
         private void NudLoopTime1_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].LoopTime[1] = (int)Math.Round(nudLoopTime1.Value);
+            Core.Data.Animation[GameState.EditorIndex].LoopTime[1] = (int)Math.Round(nudLoopTime1.Value);
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
@@ -84,9 +84,9 @@ namespace Client
         {
             int tmpindex;
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Animation[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
+            Core.Data.Animation[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Animation[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Animation[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
@@ -103,7 +103,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Animation[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Animation[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.AnimationEditorInit();
@@ -121,7 +121,7 @@ namespace Client
 
             // Add the names
             for (int i = 0; i < Core.Constant.MAX_ANIMATIONS; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Data.Animation[i].Name);
 
             // find the music we have set
             cmbSound.Items.Clear();
@@ -137,7 +137,7 @@ namespace Client
 
         private void CmbSound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Animation[GameState.EditorIndex].Sound = cmbSound.SelectedItem.ToString();
+            Core.Data.Animation[GameState.EditorIndex].Sound = cmbSound.SelectedItem.ToString();
         }
 
         private void frmEditor_Animation_FormClosing(object sender, FormClosingEventArgs e)

@@ -45,9 +45,9 @@ namespace Client
         private void BtnAdminWarpTo_Click(object sender, EventArgs e)
         {
 
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -56,9 +56,9 @@ namespace Client
 
         private void BtnAdminBan_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -67,9 +67,9 @@ namespace Client
 
         private void BtnAdminKick_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -78,9 +78,9 @@ namespace Client
 
         private void BtnAdminWarp2Me_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -92,9 +92,9 @@ namespace Client
 
         private void BtnAdminWarpMe2_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -108,9 +108,9 @@ namespace Client
 
         private void BtnAdminSetAccess_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Owner)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -124,9 +124,9 @@ namespace Client
 
         private void BtnAdminSetSprite_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -139,9 +139,9 @@ namespace Client
 
         private void btnAnimationEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -150,9 +150,9 @@ namespace Client
 
         private void btnJobEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -161,9 +161,9 @@ namespace Client
 
         private void btnItemEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -172,31 +172,31 @@ namespace Client
 
         private void BtnMapEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
             Map.SendRequestEditMap();
         }
 
-        private void btnNPCEditor_Click(object sender, EventArgs e)
+        private void btnNpcEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
-            NetworkSend.SendRequestEditNPC();
+            NetworkSend.SendRequestEditNpc();
         }
 
         private void btnPetEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -205,9 +205,9 @@ namespace Client
 
         private void btnProjectiles_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -216,9 +216,9 @@ namespace Client
 
         private void btnResourceEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -227,9 +227,9 @@ namespace Client
 
         private void btnShopEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -238,9 +238,9 @@ namespace Client
 
         private void btnSkillEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -254,9 +254,9 @@ namespace Client
 
         private void BtnMapReport_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
             NetworkSend.SendRequestMapReport();
@@ -264,9 +264,9 @@ namespace Client
 
         private void LstMaps_DoubleClick(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -281,9 +281,9 @@ namespace Client
         #region Misc
         private void BtnLevelUp_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -292,9 +292,9 @@ namespace Client
 
         private void BtnALoc_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -303,9 +303,9 @@ namespace Client
 
         private void BtnRespawn_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -314,9 +314,9 @@ namespace Client
 
         private void btnMoralEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 
@@ -326,9 +326,9 @@ namespace Client
 
         private void btnScriptEditor_Click(object sender, EventArgs e)
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)Core. AccessLevel.Owner)
             {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                 return;
             }
 

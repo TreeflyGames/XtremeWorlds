@@ -25,17 +25,17 @@ namespace Client
             cmbItems.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbItems.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
+                cmbItems.Items.Add(i + 1 + ": " + Core.Data.Item[i].Name);
 
             lstIndex.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_JOBS; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Job[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Data.Job[i].Name);
 
             lstStartItems.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_DROP_ITEMS; i++)
-                lstStartItems.Items.Add(Core.Type.Item[Core.Type.Job[GameState.EditorIndex].StartItem[i]].Name + " X " + Core.Type.Job[GameState.EditorIndex].StartValue[i]);
+                lstStartItems.Items.Add(Core.Data.Item[Data.Job[GameState.EditorIndex].StartItem[i]].Name + " X " + Data.Job[GameState.EditorIndex].StartValue[i]);
 
             lstStartItems.SelectedIndex = 0;
         }
@@ -75,7 +75,7 @@ namespace Client
 
         private void TxtDescription_TextChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].Desc = txtDescription.Text;
+            Data.Job[GameState.EditorIndex].Desc = txtDescription.Text;
         }
 
         private void TxtName_TextChanged(object sender, EventArgs e)
@@ -83,9 +83,9 @@ namespace Client
             int tmpindex;
 
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Job[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
+            Data.Job[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Job[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Data.Job[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
@@ -126,37 +126,37 @@ namespace Client
 
         private void NumStrength_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Strength] = (int)Math.Round(nudStrength.Value);
+            Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Strength] = (int)Math.Round(nudStrength.Value);
         }
 
         private void NumLuck_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Luck] = (int)Math.Round(nudLuck.Value);
+            Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Luck] = (int)Math.Round(nudLuck.Value);
         }
 
         private void NumEndurance_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Luck] = (int)Math.Round(nudEndurance.Value);
+            Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Luck] = (int)Math.Round(nudEndurance.Value);
         }
 
         private void NumIntelligence_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Intelligence] = (int)Math.Round(nudIntelligence.Value);
+            Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Intelligence] = (int)Math.Round(nudIntelligence.Value);
         }
 
         private void NumVitality_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Vitality] = (int)Math.Round(nudVitality.Value);
+            Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Vitality] = (int)Math.Round(nudVitality.Value);
         }
 
         private void NumSpirit_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Spirit] = (int)Math.Round(nudSpirit.Value);
+            Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Spirit] = (int)Math.Round(nudSpirit.Value);
         }
 
         private void NumBaseExp_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].BaseExp = (int)Math.Round(nudBaseExp.Value);
+            Data.Job[GameState.EditorIndex].BaseExp = (int)Math.Round(nudBaseExp.Value);
         }
 
         #endregion
@@ -168,12 +168,12 @@ namespace Client
             if (lstStartItems.SelectedIndex < 0)
                 return;
 
-            Core.Type.Job[GameState.EditorIndex].StartItem[lstStartItems.SelectedIndex] = cmbItems.SelectedIndex;
-            Core.Type.Job[GameState.EditorIndex].StartValue[lstStartItems.SelectedIndex] = (int)Math.Round(nudItemAmount.Value);
+            Data.Job[GameState.EditorIndex].StartItem[lstStartItems.SelectedIndex] = cmbItems.SelectedIndex;
+            Data.Job[GameState.EditorIndex].StartValue[lstStartItems.SelectedIndex] = (int)Math.Round(nudItemAmount.Value);
 
             lstStartItems.Items.Clear();
             for (int i = 0; i < Constant.MAX_DROP_ITEMS; i++)
-                lstStartItems.Items.Add(Core.Type.Item[Core.Type.Job[GameState.EditorIndex].StartItem[i]].Name + " X " + Core.Type.Job[GameState.EditorIndex].StartValue[i]);
+                lstStartItems.Items.Add(Core.Data.Item[Data.Job[GameState.EditorIndex].StartItem[i]].Name + " X " + Data.Job[GameState.EditorIndex].StartValue[i]);
             lstStartItems.SelectedIndex = 0;
         }
 
@@ -183,17 +183,17 @@ namespace Client
 
         private void NumStartMap_Click(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].StartMap = (int)Math.Round(nudStartMap.Value);
+            Data.Job[GameState.EditorIndex].StartMap = (int)Math.Round(nudStartMap.Value);
         }
 
         private void NumStartX_Click(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].StartX = (byte)Math.Round(nudStartX.Value);
+            Data.Job[GameState.EditorIndex].StartX = (byte)Math.Round(nudStartX.Value);
         }
 
         private void NumStartY_Click(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].StartY = (byte)Math.Round(nudStartY.Value);
+            Data.Job[GameState.EditorIndex].StartY = (byte)Math.Round(nudStartY.Value);
         }
 
         private void lstIndex_Click(object sender, EventArgs e)
@@ -214,7 +214,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Job[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Data.Job[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.JobEditorInit();
@@ -222,13 +222,13 @@ namespace Client
 
         private void nudFemaleSprite_Click(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].FemaleSprite = (int)Math.Round(nudFemaleSprite.Value);
+            Data.Job[GameState.EditorIndex].FemaleSprite = (int)Math.Round(nudFemaleSprite.Value);
             DrawPreview();
         }
 
         private void nudMaleSprite_Click(object sender, EventArgs e)
         {
-            Core.Type.Job[GameState.EditorIndex].MaleSprite = (int)Math.Round(nudMaleSprite.Value);
+            Data.Job[GameState.EditorIndex].MaleSprite = (int)Math.Round(nudMaleSprite.Value);
             DrawPreview();
         }
 

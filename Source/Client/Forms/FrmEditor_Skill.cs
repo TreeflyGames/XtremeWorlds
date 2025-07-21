@@ -39,117 +39,117 @@ namespace Client
         {
             int tmpindex;
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Skill[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
+            Core.Data.Skill[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Skill[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Skill[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Type = (byte)cmbType.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].Type = (byte)cmbType.SelectedIndex;
         }
 
         private void NudMp_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].MpCost = (int)Math.Round(nudMp.Value);
+            Core.Data.Skill[GameState.EditorIndex].MpCost = (int)Math.Round(nudMp.Value);
         }
 
         private void NudLevel_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].LevelReq = (int)Math.Round(nudLevel.Value);
+            Core.Data.Skill[GameState.EditorIndex].LevelReq = (int)Math.Round(nudLevel.Value);
         }
 
         private void CmbAccessReq_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].AccessReq = cmbAccessReq.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].AccessReq = cmbAccessReq.SelectedIndex;
         }
 
         private void CmbClass_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].JobReq = cmbJob.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].JobReq = cmbJob.SelectedIndex;
         }
 
         private void NudCast_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].CastTime = (int)Math.Round(nudCast.Value);
+            Core.Data.Skill[GameState.EditorIndex].CastTime = (int)Math.Round(nudCast.Value);
         }
 
         private void NudCool_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].CdTime = (int)Math.Round(nudCool.Value);
+            Core.Data.Skill[GameState.EditorIndex].CdTime = (int)Math.Round(nudCool.Value);
         }
 
         private void NudMap_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Map = (int)Math.Round(nudMap.Value);
+            Core.Data.Skill[GameState.EditorIndex].Map = (int)Math.Round(nudMap.Value);
         }
 
         private void CmbDir_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Dir = (byte)cmbDir.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].Dir = (byte)cmbDir.SelectedIndex;
         }
 
         private void NudX_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].X = (int)Math.Round(nudX.Value);
+            Core.Data.Skill[GameState.EditorIndex].X = (int)Math.Round(nudX.Value);
         }
 
         private void NudY_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Y = (int)Math.Round(nudY.Value);
+            Core.Data.Skill[GameState.EditorIndex].Y = (int)Math.Round(nudY.Value);
         }
 
         private void NudVital_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Vital = (int)Math.Round(nudVital.Value);
+            Core.Data.Skill[GameState.EditorIndex].Vital = (int)Math.Round(nudVital.Value);
         }
 
         private void NudDuration_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Duration = (int)Math.Round(nudDuration.Value);
+            Core.Data.Skill[GameState.EditorIndex].Duration = (int)Math.Round(nudDuration.Value);
         }
 
         private void NudInterval_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Interval = (int)Math.Round(nudInterval.Value);
+            Core.Data.Skill[GameState.EditorIndex].Interval = (int)Math.Round(nudInterval.Value);
         }
 
         private void NudRange_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Range = (int)Math.Round(nudRange.Value);
+            Core.Data.Skill[GameState.EditorIndex].Range = (int)Math.Round(nudRange.Value);
         }
 
         private void ChkAOE_CheckedChanged(object sender, EventArgs e)
         {
             if (chkAoE.Checked == false)
             {
-                Core.Type.Skill[GameState.EditorIndex].IsAoE = false;
+                Core.Data.Skill[GameState.EditorIndex].IsAoE = false;
             }
             else
             {
-                Core.Type.Skill[GameState.EditorIndex].IsAoE = true;
+                Core.Data.Skill[GameState.EditorIndex].IsAoE = true;
             }
         }
 
         private void NudAoE_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].AoE = (int)Math.Round(nudAoE.Value);
+            Core.Data.Skill[GameState.EditorIndex].AoE = (int)Math.Round(nudAoE.Value);
         }
 
         private void CmbAnimCast_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].CastAnim = cmbAnimCast.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].CastAnim = cmbAnimCast.SelectedIndex;
         }
 
         private void CmbAnim_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].SkillAnim = cmbAnim.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].SkillAnim = cmbAnim.SelectedIndex;
         }
 
         private void NudStun_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].StunDuration = (int)Math.Round(nudStun.Value);
+            Core.Data.Skill[GameState.EditorIndex].StunDuration = (int)Math.Round(nudStun.Value);
         }
 
         private void lstIndex_Click(object sender, EventArgs e)
@@ -171,7 +171,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Skill[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Skill[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.SkillEditorInit();
@@ -193,57 +193,57 @@ namespace Client
 
             // Add the names
             for (int i = 0; i < Constant.MAX_SKILLS; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Strings.Trim(Core.Type.Skill[i].Name));
+                lstIndex.Items.Add(i + 1 + ": " + Strings.Trim(Core.Data.Skill[i].Name));
 
             cmbAnimCast.Items.Clear();
             cmbAnim.Items.Clear();
             for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
             {
-                cmbAnimCast.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
-                cmbAnim.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
+                cmbAnimCast.Items.Add(i + 1 + ": " + Core.Data.Animation[i].Name);
+                cmbAnim.Items.Add(i + 1 + ": " + Core.Data.Animation[i].Name);
             }
 
             cmbProjectile.Items.Clear();
             for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
-                cmbProjectile.Items.Add(i + 1 + ": " + Core.Type.Projectile[i].Name);
+                cmbProjectile.Items.Add(i + 1 + ": " + Core.Data.Projectile[i].Name);
 
             cmbJob.Items.Clear();
             for (int i = 0; i < Constant.MAX_JOBS; i++)
-                cmbJob.Items.Add(i + 1 + ": " + Core.Type.Job[i].Name.Trim());
+                cmbJob.Items.Add(i + 1 + ": " + Core.Data.Job[i].Name.Trim());
         }
 
         private void ChkProjectile_CheckedChanged(object sender, EventArgs e)
         {
             if (chkProjectile.Checked == false)
             {
-                Core.Type.Skill[GameState.EditorIndex].IsProjectile = 0;
+                Core.Data.Skill[GameState.EditorIndex].IsProjectile = 0;
             }
             else
             {
-                Core.Type.Skill[GameState.EditorIndex].IsProjectile = 1;
+                Core.Data.Skill[GameState.EditorIndex].IsProjectile = 1;
             }
         }
 
         private void ScrlProjectile_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Projectile = cmbProjectile.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].Projectile = cmbProjectile.SelectedIndex;
         }
 
         private void ChkKnockBack_CheckedChanged(object sender, EventArgs e)
         {
             if (chkKnockBack.Checked == true)
             {
-                Core.Type.Skill[GameState.EditorIndex].KnockBack = 1;
+                Core.Data.Skill[GameState.EditorIndex].KnockBack = 1;
             }
             else
             {
-                Core.Type.Skill[GameState.EditorIndex].KnockBack = 0;
+                Core.Data.Skill[GameState.EditorIndex].KnockBack = 0;
             }
         }
 
         private void CmbKnockBackTiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].KnockBackTiles = (byte)cmbKnockBackTiles.SelectedIndex;
+            Core.Data.Skill[GameState.EditorIndex].KnockBackTiles = (byte)cmbKnockBackTiles.SelectedIndex;
         }
 
         private void frmEditor_Skill_FormClosing(object sender, FormClosingEventArgs e)
@@ -258,7 +258,7 @@ namespace Client
 
         private void nudIcon_Click(object sender, EventArgs e)
         {
-            Core.Type.Skill[GameState.EditorIndex].Icon = (int)Math.Round(nudIcon.Value);
+            Core.Data.Skill[GameState.EditorIndex].Icon = (int)Math.Round(nudIcon.Value);
             DrawIcon();
         }
 

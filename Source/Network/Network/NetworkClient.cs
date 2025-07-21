@@ -172,7 +172,7 @@ namespace Mirage.Sharp.Asfw.Network
                       ? IPAddress.Loopback
                       : IPAddress.Parse(_lastIp);
 
-                    await Task.Run(() => _socket.Connect(new IPEndPoint(address, _lastPort)));
+                    await System.Threading.Tasks.Task.Run(() => _socket.Connect(new IPEndPoint(address, _lastPort)));
 
                     if (_socket.Connected)
                     {
@@ -187,7 +187,7 @@ namespace Mirage.Sharp.Asfw.Network
                     Console.WriteLine($"Reconnection attempt failed: {ex.Message}");
                 }
 
-                await Task.Delay(ReconnectInterval);
+                await System.Threading.Tasks.Task.Delay(ReconnectInterval);
                 elapsed += ReconnectInterval;
             }
 

@@ -88,7 +88,7 @@ namespace Client
             TreeNode treeNode27 = new TreeNode("Warp Player");
             TreeNode treeNode28 = new TreeNode("Set Move Route");
             TreeNode treeNode29 = new TreeNode("Wait for Route Completion");
-            TreeNode treeNode30 = new TreeNode("Force Spawn NPC");
+            TreeNode treeNode30 = new TreeNode("Force Spawn Npc");
             TreeNode treeNode31 = new TreeNode("Hold Player");
             TreeNode treeNode32 = new TreeNode("Release Player");
             TreeNode treeNode33 = new TreeNode("Movement", new TreeNode[] { treeNode27, treeNode28, treeNode29, treeNode30, treeNode31, treeNode32 });
@@ -265,10 +265,10 @@ namespace Client
             btnMoveWaitOk = new DarkUI.Controls.DarkButton();
             DarkLabel79 = new DarkUI.Controls.DarkLabel();
             cmbMoveWait = new DarkUI.Controls.DarkComboBox();
-            fraSpawnNPC = new DarkUI.Controls.DarkGroupBox();
-            btnSpawnNPCOk = new DarkUI.Controls.DarkButton();
-            btnSpawnNPCancel = new DarkUI.Controls.DarkButton();
-            cmbSpawnNPC = new DarkUI.Controls.DarkComboBox();
+            fraSpawnNpc = new DarkUI.Controls.DarkGroupBox();
+            btnSpawnNpcOk = new DarkUI.Controls.DarkButton();
+            btnSpawnNpcancel = new DarkUI.Controls.DarkButton();
+            cmbSpawnNpc = new DarkUI.Controls.DarkComboBox();
             fraSetWeather = new DarkUI.Controls.DarkGroupBox();
             btnSetWeatherOk = new DarkUI.Controls.DarkButton();
             btnSetWeatherCancel = new DarkUI.Controls.DarkButton();
@@ -497,7 +497,7 @@ namespace Client
             fraSetWait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudWaitAmount).BeginInit();
             fraMoveRouteWait.SuspendLayout();
-            fraSpawnNPC.SuspendLayout();
+            fraSpawnNpc.SuspendLayout();
             fraSetWeather.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudWeatherIntensity).BeginInit();
             fraGiveExp.SuspendLayout();
@@ -620,7 +620,7 @@ namespace Client
             treeNode29.Name = "Node3";
             treeNode29.Text = "Wait for Route Completion";
             treeNode30.Name = "Node4";
-            treeNode30.Text = "Force Spawn NPC";
+            treeNode30.Text = "Force Spawn Npc";
             treeNode31.Name = "Node5";
             treeNode31.Text = "Hold Player";
             treeNode32.Name = "Node6";
@@ -1672,7 +1672,7 @@ namespace Client
             fraDialogue.Controls.Add(fraPlayerSwitch);
             fraDialogue.Controls.Add(fraSetWait);
             fraDialogue.Controls.Add(fraMoveRouteWait);
-            fraDialogue.Controls.Add(fraSpawnNPC);
+            fraDialogue.Controls.Add(fraSpawnNpc);
             fraDialogue.Controls.Add(fraSetWeather);
             fraDialogue.Controls.Add(fraGiveExp);
             fraDialogue.Controls.Add(fraSetAccess);
@@ -1772,7 +1772,7 @@ namespace Client
             // 
             cmbChatBubbleTargetType.DrawMode = DrawMode.OwnerDrawFixed;
             cmbChatBubbleTargetType.FormattingEnabled = true;
-            cmbChatBubbleTargetType.Items.AddRange(new object[] { "Player", "NPC", "Event" });
+            cmbChatBubbleTargetType.Items.AddRange(new object[] { "Player", "Npc", "Event" });
             cmbChatBubbleTargetType.Location = new Point(94, 67);
             cmbChatBubbleTargetType.Margin = new Padding(4, 3, 4, 3);
             cmbChatBubbleTargetType.Name = "cmbChatBubbleTargetType";
@@ -2302,7 +2302,7 @@ namespace Client
             btnSetPlayerswitchCancel.Size = new Size(88, 27);
             btnSetPlayerswitchCancel.TabIndex = 8;
             btnSetPlayerswitchCancel.Text = "Cancel";
-            btnSetPlayerswitchCancel.Click += BtnSetPlayerswitchCancel_Click;
+            btnSetPlayerswitchCancel.Click += BtnSetPlayerSwitchCancel_Click;
             // 
             // cmbPlayerSwitchSet
             // 
@@ -2494,55 +2494,55 @@ namespace Client
             cmbMoveWait.Size = new Size(222, 24);
             cmbMoveWait.TabIndex = 0;
             // 
-            // fraSpawnNPC
+            // fraSpawnNpc
             // 
-            fraSpawnNPC.BackColor = Color.FromArgb(45, 45, 48);
-            fraSpawnNPC.BorderColor = Color.FromArgb(90, 90, 90);
-            fraSpawnNPC.Controls.Add(btnSpawnNPCOk);
-            fraSpawnNPC.Controls.Add(btnSpawnNPCancel);
-            fraSpawnNPC.Controls.Add(cmbSpawnNPC);
-            fraSpawnNPC.ForeColor = Color.Gainsboro;
-            fraSpawnNPC.Location = new Point(468, 475);
-            fraSpawnNPC.Margin = new Padding(4, 3, 4, 3);
-            fraSpawnNPC.Name = "fraSpawnNPC";
-            fraSpawnNPC.Padding = new Padding(4, 3, 4, 3);
-            fraSpawnNPC.Size = new Size(289, 89);
-            fraSpawnNPC.TabIndex = 46;
-            fraSpawnNPC.TabStop = false;
-            fraSpawnNPC.Text = "Spawn NPC";
-            fraSpawnNPC.Visible = false;
+            fraSpawnNpc.BackColor = Color.FromArgb(45, 45, 48);
+            fraSpawnNpc.BorderColor = Color.FromArgb(90, 90, 90);
+            fraSpawnNpc.Controls.Add(btnSpawnNpcOk);
+            fraSpawnNpc.Controls.Add(btnSpawnNpcancel);
+            fraSpawnNpc.Controls.Add(cmbSpawnNpc);
+            fraSpawnNpc.ForeColor = Color.Gainsboro;
+            fraSpawnNpc.Location = new Point(468, 475);
+            fraSpawnNpc.Margin = new Padding(4, 3, 4, 3);
+            fraSpawnNpc.Name = "fraSpawnNpc";
+            fraSpawnNpc.Padding = new Padding(4, 3, 4, 3);
+            fraSpawnNpc.Size = new Size(289, 89);
+            fraSpawnNpc.TabIndex = 46;
+            fraSpawnNpc.TabStop = false;
+            fraSpawnNpc.Text = "Spawn Npc";
+            fraSpawnNpc.Visible = false;
             // 
-            // btnSpawnNPCOk
+            // btnSpawnNpcOk
             // 
-            btnSpawnNPCOk.Location = new Point(54, 54);
-            btnSpawnNPCOk.Margin = new Padding(4, 3, 4, 3);
-            btnSpawnNPCOk.Name = "btnSpawnNPCOk";
-            btnSpawnNPCOk.Padding = new Padding(6);
-            btnSpawnNPCOk.Size = new Size(88, 27);
-            btnSpawnNPCOk.TabIndex = 27;
-            btnSpawnNPCOk.Text = "Ok";
-            btnSpawnNPCOk.Click += BtnSpawnNPCOK_Click;
+            btnSpawnNpcOk.Location = new Point(54, 54);
+            btnSpawnNpcOk.Margin = new Padding(4, 3, 4, 3);
+            btnSpawnNpcOk.Name = "btnSpawnNpcOk";
+            btnSpawnNpcOk.Padding = new Padding(6);
+            btnSpawnNpcOk.Size = new Size(88, 27);
+            btnSpawnNpcOk.TabIndex = 27;
+            btnSpawnNpcOk.Text = "Ok";
+            btnSpawnNpcOk.Click += BtnSpawnNpcOK_Click;
             // 
-            // btnSpawnNPCancel
+            // btnSpawnNpcancel
             // 
-            btnSpawnNPCancel.Location = new Point(148, 54);
-            btnSpawnNPCancel.Margin = new Padding(4, 3, 4, 3);
-            btnSpawnNPCancel.Name = "btnSpawnNPCancel";
-            btnSpawnNPCancel.Padding = new Padding(6);
-            btnSpawnNPCancel.Size = new Size(88, 27);
-            btnSpawnNPCancel.TabIndex = 26;
-            btnSpawnNPCancel.Text = "Cancel";
-            btnSpawnNPCancel.Click += BtnSpawnNPCancel_Click;
+            btnSpawnNpcancel.Location = new Point(148, 54);
+            btnSpawnNpcancel.Margin = new Padding(4, 3, 4, 3);
+            btnSpawnNpcancel.Name = "btnSpawnNpcancel";
+            btnSpawnNpcancel.Padding = new Padding(6);
+            btnSpawnNpcancel.Size = new Size(88, 27);
+            btnSpawnNpcancel.TabIndex = 26;
+            btnSpawnNpcancel.Text = "Cancel";
+            btnSpawnNpcancel.Click += BtnSpawnNpcancel_Click;
             // 
-            // cmbSpawnNPC
+            // cmbSpawnNpc
             // 
-            cmbSpawnNPC.DrawMode = DrawMode.OwnerDrawFixed;
-            cmbSpawnNPC.FormattingEnabled = true;
-            cmbSpawnNPC.Location = new Point(7, 22);
-            cmbSpawnNPC.Margin = new Padding(4, 3, 4, 3);
-            cmbSpawnNPC.Name = "cmbSpawnNPC";
-            cmbSpawnNPC.Size = new Size(272, 24);
-            cmbSpawnNPC.TabIndex = 0;
+            cmbSpawnNpc.DrawMode = DrawMode.OwnerDrawFixed;
+            cmbSpawnNpc.FormattingEnabled = true;
+            cmbSpawnNpc.Location = new Point(7, 22);
+            cmbSpawnNpc.Margin = new Padding(4, 3, 4, 3);
+            cmbSpawnNpc.Name = "cmbSpawnNpc";
+            cmbSpawnNpc.Size = new Size(272, 24);
+            cmbSpawnNpc.TabIndex = 0;
             // 
             // fraSetWeather
             // 
@@ -4972,7 +4972,7 @@ namespace Client
             ((System.ComponentModel.ISupportInitialize)nudWaitAmount).EndInit();
             fraMoveRouteWait.ResumeLayout(false);
             fraMoveRouteWait.PerformLayout();
-            fraSpawnNPC.ResumeLayout(false);
+            fraSpawnNpc.ResumeLayout(false);
             fraSetWeather.ResumeLayout(false);
             fraSetWeather.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudWeatherIntensity).EndInit();
@@ -5345,13 +5345,13 @@ namespace Client
         internal DarkUI.Controls.DarkNumericUpDown nudWeatherIntensity;
         internal DarkUI.Controls.DarkGroupBox fraGiveExp;
         internal DarkUI.Controls.DarkLabel DarkLabel77;
-        internal DarkUI.Controls.DarkGroupBox fraSpawnNPC;
-        internal DarkUI.Controls.DarkComboBox cmbSpawnNPC;
+        internal DarkUI.Controls.DarkGroupBox fraSpawnNpc;
+        internal DarkUI.Controls.DarkComboBox cmbSpawnNpc;
         internal DarkUI.Controls.DarkButton btnGiveExpOk;
         internal DarkUI.Controls.DarkButton btnGiveExpCancel;
         internal DarkUI.Controls.DarkNumericUpDown nudGiveExp;
-        internal DarkUI.Controls.DarkButton btnSpawnNPCOk;
-        internal DarkUI.Controls.DarkButton btnSpawnNPCancel;
+        internal DarkUI.Controls.DarkButton btnSpawnNpcOk;
+        internal DarkUI.Controls.DarkButton btnSpawnNpcancel;
         internal DarkUI.Controls.DarkGroupBox fraMoveRouteWait;
         internal DarkUI.Controls.DarkButton btnMoveWaitCancel;
         internal DarkUI.Controls.DarkButton btnMoveWaitOk;

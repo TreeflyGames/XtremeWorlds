@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
+﻿using Core;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Client
 {
@@ -11,20 +12,21 @@ namespace Client
             int y;
             int i;
 
-            Core.Type.Autotile = new Core.Type.AutotileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
+            Core.Data.Autotile = new Core.Type.Autotile[(Data.MyMap.MaxX), (Data.MyMap.MaxY)];
 
-            var loopTo = (int)Core.Type.MyMap.MaxX;
+            var loopTo = (int)Data.MyMap.MaxX;
             for (x = 0; x < loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                var loopTo1 = (int)Data.MyMap.MaxY;
                 for (y = 0; y < loopTo1; y++)
                 {
-                    Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[(int)Core.Enum.LayerType.Count];
-                    for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
+                    int layerCount = System.Enum.GetValues(typeof(MapLayer)).Length;
+                    Core.Data.Autotile[x, y].Layer = new Core.Type.QuarterTile[layerCount];
+                    for (i = 0; i < layerCount; i++)
                     {
-                        Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
-                        Core.Type.Autotile[x, y].Layer[i].SrcY = new int[5];
-                        Core.Type.Autotile[x, y].Layer[i].QuarterTile = new Core.Type.PointStruct[5];
+                        Core.Data.Autotile[x, y].Layer[i].SrcX = new int[5];
+                        Core.Data.Autotile[x, y].Layer[i].SrcY = new int[5];
+                        Core.Data.Autotile[x, y].Layer[i].Tile = new Core.Type.Point[5];
                     }
                 }
             }
@@ -35,12 +37,12 @@ namespace Client
         // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         private static void PlaceAutotile(int layerNum, int x, int y, byte tileQuarter, string autoTileLetter)
         {
-
-            if (layerNum > (int)Core.Enum.LayerType.Count)
+            int layerCount = System.Enum.GetValues(typeof(MapLayer)).Length;
+            if (layerNum > layerCount)
             {
-                layerNum = layerNum - ((int)Core.Enum.LayerType.Count);
+                layerNum = layerNum - (layerCount);
                 {
-                    ref var withBlock = ref Core.Type.Autotile[x, y].ExLayer[layerNum].QuarterTile[tileQuarter];
+                    ref var withBlock = ref Core.Data.Autotile[x, y].ExLayer[layerNum].Tile[tileQuarter];
                     switch (autoTileLetter ?? "")
                     {
                         case "a":
@@ -169,7 +171,7 @@ namespace Client
             else
             {
                 {
-                    ref var withBlock1 = ref Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[tileQuarter];
+                    ref var withBlock1 = ref Core.Data.Autotile[x, y].Layer[layerNum].Tile[tileQuarter];
                     switch (autoTileLetter ?? "")
                     {
                         case "a":
@@ -311,19 +313,20 @@ namespace Client
             // We also give letters to each subtile for easy rendering tweaks. ;]
             // First, we need to re-size the array
 
-            Core.Type.Autotile = new Core.Type.AutotileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
-            var loopTo = (int)Core.Type.MyMap.MaxX;
+            Core.Data.Autotile = new Core.Type.Autotile[(Data.MyMap.MaxX), (Data.MyMap.MaxY)];
+            var loopTo = (int)Data.MyMap.MaxX;
             for (x = 0; x < loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                var loopTo1 = (int)Data.MyMap.MaxY;
                 for (y = 0; y < loopTo1; y++)
                 {
-                    Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[(int)Core.Enum.LayerType.Count];
-                    for (int i = 0; i < (int)Core.Enum.LayerType.Count; i++)
+                    int layerCount = System.Enum.GetValues(typeof(MapLayer)).Length;
+                    Core.Data.Autotile[x, y].Layer = new Core.Type.QuarterTile[layerCount];
+                    for (int i = 0; i < layerCount; i++)
                     {
-                        Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
-                        Core.Type.Autotile[x, y].Layer[i].SrcY = new int[5];
-                        Core.Type.Autotile[x, y].Layer[i].QuarterTile = new Core.Type.PointStruct[5];
+                        Core.Data.Autotile[x, y].Layer[i].SrcX = new int[5];
+                        Core.Data.Autotile[x, y].Layer[i].SrcY = new int[5];
+                        Core.Data.Autotile[x, y].Layer[i].Tile = new Core.Type.Point[5];
                     }
                 }
             }
@@ -394,13 +397,14 @@ namespace Client
             Core.Type.AutoSe[4].X = 48;
             Core.Type.AutoSe[4].Y = 80;
 
-            var loopTo2 = (int)Core.Type.MyMap.MaxX;
+            var loopTo2 = (int)Data.MyMap.MaxX;
             for (x = 0; x < loopTo2; x++)
             {
-                var loopTo3 = (int)Core.Type.MyMap.MaxY;
+                var loopTo3 = (int)Data.MyMap.MaxY;
                 for (y = 0; y < loopTo3; y++)
                 {
-                    for (layerNum = 0; layerNum < (int)Core.Enum.LayerType.Count; layerNum++)
+                    int layerCount = System.Enum.GetValues(typeof(MapLayer)).Length;
+                    for (layerNum = 0; layerNum < layerCount; layerNum++)
                     {
                         // calculate the subtile positions and place them
                         CalculateAutotile(x, y, layerNum);
@@ -416,15 +420,15 @@ namespace Client
         {
             int quarterNum;
 
-            if (x < 0 | x >= Core.Type.MyMap.MaxX | y < 0 | y >= Core.Type.MyMap.MaxY)
+            if (x < 0 | x >= Data.MyMap.MaxX | y < 0 | y >= Data.MyMap.MaxY)
                 return;
 
-            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+            ref var withBlock = ref Data.MyMap.Tile[x, y];
 
             // check if the tile can be rendered
             if (withBlock.Layer[layerNum].Tileset <= 0 | withBlock.Layer[layerNum].Tileset > GameState.NumTileSets)
             {
-                Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNone;
+                Core.Data.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNone;
                 return;
             }
 
@@ -432,16 +436,16 @@ namespace Client
             if (withBlock.Layer[layerNum].AutoTile == GameState.AutotileNone | withBlock.Layer[layerNum].AutoTile == GameState.AutotileFake)
             {
                 // default to... default
-                Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNormal;
+                Core.Data.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNormal;
             }
             else
             {
-                Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateAutotile;
+                Core.Data.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateAutotile;
                 // cache tileset positioning
                 for (quarterNum = 0; quarterNum <= 4; quarterNum++)
                 {
-                    Core.Type.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].X * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].X;
-                    Core.Type.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].Y * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].Y;
+                    Core.Data.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] = Data.MyMap.Tile[x, y].Layer[layerNum].X * 32 + Data.Autotile[x, y].Layer[layerNum].Tile[quarterNum].X;
+                    Core.Data.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] = Data.MyMap.Tile[x, y].Layer[layerNum].Y * 32 + Data.Autotile[x, y].Layer[layerNum].Tile[quarterNum].Y;
                 }
             }
         }
@@ -457,11 +461,11 @@ namespace Client
             // The situations are "inner", "outer", "horizontal", "vertical" and "fill".
             // Exit out if we don't have an autotile
 
-            if (Core.Type.MyMap.Tile[x, y].Layer[layerNum].AutoTile == 0)
+            if (Data.MyMap.Tile[x, y].Layer[layerNum].AutoTile == 0)
                 return;
 
             // Okay, we have autotiling but which one?
-            switch (Core.Type.MyMap.Tile[x, y].Layer[layerNum].AutoTile)
+            switch (Data.MyMap.Tile[x, y].Layer[layerNum].AutoTile)
             {
                 // Normal or animated - same difference
                 case GameState.AutotileNormal:
@@ -1117,40 +1121,40 @@ namespace Client
             CheckTileMatchRet = true;
 
             // if it's off the map then set it as autotile and exit out early
-            if (x2 < 0 | x2 > Core.Type.MyMap.MaxX | y2 < 0 | y2 > Core.Type.MyMap.MaxY)
+            if (x2 < 0 | x2 > Data.MyMap.MaxX | y2 < 0 | y2 > Data.MyMap.MaxY)
             {
                 CheckTileMatchRet = true;
                 return CheckTileMatchRet;
             }
 
             // fakes ALWAYS return true
-            if (Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].AutoTile == GameState.AutotileFake)
+            if (Data.MyMap.Tile[x2, y2].Layer[layerNum].AutoTile == GameState.AutotileFake)
             {
                 CheckTileMatchRet = true;
                 return CheckTileMatchRet;
             }
 
             // check neighbour is an autotile
-            if (Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].AutoTile == 0)
+            if (Data.MyMap.Tile[x2, y2].Layer[layerNum].AutoTile == 0)
             {
                 CheckTileMatchRet = false;
                 return CheckTileMatchRet;
             }
 
             // check we're a matching
-            if (Core.Type.MyMap.Tile[x1, y1].Layer[layerNum].Tileset != Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].Tileset)
+            if (Data.MyMap.Tile[x1, y1].Layer[layerNum].Tileset != Data.MyMap.Tile[x2, y2].Layer[layerNum].Tileset)
             {
                 CheckTileMatchRet = false;
                 return CheckTileMatchRet;
             }
 
             // check tiles match
-            if (Core.Type.MyMap.Tile[x1, y1].Layer[layerNum].X != Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].X)
+            if (Data.MyMap.Tile[x1, y1].Layer[layerNum].X != Data.MyMap.Tile[x2, y2].Layer[layerNum].X)
             {
                 CheckTileMatchRet = false;
                 return CheckTileMatchRet;
             }
-            else if (Core.Type.MyMap.Tile[x1, y1].Layer[layerNum].Y != Core.Type.MyMap.Tile[x2, y2].Layer[layerNum].Y)
+            else if (Data.MyMap.Tile[x1, y1].Layer[layerNum].Y != Data.MyMap.Tile[x2, y2].Layer[layerNum].Y)
             {
                 CheckTileMatchRet = false;
                 return CheckTileMatchRet;
