@@ -49,5 +49,6 @@ namespace Core
         public const byte WALK_SPEED = 8;
         public const byte RUN_SPEED = 16;
         public const int TILE_SIZE = 32;
-    }
+        public const int MAX_WEATHER_PARTICLES = 1000;
+	}
 }

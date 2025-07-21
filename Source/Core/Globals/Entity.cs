@@ -10,7 +10,7 @@ using static Core.Type;
 namespace Core.Globals
 {
     /// <summary>
-    /// Represents a dynamic entity that can be a Player, NPC, or Pet.
+    /// Represents a dynamic entity that can be a Player, Npc, or Pet.
     /// Allows unified access to common fields for logic processing.
     /// </summary>
     public class Entity
@@ -20,7 +20,7 @@ namespace Core.Globals
         public enum EntityType
         {
             Player,
-            NPC,
+            Npc,
             Pet
         }
 
@@ -73,7 +73,7 @@ namespace Core.Globals
         public object[] Hotbar { get; set; } 
         public byte[] Switches { get; set; } 
         public int[] Variables { get; set; } 
-        public object PetStruct { get; set; } 
+        public object Pet { get; set; } 
         public int XOffset { get; set; } 
         public int YOffset { get; set; } 
         public byte Moving { get; set; } 
@@ -115,17 +115,17 @@ namespace Core.Globals
         public int StunDuration { get; set; }
         public int StunTimer { get; set; }
         public byte StopRegen { get; set; }
-        public ResourceTypetruct[] GatherSkills { get; set; }
-        public object RawStruct { get; }
+        public ResourceType[] GatherSkills { get; set; }
+        public object Raw { get; }
 
-        private Entity(EntityType type, int id, object rawStruct)
+        private Entity(EntityType type, int id, object raw)
         {
             Type = type;
             Id = id;
-            RawStruct = rawStruct;
+            Raw = raw;
         }
 
-        public static Entity FromPlayer(int id, Type.PlayerStruct player)
+        public static Entity FromPlayer(int id, Player player)
         {
             return new Entity(EntityType.Player, id, player)
             {
@@ -166,9 +166,9 @@ namespace Core.Globals
             };
         }
 
-        public static Entity FromNPC(int id, Type.MapNPCStruct npc)
+        public static Entity FromNpc(int id, Type.MapNpc npc)
         {
-            var entity = new Entity(EntityType.NPC, id, npc)
+            var entity = new Entity(EntityType.Npc, id, npc)
             {
                 Num = npc.Num,
                 Target = npc.Target,
@@ -188,7 +188,7 @@ namespace Core.Globals
             return entity;
         }
 
-        public static Entity FromPet(int id, Type.PetStruct pet)
+        public static Entity FromPet(int id, Type.Pet pet)
         {
             var entity = new Entity(EntityType.Pet, id, pet)
             {
@@ -200,9 +200,8 @@ namespace Core.Globals
                 MaxLevel = pet.MaxLevel,
                 ExpGain = pet.ExpGain,
                 Points = pet.Points,
-                StatType = pet.StatType,
-                LevelingType = pet.LevelingType,
                 Stat = pet.Stat,
+                LevelingType = pet.LevelingType,
                 Skill = pet.Skill,
                 Evolvable = pet.Evolvable,
                 EvolveLevel = pet.EvolveLevel,
@@ -212,14 +211,14 @@ namespace Core.Globals
         }
 
         /// <summary>
-        /// Converts a NPC Entity to a MapNPCStruct for npc-specific data.
+        /// Converts a Npc Entity to a MapNpc for npc-specific data.
         /// </summary>
         /// <param name="id">The entity ID.</param>
-        /// <param name="entity">The NPC Entity to convert.</param>
-        /// <returns>A NPC struct with mapped properties.</returns>
-        public static Core.Type.MapNPCStruct ToNPC(int id, Entity entity)
+        /// <param name="entity">The Npc Entity to convert.</param>
+        /// <returns>A Npc struct with mapped properties.</returns>
+        public static MapNpc ToNpc(int id, Entity entity)
         {
-            return new Core.Type.MapNPCStruct
+            return new MapNpc
             {
                 Num = entity.Num,
                 Target = entity.Target,
@@ -246,14 +245,14 @@ namespace Core.Globals
         }
 
         /// <summary>
-        /// Converts a Player Entity to a PlayerStruct for player-specific data.
+        /// Converts a Player Entity to a Player for player-specific data.
         /// </summary>
         /// <param name="id">The entity ID.</param>
         /// <param name="entity">The Player Entity to convert.</param>
-        /// <returns>A PlayerStruct with mapped properties.</returns>
-        public static Core.Type.PlayerStruct ToPlayer(int id, Entity entity)
+        /// <returns>A Player with mapped properties.</returns>
+        public static Player ToPlayer(int id, Entity entity)
         {
-            return new Core.Type.PlayerStruct
+            return new Player
             {
                 Name = entity.Name ?? string.Empty,
                 Sex = entity.Sex,
@@ -267,13 +266,13 @@ namespace Core.Globals
                 Stat = entity.Stat != null ? (byte[])entity.Stat.Clone() : new byte[0],
                 Points = entity.Points,
                 Equipment = entity.Equipment != null ? (int[])entity.Equipment.Clone() : new int[0],
-                Inv = entity.Inv != null ? entity.Inv.Cast<Core.Type.PlayerInvStruct>().ToArray() : new Core.Type.PlayerInvStruct[0],
-                Skill = entity.PlayerSkill != null ? entity.PlayerSkill.Cast<Core.Type.PlayerSkillStruct>().ToArray() : new Core.Type.PlayerSkillStruct[0],
+                Inv = entity.Inv != null ? entity.Inv.Cast<PlayerInv>().ToArray() : new PlayerInv[0],
+                Skill = entity.PlayerSkill != null ? entity.PlayerSkill.Cast<PlayerSkill>().ToArray() : new PlayerSkill[0],
                 Map = entity.Map,
                 X = entity.X,
                 Y = entity.Y,
                 Dir = entity.Dir,
-                Hotbar = entity.Hotbar != null ? entity.Hotbar.Cast<Core.Type.HotbarStruct>().ToArray() : new Core.Type.HotbarStruct[0],
+                Hotbar = entity.Hotbar != null ? entity.Hotbar.Cast<Hotbar>().ToArray() : new Hotbar[0],
                 Switches = entity.Switches != null ? (byte[])entity.Switches.Clone() : new byte[0],
                 Variables = entity.Variables != null ? (int[])entity.Variables.Clone() : new int[0],
                 GatherSkills = entity.GatherSkills,
@@ -287,21 +286,21 @@ namespace Core.Globals
                 Emote = entity.Emote,
                 EmoteTimer = entity.EmoteTimer,
                 EventTimer = entity.EventTimer,
-                Quests = entity.Quests != null ? entity.Quests.Cast<Core.Type.PlayerQuestStruct>().ToArray() : new Core.Type.PlayerQuestStruct[0],
+                Quests = entity.Quests != null ? entity.Quests.Cast<PlayerQuest>().ToArray() : new PlayerQuest[0],
                 GuildId = entity.GuildId
             };
         }
 
 
         /// <summary>
-        /// Converts a Pet Entity to a PetStruct for pet-specific data.
+        /// Converts a Pet Entity to a Pet for pet-specific data.
         /// </summary>
         /// <param name="id">The entity ID.</param>
         /// <param name="entity">The Pet Entity to convert.</param>
-        /// <returns>A PetStruct with mapped properties.</returns>
-        public static Core.Type.PetStruct ToPet(int id, Entity entity)
+        /// <returns>A Pet with mapped properties.</returns>
+        public static Pet ToPet(int id, Entity entity)
         {
-            return new Core.Type.PetStruct
+            return new Pet
             {
                 Num = id,
                 Name = entity.Name ?? string.Empty,
@@ -311,7 +310,6 @@ namespace Core.Globals
                 MaxLevel = entity.MaxLevel,
                 ExpGain = entity.ExpGain,
                 Points = (byte)entity.Points,
-                StatType = (byte)entity.StatType,
                 LevelingType = (byte)entity.LevelingType,
                 Stat = entity.Stat != null ? (byte[])entity.Stat.Clone() : new byte[0],
                 Skill = entity.Skill != null ? (int[])entity.Skill.Clone() : new int[0],

@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using static Core.Enum;
 using static Core.Global.Command;
 using Color = Microsoft.Xna.Framework.Color;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -196,10 +195,12 @@ namespace Client
             public int TextureID { get; set; }
         }
 
-        private static void LoadFonts()
+static void LoadFonts()
         {
-            for (int i = 1; i < (int)FontType.Count; i++)
-                Text.Fonts[(FontType)i] = LoadFont(Core.Path.Fonts, (FontType)i);
+            // Get all defined font enum values except None (assumed to be 0)
+            var fontValues = Enum.GetValues(typeof(Core.Font));
+            for (int i = 1; i < fontValues.Length; i++)
+                Text.Fonts[(Core.Font)fontValues.GetValue(i)] = LoadFont(Core.Path.Fonts, (Core.Font)fontValues.GetValue(i));
         }
 
         protected override void LoadContent()
@@ -216,7 +217,7 @@ namespace Client
             IsLoaded = true;
         }
 
-        public static SpriteFont LoadFont(string path, FontType font)
+        public static SpriteFont LoadFont(string path, Core.Font font)
         {
             return General.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
         }
@@ -720,9 +721,9 @@ namespace Client
                     if (IsKeyStateActive(Keys.Enter))
                     {
                         // Handle Enter: Call the control's callback or activate a new control.
-                        if (activeControl.CallBack[(int)EntState.Enter] is not null)
+                        if (activeControl.CallBack[(int)ControlState.FocusEnter] is not null)
                         {
-                            activeControl.CallBack[(int)EntState.Enter].Invoke();
+                            activeControl.CallBack[(int)ControlState.FocusEnter].Invoke();
                         }
                         // If no callback, activate a new control.
                         else if (Gui.ActivateControl() == 0)
@@ -913,7 +914,7 @@ namespace Client
                 {
                     if (GameClient.CurrentKeyboardState.IsKeyDown(Keys.LeftShift))
                     {
-                        if (GameState.CurLayer < (int)Core.Enum.LayerType.Count)
+                        if (GameState.CurLayer < Enum.GetValues(typeof(MapLayer)).Length)
                         {
                             GameState.CurLayer += 1;
                         }
@@ -926,7 +927,7 @@ namespace Client
 
                 if (scrollValue != 0)
                 {
-                    Gui.HandleInterfaceEvents(EntState.MouseScroll);
+                    Gui.HandleInterfaceEvents(ControlState.MouseScroll);
                 }
             }
         }
@@ -938,7 +939,7 @@ namespace Client
             // Handle MouseMove event when the mouse moves
             if (CurrentMouseState.X != PreviousMouseState.X || CurrentMouseState.Y != PreviousMouseState.Y)
             {
-                Gui.HandleInterfaceEvents(EntState.MouseMove);
+                Gui.HandleInterfaceEvents(ControlState.MouseMove);
             }
 
             // Check for MouseDown event (button pressed)
@@ -946,7 +947,7 @@ namespace Client
             {
                 if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= mouseClickCooldown)
                 {
-                    Gui.HandleInterfaceEvents(EntState.MouseDown);
+                    Gui.HandleInterfaceEvents(ControlState.MouseDown);
                     lastMouseClickTime = DateTime.Now; // Update last mouse click time
                     GameState.LastLeftClickTime = currentTime; // Track time for double-click detection
                     GameState.ClickCount++;
@@ -954,7 +955,7 @@ namespace Client
 
                 if (GameState.ClickCount >= 2)
                 {
-                    Gui.HandleInterfaceEvents(EntState.DblClick);
+                    Gui.HandleInterfaceEvents(ControlState.DoubleClick);
                 }
             }
 
@@ -968,7 +969,7 @@ namespace Client
             // Check for MouseUp event (button released)
             if (IsMouseButtonUp(MouseButton.Left))
             {
-                Gui.HandleInterfaceEvents(EntState.MouseUp);
+                Gui.HandleInterfaceEvents(ControlState.MouseUp);
             }
 
             for (int i = 1; i < Gui.Windows.Count; i++)
@@ -983,7 +984,7 @@ namespace Client
                             GameState.CurMouseY >= Gui.Windows[i].Top &&
                             GameState.CurMouseY <= Gui.Windows[i].Height + Gui.Windows[i].Top)
                         {
-                            if (Gui.Windows[i].Controls[j].State != Core.Enum.EntState.Normal)
+                            if (Gui.Windows[i].Controls[j].State != ControlState.Normal)
                             {
                                 return;
                             }
@@ -1019,7 +1020,7 @@ namespace Client
                     if (GameState.VbKeyShift == true)
                     {
                         // Admin warp if Shift is held and the player has moderator access
-                        if (GetPlayerAccess(GameState.MyIndex) >= (int)AccessType.Moderator)
+                        if (GetPlayerAccess(GameState.MyIndex) >= (int)AccessLevel.Moderator)
                         {
                             NetworkSend.AdminWarp(GameState.CurX, GameState.CurY);
                         }
@@ -1184,67 +1185,67 @@ namespace Client
         {
             switch (qbColor)
             {
-                case (int)ColorType.Black:
+                case (int)Core.Color.Black:
                 {
                     return Color.Black;
                 }
-                case (int)ColorType.Blue:
+                case (int)Core.Color.Blue:
                 {
                     return Color.Blue;
                 }
-                case (int)ColorType.Green:
+                case (int)Core.Color.Green:
                 {
                     return Color.Green;
                 }
-                case (int)ColorType.Cyan:
+                case (int)Core.Color.Cyan:
                 {
                     return Color.Cyan;
                 }
-                case (int)ColorType.Red:
+                case (int)Core.Color.Red:
                 {
                     return Color.Red;
                 }
-                case (int)ColorType.Magenta:
+                case (int)Core.Color.Magenta:
                 {
                     return Color.Magenta;
                 }
-                case (int)ColorType.Brown:
+                case (int)Core.Color.Brown:
                 {
                     return Color.Brown;
                 }
-                case (int)ColorType.Gray:
+                case (int)Core.Color.Gray:
                 {
                     return Color.LightGray;
                 }
-                case (int)ColorType.DarkGray:
+                case (int)Core.Color.DarkGray:
                 {
                     return Color.Gray;
                 }
-                case (int)ColorType.BrightBlue:
+                case (int)Core.Color.BrightBlue:
                 {
                     return Color.LightBlue;
                 }
-                case (int)ColorType.BrightGreen:
+                case (int)Core.Color.BrightGreen:
                 {
                     return Color.LightGreen;
                 }
-                case (int)ColorType.BrightCyan:
+                case (int)Core.Color.BrightCyan:
                 {
                     return Color.LightCyan;
                 }
-                case (int)ColorType.BrightRed:
+                case (int)Core.Color.BrightRed:
                 {
                     return Color.LightCoral;
                 }
-                case (int)ColorType.Pink:
+                case (int)Core.Color.Pink:
                 {
                     return Color.Orchid;
                 }
-                case (int)ColorType.Yellow:
+                case (int)Core.Color.Yellow:
                 {
                     return Color.Yellow;
                 }
-                case (int)ColorType.White:
+                case (int)Core.Color.White:
                 {
                     return Color.White;
                 }
@@ -1315,7 +1316,7 @@ namespace Client
                 bool localIsDirBlocked()
                 {
                     byte argdir = (byte)i;
-                    var ret = GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[x, y].DirBlock, ref argdir);
+                    var ret = GameLogic.IsDirBlocked(ref Data.MyMap.Tile[x, y].DirBlock, ref argdir);
                     return ret;
                 }
 
@@ -1369,7 +1370,7 @@ namespace Client
             RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height);
         }
 
-        public static void DrawNPC(double MapNPCNum)
+        public static void DrawNpc(double MapNpcNum)
         {
             byte anim;
             int x;
@@ -1379,25 +1380,25 @@ namespace Client
             Rectangle rect;
             int attackSpeed = 1000;
 
-            // Check if NPC exists
-            if (Core.Type.MyMapNPC[(int)MapNPCNum].Num < 0 ||
-                Core.Type.MyMapNPC[(int)MapNPCNum].Num > Core.Constant.MAX_NPCS)
+            // Check if Npc exists
+            if (Data.MyMapNpc[(int)MapNpcNum].Num < 0 ||
+                Data.MyMapNpc[(int)MapNpcNum].Num > Core.Constant.MAX_NPCS)
                 return;
 
-            // Ensure NPC is within the tile view range
-            if (Core.Type.MyMapNPC[(int)MapNPCNum].X < GameState.TileView.Left |
-                Core.Type.MyMapNPC[(int)MapNPCNum].X > GameState.TileView.Right)
+            // Ensure Npc is within the tile view range
+            if (Data.MyMapNpc[(int)MapNpcNum].X < GameState.TileView.Left |
+                Data.MyMapNpc[(int)MapNpcNum].X > GameState.TileView.Right)
                 return;
 
-            if (Core.Type.MyMapNPC[(int)MapNPCNum].Y < GameState.TileView.Top |
-                Core.Type.MyMapNPC[(int)MapNPCNum].Y > GameState.TileView.Bottom)
+            if (Data.MyMapNpc[(int)MapNpcNum].Y < GameState.TileView.Top |
+                Data.MyMapNpc[(int)MapNpcNum].Y > GameState.TileView.Bottom)
                 return;
 
-            // Stream NPC if not yet loaded
-            Database.StreamNPC((int)Core.Type.MyMapNPC[(int)MapNPCNum].Num);
+            // Stream Npc if not yet loaded
+            Database.StreamNpc((int)Data.MyMapNpc[(int)MapNpcNum].Num);
 
-            // Get the sprite of the NPC
-            sprite = Core.Type.NPC[(int)Core.Type.MyMapNPC[(int)MapNPCNum].Num].Sprite;
+            // Get the sprite of the Npc
+            sprite = Data.Npc[(int)Data.MyMapNpc[(int)MapNpcNum].Num].Sprite;
 
             // Validate sprite
             if (sprite < 1 | sprite > GameState.NumCharacters)
@@ -1407,19 +1408,19 @@ namespace Client
             anim = 0;
 
             // Check for attacking animation
-            if (Core.Type.MyMapNPC[(int)MapNPCNum].AttackTimer + attackSpeed / 2d > General.GetTickCount() &&
-                Core.Type.MyMapNPC[(int)MapNPCNum].Attacking == 1)
+            if (Data.MyMapNpc[(int)MapNpcNum].AttackTimer + attackSpeed / 2d > General.GetTickCount() &&
+                Data.MyMapNpc[(int)MapNpcNum].Attacking == 1)
             {
                 anim = 3;
             }
             else
             {
-                anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
+                anim = (byte)Data.MyMapNpc[(int)MapNpcNum].Steps;
             }
 
             // Reset attacking state if attack timer has passed
             {
-                ref var withBlock = ref Core.Type.MyMapNPC[(int)MapNPCNum];
+                ref var withBlock = ref Data.MyMapNpc[(int)MapNpcNum];
                 if (withBlock.AttackTimer + attackSpeed < General.GetTickCount())
                 {
                     withBlock.Attacking = 0;
@@ -1428,24 +1429,24 @@ namespace Client
             }
 
             // Set sprite sheet position based on direction
-            switch (Core.Type.MyMapNPC[(int)MapNPCNum].Dir)
+            switch (Data.MyMapNpc[(int)MapNpcNum].Dir)
             {
-                case (int)DirectionType.Up:
+                case (int)Direction.Up:
                 {
                     spriteLeft = 3;
                     break;
                 }
-                case (int)DirectionType.Right:
+                case (int)Direction.Right:
                 {
                     spriteLeft = 2;
                     break;
                 }
-                case (int)DirectionType.Down:
+                case (int)Direction.Down:
                 {
                     spriteLeft = 0;
                     break;
                 }
-                case (int)DirectionType.Left:
+                case (int)Direction.Left:
                 {
                     spriteLeft = 1;
                     break;
@@ -1465,8 +1466,8 @@ namespace Client
                                 4d));
 
             // Calculate X and Y coordinates for rendering
-            x = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].X * GameState.PicX +
-                                Core.Type.MyMapNPC[(int)MapNPCNum].XOffset -
+            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X * GameState.PicX +
+                                Data.MyMapNpc[(int)MapNpcNum].XOffset -
                                 (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width /
                                  4d -
                                  32d) / 2d);
@@ -1474,8 +1475,8 @@ namespace Client
             if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d > 32d)
             {
                 // Larger sprites need an offset for height adjustment
-                y = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY +
-                                    Core.Type.MyMapNPC[(int)MapNPCNum].YOffset -
+                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY +
+                                    Data.MyMapNpc[(int)MapNpcNum].YOffset -
                                     (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString()))
                                             .Height /
                                         4d - 32d));
@@ -1483,10 +1484,10 @@ namespace Client
             else
             {
                 // Normal sprite height
-                y = Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY + Core.Type.MyMapNPC[(int)MapNPCNum].YOffset;
+                y = Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY + Data.MyMapNpc[(int)MapNpcNum].YOffset;
             }
 
-            // Draw shadow and NPC sprite
+            // Draw shadow and Npc sprite
             // DrawShadow(x, y + 16)
             DrawCharacterSprite(sprite, x, y, rect);
         }
@@ -1499,18 +1500,18 @@ namespace Client
             int x;
             int y;
 
-            if (Core.Type.MyMapItem[itemNum].Num < 0 | Core.Type.MyMapItem[itemNum].Num > Core.Constant.MAX_ITEMS)
+            if (Data.MyMapItem[itemNum].Num < 0 | Data.MyMapItem[itemNum].Num > Core.Constant.MAX_ITEMS)
                 return;
 
-            Item.StreamItem((int)Core.Type.MyMapItem[itemNum].Num);
+            Item.StreamItem((int)Data.MyMapItem[itemNum].Num);
 
-            picNum = Core.Type.Item[(int)Core.Type.MyMapItem[itemNum].Num].Icon;
+            picNum = Core.Data.Item[(int)Data.MyMapItem[itemNum].Num].Icon;
 
             if (picNum < 1 | picNum > GameState.NumItems)
                 return;
 
             {
-                ref var withBlock = ref Core.Type.MyMapItem[itemNum];
+                ref var withBlock = ref Data.MyMapItem[itemNum];
                 if (withBlock.X < GameState.TileView.Left | withBlock.X > GameState.TileView.Right)
                     return;
 
@@ -1519,11 +1520,11 @@ namespace Client
             }
 
             srcrec = new Rectangle(0, 0, GameState.PicX, GameState.PicY);
-            destrec = new Rectangle(GameLogic.ConvertMapX(Core.Type.MyMapItem[itemNum].X * GameState.PicX),
-                GameLogic.ConvertMapY(Core.Type.MyMapItem[itemNum].Y * GameState.PicY), GameState.PicX, GameState.PicY);
+            destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.PicX),
+                GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.PicY), GameState.PicX, GameState.PicY);
 
-            x = GameLogic.ConvertMapX(Core.Type.MyMapItem[itemNum].X * GameState.PicX);
-            y = GameLogic.ConvertMapY(Core.Type.MyMapItem[itemNum].Y * GameState.PicY);
+            x = GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.PicX);
+            y = GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.PicY);
 
             string argpath = System.IO.Path.Combine(Core.Path.Items, picNum.ToString());
             RenderTexture(ref argpath, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width,
@@ -1553,7 +1554,7 @@ namespace Client
             int y;
 
             {
-                ref var withBlock = ref Core.Type.Blood[index];
+                ref var withBlock = ref Data.Blood[index];
                 if (withBlock.X < GameState.TileView.Left | withBlock.X > GameState.TileView.Right)
                     return;
                 if (withBlock.Y < GameState.TileView.Top | withBlock.Y > GameState.TileView.Bottom)
@@ -1563,8 +1564,8 @@ namespace Client
                 if (withBlock.Timer + 20000 < General.GetTickCount())
                     return;
 
-                x = GameLogic.ConvertMapX(Core.Type.Blood[index].X * GameState.PicX);
-                y = GameLogic.ConvertMapY(Core.Type.Blood[index].Y * GameState.PicY);
+                x = GameLogic.ConvertMapX(Data.Blood[index].X * GameState.PicX);
+                y = GameLogic.ConvertMapY(Data.Blood[index].Y * GameState.PicY);
 
                 srcrec = new Rectangle((withBlock.Sprite - 1) * GameState.PicX, 0, GameState.PicX, GameState.PicY);
                 destrec = new Rectangle(GameLogic.ConvertMapX(withBlock.X * GameState.PicX),
@@ -1586,33 +1587,33 @@ namespace Client
             long tmpY;
             var barWidth = default(long);
             long i;
-            long NPCNum;
+            long NpcNum;
 
             // dynamic bar calculations
             Width = GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Width;
             Height = (long)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Height / 4d);
 
-            // render NPC health bars
+            // render Npc health bars
             for (i = 0L; i < Constant.MAX_MAP_NPCS; i++)
             {
-                NPCNum = (long)Core.Type.MyMapNPC[(int)i].Num;
+                NpcNum = (long)Data.MyMapNpc[(int)i].Num;
                 // exists?
-                if (NPCNum >= 0L && NPCNum <= Core.Constant.MAX_NPCS)
+                if (NpcNum >= 0L && NpcNum <= Core.Constant.MAX_NPCS)
                 {
                     // alive?
-                    if (Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] > 0 &
-                        Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] < Core.Type.NPC[(int)NPCNum].HP)
+                    if (Data.MyMapNpc[(int)i].Vital[(int)Vital.Health] > 0 &
+                        Data.MyMapNpc[(int)i].Vital[(int)Vital.Health] < Data.Npc[(int)NpcNum].HP)
                     {
-                        // lock to NPC
-                        tmpX = (long)Math.Round(Core.Type.MyMapNPC[(int)i].X * GameState.PicX +
-                            Core.Type.MyMapNPC[(int)i].XOffset + 16 - Width / 2d);
-                        tmpY = Core.Type.MyMapNPC[(int)i].Y * GameState.PicY + Core.Type.MyMapNPC[(int)i].YOffset + 35;
+                        // lock to Npc
+                        tmpX = (long)Math.Round(Data.MyMapNpc[(int)i].X * GameState.PicX +
+                            Data.MyMapNpc[(int)i].XOffset + 16 - Width / 2d);
+                        tmpY = Data.MyMapNpc[(int)i].Y * GameState.PicY + Data.MyMapNpc[(int)i].YOffset + 35;
 
                         // calculate the width to fill
                         if (Width > 0L)
-                            GameState.BarWidth_NPCHP_Max[(int)i] = (long)Math.Round(
-                                Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] / (double)Width /
-                                (Core.Type.NPC[(int)NPCNum].HP / (double)Width) * Width);
+                            GameState.BarWidth_NpcHP_Max[(int)i] = (long)Math.Round(
+                                Data.MyMapNpc[(int)i].Vital[(int)Vital.Health] / (double)Width /
+                                (Data.Npc[(int)NpcNum].HP / (double)Width) * Width);
 
                         // draw bar background
                         Top = Height * 3L; // HP bar background
@@ -1626,8 +1627,8 @@ namespace Client
                         Left = 0L;
                         string argpath1 = System.IO.Path.Combine(Core.Path.Misc, "Bars");
                         RenderTexture(ref argpath1, GameLogic.ConvertMapX((int)tmpX), GameLogic.ConvertMapY((int)tmpY),
-                            (int)Left, (int)Top, (int)GameState.BarWidth_NPCHP[(int)i], (int)Height,
-                            (int)GameState.BarWidth_NPCHP[(int)i], (int)Height);
+                            (int)Left, (int)Top, (int)GameState.BarWidth_NpcHP[(int)i], (int)Height,
+                            (int)GameState.BarWidth_NpcHP[(int)i], (int)Height);
                     }
                 }
             }
@@ -1636,19 +1637,19 @@ namespace Client
             {
                 if (GetPlayerMap((int)i) == GetPlayerMap((int)i))
                 {
-                    if (GetPlayerVital((int)i, VitalType.HP) > 0 &
-                        GetPlayerVital((int)i, VitalType.HP) < GetPlayerMaxVital((int)i, VitalType.HP))
+                    if (GetPlayerVital((int)i, Vital.Health) > 0 &
+                        GetPlayerVital((int)i, Vital.Health) < GetPlayerMaxVital((int)i, Vital.Health))
                     {
                         // lock to Player
-                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Type.Player[(int)i].XOffset +
+                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Data.Player[(int)i].XOffset +
                             16 - Width / 2d);
-                        tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Type.Player[(int)i].YOffset + 35;
+                        tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Data.Player[(int)i].YOffset + 35;
 
                         // calculate the width to fill
                         if (Width > 0L)
                             GameState.BarWidth_PlayerHP_Max[(int)i] = (long)Math.Round(
-                                GetPlayerVital((int)i, VitalType.HP) / (double)Width /
-                                (GetPlayerMaxVital((int)i, VitalType.HP) / (double)Width) * Width);
+                                GetPlayerVital((int)i, Vital.Health) / (double)Width /
+                                (GetPlayerMaxVital((int)i, Vital.Health) / (double)Width) * Width);
 
                         // draw bar background
                         Top = Height * 3L; // HP bar background
@@ -1666,19 +1667,19 @@ namespace Client
                             (int)GameState.BarWidth_PlayerHP[(int)i], (int)Height);
                     }
 
-                    if (GetPlayerVital((int)i, VitalType.SP) > 0 &
-                        GetPlayerVital((int)i, VitalType.SP) < GetPlayerMaxVital((int)i, VitalType.SP))
+                    if (GetPlayerVital((int)i, Vital.Stamina) > 0 &
+                        GetPlayerVital((int)i, Vital.Stamina) < GetPlayerMaxVital((int)i, Vital.Stamina))
                     {
                         // lock to Player
-                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Type.Player[(int)i].XOffset +
+                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Data.Player[(int)i].XOffset +
                             16 - Width / 2d);
-                        tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Type.Player[(int)i].YOffset + 35 + Height;
+                        tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Data.Player[(int)i].YOffset + 35 + Height;
 
                         // calculate the width to fill
                         if (Width > 0L)
                             GameState.BarWidth_PlayerSP_Max[(int)i] = (long)Math.Round(
-                                GetPlayerVital((int)i, VitalType.SP) / (double)Width /
-                                (GetPlayerMaxVital((int)i, VitalType.SP) / (double)Width) * Width);
+                                GetPlayerVital((int)i, Vital.Stamina) / (double)Width /
+                                (GetPlayerMaxVital((int)i, Vital.Stamina) / (double)Width) * Width);
 
                         // draw bar background
                         Top = Height * 3L; // SP bar background
@@ -1698,23 +1699,23 @@ namespace Client
 
                     if (GameState.SkillBuffer >= 0)
                     {
-                        if ((int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num >= 0)
+                        if ((int)Core.Data.Player[(int)i].Skill[GameState.SkillBuffer].Num >= 0)
                         {
-                            if (Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num]
+                            if (Data.Skill[(int)Core.Data.Player[(int)i].Skill[GameState.SkillBuffer].Num]
                                     .CastTime >
                                 0)
                             {
                                 // lock to player
                                 tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX +
-                                    Core.Type.Player[(int)i].XOffset + 16 - Width / 2d);
-                                tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Type.Player[(int)i].YOffset + 35 +
+                                    Core.Data.Player[(int)i].XOffset + 16 - Width / 2d);
+                                tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Data.Player[(int)i].YOffset + 35 +
                                        Height;
 
                                 // calculate the width to fill
                                 if (Width > 0L)
                                     barWidth = (long)Math.Round((General.GetTickCount() - GameState.SkillBufferTimer) /
-                                        (double)(Core.Type
-                                            .Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num]
+                                        (double)(Core.Data
+                                            .Skill[(int)Core.Data.Player[(int)i].Skill[GameState.SkillBuffer].Num]
                                             .CastTime * 1000) * Width);
 
                                 // draw bar background
@@ -1862,7 +1863,7 @@ namespace Client
             long tmpNum;
 
             {
-                ref var withBlock = ref Core.Type.ChatBubble[(int)Index];
+                ref var withBlock = ref Data.ChatBubble[(int)Index];
 
                 // exit out early
                 if (withBlock.TargetType == 0)
@@ -1880,23 +1881,23 @@ namespace Client
                             return;
 
                         // it's on our map - get co-ords
-                        x = GameLogic.ConvertMapX(Core.Type.Player[withBlock.Target].X * 32 +
-                                                  Core.Type.Player[withBlock.Target].XOffset) + 16;
-                        y = GameLogic.ConvertMapY(Core.Type.Player[withBlock.Target].Y * 32 +
-                                                  Core.Type.Player[withBlock.Target].YOffset) - 32;
+                        x = GameLogic.ConvertMapX(Core.Data.Player[withBlock.Target].X * 32 +
+                                                  Core.Data.Player[withBlock.Target].XOffset) + 16;
+                        y = GameLogic.ConvertMapY(Core.Data.Player[withBlock.Target].Y * 32 +
+                                                  Core.Data.Player[withBlock.Target].YOffset) - 32;
                         break;
                     }
                     case (byte)TargetType.Event:
                     {
-                        x = GameLogic.ConvertMapX(Core.Type.MyMap.Event[withBlock.Target].X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Core.Type.MyMap.Event[withBlock.Target].Y * 32) - 16;
+                        x = GameLogic.ConvertMapX(Data.MyMap.Event[withBlock.Target].X * 32) + 16;
+                        y = GameLogic.ConvertMapY(Data.MyMap.Event[withBlock.Target].Y * 32) - 16;
                         break;
                     }
 
-                    case (byte)TargetType.NPC:
+                    case (byte)TargetType.Npc:
                     {
-                        x = GameLogic.ConvertMapX(Core.Type.MyMapNPC[withBlock.Target].X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Core.Type.MyMapNPC[withBlock.Target].Y * 32) - 32;
+                        x = GameLogic.ConvertMapX(Data.MyMapNpc[withBlock.Target].X * 32) + 16;
+                        y = GameLogic.ConvertMapY(Data.MyMapNpc[withBlock.Target].Y * 32) - 32;
                         break;
                     }
 
@@ -1918,7 +1919,7 @@ namespace Client
                 withBlock.Msg = withBlock.Msg.Replace("\0", string.Empty);
 
                 // word wrap
-                Text.WordWrap(withBlock.Msg, FontType.Georgia, GameState.ChatBubbleWidth, ref theArray);
+                Text.WordWrap(withBlock.Msg, Core.Font.Georgia, GameState.ChatBubbleWidth, ref theArray);
 
                 // find max width
                 tmpNum = Information.UBound(theArray);
@@ -1926,8 +1927,8 @@ namespace Client
                 var loopTo = tmpNum;
                 for (i = 0L; i <= loopTo; i++)
                 {
-                    if (Text.GetTextWidth(theArray[(int)i], FontType.Georgia) > MaxWidth)
-                        MaxWidth = Text.GetTextWidth(theArray[(int)i], FontType.Georgia);
+                    if (Text.GetTextWidth(theArray[(int)i], Core.Font.Georgia) > MaxWidth)
+                        MaxWidth = Text.GetTextWidth(theArray[(int)i], Core.Font.Georgia);
                 }
 
                 // calculate the new position 
@@ -1993,7 +1994,7 @@ namespace Client
                         continue;
 
                     // Measure button text size and apply padding
-                    var textSize = Text.Fonts[FontType.Georgia].MeasureString(theArray[(int)i]);
+                    var textSize = Text.Fonts[Core.Font.Georgia].MeasureString(theArray[(int)i]);
                     float actualWidth = textSize.X;
                     float actualHeight = textSize.Y;
 
@@ -2034,9 +2035,9 @@ namespace Client
                 return;
 
             // speed from weapon
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
+            if (GetPlayerEquipment(index, Equipment.Weapon) >= 0)
             {
-                attackSpeed = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Speed;
+                attackSpeed = Core.Data.Item[GetPlayerEquipment(index, Equipment.Weapon)].Speed;
             }
             else
             {
@@ -2047,21 +2048,21 @@ namespace Client
             anim = 0;
 
             // Check for attacking animation
-            if (Core.Type.Player[index].AttackTimer + attackSpeed / 2d > General.GetTickCount())
+            if (Core.Data.Player[index].AttackTimer + attackSpeed / 2d > General.GetTickCount())
             {
-                if (Core.Type.Player[index].Attacking == 1)
+                if (Core.Data.Player[index].Attacking == 1)
                 {
                     anim = 3;
                 }
             }
             else
             {
-                anim = Core.Type.Player[index].Steps;
+                anim = Core.Data.Player[index].Steps;
             }
 
             // Check to see if we want to stop making him attack
             {
-                ref var withBlock = ref Core.Type.Player[index];
+                ref var withBlock = ref Core.Data.Player[index];
                 if (withBlock.AttackTimer + attackSpeed < General.GetTickCount())
                 {
                     withBlock.Attacking = 0;
@@ -2073,42 +2074,42 @@ namespace Client
             // Set the left
             switch (GetPlayerDir(index))
             {
-                case (int)DirectionType.Up:
+                case (int)Direction.Up:
                 {
                     spriteleft = 3;
                     break;
                 }
-                case (int)DirectionType.Right:
+                case (int)Direction.Right:
                 {
                     spriteleft = 2;
                     break;
                 }
-                case (int)DirectionType.Down:
+                case (int)Direction.Down:
                 {
                     spriteleft = 0;
                     break;
                 }
-                case (int)DirectionType.Left:
+                case (int)Direction.Left:
                 {
                     spriteleft = 1;
                     break;
                 }
-                case (int)DirectionType.UpRight:
+                case (int)Direction.UpRight:
                 {
                     spriteleft = 2;
                     break;
                 }
-                case (int)DirectionType.UpLeft:
+                case (int)Direction.UpLeft:
                 {
                     spriteleft = 1;
                     break;
                 }
-                case (int)DirectionType.DownLeft:
+                case (int)Direction.DownLeft:
                 {
                     spriteleft = 1;
                     break;
                 }
-                case (int)DirectionType.DownRight:
+                case (int)Direction.DownRight:
                 {
                     spriteleft = 2;
                     break;
@@ -2123,20 +2124,20 @@ namespace Client
             }
 
             // Calculate the X
-            x = (int)Math.Round(Core.Type.Player[index].X * GameState.PicX + Core.Type.Player[index].XOffset -
+            x = (int)Math.Round(Core.Data.Player[index].X * GameState.PicX + Core.Data.Player[index].XOffset -
                                 (gfxInfo.Width / 4d - 32d) / 2d);
 
             // Is the player's height more than 32..?
             if (gfxInfo.Height > 32)
             {
                 // Create a 32 pixel offset for larger sprites
-                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset -
+                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY + Core.Data.Player[index].YOffset -
                                     (gfxInfo.Height / 4d - 32d));
             }
             else
             {
                 // Proceed as normal
-                y = GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset;
+                y = GetPlayerY(index) * GameState.PicY + Core.Data.Player[index].YOffset;
             }
 
             rect = new Rectangle((int)Math.Round(anim * (gfxInfo.Width / 4d)),
@@ -2148,13 +2149,13 @@ namespace Client
             DrawCharacterSprite(spriteNum, x, y, rect);
 
             // check for paperdolling
-            for (int i = 0; i < (int)EquipmentType.Count; i++)
+            for (int i = 0; i < Enum.GetValues(typeof(Equipment)).Length; i++)
             {
-                if (GetPlayerEquipment(index, (EquipmentType)i) >= 0)
+                if (GetPlayerEquipment(index, (Equipment)i) >= 0)
                 {
-                    if (Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll > 0)
+                    if (Core.Data.Item[GetPlayerEquipment(index, (Equipment)i)].Paperdoll > 0)
                     {
-                        DrawPaperdoll(x, y, Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll, anim,
+                        DrawPaperdoll(x, y, Core.Data.Item[GetPlayerEquipment(index, (Equipment)i)].Paperdoll, anim,
                             spriteleft);
                     }
                 }
@@ -2162,7 +2163,7 @@ namespace Client
 
             // Check to see if we want to stop showing emote
             {
-                ref var withBlock1 = ref Core.Type.Player[index];
+                ref var withBlock1 = ref Core.Data.Player[index];
                 if (withBlock1.EmoteTimer < General.GetTickCount())
                 {
                     withBlock1.Emote = 0;
@@ -2171,31 +2172,31 @@ namespace Client
             }
 
             // check for emotes
-            if (Core.Type.Player[GameState.MyIndex].Emote > 0)
+            if (Core.Data.Player[GameState.MyIndex].Emote > 0)
             {
-                DrawEmote(x, y, Core.Type.Player[GameState.MyIndex].Emote);
+                DrawEmote(x, y, Core.Data.Player[GameState.MyIndex].Emote);
             }
         }
 
         public static void DrawEvents()
         {
-            if (Core.Type.MyMap.EventCount <= 0)
+            if (Data.MyMap.EventCount <= 0)
                 return; // Exit early if no events
 
-            for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
+            for (int i = 0, loopTo = Data.MyMap.EventCount; i < loopTo; i++)
             {
-                int x = GameLogic.ConvertMapX(Core.Type.MyMap.Event[i].X * GameState.PicX);
-                int y = GameLogic.ConvertMapY(Core.Type.MyMap.Event[i].Y * GameState.PicY);
+                int x = GameLogic.ConvertMapX(Data.MyMap.Event[i].X * GameState.PicX);
+                int y = GameLogic.ConvertMapY(Data.MyMap.Event[i].Y * GameState.PicY);
 
                 // Skip event if there are no pages
-                if (Core.Type.MyMap.Event[i].PageCount <= 0)
+                if (Data.MyMap.Event[i].PageCount <= 0)
                 {
                     DrawOutlineRectangle(x, y, GameState.PicX, GameState.PicY, Color.Blue, 0.6f);
                     continue;
                 }
 
                 // Render event based on its graphic type
-                switch (Core.Type.MyMap.Event[i].Pages[0].GraphicType)
+                switch (Data.MyMap.Event[i].Pages[0].GraphicType)
                 {
                     case 0: // Text Event
                     {
@@ -2207,13 +2208,13 @@ namespace Client
 
                     case 1: // Character Graphic
                     {
-                        RenderCharacterGraphic(Core.Type.MyMap.Event[i], x, y);
+                        RenderCharacterGraphic(Core.Data.MyMap.Event[i], x, y);
                         break;
                     }
 
                     case 2: // Tileset Graphic
                     {
-                        RenderTilesetGraphic(Core.Type.MyMap.Event[i], x, y);
+                        RenderTilesetGraphic(Core.Data.MyMap.Event[i], x, y);
                         break;
                     }
 
@@ -2227,7 +2228,7 @@ namespace Client
             }
         }
 
-        public static void RenderCharacterGraphic(Core.Type.EventStruct eventData, int x, int y)
+        public static void RenderCharacterGraphic(Core.Type.Event eventData, int x, int y)
         {
             // Get the graphic index from the event's first page
             int gfxIndex = eventData.Pages[0].Graphic;
@@ -2264,7 +2265,7 @@ namespace Client
                 frameWidth, frameHeight, sourceRect.Width, sourceRect.Height);
         }
 
-        private static void RenderTilesetGraphic(Core.Type.EventStruct eventData, int x, int y)
+        private static void RenderTilesetGraphic(Core.Type.Event eventData, int x, int y)
         {
             int gfxIndex = eventData.Pages[0].Graphic;
 
@@ -2305,12 +2306,12 @@ namespace Client
 
             try
             {
-                if (Core.Type.MapEvents[id].Visible == false)
+                if (Data.MapEvents[id].Visible == false)
                 {
                     return;
                 }
 
-                switch (Core.Type.MapEvents[id].GraphicType)
+                switch (Data.MapEvents[id].GraphicType)
                 {
                     case 0:
                     {
@@ -2318,81 +2319,81 @@ namespace Client
                     }
                     case 1:
                     {
-                        if (Core.Type.MapEvents[id].Graphic <= 0 |
-                            Core.Type.MapEvents[id].Graphic > GameState.NumCharacters)
+                        if (Data.MapEvents[id].Graphic <= 0 |
+                            Data.MapEvents[id].Graphic > GameState.NumCharacters)
                             return;
 
                         // Reset frame
-                        if (Core.Type.MapEvents[id].Steps == 3)
+                        if (Data.MapEvents[id].Steps == 3)
                         {
                             anim = 0;
                         }
-                        else if (Core.Type.MapEvents[id].Steps == 1)
+                        else if (Data.MapEvents[id].Steps == 1)
                         {
                             anim = 2;
                         }
 
-                        switch (Core.Type.MapEvents[id].Dir)
+                        switch (Data.MapEvents[id].Dir)
                         {
-                            case (int)DirectionType.Up:
+                            case (int)Direction.Up:
                             {
-                                if (Core.Type.MapEvents[id].YOffset > 8)
-                                    anim = Core.Type.MapEvents[id].Steps;
+                                if (Data.MapEvents[id].YOffset > 8)
+                                    anim = Data.MapEvents[id].Steps;
                                 break;
                             }
-                            case (int)DirectionType.Down:
+                            case (int)Direction.Down:
                             {
-                                if (Core.Type.MapEvents[id].YOffset < -8)
-                                    anim = Core.Type.MapEvents[id].Steps;
+                                if (Data.MapEvents[id].YOffset < -8)
+                                    anim = Data.MapEvents[id].Steps;
                                 break;
                             }
-                            case (int)DirectionType.Left:
+                            case (int)Direction.Left:
                             {
-                                if (Core.Type.MapEvents[id].XOffset > 8)
-                                    anim = Core.Type.MapEvents[id].Steps;
+                                if (Data.MapEvents[id].XOffset > 8)
+                                    anim = Data.MapEvents[id].Steps;
                                 break;
                             }
-                            case (int)DirectionType.Right:
+                            case (int)Direction.Right:
                             {
-                                if (Core.Type.MapEvents[id].XOffset < -8)
-                                    anim = Core.Type.MapEvents[id].Steps;
+                                if (Data.MapEvents[id].XOffset < -8)
+                                    anim = Data.MapEvents[id].Steps;
                                 break;
                             }
                         }
 
                         // Set the left
-                        switch (Core.Type.MapEvents[id].ShowDir)
+                        switch (Data.MapEvents[id].ShowDir)
                         {
-                            case (int)DirectionType.Up:
+                            case (int)Direction.Up:
                             {
                                 spritetop = 3;
                                 break;
                             }
-                            case (int)DirectionType.Right:
+                            case (int)Direction.Right:
                             {
                                 spritetop = 2;
                                 break;
                             }
-                            case (int)DirectionType.Down:
+                            case (int)Direction.Down:
                             {
                                 spritetop = 0;
                                 break;
                             }
-                            case (int)DirectionType.Left:
+                            case (int)Direction.Left:
                             {
                                 spritetop = 1;
                                 break;
                             }
                         }
 
-                        if (Core.Type.MapEvents[id].WalkAnim == 1)
+                        if (Data.MapEvents[id].WalkAnim == 1)
                             anim = 0;
 
-                        if (Core.Type.MapEvents[id].Moving == 0)
-                            anim = Core.Type.MapEvents[id].GraphicX;
+                        if (Data.MapEvents[id].Moving == 0)
+                            anim = Data.MapEvents[id].GraphicX;
 
                         var gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters,
-                            Core.Type.MapEvents[id].Graphic.ToString()));
+                            Data.MapEvents[id].Graphic.ToString()));
                         if (gfxInfo == null)
                         {
                             // Handle the case where gfxInfo is null
@@ -2405,69 +2406,69 @@ namespace Client
                             (int)Math.Round((double)spritetop * height), width, height);
 
                         // Calculate the X
-                        x = (int)Math.Round(Core.Type.MapEvents[id].X * GameState.PicX +
-                                            Core.Type.MapEvents[id].XOffset -
+                        x = (int)Math.Round(Data.MapEvents[id].X * GameState.PicX +
+                                            Data.MapEvents[id].XOffset -
                                             (width - 32d) / 2d);
 
                         // Is the player's height more than 32..?
                         if (gfxInfo.Height * 4 > 32)
                         {
                             // Create a 32 pixel offset for larger sprites
-                            y = (int)Math.Round(Core.Type.MapEvents[id].Y * GameState.PicY +
-                                Core.Type.MapEvents[id].YOffset - (height - 32d));
+                            y = (int)Math.Round(Data.MapEvents[id].Y * GameState.PicY +
+                                Data.MapEvents[id].YOffset - (height - 32d));
                         }
                         else
                         {
                             // Proceed as normal
-                            y = Core.Type.MapEvents[id].Y * GameState.PicY + Core.Type.MapEvents[id].YOffset;
+                            y = Data.MapEvents[id].Y * GameState.PicY + Data.MapEvents[id].YOffset;
                         }
 
                         // render the actual sprite
-                        DrawCharacterSprite(Core.Type.MapEvents[id].Graphic, x, y, sRect);
+                        DrawCharacterSprite(Data.MapEvents[id].Graphic, x, y, sRect);
                         break;
                     }
                     case 2:
                     {
-                        if (Core.Type.MapEvents[id].Graphic < 1 |
-                            Core.Type.MapEvents[id].Graphic > GameState.NumTileSets)
+                        if (Data.MapEvents[id].Graphic < 1 |
+                            Data.MapEvents[id].Graphic > GameState.NumTileSets)
                             return;
 
-                        if (Core.Type.MapEvents[id].GraphicY2 > 0 | Core.Type.MapEvents[id].GraphicX2 > 0)
+                        if (Data.MapEvents[id].GraphicY2 > 0 | Data.MapEvents[id].GraphicX2 > 0)
                         {
-                            sRect.X = Core.Type.MapEvents[id].GraphicX * 32;
-                            sRect.Y = Core.Type.MapEvents[id].GraphicY * 32;
-                            sRect.Width = Core.Type.MapEvents[id].GraphicX2 * 32;
-                            sRect.Height = Core.Type.MapEvents[id].GraphicY2 * 32;
+                            sRect.X = Data.MapEvents[id].GraphicX * 32;
+                            sRect.Y = Data.MapEvents[id].GraphicY * 32;
+                            sRect.Width = Data.MapEvents[id].GraphicX2 * 32;
+                            sRect.Height = Data.MapEvents[id].GraphicY2 * 32;
                         }
                         else
                         {
-                            sRect.X = Core.Type.MapEvents[id].GraphicY * 32;
+                            sRect.X = Data.MapEvents[id].GraphicY * 32;
                             sRect.Height = sRect.Top + 32;
-                            sRect.Y = Core.Type.MapEvents[id].GraphicX * 32;
+                            sRect.Y = Data.MapEvents[id].GraphicX * 32;
                             sRect.Width = sRect.Left + 32;
                         }
 
-                        x = Core.Type.MapEvents[id].X * 32;
-                        y = Core.Type.MapEvents[id].Y * 32;
+                        x = Data.MapEvents[id].X * 32;
+                        y = Data.MapEvents[id].Y * 32;
                         x = (int)Math.Round(x - (sRect.Right - sRect.Left) / 2d);
                         y = y - (sRect.Bottom - sRect.Top) + 32;
 
-                        if (Core.Type.MapEvents[id].GraphicY2 > 1)
+                        if (Data.MapEvents[id].GraphicY2 > 1)
                         {
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets,
-                                Core.Type.MapEvents[id].Graphic.ToString());
+                                Data.MapEvents[id].Graphic.ToString());
                             RenderTexture(ref argpath,
-                                GameLogic.ConvertMapX(Core.Type.MapEvents[id].X * GameState.PicX),
-                                GameLogic.ConvertMapY(Core.Type.MapEvents[id].Y * GameState.PicY) - GameState.PicY,
+                                GameLogic.ConvertMapX(Data.MapEvents[id].X * GameState.PicX),
+                                GameLogic.ConvertMapY(Data.MapEvents[id].Y * GameState.PicY) - GameState.PicY,
                                 sRect.Left, sRect.Top, sRect.Width, sRect.Height);
                         }
                         else
                         {
                             string argpath1 = System.IO.Path.Combine(Core.Path.Tilesets,
-                                Core.Type.MapEvents[id].Graphic.ToString());
+                                Data.MapEvents[id].Graphic.ToString());
                             RenderTexture(ref argpath1,
-                                GameLogic.ConvertMapX(Core.Type.MapEvents[id].X * GameState.PicX),
-                                GameLogic.ConvertMapY(Core.Type.MapEvents[id].Y * GameState.PicY), sRect.Left,
+                                GameLogic.ConvertMapX(Data.MapEvents[id].X * GameState.PicX),
+                                GameLogic.ConvertMapY(Data.MapEvents[id].Y * GameState.PicY), sRect.Left,
                                 sRect.Top,
                                 sRect.Width, sRect.Height);
                         }
@@ -2494,14 +2495,14 @@ namespace Client
 
             GameLogic.UpdateCamera();
 
-            if (GameState.NumPanoramas > 0 & Core.Type.MyMap.Panorama > 0)
+            if (GameState.NumPanoramas > 0 & Data.MyMap.Panorama > 0)
             {
-                Map.DrawPanorama(Core.Type.MyMap.Panorama);
+                Map.DrawPanorama(Data.MyMap.Panorama);
             }
 
-            if (GameState.NumParallax > 0 & Core.Type.MyMap.Parallax > 0)
+            if (GameState.NumParallax > 0 & Data.MyMap.Parallax > 0)
             {
-                Map.DrawParallax(Core.Type.MyMap.Parallax);
+                Map.DrawParallax(Data.MyMap.Parallax);
             }
 
             // Draw lower tiles
@@ -2524,14 +2525,14 @@ namespace Client
             // events
             if (GameState.MyEditorType != (int)EditorType.Map)
             {
-                if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Core.Type.MyMap.EventCount)
+                if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Data.MyMap.EventCount)
                 {
                     var loopTo2 = GameState.CurrentEvents;
                     for (i = 0; i < loopTo2; i++)
                     {
-                        if (i < Core.Type.MapEvents.Length)
+                        if (i < Data.MapEvents.Length)
                         {
-                            if (Core.Type.MapEvents[i].Position == 0)
+                            if (Data.MapEvents[i].Position == 0)
                             {
                                 DrawEvent(i);
                             }
@@ -2549,7 +2550,7 @@ namespace Client
             {
                 for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
                 {
-                    if (Core.Type.MyMapItem[i].Num >= 0)
+                    if (Data.MyMapItem[i].Num >= 0)
                     {
                         DrawMapItem(i);
                     }
@@ -2571,18 +2572,18 @@ namespace Client
                 }
             }
 
-            // Y-based render. Renders Players, NPCs and Resources based on Y-axis.
-            var loopTo3 = (int)Core.Type.MyMap.MaxY;
+            // Y-based render. Renders Players, Npcs and Resources based on Y-axis.
+            var loopTo3 = (int)Data.MyMap.MaxY;
             for (y = 0; y < loopTo3; y++)
             {
                 if (GameState.NumCharacters > 0)
                 {
-                    // NPCs
+                    // Npcs
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMapNPC[i].Y == y)
+                        if (Data.MyMapNpc[i].Y == y)
                         {
-                            DrawNPC(i);
+                            DrawNpc(i);
                         }
                     }
 
@@ -2591,7 +2592,7 @@ namespace Client
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
-                            if (Core.Type.Player[i].Y == y)
+                            if (Core.Data.Player[i].Y == y)
                             {
                                 DrawPlayer(i);
                             }
@@ -2600,14 +2601,14 @@ namespace Client
 
                     if (GameState.MyEditorType != (int)EditorType.Map)
                     {
-                        if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Core.Type.MyMap.EventCount)
+                        if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Data.MyMap.EventCount)
                         {
                             var loopTo4 = GameState.CurrentEvents;
                             for (i = 0; i < loopTo4; i++)
                             {
-                                if (Core.Type.MapEvents[i].Position == 1)
+                                if (Data.MapEvents[i].Position == 1)
                                 {
-                                    if (y == Core.Type.MapEvents[i].Y)
+                                    if (y == Data.MapEvents[i].Y)
                                     {
                                         DrawEvent(i);
                                     }
@@ -2624,29 +2625,29 @@ namespace Client
                             case (int)TargetType.Player:
                                 if (IsPlaying(GameState.MyTarget))
                                 {
-                                    if (Core.Type.Player[GameState.MyTarget].Map ==
-                                        Core.Type.Player[GameState.MyIndex].Map)
+                                    if (Core.Data.Player[GameState.MyTarget].Map ==
+                                        Core.Data.Player[GameState.MyIndex].Map)
                                     {
-                                        if (Core.Type.Player[GameState.MyTarget].Sprite > 0)
+                                        if (Core.Data.Player[GameState.MyTarget].Sprite > 0)
                                         {
                                             // Draw the target icon for the player
                                             DrawTarget(
-                                                Core.Type.Player[GameState.MyTarget].X * 32 - 16 +
-                                                Core.Type.Player[GameState.MyTarget].XOffset,
-                                                Core.Type.Player[GameState.MyTarget].Y * 32 +
-                                                Core.Type.Player[GameState.MyTarget].YOffset);
+                                                Core.Data.Player[GameState.MyTarget].X * 32 - 16 +
+                                                Core.Data.Player[GameState.MyTarget].XOffset,
+                                                Core.Data.Player[GameState.MyTarget].Y * 32 +
+                                                Core.Data.Player[GameState.MyTarget].YOffset);
                                         }
                                     }
                                 }
 
                                 break;
 
-                            case (int)TargetType.NPC:
+                            case (int)TargetType.Npc:
                                 DrawTarget(
-                                    Core.Type.MyMapNPC[GameState.MyTarget].X * 32 - 16 +
-                                    Core.Type.MyMapNPC[GameState.MyTarget].XOffset,
-                                    Core.Type.MyMapNPC[GameState.MyTarget].Y * 32 +
-                                    Core.Type.MyMapNPC[GameState.MyTarget].YOffset);
+                                    Data.MyMapNpc[GameState.MyTarget].X * 32 - 16 +
+                                    Data.MyMapNpc[GameState.MyTarget].XOffset,
+                                    Data.MyMapNpc[GameState.MyTarget].Y * 32 +
+                                    Data.MyMapNpc[GameState.MyTarget].YOffset);
                                 break;
 
                             case (int)TargetType.Pet:
@@ -2659,12 +2660,12 @@ namespace Client
                     {
                         if (IsPlaying(i))
                         {
-                            if (Core.Type.Player[i].Map == Core.Type.Player[GameState.MyIndex].Map)
+                            if (Core.Data.Player[i].Map == Core.Data.Player[GameState.MyIndex].Map)
                             {
-                                if (Core.Type.Player[i].Sprite == 0)
+                                if (Core.Data.Player[i].Sprite == 0)
                                     continue;
 
-                                if (GameState.CurX == Core.Type.Player[i].X & GameState.CurY == Core.Type.Player[i].Y)
+                                if (GameState.CurX == Core.Data.Player[i].X & GameState.CurY == Core.Data.Player[i].Y)
                                 {
                                     if (GameState.MyTargetType == (int)TargetType.Player & GameState.MyTarget == i)
                                     {
@@ -2672,8 +2673,8 @@ namespace Client
 
                                     else
                                     {
-                                        DrawHover(Core.Type.Player[i].X * 32 - 16,
-                                            Core.Type.Player[i].Y * 32 + Core.Type.Player[i].YOffset);
+                                        DrawHover(Core.Data.Player[i].X * 32 - 16,
+                                            Core.Data.Player[i].Y * 32 + Core.Data.Player[i].YOffset);
                                     }
                                 }
 
@@ -2692,7 +2693,7 @@ namespace Client
                             var loopTo5 = GameState.ResourceIndex;
                             for (i = 0; i < loopTo5; i++)
                             {
-                                if (Core.Type.MyMapResource[i].Y == y)
+                                if (Data.MyMapResource[i].Y == y)
                                 {
                                     MapResource.DrawMapResource(i);
                                 }
@@ -2721,19 +2722,19 @@ namespace Client
             {
                 for (i = 0; i < Constant.MAX_PROJECTILES; i++)
                 {
-                    if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, i].ProjectileNum >= 0)
+                    if (Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, i].ProjectileNum >= 0)
                     {
                         Projectile.DrawProjectile(i);
                     }
                 }
             }
 
-            if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Core.Type.MyMap.EventCount)
+            if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Data.MyMap.EventCount)
             {
                 var loopTo6 = GameState.CurrentEvents;
                 for (i = 0; i < loopTo6; i++)
                 {
-                    if (Core.Type.MapEvents[i].Position == 2)
+                    if (Data.MapEvents[i].Position == 2)
                     {
                         DrawEvent(i);
                     }
@@ -2776,14 +2777,14 @@ namespace Client
 
             if (GameState.MyEditorType != (int)EditorType.Map)
             {
-                if (GameState.CurrentEvents > 0 && Core.Type.MyMap.EventCount >= GameState.CurrentEvents)
+                if (GameState.CurrentEvents > 0 && Data.MyMap.EventCount >= GameState.CurrentEvents)
                 {
                     var loopTo9 = GameState.CurrentEvents;
                     for (i = 0; i < loopTo9; i++)
                     {
-                        if (Core.Type.MapEvents[i].Visible == true)
+                        if (Data.MapEvents[i].Visible == true)
                         {
-                            if (Core.Type.MapEvents[i].ShowName == 1)
+                            if (Data.MapEvents[i].ShowName == 1)
                             {
                                 Text.DrawEventName(i);
                             }
@@ -2794,9 +2795,9 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                if (Core.Type.MyMapNPC[i].Num >= 0)
+                if (Data.MyMapNpc[i].Num >= 0)
                 {
-                    Text.DrawNPCName(i);
+                    Text.DrawNpcName(i);
                 }
             }
 
@@ -2815,7 +2816,7 @@ namespace Client
 
             for (i = 0; i < byte.MaxValue; i++)
             {
-                if (Core.Type.ChatBubble[i].Active)
+                if (Data.ChatBubble[i].Active)
                 {
                     DrawChatBubble(i);
                 }
@@ -2847,7 +2848,7 @@ namespace Client
 
             if (GameState.MyEditorType == (int)EditorType.Map)
             {
-                if (GameState.MapTab == (int)MapTab.Events)
+                if (GameState.MapEditorTab == (int)MapEditorTab.Events)
                 {
                     DrawEvents();
                 }
@@ -2871,7 +2872,7 @@ namespace Client
 
         public static void UpdateMapAttributes()
         {
-            if (GameState.MapTab == (int)MapTab.Attributes)
+            if (GameState.MapEditorTab == (int)MapEditorTab.Attributes)
             {
                 Text.DrawMapAttributes();
             }
@@ -2882,7 +2883,7 @@ namespace Client
             int x;
             int y;
 
-            if (GameState.MapTab == (int)MapTab.Directions)
+            if (GameState.MapEditorTab == (int)MapEditorTab.Directions)
             {
                 var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
                 for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)

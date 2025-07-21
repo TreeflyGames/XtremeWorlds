@@ -5,83 +5,83 @@ using Microsoft.Toolkit.HighPerformance;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
-using static Core.Enum;
 using static Core.Global.Command;
+using Color = Core.Color;
 
 namespace Client
 {
 
     public class GameLogic
     {
-        public static void ProcessNPCMovement(double MapNPCNum)
+        public static void ProcessNpcMovement(double MapNpcNum)
         {
-            // Check if NPC is walking, and if so process moving them over
-            if (Core.Type.MyMapNPC[(int)MapNPCNum].Moving == (byte)Core.Enum.MovementType.Walking)
+            // Check if Npc is walking, and if so process moving them over
+            if (Data.MyMapNpc[(int)MapNpcNum].Moving == (byte)MovementState.Walking)
             {
 
-                switch (Core.Type.MyMapNPC[(int)MapNPCNum].Dir)
+                switch (Data.MyMapNpc[(int)MapNpcNum].Dir)
                 {
-                    case (int)Core.Enum.DirectionType.Up:
+                    case (int)Direction.Up:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset < 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
+                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
+                            if (Data.MyMapNpc[(int)MapNpcNum].YOffset < 0)
+                                Data.MyMapNpc[(int)MapNpcNum].YOffset = 0;
                             break;
                         }
 
-                    case (int)Core.Enum.DirectionType.Down:
+                    case (int)Direction.Down:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset > 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
+                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
+                            if (Data.MyMapNpc[(int)MapNpcNum].YOffset > 0)
+                                Data.MyMapNpc[(int)MapNpcNum].YOffset = 0;
                             break;
                         }
 
-                    case (int)Core.Enum.DirectionType.Left:
+                    case (int)Direction.Left:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset < 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
+                            Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].XOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
+                            if (Data.MyMapNpc[(int)MapNpcNum].XOffset < 0)
+                                Data.MyMapNpc[(int)MapNpcNum].XOffset = 0;
                             break;
                         }
 
-                    case (int)Core.Enum.DirectionType.Right:
+                    case (int)Direction.Right:
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset > 0)
-                                Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
+                            Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].XOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
+                            if (Data.MyMapNpc[(int)MapNpcNum].XOffset > 0)
+                                Data.MyMapNpc[(int)MapNpcNum].XOffset = 0;
                             break;
                         }
                 }
 
                 // Check if completed walking over to the next tile
-                if (Core.Type.MyMapNPC[(int)MapNPCNum].Moving > 0)
+                if (Data.MyMapNpc[(int)MapNpcNum].Moving > 0)
                 {
-                    if (Core.Type.MyMapNPC[(int)MapNPCNum].Dir == (int)Core.Enum.DirectionType.Right | Core.Type.MyMapNPC[(int)MapNPCNum].Dir == (int)Core.Enum.DirectionType.Down)
+                    if (Data.MyMapNpc[(int)MapNpcNum].Dir == (int)Direction.Right | Data.MyMapNpc[(int)MapNpcNum].Dir == (int)Direction.Down)
                     {
-                        if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset >= 0 & Core.Type.MyMapNPC[(int)MapNPCNum].YOffset >= 0)
+                        if (Data.MyMapNpc[(int)MapNpcNum].XOffset >= 0 & Data.MyMapNpc[(int)MapNpcNum].YOffset >= 0)
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].Moving = 0;
-                            if (Core.Type.MyMapNPC[(int)MapNPCNum].Steps == 1)
+                            Data.MyMapNpc[(int)MapNpcNum].Moving = 0;
+                            if (Data.MyMapNpc[(int)MapNpcNum].Steps == 1)
                             {
-                                Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 3;
+                                Data.MyMapNpc[(int)MapNpcNum].Steps = 3;
                             }
                             else
                             {
-                                Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 1;
+                                Data.MyMapNpc[(int)MapNpcNum].Steps = 1;
                             }
                         }
                     }
-                    else if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset <= 0 & Core.Type.MyMapNPC[(int)MapNPCNum].YOffset <= 0)
+                    else if (Data.MyMapNpc[(int)MapNpcNum].XOffset <= 0 & Data.MyMapNpc[(int)MapNpcNum].YOffset <= 0)
                     {
-                        Core.Type.MyMapNPC[(int)MapNPCNum].Moving = 0;
-                        if (Core.Type.MyMapNPC[(int)MapNPCNum].Steps == 1)
+                        Data.MyMapNpc[(int)MapNpcNum].Moving = 0;
+                        if (Data.MyMapNpc[(int)MapNpcNum].Steps == 1)
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 3;
+                            Data.MyMapNpc[(int)MapNpcNum].Steps = 3;
                         }
                         else
                         {
-                            Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 1;
+                            Data.MyMapNpc[(int)MapNpcNum].Steps = 1;
                         }
                     }
                 }
@@ -92,9 +92,9 @@ namespace Client
         {
             bool IsInBoundsRet = false;
 
-            if (GameState.CurX >= 0 & GameState.CurX <= Core.Type.MyMap.MaxX)
+            if (GameState.CurX >= 0 & GameState.CurX <= Data.MyMap.MaxX)
             {
-                if (GameState.CurY >= 0 & GameState.CurY <= Core.Type.MyMap.MaxY)
+                if (GameState.CurY >= 0 & GameState.CurY <= Data.MyMap.MaxY)
                 {
                     IsInBoundsRet = true;
                 }
@@ -121,22 +121,20 @@ namespace Client
             GameState.ActionMsgIndex = (byte)(GameState.ActionMsgIndex + 1);
             if (GameState.ActionMsgIndex >= byte.MaxValue)
                 GameState.ActionMsgIndex = 1;
+            
+            ref var withBlock = ref Data.ActionMsg[GameState.ActionMsgIndex];
+            withBlock.Message = message;
+            withBlock.Color = color;
+            withBlock.Type = msgType;
+            withBlock.Created = General.GetTickCount();
+            withBlock.Scroll = 0;
+            withBlock.X = x;
+            withBlock.Y = y;        
 
+            if (Data.ActionMsg[GameState.ActionMsgIndex].Type == (int)Core.ActionMessageType.Scroll)
             {
-                ref var withBlock = ref Core.Type.ActionMsg[GameState.ActionMsgIndex];
-                withBlock.Message = message;
-                withBlock.Color = color;
-                withBlock.Type = msgType;
-                withBlock.Created = General.GetTickCount();
-                withBlock.Scroll = 0;
-                withBlock.X = x;
-                withBlock.Y = y;
-            }
-
-            if (Core.Type.ActionMsg[GameState.ActionMsgIndex].Type == (int)Core.Enum.ActionMsgType.Scroll)
-            {
-                Core.Type.ActionMsg[GameState.ActionMsgIndex].Y = Core.Type.ActionMsg[GameState.ActionMsgIndex].Y + Rand(-2, 6);
-                Core.Type.ActionMsg[GameState.ActionMsgIndex].X = Core.Type.ActionMsg[GameState.ActionMsgIndex].X + Rand(-8, 8);
+                Data.ActionMsg[GameState.ActionMsgIndex].Y = Data.ActionMsg[GameState.ActionMsgIndex].Y + Rand(-2, 6);
+                Data.ActionMsg[GameState.ActionMsgIndex].X = Data.ActionMsg[GameState.ActionMsgIndex].X + Rand(-8, 8);
             }
 
         }
@@ -297,7 +295,7 @@ namespace Client
                 }
                 else
                 {
-                    Text.AddText(LocalesManager.Get("PlayerMsg"), (int)Core.Enum.ColorType.Yellow);
+                    Text.AddText(LocalesManager.Get("PlayerMsg"), (int)Core.Color.Yellow);
                 }
 
                 goto Continue1;
@@ -314,7 +312,7 @@ namespace Client
                             // Checks to make sure we have more than one string in the array
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("Emote"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Emote"), (int)Core.Color.Yellow);
                                 goto Continue1;
                             }
 
@@ -324,12 +322,12 @@ namespace Client
 
                     case "/help":
                         {
-                            Text.AddText(LocalesManager.Get("Help1"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("Help2"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("Help3"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("Help4"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("Help5"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("Help6"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Help1"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("Help2"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("Help3"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("Help4"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("Help5"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("Help6"), (int)Core.Color.Yellow);
                             break;
                         }
 
@@ -337,7 +335,7 @@ namespace Client
                         {
                             if (GameState.MyTarget >= 0)
                             {
-                                if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
+                                if (GameState.MyTargetType == (int)TargetType.Player)
                                 {
                                     NetworkSend.SendPlayerInfo(GetPlayerName(GameState.MyTarget));
                                     goto Continue1;
@@ -347,7 +345,7 @@ namespace Client
                             // Checks to make sure we have more than one string in the array
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("Info"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Info"), (int)Core.Color.Yellow);
                                 goto Continue1;
                             }
 
@@ -396,7 +394,7 @@ namespace Client
                         {
                             if (GameState.MyTarget >= 0)
                             {
-                                if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
+                                if (GameState.MyTargetType == (int)TargetType.Player)
                                 {
                                     Party.SendPartyRequest(GetPlayerName(GameState.MyTarget));
                                     goto Continue1;
@@ -406,7 +404,7 @@ namespace Client
                             // Make sure they are actually sending something
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("Party"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Party"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -433,7 +431,7 @@ namespace Client
                         {
                             if (GameState.MyTarget >= 0)
                             {
-                                if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
+                                if (GameState.MyTargetType == (int)TargetType.Player)
                                 {
                                     Trade.SendTradeRequest(GetPlayerName(GameState.MyTarget));
                                     goto Continue1;
@@ -443,7 +441,7 @@ namespace Client
                             // Make sure they are actually sending something
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("Trade"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Trade"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -455,16 +453,16 @@ namespace Client
                     // Admin Help
                     case "/admin":
                         {
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Moderator)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
-                            Text.AddText(LocalesManager.Get("Admin1"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("Admin2"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("AdminGblMsg"), (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(LocalesManager.Get("AdminPvtMsg"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Get("Admin1"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("Admin2"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("AdminGblMsg"), (int)Core.Color.Yellow);
+                            Text.AddText(LocalesManager.Get("AdminPvtMsg"), (int)Core.Color.Yellow);
                             break;
                         }
 
@@ -478,15 +476,15 @@ namespace Client
                     case "/kick":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Moderator)
                             {
-                                Text.AddText(LocalesManager.Get("AccessAlert"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessAlert"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("Kick"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Kick"), (int)Core.Color.Yellow);
                                 goto Continue1;
                             }
 
@@ -499,9 +497,9 @@ namespace Client
                     case "/loc":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -513,15 +511,15 @@ namespace Client
                     case "/warpmeto":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("WarpMeTo"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("WarpMeTo"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -533,15 +531,15 @@ namespace Client
                     case "/warptome":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("WarpToMe"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("WarpToMe"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -553,15 +551,15 @@ namespace Client
                     case "/warpto":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("WarpTo"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("WarpTo"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -574,7 +572,7 @@ namespace Client
                             }
                             else
                             {
-                                Text.AddText(LocalesManager.Get("InvalidMap"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("InvalidMap"), (int)Core.Color.BrightRed);
                             }
 
                             break;
@@ -584,15 +582,15 @@ namespace Client
                     case "/sprite":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(LocalesManager.Get("Sprite"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Sprite"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -604,9 +602,9 @@ namespace Client
                     case "/mapreport":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -618,9 +616,9 @@ namespace Client
                     case "/respawn":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -631,9 +629,9 @@ namespace Client
                     case "/editmap":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Mapper)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -643,9 +641,9 @@ namespace Client
 
                     case "/editscript":
                         {
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Owner)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                             }
 
                             Script.SendRequestEditScript();
@@ -657,15 +655,15 @@ namespace Client
                     case "/welcome":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Moderator)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1)
                             {
-                                Text.AddText(LocalesManager.Get("Welcome"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Welcome"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -677,9 +675,9 @@ namespace Client
                     case "/banlist":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Moderator)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -691,15 +689,15 @@ namespace Client
                     case "/ban":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Moderator)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1)
                             {
-                                Text.AddText(LocalesManager.Get("Ban"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("Ban"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -712,9 +710,9 @@ namespace Client
                     case "/bandestroy":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Owner)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -725,15 +723,15 @@ namespace Client
                     case "/access":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Owner)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
                             if ((Information.UBound(command) < 2 || Information.IsNumeric(command[1])) | !Information.IsNumeric(command[2]))
                             {
-                                Text.AddText(LocalesManager.Get("Access"), (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Get("Access"), (int)Core.Color.Yellow);
                                 goto Continue1;
                             }
 
@@ -745,9 +743,9 @@ namespace Client
                     case "/editresource":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -758,9 +756,9 @@ namespace Client
                     case "/editanimation":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -771,9 +769,9 @@ namespace Client
                     case "/editpet":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -784,9 +782,9 @@ namespace Client
                     case "/edititem":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -797,9 +795,9 @@ namespace Client
                     case "/editprojectile":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -810,22 +808,22 @@ namespace Client
                     case "/editnpc":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
-                            NetworkSend.SendRequestEditNPC();
+                            NetworkSend.SendRequestEditNpc();
                             break;
                         }
 
                     case "/editjob":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -836,9 +834,9 @@ namespace Client
                     case "/editskill":
                         {
 
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -848,9 +846,9 @@ namespace Client
 
                     case "/editshop":
                         {
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -860,9 +858,9 @@ namespace Client
 
                     case "/editmoral":
                         {
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
+                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
                             {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
                                 goto Continue1;
                             }
 
@@ -877,7 +875,7 @@ namespace Client
 
                     default:
                         {
-                            Text.AddText(LocalesManager.Get("InvalidCmd"), (int)Core.Enum.ColorType.BrightRed);
+                            Text.AddText(LocalesManager.Get("InvalidCmd"), (int)Core.Color.BrightRed);
                             break;
                         }
                 }
@@ -899,9 +897,9 @@ namespace Client
             var buffer = new ByteStream(4);
             buffer = new ByteStream(4);
 
-            if (General.GetTickCount() > Core.Type.Player[GameState.MyIndex].MapGetTimer + 250)
+            if (General.GetTickCount() > Core.Data.Player[GameState.MyIndex].MapGetTimer + 250)
             {
-                Core.Type.Player[GameState.MyIndex].MapGetTimer = General.GetTickCount();
+                Core.Data.Player[GameState.MyIndex].MapGetTimer = General.GetTickCount();
                 buffer.WriteInt32((int)Packets.ClientPackets.CMapGetItem);
                 NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             }
@@ -911,20 +909,20 @@ namespace Client
 
         public static void ClearActionMsg(byte index)
         {
-            Core.Type.ActionMsg[index].Message = "";
-            Core.Type.ActionMsg[index].Created = 0;
-            Core.Type.ActionMsg[index].Type = 0;
-            Core.Type.ActionMsg[index].Color = 0;
-            Core.Type.ActionMsg[index].Scroll = 0;
-            Core.Type.ActionMsg[index].X = 0;
-            Core.Type.ActionMsg[index].Y = 0;
+            Data.ActionMsg[index].Message = "";
+            Data.ActionMsg[index].Created = 0;
+            Data.ActionMsg[index].Type = 0;
+            Data.ActionMsg[index].Color = 0;
+            Data.ActionMsg[index].Scroll = 0;
+            Data.ActionMsg[index].X = 0;
+            Data.ActionMsg[index].Y = 0;
         }
 
         public static void UpdateDrawMapName()
         {
-            if (Core.Type.MyMap.Moral > 0)
+            if (Data.MyMap.Moral > 0)
             {
-                GameState.DrawMapNameColor = GameClient.QbColorToXnaColor(Core.Type.Moral[Core.Type.MyMap.Moral].Color);
+                GameState.DrawMapNameColor = GameClient.QbColorToXnaColor(Data.Moral[Data.MyMap.Moral].Color);
             }
         }
 
@@ -941,12 +939,12 @@ namespace Client
             // Default to new bubble
             index = GameState.ChatBubbleindex;
 
-            // Loop through and see if that player/NPC already has a chat bubble
+            // Loop through and see if that player/Npc already has a chat bubble
             for (i = 0; i < byte.MaxValue; i++)
             {
-                if (Core.Type.ChatBubble[i].TargetType == targetType)
+                if (Data.ChatBubble[i].TargetType == targetType)
                 {
-                    if (Core.Type.ChatBubble[i].Target == target)
+                    if (Data.ChatBubble[i].Target == target)
                     {
                         // Reset master index
                         if (GameState.ChatBubbleindex > 1)
@@ -961,7 +959,7 @@ namespace Client
 
             // Set the bubble up
             {
-                ref var withBlock = ref Core.Type.ChatBubble[index];
+                ref var withBlock = ref Data.ChatBubble[index];
                 withBlock.Target = target;
                 withBlock.TargetType = targetType;
                 withBlock.Msg = msg;
@@ -974,10 +972,10 @@ namespace Client
 
         public static void RemoveChatBubbles()
         {
-            // Loop through and see if that player/NPC already has a chat bubble
+            // Loop through and see if that player/Npc already has a chat bubble
             for (int i = 0; i <= GameState.ChatBubbleindex; i++)
             {
-                ref var withBlock = ref Core.Type.ChatBubble[i];
+                ref var withBlock = ref Data.ChatBubble[i];
                 withBlock.Target = 0;
                 withBlock.TargetType = 0;
                 withBlock.Msg = "";
@@ -997,7 +995,7 @@ namespace Client
             // find the body/header
             switch (Index)
             {
-                case (byte)Core.Enum.DialogueMsg.Connection:
+                case (byte)SystemMessage.Connection:
                     {
                         header = "Invalid Connection";
                         body = "You lost connection to the game server.";
@@ -1008,7 +1006,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Banned:
+                case (byte)SystemMessage.Banned:
                     {
                         header = "Banned";
                         body = "You have been banned, have a nice day!";
@@ -1017,7 +1015,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Kicked:
+                case (byte)SystemMessage.Kicked:
                     {
                         header = "Kicked";
                         body = "You have been kicked.";
@@ -1026,7 +1024,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Outdated:
+                case (byte)SystemMessage.ClientOutdated:
                     {
                         header = "Wrong Version";
                         body = "Your game client is the wrong version.";
@@ -1034,7 +1032,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Maintenance:
+                case (byte)SystemMessage.ServerMaintenance:
                     {
                         header = "Connection Refused";
                         body = "The server is currently going under maintenance.";
@@ -1042,7 +1040,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.NameTaken:
+                case (byte)SystemMessage.NameTaken:
                     {
                         header = "Invalid Name";
                         body = "This name is already in use.";
@@ -1050,7 +1048,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.NameLength:
+                case (byte)SystemMessage.NameLengthInvalid:
                     {
                         header = "Invalid Name";
                         body = "This name is too short or too long.";
@@ -1058,7 +1056,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.NameIllegal:
+                case (byte)SystemMessage.NameContainsIllegalChars:
                     {
                         header = "Invalid Name";
                         body = "This name contains illegal characters.";
@@ -1066,7 +1064,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Database:
+                case (byte)SystemMessage.DatabaseError:
                     {
                         header = "Invalid Connection";
                         body = "Cannot connect to database.";
@@ -1074,7 +1072,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.WrongPass:
+                case (byte)SystemMessage.WrongPassword:
                     {
                         header = "Invalid Login";
                         body = "Invalid username or password.";
@@ -1083,7 +1081,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Activate:
+                case (byte)SystemMessage.AccountActivationRequired:
                     {
                         header = "Inactive Account";
                         body = "Your account is not activated.";
@@ -1091,7 +1089,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.MaxChar:
+                case (byte)SystemMessage.MaxCharactersReached:
                     {
                         header = "Cannot Merge";
                         body = "You cannot merge a full account.";
@@ -1099,7 +1097,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.DelChar:
+                case (byte)SystemMessage.ConfirmCharacterDeletion:
                     {
                         header = "Deleted Character";
                         body = "Your character was successfully deleted.";
@@ -1107,7 +1105,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.CreateAccount:
+                case (byte)SystemMessage.CreateAccount:
                     {
                         header = "Account Created";
                         body = "Your account was successfully created.";
@@ -1115,7 +1113,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.MultiAccount:
+                case (byte)SystemMessage.MultipleAccountsNotAllowed:
                     {
                         header = "Multiple Accounts";
                         body = "Multiple accounts are not authorized.";
@@ -1123,7 +1121,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Login:
+                case (byte)SystemMessage.Login:
                     {
                         header = "Cannot Login";
                         body = "This account does not exist.";
@@ -1131,7 +1129,7 @@ namespace Client
                         break;
                     }
 
-                case (byte)Core.Enum.DialogueMsg.Crash:
+                case (byte)SystemMessage.Crashed:
                     {
                         header = "Error";
                         body = "There was a network error.";
@@ -1144,7 +1142,7 @@ namespace Client
             }
 
             // set the dialogue up!
-            Dialogue(header, body, body2, (byte)Core.Enum.DialogueType.Alert);
+            Dialogue(header, body, body2, (byte)DialogueType.Alert);
         }
 
         public static void CloseDialogue()
@@ -1160,7 +1158,7 @@ namespace Client
             // set buttons
             {
                 var withBlock = Gui.Windows[Gui.GetWindowIndex("winDialogue")];
-                if (style == (int)Core.Enum.DialogueStyle.YesNo)
+                if (style == (int)DialogueStyle.YesNo)
                 {
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "btnYes")].Visible = true;
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "btnNo")].Visible = true;
@@ -1168,7 +1166,7 @@ namespace Client
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "txtInput")].Visible = false;
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "lblBody_2")].Visible = true;
                 }
-                else if (style == (int)Core.Enum.DialogueStyle.Okay)
+                else if (style == (int)DialogueStyle.Okay)
                 {
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "btnYes")].Visible = false;
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "btnNo")].Visible = false;
@@ -1176,7 +1174,7 @@ namespace Client
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "txtInput")].Visible = false;
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "lblBody_2")].Visible = true;
                 }
-                else if (style == (int)Core.Enum.DialogueStyle.Input)
+                else if (style == (int)DialogueStyle.Input)
                 {
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "btnYes")].Visible = false;
                     withBlock.Controls[(int)Gui.GetControlIndex("winDialogue", "btnNo")].Visible = false;
@@ -1220,35 +1218,35 @@ namespace Client
                 // Dialogue index
                 switch (GameState.diaIndex)
                 {
-                    case (long)Core.Enum.DialogueType.TradeAmount:
+                    case (long)DialogueType.TradeAmount:
                         {
                             value = (long)Math.Round(Conversion.Val(diaInput));
                             Trade.TradeItem((int)GameState.diaData1, (int)value);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.DepositItem:
+                    case (long)DialogueType.DepositItem:
                         {
                             value = (long)Math.Round(Conversion.Val(diaInput));
                             Bank.DepositItem((int)GameState.diaData1, (int)value);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.WithdrawItem:
+                    case (long)DialogueType.WithdrawItem:
                         {
                             value = (long)Math.Round(Conversion.Val(diaInput));
                             Bank.WithdrawItem((byte)(int)GameState.diaData1, (int)value);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.DropItem:
+                    case (long)DialogueType.DropItem:
                         {
                             value = (long)Math.Round(Conversion.Val(diaInput));
                             NetworkSend.SendDropItem((int)GameState.diaData1, (int)value);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.Info:
+                    case (long)DialogueType.Information:
                         {
                             GameState.Info = true;
                             break;
@@ -1261,50 +1259,50 @@ namespace Client
                 // Dialogue index
                 switch (GameState.diaIndex)
                 {
-                    case (long)Core.Enum.DialogueType.Trade:
+                    case (long)DialogueType.Trade:
                         {
                             Trade.SendHandleTradeInvite(1);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.Forget:
+                    case (long)DialogueType.ForgetSkill:
                         {
                             NetworkSend.ForgetSkill((int)GameState.diaData1);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.Party:
+                    case (long)DialogueType.PartyInvite:
                         {
                             Party.SendAcceptParty();
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.LootItem:
+                    case (long)DialogueType.LootConfirmation:
                         {
                             CheckMapGetItem();
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.DelChar:
+                    case (long)DialogueType.DeleteCharacter:
                         {
                             NetworkSend.SendDelChar((byte)GameState.diaData1);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.FillLayer:
+                    case (long)DialogueType.FillLayer:
                         {
                             if (GameState.diaData2 > 0L)
                             {
-                                var loopTo = (int)Core.Type.MyMap.MaxX;
+                                var loopTo = (int)Data.MyMap.MaxX;
                                 for (x = 0; x < loopTo; x++)
                                 {
-                                    var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                                    var loopTo1 = (int)Data.MyMap.MaxY;
                                     for (y = 0; y < loopTo1; y++)
                                     {
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = (byte)GameState.diaData2;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = (byte)GameState.diaData2;
                                         Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
                                     }
                                 }
@@ -1314,16 +1312,16 @@ namespace Client
                             }
                             else
                             {
-                                var loopTo2 = (int)Core.Type.MyMap.MaxX;
+                                var loopTo2 = (int)Data.MyMap.MaxX;
                                 for (x = 0; x < loopTo2; x++)
                                 {
-                                    var loopTo3 = (int)Core.Type.MyMap.MaxY;
+                                    var loopTo3 = (int)Data.MyMap.MaxY;
                                     for (y = 0; y < loopTo3; y++)
                                     {
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
-                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = 0;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
+                                        Data.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = 0;
                                         Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
                                     }
                                 }
@@ -1332,16 +1330,16 @@ namespace Client
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.ClearLayer:
+                    case (long)DialogueType.ClearLayer:
                         {
-                            var loopTo4 = (int)Core.Type.MyMap.MaxX;
+                            var loopTo4 = (int)Data.MyMap.MaxX;
                             for (x = 0; x < loopTo4; x++)
                             {
-                                var loopTo5 = (int)Core.Type.MyMap.MaxY;
+                                var loopTo5 = (int)Data.MyMap.MaxY;
                                 for (y = 0; y < loopTo5; y++)
                                 {
                                     {
-                                        ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                                        ref var withBlock = ref Data.MyMap.Tile[x, y];
                                         withBlock.Layer[(int)GameState.diaData1].X = 0;
                                         withBlock.Layer[(int)GameState.diaData1].Y = 0;
                                         withBlock.Layer[(int)GameState.diaData1].Tileset = 0;
@@ -1354,30 +1352,30 @@ namespace Client
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.ClearAttributes:
+                    case (long)DialogueType.ClearAttributes:
                         {
-                            var loopTo6 = (int)Core.Type.MyMap.MaxX;
+                            var loopTo6 = (int)Data.MyMap.MaxX;
                             for (x = 0; x < loopTo6; x++)
                             {
-                                var loopTo7 = (int)Core.Type.MyMap.MaxY;
+                                var loopTo7 = (int)Data.MyMap.MaxY;
                                 for (y = 0; y < loopTo7; y++)
                                 {
-                                    Core.Type.MyMap.Tile[x, y].Type = 0;
-                                    Core.Type.MyMap.Tile[x, y].Type2 = 0;
+                                    Data.MyMap.Tile[x, y].Type = 0;
+                                    Data.MyMap.Tile[x, y].Type2 = 0;
                                 }
                             }
 
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.FillAttributes:
+                    case (long)DialogueType.FillAttributes:
                         {
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.ClearMap:
+                    case (long)DialogueType.ClearMap:
                         Map.ClearMap();
-                        Map.ClearMapNPCs();
+                        Map.ClearMapNpcs();
                         Map.ClearMapItems();
                         break;
                 }
@@ -1388,13 +1386,13 @@ namespace Client
                 // Dialogue index
                 switch (GameState.diaIndex)
                 {
-                    case (long)Core.Enum.DialogueType.Trade:
+                    case (long)DialogueType.Trade:
                         {
                             Trade.SendHandleTradeInvite(0);
                             break;
                         }
 
-                    case (long)Core.Enum.DialogueType.Party:
+                    case (long)DialogueType.PartyInvite:
                         {
                             Party.SendDeclineParty();
                             break;
@@ -1412,8 +1410,8 @@ namespace Client
             Gui.HideWindows();
             GameState.NewCharJob = 0L;
             GameState.NewCharSprite = 1L;
-            GameState.NewCnarGender = (long)Core.Enum.SexType.Male;
-            Gui.Windows[Gui.GetWindowIndex("winJobs")].Controls[(int)Gui.GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob].Name;
+            GameState.NewCnarGender = (long)Sex.Male;
+            Gui.Windows[Gui.GetWindowIndex("winJobs")].Controls[(int)Gui.GetControlIndex("winJobs", "lblClassName")].Text = Data.Job[(int)GameState.NewCharJob].Name;
             Gui.ShowWindow(Gui.GetWindowIndex("winJobs"));
         }
 
@@ -1425,7 +1423,7 @@ namespace Client
             }
             else
             {
-                Dialogue("Invalid Connection", "Cannot connect to game server.", "Please try again.", (byte)Core.Enum.DialogueType.Alert);
+                Dialogue("Invalid Connection", "Cannot connect to game server.", "Please try again.", (byte)DialogueType.Alert);
             }
         }
 
@@ -1443,7 +1441,7 @@ namespace Client
         {
             if (direction == 0) // up
             {
-                if (Strings.Len(Core.Type.Chat[(int)(GameState.ChatScroll + 7L)].Text) > 0)
+                if (Strings.Len(Data.Chat[(int)(GameState.ChatScroll + 7L)].Text) > 0)
                 {
                     if (GameState.ChatScroll < Constant.CHAT_LINES)
                     {
@@ -1460,7 +1458,7 @@ namespace Client
         public static long IsHotbar(long StartX, long StartY)
         {
             long IsHotbarRet = default;
-            Core.Type.RectangleStruct tempRec;
+            Core.Type.Rectangle tempRec;
             long i;
 
             for (i = 0L; i < Constant.MAX_HOTBAR; i++)
@@ -1470,7 +1468,7 @@ namespace Client
                 tempRec.Right = tempRec.Left + GameState.PicX;
                 tempRec.Bottom = tempRec.Top + GameState.PicY;
 
-                if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot >= 0)
+                if (Core.Data.Player[GameState.MyIndex].Hotbar[(int)i].Slot >= 0)
                 {
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -1496,7 +1494,7 @@ namespace Client
             // show
             if (GetPlayerInv(GameState.MyIndex, (int)invNum) >= 0)
             {
-                if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Type.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
+                if (Core.Data.Item[GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Data.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
                     soulBound = true;
                 ShowItemDesc(x, y, (long)GetPlayerInv(GameState.MyIndex, (int)invNum));
             }
@@ -1511,7 +1509,7 @@ namespace Client
             long i;
 
             // set globals
-            GameState.descType = (byte)Core.Enum.PartType.Item; // inventory
+            GameState.descType = (byte)DraggablePartType.Item; // inventory
             GameState.descItem = itemNum;
 
             // set position
@@ -1539,12 +1537,12 @@ namespace Client
                 var withBlock = Gui.Windows[Gui.GetWindowIndex("winDescription")];
                 // name
                 // If Not soulBound Then
-                theName = Core.Type.Item[(int)itemNum].Name;
+                theName = Core.Data.Item[(int)itemNum].Name;
                 // Else
                 // theName = "(SB) " & Item(itemNum).Name)
                 // End If
                 withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Text = theName;
-                switch (Core.Type.Item[(int)itemNum].Rarity)
+                switch (Core.Data.Item[(int)itemNum].Rarity)
                 {
                     case 0: // white
                         {
@@ -1580,11 +1578,11 @@ namespace Client
                 withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Color = Color;
 
                 // class req
-                if (Core.Type.Item[(int)itemNum].JobReq > 0)
+                if (Core.Data.Item[(int)itemNum].JobReq > 0)
                 {
-                    jobName = Core.Type.Job[Core.Type.Item[(int)itemNum].JobReq].Name;
+                    jobName = Data.Job[Core.Data.Item[(int)itemNum].JobReq].Name;
                     // do we match it?
-                    if (GetPlayerJob(GameState.MyIndex) == Core.Type.Item[(int)itemNum].JobReq)
+                    if (GetPlayerJob(GameState.MyIndex) == Core.Data.Item[(int)itemNum].JobReq)
                     {
                         Color = Microsoft.Xna.Framework.Color.Green;
                     }
@@ -1603,11 +1601,11 @@ namespace Client
                 withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Color = Color;
 
                 // level
-                if (Core.Type.Item[(int)itemNum].LevelReq > 0)
+                if (Core.Data.Item[(int)itemNum].LevelReq > 0)
                 {
-                    levelTxt = "Level " + Core.Type.Item[(int)itemNum].LevelReq;
+                    levelTxt = "Level " + Core.Data.Item[(int)itemNum].LevelReq;
                     // do we match it?
-                    if (GetPlayerLevel(GameState.MyIndex) >= Core.Type.Item[(int)itemNum].LevelReq)
+                    if (GetPlayerLevel(GameState.MyIndex) >= Core.Data.Item[(int)itemNum].LevelReq)
                     {
                         Color = Microsoft.Xna.Framework.Color.Green;
                     }
@@ -1626,41 +1624,41 @@ namespace Client
             }
 
             // clear
-            GameState.descText = new Core.Type.TextStruct[2];
+            GameState.Description = new Core.Type.Text[2];
 
             // go through the rest of the text
-            switch (Core.Type.Item[(int)itemNum].Type)
+            switch (Core.Data.Item[(int)itemNum].Type)
             {
-                case (byte)Core.Enum.ItemType.Equipment:
+                case (byte)ItemCategory.Equipment:
                     {
-                        switch (Core.Type.Item[(int)itemNum].SubType)
+                        switch (Core.Data.Item[(int)itemNum].SubType)
                         {
-                            case (byte)Core.Enum.ItemSubType.Weapon:
+                            case (byte)ItemSubCategory.Weapon:
                                 {
                                     AddDescInfo("Weapon", Microsoft.Xna.Framework.Color.White);
                                     break;
                                 }
-                            case (byte)Core.Enum.ItemSubType.Armor:
+                            case (byte)ItemSubCategory.Armor:
                                 {
                                     AddDescInfo("Armor", Microsoft.Xna.Framework.Color.White);
                                     break;
                                 }
-                            case (byte)Core.Enum.ItemSubType.Helmet:
+                            case (byte)ItemSubCategory.Helmet:
                                 {
                                     AddDescInfo("Helmet", Microsoft.Xna.Framework.Color.White);
                                     break;
                                 }
-                            case (byte)Core.Enum.ItemSubType.Shield:
+                            case (byte)ItemSubCategory.Shield:
                                 {
                                     AddDescInfo("Shield", Microsoft.Xna.Framework.Color.White);
                                     break;
                                 }
-                            case (byte)Core.Enum.ItemSubType.Shoes:
+                            case (byte)ItemSubCategory.Shoes:
                                 {
                                     AddDescInfo("Shoes", Microsoft.Xna.Framework.Color.White);
                                     break;
                                 }
-                            case (byte)Core.Enum.ItemSubType.Gloves:
+                            case (byte)ItemSubCategory.Gloves:
                                 {
                                     AddDescInfo("Gloves", Microsoft.Xna.Framework.Color.White);
                                     break;
@@ -1669,27 +1667,27 @@ namespace Client
 
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Consumable:
+                case (byte)ItemCategory.Consumable:
                     {
                         AddDescInfo("Consumable", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Currency:
+                case (byte)ItemCategory.Currency:
                     {
                         AddDescInfo("Currency", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Skill:
+                case (byte)ItemCategory.Skill:
                     {
                         AddDescInfo("Skill", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Projectile:
+                case (byte)ItemCategory.Projectile:
                     {
                         AddDescInfo("Projectile", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Pet:
+                case (byte)ItemCategory.Pet:
                     {
                         AddDescInfo("Pet", Microsoft.Xna.Framework.Color.White);
                         break;
@@ -1697,137 +1695,137 @@ namespace Client
             }
 
             // more info
-            switch (Core.Type.Item[(int)itemNum].Type)
+            switch (Core.Data.Item[(int)itemNum].Type)
             {
-                case (byte)Core.Enum.ItemType.Currency:
+                case (byte)ItemCategory.Currency:
                     {
                         // binding
-                        if (Core.Type.Item[(int)itemNum].BindType == 1)
+                        if (Core.Data.Item[(int)itemNum].BindType == 1)
                         {
                             AddDescInfo("Bind on Pickup", Microsoft.Xna.Framework.Color.White);
                         }
-                        else if (Core.Type.Item[(int)itemNum].BindType == 2)
+                        else if (Core.Data.Item[(int)itemNum].BindType == 2)
                         {
                             AddDescInfo("Bind on Equip", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " g", Microsoft.Xna.Framework.Color.Yellow);
+                        AddDescInfo("Value: " + Core.Data.Item[(int)itemNum].Price + " g", Microsoft.Xna.Framework.Color.Yellow);
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Equipment:
+                case (byte)ItemCategory.Equipment:
                     {
                         // Damage/defense
-                        if (Core.Type.Item[(int)itemNum].SubType == (byte)Core.Enum.EquipmentType.Weapon)
+                        if (Core.Data.Item[(int)itemNum].SubType == (byte)Equipment.Weapon)
                         {
-                            AddDescInfo("Damage: " + Core.Type.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
-                            AddDescInfo("Speed: " + Core.Type.Item[(int)itemNum].Speed / 1000d + "s", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("Damage: " + Core.Data.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("Speed: " + Core.Data.Item[(int)itemNum].Speed / 1000d + "s", Microsoft.Xna.Framework.Color.White);
                         }
-                        else if (Core.Type.Item[(int)itemNum].Data2 > 0)
+                        else if (Core.Data.Item[(int)itemNum].Data2 > 0)
                         {
-                            AddDescInfo("Defense: " + Core.Type.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("Defense: " + Core.Data.Item[(int)itemNum].Data2, Microsoft.Xna.Framework.Color.White);
                         }
 
                         // binding
-                        if (Core.Type.Item[(int)itemNum].BindType == 1)
+                        if (Core.Data.Item[(int)itemNum].BindType == 1)
                         {
                             AddDescInfo("Bind on Pickup", Microsoft.Xna.Framework.Color.White);
                         }
-                        else if (Core.Type.Item[(int)itemNum].BindType == 2)
+                        else if (Core.Data.Item[(int)itemNum].BindType == 2)
                         {
                             AddDescInfo("Bind on Equip", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
+                        AddDescInfo("Value: " + Core.Data.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
 
                         // stat bonuses
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Strength] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " End", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] + " End", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Spirit] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Intelligence] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
                         }
 
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Consumable:
+                case (byte)ItemCategory.Consumable:
                     {
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Strength] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Strength] + " Str", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " End", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] + " End", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Spirit] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Spirit] + " Spi", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Luck] + " Luc", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] > 0)
+                        if (Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Intelligence] > 0)
                         {
-                            AddDescInfo("+" + Core.Type.Item[(int)itemNum].Add_Stat[(int)Core.Enum.StatType.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("+" + Core.Data.Item[(int)itemNum].Add_Stat[(int)Core.Stat.Intelligence] + " Int", Microsoft.Xna.Framework.Color.White);
                         }
 
-                        if (Core.Type.Item[(int)itemNum].Data1 > 0)
+                        if (Core.Data.Item[(int)itemNum].Data1 > 0)
                         {
-                            switch (Core.Type.Item[(int)itemNum].SubType)
+                            switch (Core.Data.Item[(int)itemNum].SubType)
                             {
-                                case (byte)Core.Enum.ItemSubType.AddHP:
+                                case (byte)ItemSubCategory.RestoresHealth:
                                     {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " HP", Microsoft.Xna.Framework.Color.White);
+                                        AddDescInfo("+" + Core.Data.Item[(int)itemNum].Data1 + " HP", Microsoft.Xna.Framework.Color.White);
                                         break;
                                     }
-                                case (byte)Core.Enum.ItemSubType.AddMP:
+                                case (byte)ItemSubCategory.RestoresMana:
                                     {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " MP", Microsoft.Xna.Framework.Color.White);
+                                        AddDescInfo("+" + Core.Data.Item[(int)itemNum].Data1 + " MP", Microsoft.Xna.Framework.Color.White);
                                         break;
                                     }
-                                case (byte)Core.Enum.ItemSubType.AddSP:
+                                case (byte)ItemSubCategory.RestoresStamina:
                                     {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " SP", Microsoft.Xna.Framework.Color.White);
+                                        AddDescInfo("+" + Core.Data.Item[(int)itemNum].Data1 + " SP", Microsoft.Xna.Framework.Color.White);
                                         break;
                                     }
-                                case (byte)Core.Enum.ItemSubType.Exp:
+                                case (byte)ItemSubCategory.GrantsExperience:
                                     {
-                                        AddDescInfo("+" + Core.Type.Item[(int)itemNum].Data1 + " EXP", Microsoft.Xna.Framework.Color.White);
+                                        AddDescInfo("+" + Core.Data.Item[(int)itemNum].Data1 + " EXP", Microsoft.Xna.Framework.Color.White);
                                         break;
                                     }
                             }
 
                         }
 
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
+                        AddDescInfo("Value: " + Core.Data.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
                         break;
                     }
-                case (byte)Core.Enum.ItemType.Skill:
+                case (byte)ItemCategory.Skill:
                     {
-                        AddDescInfo("Value: " + Core.Type.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
+                        AddDescInfo("Value: " + Core.Data.Item[(int)itemNum].Price + " G", Microsoft.Xna.Framework.Color.Yellow);
                         break;
                     }
             }
@@ -1861,7 +1859,7 @@ namespace Client
                 return;
 
             // clear
-            GameState.descText = new Core.Type.TextStruct[2];
+            GameState.Description = new Core.Type.Text[2];
 
             // hide req. labels
             Gui.Windows[Gui.GetWindowIndex("winDescription")].Controls[(int)Gui.GetControlIndex("winDescription", "lblLevel")].Visible = false;
@@ -1871,7 +1869,7 @@ namespace Client
             {
                 var withBlock = Gui.Windows[Gui.GetWindowIndex("winDescription")];
                 // set name
-                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Text = Core.Type.Skill[(int)skillNum].Name;
+                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Text = Data.Skill[(int)skillNum].Name;
                 withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Color = Microsoft.Xna.Framework.Color.White;
 
                 // find ranks
@@ -1887,7 +1885,7 @@ namespace Client
                     withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "picBar")].Value = tmpWidth;
                     // does it rank up?
                     // If Type.Skill(skillNum).NextRank > 0 Then
-                    Color = (long)Core.Enum.ColorType.White;
+                    Color = (long)Core.Color.White;
                     // sUse = "Uses: " & PlayerSkills(SkillSlot).Uses & "/" & Type.Skill(skillNum).NextUses
                     // If PlayerSkills(SkillSlot).Uses = Type.Skill(skillNum).NextUses Then
                     // If Not GetPlayerLevel(GameState.MyIndex) >= Skill(Type.Skill(skillNum).NextRank).LevelReq Then
@@ -1896,7 +1894,7 @@ namespace Client
                     // End If
                     // End If
                     // Else
-                    Color = (long)Core.Enum.ColorType.Gray;
+                    Color = (long)Core.Color.Gray;
                     sUse = "Max Rank";
                     // End If
                     // show controls
@@ -1914,29 +1912,29 @@ namespace Client
                 }
             }
 
-            switch (Core.Type.Skill[(int)skillNum].Type)
+            switch (Data.Skill[(int)skillNum].Type)
             {
-                case (byte)Core.Enum.SkillType.DamageHp:
+                case (byte)SkillEffect.DamageHealth:
                     {
                         AddDescInfo("Damage HP", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.SkillType.DamageMp:
+                case (byte)SkillEffect.DamageMana:
                     {
                         AddDescInfo("Damage SP", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.SkillType.HealHp:
+                case (byte)SkillEffect.HealHealth:
                     {
                         AddDescInfo("Heal HP", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.SkillType.HealMp:
+                case (byte)SkillEffect.HealMana:
                     {
                         AddDescInfo("Heal SP", Microsoft.Xna.Framework.Color.White);
                         break;
                     }
-                case (byte)Core.Enum.SkillType.Warp:
+                case (byte)SkillEffect.Warp:
                     {
                         AddDescInfo("Warp", Microsoft.Xna.Framework.Color.White);
                         break;
@@ -1944,41 +1942,41 @@ namespace Client
             }
 
             // more info
-            switch (Core.Type.Skill[(int)skillNum].Type)
+            switch (Data.Skill[(int)skillNum].Type)
             {
-                case (byte)Core.Enum.SkillType.DamageHp:
-                case (byte)Core.Enum.SkillType.DamageMp:
-                case (byte)Core.Enum.SkillType.HealHp:
-                case (byte)Core.Enum.SkillType.HealMp:
+                case (byte)SkillEffect.DamageHealth:
+                case (byte)SkillEffect.DamageMana:
+                case (byte)SkillEffect.HealHealth:
+                case (byte)SkillEffect.HealMana:
                     {
                         // damage
-                        AddDescInfo("Vital: " + Core.Type.Skill[(int)skillNum].Vital, Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Vital: " + Data.Skill[(int)skillNum].Vital, Microsoft.Xna.Framework.Color.White);
 
                         // mp cost
-                        AddDescInfo("Cost: " + Core.Type.Skill[(int)skillNum].MpCost + " SP", Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Cost: " + Data.Skill[(int)skillNum].MpCost + " SP", Microsoft.Xna.Framework.Color.White);
 
                         // cast time
-                        AddDescInfo("Cast Time: " + Core.Type.Skill[(int)skillNum].CastTime + "s", Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Cast Time: " + Data.Skill[(int)skillNum].CastTime + "s", Microsoft.Xna.Framework.Color.White);
 
                         // cd time
-                        AddDescInfo("Cooldown: " + Core.Type.Skill[(int)skillNum].CdTime + "s", Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Cooldown: " + Data.Skill[(int)skillNum].CdTime + "s", Microsoft.Xna.Framework.Color.White);
 
                         // aoe
-                        if (Core.Type.Skill[(int)skillNum].AoE > 0)
+                        if (Data.Skill[(int)skillNum].AoE > 0)
                         {
-                            AddDescInfo("AoE: " + Core.Type.Skill[(int)skillNum].AoE, Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("AoE: " + Data.Skill[(int)skillNum].AoE, Microsoft.Xna.Framework.Color.White);
                         }
 
                         // stun
-                        if (Core.Type.Skill[(int)skillNum].StunDuration > 0)
+                        if (Data.Skill[(int)skillNum].StunDuration > 0)
                         {
-                            AddDescInfo("Stun: " + Core.Type.Skill[(int)skillNum].StunDuration + "s", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("Stun: " + Data.Skill[(int)skillNum].StunDuration + "s", Microsoft.Xna.Framework.Color.White);
                         }
 
                         // dot
-                        if (Core.Type.Skill[(int)skillNum].Duration > 0 & Core.Type.Skill[(int)skillNum].Interval > 0)
+                        if (Data.Skill[(int)skillNum].Duration > 0 & Data.Skill[(int)skillNum].Interval > 0)
                         {
-                            AddDescInfo("DoT: " + Core.Type.Skill[(int)skillNum].Duration / (double)Core.Type.Skill[(int)skillNum].Interval + " tick", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("DoT: " + Data.Skill[(int)skillNum].Duration / (double)Data.Skill[(int)skillNum].Interval + " tick", Microsoft.Xna.Framework.Color.White);
                         }
 
                         break;
@@ -1998,29 +1996,30 @@ namespace Client
         {
             bool soulBound;
 
-            // rte9
-            if (eqNum < 0L | eqNum > (int)Core.Enum.EquipmentType.Count)
+            var equipmentCount = System.Enum.GetValues(typeof(Equipment)).Length;
+
+            if (eqNum < 0L || eqNum >= equipmentCount)
                 return;
 
-            if (Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum] < 0 || Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum] > Constant.MAX_ITEMS)
+            if (Core.Data.Player[GameState.MyIndex].Equipment[(int)eqNum] < 0 || Core.Data.Player[GameState.MyIndex].Equipment[(int)eqNum] > Constant.MAX_ITEMS)
                 return;
 
             // show
-            if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]))
+            if (Conversions.ToBoolean(Core.Data.Player[GameState.MyIndex].Equipment[(int)eqNum]))
             {
-                if (Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]].BindType > 0)
+                if (Core.Data.Item[(int)Core.Data.Player[GameState.MyIndex].Equipment[(int)eqNum]].BindType > 0)
                     soulBound = true;
-                ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]);
+                ShowItemDesc(x, y, (long)Core.Data.Player[GameState.MyIndex].Equipment[(int)eqNum]);
             }
         }
 
         public static void AddDescInfo(string text, Microsoft.Xna.Framework.Color color)
         {
             long count;
-            count = Information.UBound(GameState.descText);
-            Array.Resize(ref GameState.descText, (int)(count));
-            GameState.descText[(int)(count)].Text = text;
-            GameState.descText[(int)(count)].Color = GameClient.ToDrawingColor(color);
+            count = Information.UBound(GameState.Description);
+            Array.Resize(ref GameState.Description, (int)(count));
+            GameState.Description[(int)(count)].Caption = text;
+            GameState.Description[(int)(count)].Color = GameClient.ToDrawingColor(color);
         }
 
         public static void LogoutGame()
@@ -2066,9 +2065,9 @@ namespace Client
             // set globals
             GameState.InShop = (int)shopNum;
             GameState.shopSelectedSlot = 0L;
-            GameState.shopSelectedItem = Core.Type.Shop[GameState.InShop].TradeItem[1].Item;
-            Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "chkSelling")].Value = 0L;
-            Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "chkBuying")].Value = 0L;
+            GameState.shopSelectedItem = Data.Shop[GameState.InShop].TradeItem[1].Item;
+            Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "CheckboxSelling")].Value = 0L;
+            Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "CheckboxBuying")].Value = 0L;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnSell")].Visible = false;
             Gui.Windows[Gui.GetWindowIndex("winShop")].Controls[(int)Gui.GetControlIndex("winShop", "btnBuy")].Visible = true;
             GameState.shopIsSelling = false;
@@ -2088,7 +2087,7 @@ namespace Client
             long Width;
 
             // unload it if we're not in a party
-            if (Core.Type.MyParty.Leader == 0)
+            if (Data.MyParty.Leader == 0)
             {
                 return;
             }
@@ -2111,9 +2110,9 @@ namespace Client
                             if (IsPlaying((int)pIndex))
                             {
                                 // get their health
-                                if (GetPlayerVital((int)pIndex, Core.Enum.VitalType.HP) > 0 & GetPlayerMaxVital((int)pIndex, Core.Enum.VitalType.HP) > 0)
+                                if (GetPlayerVital((int)pIndex, Core.Vital.Health) > 0 & GetPlayerMaxVital((int)pIndex, Core.Vital.Health) > 0)
                                 {
-                                    Width = (long)Math.Round(GetPlayerVital((int)pIndex, Core.Enum.VitalType.HP) / (double)barWidth / (GetPlayerMaxVital((int)pIndex, Core.Enum.VitalType.HP) / (double)barWidth) * barWidth);
+                                    Width = (long)Math.Round(GetPlayerVital((int)pIndex, Core.Vital.Health) / (double)barWidth / (GetPlayerMaxVital((int)pIndex, Core.Vital.Health) / (double)barWidth) * barWidth);
                                     withBlock.Controls[(int)Gui.GetControlIndex("winParty", "picBar_HP" + i)].Width = Width;
                                 }
                                 else
@@ -2121,9 +2120,9 @@ namespace Client
                                     withBlock.Controls[(int)Gui.GetControlIndex("winParty", "picBar_HP" + i)].Width = 0L;
                                 }
                                 // get their spirit
-                                if (GetPlayerVital((int)pIndex, Core.Enum.VitalType.SP) > 0 & GetPlayerMaxVital((int)pIndex, Core.Enum.VitalType.SP) > 0)
+                                if (GetPlayerVital((int)pIndex, Core.Vital.Stamina) > 0 & GetPlayerMaxVital((int)pIndex, Core.Vital.Stamina) > 0)
                                 {
-                                    Width = (long)Math.Round(GetPlayerVital((int)pIndex, Core.Enum.VitalType.SP) / (double)barWidth / (GetPlayerMaxVital((int)pIndex, Core.Enum.VitalType.SP) / (double)barWidth) * barWidth);
+                                    Width = (long)Math.Round(GetPlayerVital((int)pIndex, Core.Vital.Stamina) / (double)barWidth / (GetPlayerMaxVital((int)pIndex, Core.Vital.Stamina) / (double)barWidth) * barWidth);
                                     withBlock.Controls[(int)Gui.GetControlIndex("winParty", "picBar_SP" + i)].Width = Width;
                                 }
                                 else
@@ -2247,9 +2246,9 @@ namespace Client
                 return default;
             if (y < 0)
                 return default;
-            if (x > Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxX - 1)
+            if (x > Data.Map[GetPlayerMap(GameState.MyIndex)].MaxX - 1)
                 return default;
-            if (y > Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxY - 1)
+            if (y > Data.Map[GetPlayerMap(GameState.MyIndex)].MaxY - 1)
                 return default;
 
             return true;
@@ -2258,9 +2257,9 @@ namespace Client
         public static List<Microsoft.Xna.Framework.Vector2> GetCellsInSquare(int xCenter, int yCenter, int distance)
         {
             int xMin = Math.Max(0, xCenter - distance);
-            int xMax = Math.Min(Core.Type.MyMap.MaxX, xCenter + distance);
+            int xMax = Math.Min(Data.MyMap.MaxX, xCenter + distance);
             int yMin = Math.Max(0, yCenter - distance);
-            int yMax = Math.Min(Core.Type.MyMap.MaxY, yCenter + distance);
+            int yMax = Math.Min(Data.MyMap.MaxY, yCenter + distance);
 
             var cells = new List<Microsoft.Xna.Framework.Vector2>();
             for (int y = yMin, loopTo = yMax; y < loopTo; y++)
@@ -2274,9 +2273,9 @@ namespace Client
         public static List<Microsoft.Xna.Framework.Vector2> GetBorderCellsInSquare(int xCenter, int yCenter, int distance)
         {
             int xMin = Math.Max(0, xCenter - distance);
-            int xMax = Math.Min(Core.Type.MyMap.MaxX, xCenter + distance);
+            int xMax = Math.Min(Data.MyMap.MaxX, xCenter + distance);
             int yMin = Math.Max(0, yCenter - distance);
-            int yMax = Math.Min(Core.Type.MyMap.MaxY, yCenter + distance);
+            int yMax = Math.Min(Data.MyMap.MaxY, yCenter + distance);
 
             var borderCells = new List<Microsoft.Xna.Framework.Vector2>();
 
@@ -2334,7 +2333,7 @@ namespace Client
             return litTiles;
         }
 
-        private static void PostProcessFovQuadrant(ref List<Microsoft.Xna.Framework.Vector2> _inFov, int x, int y, Core.Enum.QuadrantType quadrant)
+        private static void PostProcessFovQuadrant(ref List<Microsoft.Xna.Framework.Vector2> _inFov, int x, int y, Core.Quadrant quadrant)
         {
             int x1 = x;
             int y1 = y;
@@ -2345,25 +2344,25 @@ namespace Client
             // Adjust coordinates based on the quadrant
             switch (quadrant)
             {
-                case Core.Enum.QuadrantType.NE:
+                case Core.Quadrant.Northeast:
                     {
                         y1 = y + 1;
                         x2 = x - 1;
                         break;
                     }
-                case Core.Enum.QuadrantType.SE:
+                case Core.Quadrant.Southeast:
                     {
                         y1 = y - 1;
                         x2 = x - 1;
                         break;
                     }
-                case Core.Enum.QuadrantType.SW:
+                case Core.Quadrant.Southwest:
                     {
                         y1 = y - 1;
                         x2 = x + 1;
                         break;
                     }
-                case Core.Enum.QuadrantType.NW:
+                case Core.Quadrant.Northwest:
                     {
                         y1 = y + 1;
                         x2 = x + 1;
@@ -2420,22 +2419,22 @@ namespace Client
                     {
                         if (cell.Y > yOrigin)
                         {
-                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Enum.QuadrantType.SE);
+                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Quadrant.Southeast);
                         }
                         else if (cell.Y < yOrigin)
                         {
-                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Enum.QuadrantType.NE);
+                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Quadrant.Northeast);
                         }
                     }
                     else if (cell.X < xOrigin)
                     {
                         if (cell.Y > yOrigin)
                         {
-                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Enum.QuadrantType.SW);
+                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Quadrant.Southwest);
                         }
                         else if (cell.Y < yOrigin)
                         {
-                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Enum.QuadrantType.NW);
+                            PostProcessFovQuadrant(ref inFov, (int)Math.Round(cell.X), (int)Math.Round(cell.Y), Core.Quadrant.Northwest);
                         }
                     }
                 }
@@ -2446,7 +2445,7 @@ namespace Client
 
         private static bool IsTransparent(int x, int y)
         {
-            if (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Blocked | Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Blocked)
+            if (Data.MyMap.Tile[x, y].Type == TileType.Blocked | Data.MyMap.Tile[x, y].Type2 == TileType.Blocked)
             {
                 return false;
             }
@@ -2459,8 +2458,8 @@ namespace Client
             float targetCameraX;
             float targetCameraY;
 
-            int offsetX = Core.Type.Player[GameState.MyIndex].XOffset;
-            int offsetY = Core.Type.Player[GameState.MyIndex].YOffset;
+            int offsetX = Core.Data.Player[GameState.MyIndex].XOffset;
+            int offsetY = Core.Data.Player[GameState.MyIndex].YOffset;
 
             // Calculate the target camera position based on the player's position  
             targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2) + offsetX;
@@ -2471,8 +2470,8 @@ namespace Client
             GameState.Camera.Top = (long)Math.Round(targetCameraY);
 
             // Clamp the camera position to the map edges  
-            long mapWidth = Core.Type.MyMap.MaxX * GameState.PicX;
-            long mapHeight = Core.Type.MyMap.MaxY * GameState.PicY;
+            long mapWidth = Data.MyMap.MaxX * GameState.PicX;
+            long mapHeight = Data.MyMap.MaxY * GameState.PicY;
 
             GameState.Camera.Left = Math.Max(0, Math.Min(GameState.Camera.Left, mapWidth - GameState.ResolutionWidth));
             GameState.Camera.Top = Math.Max(0, Math.Min(GameState.Camera.Top, mapHeight - GameState.ResolutionHeight));
@@ -2481,10 +2480,10 @@ namespace Client
             long tileWidth = (long)Math.Round(GameState.ResolutionWidth / 32d);
             long tileHeight = (long)Math.Round(GameState.ResolutionHeight / 32d);
 
-            long StartX = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Left / (double)GameState.PicX), Core.Type.MyMap.MaxX - 1) / 32);
-            long StartY = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Top / (double)GameState.PicY), Core.Type.MyMap.MaxY - 1) / 32);
-            long EndX = Core.Type.MyMap.MaxX;
-            long EndY = Core.Type.MyMap.MaxY;
+            long StartX = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Left / (double)GameState.PicX), Data.MyMap.MaxX - 1) / 32);
+            long StartY = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Top / (double)GameState.PicY), Data.MyMap.MaxY - 1) / 32);
+            long EndX = Data.MyMap.MaxX;
+            long EndY = Data.MyMap.MaxY;
 
             // Update the tile view  
             ref var withBlock = ref GameState.TileView;

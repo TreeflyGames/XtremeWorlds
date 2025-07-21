@@ -1,6 +1,5 @@
 ﻿using Client;
 using System.Reflection.Metadata;
-using static Core.Enum;
 
 namespace Client
 {

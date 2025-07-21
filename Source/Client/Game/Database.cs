@@ -10,41 +10,41 @@ namespace Client
         public static void ClearBlood()
         {
             for (int i = 0; i < byte.MaxValue; i++)
-                Core.Type.Blood[i].Timer = 0;
+                Data.Blood[i].Timer = 0;
         }
 
         #endregion
 
-        #region NPC
+        #region Npc
 
-        public static void ClearNPCs()
+        public static void ClearNpcs()
         {
-            Core.Type.NPC = new Core.Type.NPCStruct[Core.Constant.MAX_NPCS];
+            Data.Npc = new Core.Type.Npc[Core.Constant.MAX_NPCS];
 
             for (int i = 0; i < Constant.MAX_NPCS; i++)
-                ClearNPC(i);
+                ClearNpc(i);
 
         }
 
-        public static void ClearNPC(int index)
+        public static void ClearNpc(int index)
         {
-            Core.Type.NPC[index].AttackSay = "";
-            Core.Type.NPC[index].Name = "";
-            Core.Type.NPC[index] = default;
-            Core.Type.NPC[index].Stat = new byte[6];
-            Core.Type.NPC[index].DropChance = new int[6];
-            Core.Type.NPC[index].DropItem = new int[6];
-            Core.Type.NPC[index].DropItemValue = new int[6];
-            Core.Type.NPC[index].Skill = new byte[7];
-            GameState.NPC_Loaded[index] = 0;
+            Data.Npc[index].AttackSay = "";
+            Data.Npc[index].Name = "";
+            Data.Npc[index] = default;
+            Data.Npc[index].Stat = new byte[6];
+            Data.Npc[index].DropChance = new int[6];
+            Data.Npc[index].DropItem = new int[6];
+            Data.Npc[index].DropItemValue = new int[6];
+            Data.Npc[index].Skill = new byte[7];
+            GameState.Npc_Loaded[index] = 0;
         }
 
-        public static void StreamNPC(int NPCNum)
+        public static void StreamNpc(int NpcNum)
         {
-            if (NPCNum >= 0 && string.IsNullOrEmpty(Core.Type.NPC[NPCNum].Name) && GameState.NPC_Loaded[NPCNum] == 0)
+            if (NpcNum >= 0 && string.IsNullOrEmpty(Data.Npc[NpcNum].Name) && GameState.Npc_Loaded[NpcNum] == 0)
             {
-                GameState.NPC_Loaded[(int)NPCNum] = 1;
-                NetworkSend.SendRequestNPC(NPCNum);
+                GameState.Npc_Loaded[(int)NpcNum] = 1;
+                NetworkSend.SendRequestNpc(NpcNum);
             }
         }
 
@@ -59,14 +59,15 @@ namespace Client
 
         public static void ClearJob(int index)
         {
-            Core.Type.Job[index] = default;
-            Core.Type.Job[index].Stat = new int[(int)Core.Enum.StatType.Count];
-            Core.Type.Job[index].Name = "";
-            Core.Type.Job[index].Desc = "";
-            Core.Type.Job[index].StartItem = new int[Constant.MAX_START_ITEMS];
-            Core.Type.Job[index].StartValue = new int[Constant.MAX_START_ITEMS];
-            Core.Type.Job[index].MaleSprite = 1;
-            Core.Type.Job[index].FemaleSprite = 1;
+            var statCount = System.Enum.GetValues(typeof(Stat)).Length;
+            Data.Job[index] = default;
+            Data.Job[index].Stat = new int[statCount];
+            Data.Job[index].Name = "";
+            Data.Job[index].Desc = "";
+            Data.Job[index].StartItem = new int[Constant.MAX_START_ITEMS];
+            Data.Job[index].StartValue = new int[Constant.MAX_START_ITEMS];
+            Data.Job[index].MaleSprite = 1;
+            Data.Job[index].FemaleSprite = 1;
         }
         #endregion
 
@@ -83,15 +84,15 @@ namespace Client
 
         public static void ClearSkill(int index)
         {
-            Core.Type.Skill[index] = default;
-            Core.Type.Skill[index].Name = "";
-            Core.Type.Skill[index].JobReq = -1;
+            Data.Skill[index] = default;
+            Data.Skill[index].Name = "";
+            Data.Skill[index].JobReq = -1;
             GameState.Skill_Loaded[index] = 0;
         }
 
         public static void StreamSkill(int skillNum)
         {
-            if (skillNum >= 0 && string.IsNullOrEmpty(Core.Type.Skill[skillNum].Name) && GameState.Skill_Loaded[skillNum] == 0)
+            if (skillNum >= 0 && string.IsNullOrEmpty(Data.Skill[skillNum].Name) && GameState.Skill_Loaded[skillNum] == 0)
             {
                 GameState.Skill_Loaded[skillNum] = 1;
                 NetworkSend.SendRequestSkill(skillNum);

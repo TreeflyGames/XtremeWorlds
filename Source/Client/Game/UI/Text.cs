@@ -15,7 +15,7 @@ namespace Client
 
     public class Text
     {
-        public static Dictionary<Core.Enum.FontType, SpriteFont> Fonts = new Dictionary<Core.Enum.FontType, SpriteFont>();
+        public static Dictionary<Core.Font, SpriteFont> Fonts = new Dictionary<Core.Font, SpriteFont>();
 
         internal const byte MaxChatDisplayLines = 11;
         internal const byte ChatLineSpacing = 10; // Should be same height as font
@@ -49,7 +49,7 @@ namespace Client
         }
 
         // Get the width of the text with optional scaling
-        public static int GetTextWidth(string text, Core.Enum.FontType font = Core.Enum.FontType.Georgia, float textSize = 1.0f)
+        public static int GetTextWidth(string text, Core.Font font = Core.Font.Georgia, float textSize = 1.0f)
         {
             if (!Fonts.ContainsKey(font))
                 throw new ArgumentException("Font not found.");
@@ -59,7 +59,7 @@ namespace Client
         }
 
         // Get the height of the text with optional scaling
-        public static int TextHeight(string text, Core.Enum.FontType font = Core.Enum.FontType.Georgia, float textSize = 1.0f)
+        public static int TextHeight(string text, Core.Font font = Core.Font.Georgia, float textSize = 1.0f)
         {
             if (!Fonts.ContainsKey(font))
                 throw new ArgumentException("Font not found.");
@@ -71,7 +71,7 @@ namespace Client
         {
             // wordwrap
             string[] wrappedLines = null;
-            WordWrap(text, Core.Enum.FontType.Georgia, Gui.Windows[Gui.GetWindowIndex("winChat")].Width, ref wrappedLines);
+            WordWrap(text, Core.Font.Georgia, Gui.Windows[Gui.GetWindowIndex("winChat")].Width, ref wrappedLines);
 
             GameState.Chat_HighIndex += wrappedLines.Length;
 
@@ -81,21 +81,21 @@ namespace Client
             // Move the rest of the chat lines up
             for (int i = (int)GameState.Chat_HighIndex - wrappedLines.Length; i > 0; i--)
             {
-                Core.Type.Chat[i] = Core.Type.Chat[i - 1];
+                Data.Chat[i] = Data.Chat[i - 1];
             }
             
             for (int i = (int)wrappedLines.Length - 1, chatIndex = 0; i >= 0; i--, chatIndex++)
             {
                 // Add the wrapped line to the chat
-                Core.Type.Chat[chatIndex].Text = wrappedLines[i];
-                Core.Type.Chat[chatIndex].Color = color;
-                Core.Type.Chat[chatIndex].Visible = true;
-                Core.Type.Chat[chatIndex].Timer = General.GetTickCount();
-                Core.Type.Chat[chatIndex].Channel = channel;
+                Core.Data.Chat[chatIndex].Text = wrappedLines[i];
+                Core.Data.Chat[chatIndex].Color = color;
+                Core.Data.Chat[chatIndex].Visible = true;
+                Core.Data.Chat[chatIndex].Timer = General.GetTickCount();
+                Core.Data.Chat[chatIndex].Channel = channel;
             }
         }
 
-        public static void WordWrap(string text, Core.Enum.FontType font, long MaxLineLen, ref string[] theArray)
+        public static void WordWrap(string text, Core.Font font, long MaxLineLen, ref string[] theArray)
         {
             var lineCount = default(long);
             long i;
@@ -226,7 +226,7 @@ namespace Client
 
         }
 
-        public static void RenderText(string text, int x, int y, Color frontColor, Color backColor, Core.Enum.FontType font = Core.Enum.FontType.Georgia)
+        public static void RenderText(string text, int x, int y, Color frontColor, Color backColor, Core.Font font = Core.Font.Georgia)
         {
             if (text == null) return;
             string sanitizedText = new string(text.Where(c => Fonts[font].Characters.Contains(c)).ToArray());
@@ -251,7 +251,7 @@ namespace Client
                     if (GameLogic.IsValidMapPoint(x, y))
                     {
                         {
-                            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                            ref var withBlock = ref Data.MyMap.Tile[x, y];
                             tX = (int)Math.Round(GameLogic.ConvertMapX(x * GameState.PicX) - 4 + GameState.PicX * 0.5d);
                             tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.PicY) - 7 + GameState.PicY * 0.5d);
 
@@ -266,62 +266,62 @@ namespace Client
 
                             switch (tA)
                             {
-                                case (int)Core.Enum.TileType.Blocked:
+                                case (int)TileType.Blocked:
                                     {
                                         RenderText("B", tX, tY, Color.Red, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Warp:
+                                case (int)TileType.Warp:
                                     {
                                         RenderText("W", tX, tY, Color.Blue, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Item:
+                                case (int)TileType.Item:
                                     {
                                         RenderText("I", tX, tY, Color.White, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.NPCAvoid:
+                                case (int)TileType.NpcAvoid:
                                     {
                                         RenderText("N", tX, tY, Color.White, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Resource:
+                                case (int)TileType.Resource:
                                     {
                                         RenderText("R", tX, tY, Color.Green, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.NPCSpawn:
+                                case (int)TileType.NpcSpawn:
                                     {
                                         RenderText("S", tX, tY, Color.Yellow, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Shop:
+                                case (int)TileType.Shop:
                                     {
                                         RenderText("S", tX, tY, Color.Blue, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Bank:
+                                case (int)TileType.Bank:
                                     {
                                         RenderText("B", tX, tY, Color.Blue, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Heal:
+                                case (int)TileType.Heal:
                                     {
                                         RenderText("H", tX, tY, Color.Green, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Trap:
+                                case (int)TileType.Trap:
                                     {
                                         RenderText("T", tX, tY, Color.Red, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Animation:
+                                case (int)TileType.Animation:
                                     {
                                         RenderText("A", tX, tY, Color.Red, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.NoXing:
+                                case (int)TileType.NoCrossing:
                                     {
                                         RenderText("X", tX, tY, Color.Red, Color.Black);
                                         break;
@@ -334,20 +334,20 @@ namespace Client
 
         }
 
-        public static void DrawNPCName(double MapNPCNum)
+        public static void DrawNpcName(double MapNpcNum)
         {
             int textX;
             int textY;
             var color = default(Color);
             var backColor = default(Color);
-            double NPCNum;
+            double NpcNum;
 
-            NPCNum = (int)Core.Type.MyMapNPC[(int)MapNPCNum].Num;
+            NpcNum = (int)Data.MyMapNpc[(int)MapNpcNum].Num;
 
-            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
+            if (NpcNum < 0 | NpcNum > Core.Constant.MAX_NPCS)
                 return;
 
-            switch (Core.Type.NPC[(int)NPCNum].Behaviour)
+            switch (Core.Data.Npc[(int)NpcNum].Behaviour)
             {
                 case 0: // attack on sight
                     {
@@ -371,20 +371,20 @@ namespace Client
                         break;
                     }
             }
-            textX = GameLogic.ConvertMapX(Core.Type.MyMapNPC[(int)MapNPCNum].X * GameState.PicX) + Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.PicX / 2 - 6;
-            textX -= (int)(GetTextWidth(Core.Type.NPC[(int)NPCNum].Name) / 6d);
+            textX = GameLogic.ConvertMapX(Data.MyMapNpc[(int)MapNpcNum].X * GameState.PicX) + Data.MyMapNpc[(int)MapNpcNum].XOffset + GameState.PicX / 2 - 6;
+            textX -= (int)(GetTextWidth(Core.Data.Npc[(int)NpcNum].Name) / 6d);
 
-            if (Core.Type.NPC[(int)NPCNum].Sprite < 1 | Core.Type.NPC[(int)NPCNum].Sprite > GameState.NumCharacters)
+            if (Core.Data.Npc[(int)NpcNum].Sprite < 1 | Core.Data.Npc[(int)NpcNum].Sprite > GameState.NumCharacters)
             {
-                textY = GameLogic.ConvertMapY(Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY) + Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - 16;
+                textY = GameLogic.ConvertMapY(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY) + Data.MyMapNpc[(int)MapNpcNum].YOffset - 16;
             }
             else
             {
-                textY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY) + Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.NPC[(int)NPCNum].Sprite.ToString())).Height / 4d + 16d);
+                textY = (int)Math.Round(GameLogic.ConvertMapY(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY) + Data.MyMapNpc[(int)MapNpcNum].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Data.Npc[(int)NpcNum].Sprite.ToString())).Height / 4d + 16d);
             }
 
             // Draw name
-            RenderText(Core.Type.NPC[(int)NPCNum].Name, textX, textY, color, backColor);
+            RenderText(Core.Data.Npc[(int)NpcNum].Name, textX, textY, color, backColor);
         }
 
         public static void DrawEventName(int index)
@@ -398,38 +398,38 @@ namespace Client
             color = Color.Yellow;
             backcolor = Color.Black;
 
-            name = Core.Type.MapEvents[index].Name;
+            name = Data.MapEvents[index].Name;
 
             // calc pos
-            textX = GameLogic.ConvertMapX(Core.Type.MapEvents[index].X * GameState.PicX) + Core.Type.MapEvents[index].XOffset + GameState.PicX / 2 - 6;
+            textX = GameLogic.ConvertMapX(Data.MapEvents[index].X * GameState.PicX) + Data.MapEvents[index].XOffset + GameState.PicX / 2 - 6;
             textX -= GetTextWidth(name) / 6;
 
-            if (Core.Type.MapEvents[index].GraphicType == 0)
+            if (Data.MapEvents[index].GraphicType == 0)
             {
-                textY = GameLogic.ConvertMapY(Core.Type.MapEvents[index].Y * GameState.PicY) + Core.Type.MapEvents[index].YOffset - 16;
+                textY = GameLogic.ConvertMapY(Data.MapEvents[index].Y * GameState.PicY) + Data.MapEvents[index].YOffset - 16;
             }
-            else if (Core.Type.MapEvents[index].GraphicType == 1)
+            else if (Data.MapEvents[index].GraphicType == 1)
             {
-                if (Core.Type.MapEvents[index].Graphic < 1 | Core.Type.MapEvents[index].Graphic > GameState.NumCharacters)
+                if (Data.MapEvents[index].Graphic < 1 | Data.MapEvents[index].Graphic > GameState.NumCharacters)
                 {
-                    textY = GameLogic.ConvertMapY(Core.Type.MapEvents[index].Y * GameState.PicY) + Core.Type.MapEvents[index].YOffset - 16;
+                    textY = GameLogic.ConvertMapY(Data.MapEvents[index].Y * GameState.PicY) + Data.MapEvents[index].YOffset - 16;
                 }
                 else
                 {
                     // Determine location for text
-                    textY = GameLogic.ConvertMapY(Core.Type.MapEvents[index].Y * GameState.PicY) + Core.Type.MapEvents[index].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.MapEvents[index].Graphic.ToString())).Height / 4 + 16;
+                    textY = GameLogic.ConvertMapY(Data.MapEvents[index].Y * GameState.PicY) + Data.MapEvents[index].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Data.MapEvents[index].Graphic.ToString())).Height / 4 + 16;
                 }
             }
-            else if (Core.Type.MapEvents[index].GraphicType == 2)
+            else if (Data.MapEvents[index].GraphicType == 2)
             {
-                if (Core.Type.MapEvents[index].GraphicY2 > 0)
+                if (Data.MapEvents[index].GraphicY2 > 0)
                 {
-                    textX = textX + Core.Type.MapEvents[index].GraphicY2 * GameState.PicY / 2 - 16;
-                    textY = GameLogic.ConvertMapY(Core.Type.MapEvents[index].Y * GameState.PicY) + Core.Type.MapEvents[index].YOffset - Core.Type.MapEvents[index].GraphicY2 * GameState.PicY + 16;
+                    textX = textX + Data.MapEvents[index].GraphicY2 * GameState.PicY / 2 - 16;
+                    textY = GameLogic.ConvertMapY(Data.MapEvents[index].Y * GameState.PicY) + Data.MapEvents[index].YOffset - Data.MapEvents[index].GraphicY2 * GameState.PicY + 16;
                 }
                 else
                 {
-                    textY = GameLogic.ConvertMapY(Core.Type.MapEvents[index].Y * GameState.PicY) + Core.Type.MapEvents[index].YOffset - 32 + 16;
+                    textY = GameLogic.ConvertMapY(Data.MapEvents[index].Y * GameState.PicY) + Data.MapEvents[index].YOffset - 32 + 16;
                 }
             }
 
@@ -445,54 +445,54 @@ namespace Client
             var time = default(int);
 
             // how long we want each message to appear
-            switch (Core.Type.ActionMsg[index].Type)
+            switch (Data.ActionMsg[index].Type)
             {
-                case (int)Core.Enum.ActionMsgType.Static:
+                case (int)Core.ActionMessageType.Static:
                     {
                         time = 1500;
 
-                        if (Core.Type.ActionMsg[index].Y > 0)
+                        if (Data.ActionMsg[index].Y > 0)
                         {
-                            x = Core.Type.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Core.Type.ActionMsg[index].Message) / 2 * 8;
-                            y = Core.Type.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) - 2;
+                            x = Data.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Data.ActionMsg[index].Message) / 2 * 8;
+                            y = Data.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) - 2;
                         }
                         else
                         {
-                            x = Core.Type.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Core.Type.ActionMsg[index].Message) / 2 * 8;
-                            y = Core.Type.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) + 18;
+                            x = Data.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Data.ActionMsg[index].Message) / 2 * 8;
+                            y = Data.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) + 18;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.ActionMsgType.Scroll:
+                case (int)Core.ActionMessageType.Scroll:
                     {
                         time = 1500;
 
-                        if (Core.Type.ActionMsg[index].Y > 0)
+                        if (Data.ActionMsg[index].Y > 0)
                         {
-                            x = Core.Type.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Core.Type.ActionMsg[index].Message) / 2 * 8;
-                            y = (int)Math.Round(Core.Type.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) - 2 - Core.Type.ActionMsg[index].Scroll * 0.6d);
-                            Core.Type.ActionMsg[index].Scroll = Core.Type.ActionMsg[index].Scroll + 1;
+                            x = Data.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Data.ActionMsg[index].Message) / 2 * 8;
+                            y = (int)Math.Round(Data.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) - 2 - Data.ActionMsg[index].Scroll * 0.6d);
+                            Data.ActionMsg[index].Scroll = Data.ActionMsg[index].Scroll + 1;
                         }
                         else
                         {
-                            x = Core.Type.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Core.Type.ActionMsg[index].Message) / 2 * 8;
-                            y = (int)Math.Round(Core.Type.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) + 18 + Core.Type.ActionMsg[index].Scroll * 0.6d);
-                            Core.Type.ActionMsg[index].Scroll = Core.Type.ActionMsg[index].Scroll + 1;
+                            x = Data.ActionMsg[index].X + Conversion.Int(GameState.PicX / 2) - Strings.Len(Data.ActionMsg[index].Message) / 2 * 8;
+                            y = (int)Math.Round(Data.ActionMsg[index].Y - Conversion.Int(GameState.PicY / 2) + 18 + Data.ActionMsg[index].Scroll * 0.6d);
+                            Data.ActionMsg[index].Scroll = Data.ActionMsg[index].Scroll + 1;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.ActionMsgType.Screen:
+                case (int)Core.ActionMessageType.Screen:
                     {
                         time = 3000;
 
                         // This will kill any action screen messages that there in the system
                         for (i = byte.MaxValue; i >= 0; i -= 1)
                         {
-                            if (Core.Type.ActionMsg[i].Type == (int)Core.Enum.ActionMsgType.Screen)
+                            if (Data.ActionMsg[i].Type == (int)Core.ActionMessageType.Screen)
                             {
                                 if (i != index)
                                 {
@@ -501,7 +501,7 @@ namespace Client
                                 }
                             }
                         }
-                        x = GameState.ResolutionWidth / 2 - Strings.Len(Core.Type.ActionMsg[index].Message) / 2 * 8;
+                        x = GameState.ResolutionWidth / 2 - Strings.Len(Data.ActionMsg[index].Message) / 2 * 8;
                         y = 425;
                         break;
                     }
@@ -511,9 +511,9 @@ namespace Client
             x = GameLogic.ConvertMapX(x);
             y = GameLogic.ConvertMapY(y);
 
-            if (General.GetTickCount() < Core.Type.ActionMsg[index].Created + time)
+            if (General.GetTickCount() < Data.ActionMsg[index].Created + time)
             {
-                RenderText(Core.Type.ActionMsg[index].Message, x, y, GameClient.QbColorToXnaColor(Core.Type.ActionMsg[index].Color), Color.Black);
+                RenderText(Data.ActionMsg[index].Message, x, y, GameClient.QbColorToXnaColor(Data.ActionMsg[index].Color), Color.Black);
             }
             else
             {
@@ -556,33 +556,33 @@ namespace Client
                 lineCount = 1;
 
                 // exit out early if we come to a blank string
-                if (Strings.Len(Core.Type.Chat[(int)i].Text) == 0)
+                if (Strings.Len(Core.Data.Chat[(int)i].Text) == 0)
                     break;
 
                 // get visible state
                 isVisible = true;
                 if (GameState.inSmallChat == true)
                 {
-                    if (!(Core.Type.Chat[(int)i].Visible == true))
+                    if (!(Core.Data.Chat[(int)i].Visible == true))
                         isVisible = false;
                 }
 
-                if (SettingsManager.Instance.ChannelState[Core.Type.Chat[i].Channel] == 0)
+                if (SettingsManager.Instance.ChannelState[Core.Data.Chat[i].Channel] == 0)
                     isVisible = false;
 
                 // make sure it's visible
                 if (isVisible == true)
                 {
                     // render line
-                    Color = Core.Type.Chat[(int)i].Color;
+                    Color = Core.Data.Chat[(int)i].Color;
                     Color2 = GameClient.QbColorToXnaColor(Color);
 
                     // check if we need to word wrap
-                    if (GetTextWidth(Core.Type.Chat[i].Text) > width)
+                    if (GetTextWidth(Core.Data.Chat[i].Text) > width)
                     {
                         // word wrap
                         string[] wrappedLines = null;
-                        WordWrap(Core.Type.Chat[(int)i].Text, Core.Enum.FontType.Georgia, width, ref wrappedLines);
+                        WordWrap(Core.Data.Chat[(int)i].Text, Core.Font.Georgia, width, ref wrappedLines);
 
                         // continue on
                         yOffset = yOffset - 10 * wrappedLines.Length;
@@ -605,12 +605,12 @@ namespace Client
                         // normal
                         yOffset = yOffset - 12L; // Adjusted spacing from 14 to 12
 
-                        RenderText(Core.Type.Chat[(int)i].Text, (int)xO, (int)(yO + yOffset), Color2, Color2);
+                        RenderText(Core.Data.Chat[(int)i].Text, (int)xO, (int)(yO + yOffset), Color2, Color2);
                         rLines = rLines + 1;
 
                         // set the top width
-                        if (GetTextWidth(Core.Type.Chat[(int)i].Text) > topWidth)
-                            topWidth = GetTextWidth(Core.Type.Chat[(int)i].Text);
+                        if (GetTextWidth(Core.Data.Chat[(int)i].Text) > topWidth)
+                            topWidth = GetTextWidth(Core.Data.Chat[(int)i].Text);
                     }
                 }
                 // increment chat pointer
@@ -624,7 +624,7 @@ namespace Client
 
         public static void DrawMapName()
         {
-            RenderText(Core.Type.MyMap.Name, (int)Math.Round(GameState.ResolutionWidth / 2d - GetTextWidth(Core.Type.MyMap.Name)), 10, GameState.DrawMapNameColor, Color.Black);
+            RenderText(Data.MyMap.Name, (int)Math.Round(GameState.ResolutionWidth / 2d - GetTextWidth(Data.MyMap.Name)), 10, GameState.DrawMapNameColor, Color.Black);
         }
 
         public static void DrawPlayerName(int index)
@@ -640,31 +640,31 @@ namespace Client
             {
                 switch (GetPlayerAccess(index))
                 {
-                    case (int)Core.Enum.AccessType.Player:
+                    case (int)AccessLevel.Player:
                         {
                             color = Color.White;
                             backColor = Color.Black;
                             break;
                         }
-                    case (int)Core.Enum.AccessType.Moderator:
+                    case (int)AccessLevel.Moderator:
                         {
                             color = Color.Cyan;
                             backColor = Color.White;
                             break;
                         }
-                    case (int)Core.Enum.AccessType.Mapper:
+                    case (int)AccessLevel.Mapper:
                         {
                             color = Color.Green;
                             backColor = Color.Black;
                             break;
                         }
-                    case (int)Core.Enum.AccessType.Developer:
+                    case (int)AccessLevel.Developer:
                         {
                             color = Color.Blue;
                             backColor = Color.Black;
                             break;
                         }
-                    case (int)Core.Enum.AccessType.Owner:
+                    case (int)AccessLevel.Owner:
                         {
                             color = Color.Yellow;
                             backColor = Color.Black;
@@ -677,20 +677,20 @@ namespace Client
                 color = Color.Red;
             }
 
-            name = Core.Type.Player[index].Name;
+            name = Core.Data.Player[index].Name;
 
             // calc pos
-            textX = GameLogic.ConvertMapX(GetPlayerX(index) * GameState.PicX) + Core.Type.Player[index].XOffset + GameState.PicX / 2 - 6;
+            textX = GameLogic.ConvertMapX(GetPlayerX(index) * GameState.PicX) + Core.Data.Player[index].XOffset + GameState.PicX / 2 - 6;
             textX = (int)Math.Round(textX - GetTextWidth(name) / 6d);
 
             if (GetPlayerSprite(index) <= 0 | GetPlayerSprite(index) > GameState.NumCharacters)
             {
-                textY = GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) + Core.Type.Player[GameState.MyIndex].YOffset - 16;
+                textY = GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) + Core.Data.Player[GameState.MyIndex].YOffset - 16;
             }
             else
             {
                 // Determine location for text
-                textY = (int)Math.Round(GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) + Core.Type.Player[index].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, GetPlayerSprite(index).ToString())).Height / 4d + 16d);
+                textY = (int)Math.Round(GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) + Core.Data.Player[index].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, GetPlayerSprite(index).ToString())).Height / 4d + 16d);
             }
 
             // Draw name

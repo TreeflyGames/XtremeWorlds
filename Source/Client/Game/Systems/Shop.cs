@@ -22,13 +22,13 @@ namespace Client
 
         public static void ClearShop(int index)
         {
-            Core.Type.Shop[index] = default;
-            Core.Type.Shop[index].Name = "";
-            Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Constant.MAX_TRADES];
+            Data.Shop[index] = default;
+            Data.Shop[index].Name = "";
+            Data.Shop[index].TradeItem = new Core.Type.TradeItem[Constant.MAX_TRADES];
             for (int x = 0; x < Constant.MAX_TRADES; x++)
             {            
-                Core.Type.Shop[index].TradeItem[x].Item = -1;
-                Core.Type.Shop[index].TradeItem[x].CostItem = - 1;
+                Data.Shop[index].TradeItem[x].Item = -1;
+                Data.Shop[index].TradeItem[x].CostItem = - 1;
             }
             GameState.Shop_Loaded[index] = 0;
         }
@@ -37,7 +37,7 @@ namespace Client
         {
             int i;
 
-            Core.Type.Shop = new Core.Type.ShopStruct[Constant.MAX_SHOPS];
+            Data.Shop = new Core.Type.Shop[Constant.MAX_SHOPS];
 
             for (i = 0; i < Constant.MAX_SHOPS; i++)
                 ClearShop(i);
@@ -46,7 +46,7 @@ namespace Client
 
         public static void StreamShop(int shopNum)
         {
-            if (shopNum >= 0 && string.IsNullOrEmpty(Core.Type.Shop[shopNum].Name) && GameState.Shop_Loaded[shopNum] == 0)
+            if (shopNum >= 0 && string.IsNullOrEmpty(Data.Shop[shopNum].Name) && GameState.Shop_Loaded[shopNum] == 0)
             {
                 GameState.Shop_Loaded[shopNum] = 1;
                 SendRequestShop(shopNum);
@@ -80,19 +80,19 @@ namespace Client
             var buffer = new ByteStream(data);
             shopnum = buffer.ReadInt32();
 
-            Core.Type.Shop[shopnum].BuyRate = buffer.ReadInt32();
-            Core.Type.Shop[shopnum].Name = buffer.ReadString();
+            Data.Shop[shopnum].BuyRate = buffer.ReadInt32();
+            Data.Shop[shopnum].Name = buffer.ReadString();
 
             for (int i = 0; i < Constant.MAX_TRADES; i++)
             {
-                Core.Type.Shop[shopnum].TradeItem[i].CostItem = buffer.ReadInt32();
-                Core.Type.Shop[shopnum].TradeItem[i].CostValue = buffer.ReadInt32();
-                Core.Type.Shop[shopnum].TradeItem[i].Item = buffer.ReadInt32();
-                Core.Type.Shop[shopnum].TradeItem[i].ItemValue = buffer.ReadInt32();
+                Data.Shop[shopnum].TradeItem[i].CostItem = buffer.ReadInt32();
+                Data.Shop[shopnum].TradeItem[i].CostValue = buffer.ReadInt32();
+                Data.Shop[shopnum].TradeItem[i].Item = buffer.ReadInt32();
+                Data.Shop[shopnum].TradeItem[i].ItemValue = buffer.ReadInt32();
             }
 
-            if (Core.Type.Shop[shopnum].Name is null)
-                Core.Type.Shop[shopnum].Name = "";
+            if (Data.Shop[shopnum].Name is null)
+                Data.Shop[shopnum].Name = "";
 
             buffer.Dispose();
         }

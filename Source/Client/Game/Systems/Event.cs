@@ -14,7 +14,7 @@ namespace Client
         #region Globals
 
         // Temp event storage
-        public static Core.Type.EventStruct TmpEvent;
+        public static Core.Type.Event TmpEvent;
 
         public static bool IsEdit;
 
@@ -32,7 +32,7 @@ namespace Client
 
         public static int GraphicSelType;
         public static int TempMoveRouteCount;
-        public static Core.Type.MoveRouteStruct[] TempMoveRoute;
+        public static Core.Type.MoveRoute[] TempMoveRoute;
         public static bool IsMoveRouteCommand;
         public static int[] ListOfEvents;
 
@@ -58,14 +58,14 @@ namespace Client
 
         public static bool EventCopy;
         public static bool EventPaste;
-        public static Core.Type.EventListStruct[] EventList;
-        public static Core.Type.EventStruct CopyEvent;
-        public static Core.Type.EventPageStruct CopyEventPage;
+        public static Core.Type.EventList[] EventList;
+        public static Core.Type.Event CopyEvent;
+        public static Core.Type.EventPage CopyEventPage;
 
         public static bool InEvent;
         public static bool HoldPlayer;
 
-        public static Core.Type.PictureStruct Picture;
+        public static Core.Type.Picture Picture;
 
         #endregion
 
@@ -79,9 +79,9 @@ namespace Client
             id = buffer.ReadInt32();
 
             GameState.CurrentEvents = id + 1;
-            Array.Resize(ref Core.Type.MapEvents, GameState.CurrentEvents);
+            Array.Resize(ref Data.MapEvents, GameState.CurrentEvents);
 
-            ref var withBlock = ref Core.Type.MapEvents[id];
+            ref var withBlock = ref Data.MapEvents[id];
             withBlock.Name = buffer.ReadString();
             withBlock.Dir = buffer.ReadInt32();
             withBlock.ShowDir = withBlock.Dir;
@@ -130,7 +130,7 @@ namespace Client
                 return;
 
             {
-                ref var withBlock = ref Core.Type.MapEvents[id];
+                ref var withBlock = ref Data.MapEvents[id];
                 withBlock.X = x;
                 withBlock.Y = y;
                 withBlock.Dir = dir;
@@ -142,22 +142,22 @@ namespace Client
 
                 switch (dir)
                 {
-                    case (int)Core.Enum.DirectionType.Up:
+                    case (int)Direction.Up:
                         {
                             withBlock.YOffset = GameState.PicY;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Down:
+                    case (int)Direction.Down:
                         {
                             withBlock.YOffset = GameState.PicY * -1;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Left:
+                    case (int)Direction.Left:
                         {
                             withBlock.XOffset = GameState.PicX;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Right:
+                    case (int)Direction.Right:
                         {
                             withBlock.XOffset = GameState.PicX * -1;
                             break;
@@ -180,7 +180,7 @@ namespace Client
                 return;
 
             {
-                ref var withBlock = ref Core.Type.MapEvents[i];
+                ref var withBlock = ref Data.MapEvents[i];
                 withBlock.Dir = dir;
                 withBlock.ShowDir = dir;
                 withBlock.XOffset = 0;
@@ -214,16 +214,16 @@ namespace Client
             int w;
             var buffer = new ByteStream(data);
 
-            Core.Type.MyMap.EventCount = buffer.ReadInt32();
+            Data.MyMap.EventCount = buffer.ReadInt32();
 
-            if (Core.Type.MyMap.EventCount > 0)
+            if (Data.MyMap.EventCount > 0)
             {
-                Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
-                var loopTo = Core.Type.MyMap.EventCount;
+                Data.MyMap.Event = new Core.Type.Event[Data.MyMap.EventCount];
+                var loopTo = Data.MyMap.EventCount;
                 for (i = 0; i < loopTo; i++)
                 {
                     {
-                        ref var withBlock = ref Core.Type.MyMap.Event[i];
+                        ref var withBlock = ref Data.MyMap.Event[i];
                         withBlock.Name = buffer.ReadString();
                         withBlock.Globals = buffer.ReadByte();
                         withBlock.X = buffer.ReadInt32();
@@ -231,14 +231,14 @@ namespace Client
                         withBlock.PageCount = buffer.ReadInt32();
                     }
 
-                    if (Core.Type.MyMap.Event[i].PageCount > 0)
+                    if (Data.MyMap.Event[i].PageCount > 0)
                     {
-                        Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
-                        var loopTo1 = Core.Type.MyMap.Event[i].PageCount;
+                        Data.MyMap.Event[i].Pages = new Core.Type.EventPage[Data.MyMap.Event[i].PageCount];
+                        var loopTo1 = Data.MyMap.Event[i].PageCount;
                         for (x = 0; x < loopTo1; x++)
                         {
                             {
-                                ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
+                                ref var withBlock1 = ref Data.MyMap.Event[i].Pages[x];
                                 withBlock1.ChkVariable = buffer.ReadInt32();
                                 withBlock1.VariableIndex = buffer.ReadInt32();
                                 withBlock1.VariableCondition = buffer.ReadInt32();
@@ -268,7 +268,7 @@ namespace Client
 
                                 if (withBlock1.MoveRouteCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount];
+                                    Data.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRoute[withBlock1.MoveRouteCount];
                                     var loopTo2 = withBlock1.MoveRouteCount;
                                     for (y = 0; y < loopTo2; y++)
                                     {
@@ -291,22 +291,22 @@ namespace Client
                                 withBlock1.Position = buffer.ReadByte();
                             }
 
-                            if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
+                            if (Data.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
-                                Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
-                                var loopTo3 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
+                                Data.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandList[Data.MyMap.Event[i].Pages[x].CommandListCount];
+                                var loopTo3 = Data.MyMap.Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < loopTo3; y++)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
-                                    if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
+                                    Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
+                                    Data.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
+                                    if (Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
-                                        var loopTo4 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount;
+                                        Data.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommand[Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
+                                        var loopTo4 = Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount;
                                         for (z = 0; z < loopTo4; z++)
                                         {
                                             {
-                                                ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
+                                                ref var withBlock2 = ref Data.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
                                                 withBlock2.Index = buffer.ReadInt32();
                                                 withBlock2.Text1 = buffer.ReadString();
                                                 withBlock2.Text2 = buffer.ReadString();
@@ -329,7 +329,7 @@ namespace Client
 
                                                 if (withBlock2.MoveRouteCount > 0)
                                                 {
-                                                    withBlock2.MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount];
+                                                    withBlock2.MoveRoute = new Core.Type.MoveRoute[withBlock2.MoveRouteCount];
                                                     var loopTo5 = withBlock2.MoveRouteCount;
                                                     for (w = 0; w < loopTo5; w++)
                                                     {
@@ -471,7 +471,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             music = buffer.ReadString();
-            Core.Type.MyMap.Music = music;
+            Data.MyMap.Music = music;
 
             buffer.Dispose();
         }
@@ -545,7 +545,7 @@ namespace Client
                     }
                 case GameState.EffectTypeTint:
                     {
-                        Core.Type.MyMap.MapTint = true;
+                        Data.MyMap.MapTint = true;
                         GameState.CurrentTintR = buffer.ReadInt32();
                         GameState.CurrentTintG = buffer.ReadInt32();
                         GameState.CurrentTintB = buffer.ReadInt32();
@@ -595,77 +595,77 @@ namespace Client
 
         public static void ProcessEventMovement(int id)
         {
-            if (GameState.MyEditorType == (int)Core.Enum.EditorType.Map)
+            if (GameState.MyEditorType == (int)EditorType.Map)
                 return;
 
-            if (id >= Core.Type.MyMap.EventCount)
+            if (id >= Data.MyMap.EventCount)
                 return;
 
-            if (id >= Core.Type.MapEvents.Length)
+            if (id >= Data.MapEvents.Length)
                 return;
 
-            if (Core.Type.MapEvents[id].Moving == 1)
+            if (Data.MapEvents[id].Moving == 1)
             {
-                switch (Core.Type.MapEvents[id].Dir)
+                switch (Data.MapEvents[id].Dir)
                 {
-                    case (int)Core.Enum.DirectionType.Up:
+                    case (int)Direction.Up:
                         {
-                            Core.Type.MapEvents[id].YOffset = (int)Math.Round(Core.Type.MapEvents[id].YOffset - GameState.ElapsedTime / 1000d * (Core.Type.MapEvents[id].MovementSpeed * GameState.SizeY));
-                            if (Core.Type.MapEvents[id].YOffset < 0)
-                                Core.Type.MapEvents[id].YOffset = 0;
+                            Data.MapEvents[id].YOffset = (int)Math.Round(Data.MapEvents[id].YOffset - GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeY));
+                            if (Data.MapEvents[id].YOffset < 0)
+                                Data.MapEvents[id].YOffset = 0;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Down:
+                    case (int)Direction.Down:
                         {
-                            Core.Type.MapEvents[id].YOffset = (int)Math.Round(Core.Type.MapEvents[id].YOffset + GameState.ElapsedTime / 1000d * (Core.Type.MapEvents[id].MovementSpeed * GameState.SizeY));
-                            if (Core.Type.MapEvents[id].YOffset > 0)
-                                Core.Type.MapEvents[id].YOffset = 0;
+                            Data.MapEvents[id].YOffset = (int)Math.Round(Data.MapEvents[id].YOffset + GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeY));
+                            if (Data.MapEvents[id].YOffset > 0)
+                                Data.MapEvents[id].YOffset = 0;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Left:
+                    case (int)Direction.Left:
                         {
-                            Core.Type.MapEvents[id].XOffset = (int)Math.Round(Core.Type.MapEvents[id].XOffset - GameState.ElapsedTime / 1000d * (Core.Type.MapEvents[id].MovementSpeed * GameState.SizeX));
-                            if (Core.Type.MapEvents[id].XOffset < 0)
-                                Core.Type.MapEvents[id].XOffset = 0;
+                            Data.MapEvents[id].XOffset = (int)Math.Round(Data.MapEvents[id].XOffset - GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeX));
+                            if (Data.MapEvents[id].XOffset < 0)
+                                Data.MapEvents[id].XOffset = 0;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Right:
+                    case (int)Direction.Right:
                         {
-                            Core.Type.MapEvents[id].XOffset = (int)Math.Round(Core.Type.MapEvents[id].XOffset + GameState.ElapsedTime / 1000d * (Core.Type.MapEvents[id].MovementSpeed * GameState.SizeX));
-                            if (Core.Type.MapEvents[id].XOffset > 0)
-                                Core.Type.MapEvents[id].XOffset = 0;
+                            Data.MapEvents[id].XOffset = (int)Math.Round(Data.MapEvents[id].XOffset + GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeX));
+                            if (Data.MapEvents[id].XOffset > 0)
+                                Data.MapEvents[id].XOffset = 0;
                             break;
                         }
                 }
 
                 // Check if completed walking over to the next tile
-                if (Core.Type.MapEvents[id].Moving > 0)
+                if (Data.MapEvents[id].Moving > 0)
                 {
-                    if (Core.Type.MapEvents[id].Dir == (int)Core.Enum.DirectionType.Right | Core.Type.MapEvents[id].Dir == (int)Core.Enum.DirectionType.Down)
+                    if (Data.MapEvents[id].Dir == (int)Direction.Right | Data.MapEvents[id].Dir == (int)Direction.Down)
                     {
-                        if (Core.Type.MapEvents[id].XOffset >= 0 & Core.Type.MapEvents[id].YOffset >= 0)
+                        if (Data.MapEvents[id].XOffset >= 0 & Data.MapEvents[id].YOffset >= 0)
                         {
-                            Core.Type.MapEvents[id].Moving = 0;
-                            if (Core.Type.MapEvents[id].Steps == 1)
+                            Data.MapEvents[id].Moving = 0;
+                            if (Data.MapEvents[id].Steps == 1)
                             {
-                                Core.Type.MapEvents[id].Steps = 3;
+                                Data.MapEvents[id].Steps = 3;
                             }
                             else
                             {
-                                Core.Type.MapEvents[id].Steps = 1;
+                                Data.MapEvents[id].Steps = 1;
                             }
                         }
                     }
-                    else if (Core.Type.MapEvents[id].XOffset <= 0 & Core.Type.MapEvents[id].YOffset <= 0)
+                    else if (Data.MapEvents[id].XOffset <= 0 & Data.MapEvents[id].YOffset <= 0)
                     {
-                        Core.Type.MapEvents[id].Moving = 0;
-                        if (Core.Type.MapEvents[id].Steps == 1)
+                        Data.MapEvents[id].Moving = 0;
+                        if (Data.MapEvents[id].Steps == 1)
                         {
-                            Core.Type.MapEvents[id].Steps = 3;
+                            Data.MapEvents[id].Steps = 3;
                         }
                         else
                         {
-                            Core.Type.MapEvents[id].Steps = 1;
+                            Data.MapEvents[id].Steps = 1;
                         }
                     }
                 }

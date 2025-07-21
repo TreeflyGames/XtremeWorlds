@@ -26,7 +26,7 @@ namespace Client
             {
                 lines[i] = buffer.ReadString();
             }
-            Core.Type.Script.Code = lines;
+            Data.Script.Code = lines;
 
             buffer.Dispose();
 
@@ -51,7 +51,7 @@ namespace Client
             buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveScript);
-            buffer.WriteString(string.Join(Environment.NewLine, Core.Type.Script.Code));
+            buffer.WriteString(string.Join(Environment.NewLine, Data.Script.Code));
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();

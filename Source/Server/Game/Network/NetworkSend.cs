@@ -5,7 +5,6 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
-using static Core.Enum;
 using static Core.Packets;
 using static Core.Global.Command;
 using static Core.Type;
@@ -80,10 +79,10 @@ namespace Server
             {
                 Database.LoadCharacter(index, Conversions.ToInteger(i + 1));
 
-                buffer.WriteString(Core.Type.Player[index].Name);
-                buffer.WriteInt32(Core.Type.Player[index].Sprite);
-                buffer.WriteInt32(Core.Type.Player[index].Access);
-                buffer.WriteInt32(Core.Type.Player[index].Job);
+                buffer.WriteString(Core.Data.Player[index].Name);
+                buffer.WriteInt32(Core.Data.Player[index].Sprite);
+                buffer.WriteInt32(Core.Data.Player[index].Access);
+                buffer.WriteInt32(Core.Data.Player[index].Job);
 
                 Database.ClearCharacter(index);
             }
@@ -101,25 +100,26 @@ namespace Server
             buffer.WriteInt32((int)ServerPackets.SUpdateJob);
             buffer.WriteInt32(jobNum);
 
-            buffer.WriteString(Core.Type.Job[jobNum].Name);
-            buffer.WriteString(Core.Type.Job[jobNum].Desc);
+            buffer.WriteString(Data.Job[jobNum].Name);
+            buffer.WriteString(Data.Job[jobNum].Desc);
 
-            buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
-            buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
+            buffer.WriteInt32(Data.Job[jobNum].MaleSprite);
+            buffer.WriteInt32(Data.Job[jobNum].FemaleSprite);
 
-            for (int q = 0, loopTo = (int)(StatType.Count); q < loopTo; q++)
-                buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(q)]);
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            for (int q = 0, loopTo = statCount; q < loopTo; q++)
+                buffer.WriteInt32(Data.Job[jobNum].Stat[Conversions.ToInteger(q)]);
 
             for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
             {
-                buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
-                buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);
+                buffer.WriteInt32(Data.Job[jobNum].StartItem[q]);
+                buffer.WriteInt32(Data.Job[jobNum].StartValue[q]);
             }
 
-            buffer.WriteInt32(Core.Type.Job[jobNum].StartMap);
-            buffer.WriteByte(Core.Type.Job[jobNum].StartX);
-            buffer.WriteByte(Core.Type.Job[jobNum].StartY);
-            buffer.WriteInt32(Core.Type.Job[jobNum].BaseExp);
+            buffer.WriteInt32(Data.Job[jobNum].StartMap);
+            buffer.WriteByte(Data.Job[jobNum].StartX);
+            buffer.WriteByte(Data.Job[jobNum].StartY);
+            buffer.WriteInt32(Data.Job[jobNum].BaseExp);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -265,8 +265,9 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SMapWornEq);
             buffer.WriteInt32(index);
-            for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
+            int equipmentCount = Enum.GetValues(typeof(Equipment)).Length;
+            for (int i = 0; i < equipmentCount; i++)
+                buffer.WriteInt32(GetPlayerEquipment(index, (Equipment)i));
 
             NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
@@ -279,8 +280,9 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SMapWornEq);
             buffer.WriteInt32(PlayerNum);
-            for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerEquipment(PlayerNum, (EquipmentType)i));
+            int equipmentCount = Enum.GetValues(typeof(Equipment)).Length;
+            for (int i = 0; i < equipmentCount; i++)
+                buffer.WriteInt32(GetPlayerEquipment(PlayerNum, (Equipment)i));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -294,7 +296,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_SHOPS;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.Shop[i].Name.Length > 0)
+                if (Data.Shop[i].Name.Length > 0)
                 {
                     SendUpdateShopTo(index, i);
                 }
@@ -310,15 +312,15 @@ namespace Server
 
             buffer.WriteInt32(shopNum);
 
-            buffer.WriteInt32(Core.Type.Shop[shopNum].BuyRate);
-            buffer.WriteString(Core.Type.Shop[shopNum].Name);
+            buffer.WriteInt32(Data.Shop[shopNum].BuyRate);
+            buffer.WriteString(Data.Shop[shopNum].Name);
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].Item);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].ItemValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostItem);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].Item);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].ItemValue);
             }
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -332,15 +334,15 @@ namespace Server
             buffer.WriteInt32((int)ServerPackets.SUpdateShop);
 
             buffer.WriteInt32(shopNum);
-            buffer.WriteInt32(Core.Type.Shop[shopNum].BuyRate);
-            buffer.WriteString(Core.Type.Shop[shopNum].Name);
+            buffer.WriteInt32(Data.Shop[shopNum].BuyRate);
+            buffer.WriteString(Data.Shop[shopNum].Name);
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].Item);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].ItemValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostItem);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].Item);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].ItemValue);
             }
 
             NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
@@ -354,7 +356,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_SKILLS;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.Skill[i].Name.Length > 0)
+                if (Data.Skill[i].Name.Length > 0)
                 {
                     SendUpdateSkillTo(index, i);
                 }
@@ -367,35 +369,35 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SUpdateSkill);
             buffer.WriteInt32(skillNum);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AccessReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AoE);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CdTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].JobReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Dir);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Duration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Icon);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Interval);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillNum].IsAoE));
-            buffer.WriteInt32(Core.Type.Skill[skillNum].LevelReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Map);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].MpCost);
-            buffer.WriteString(Core.Type.Skill[skillNum].Name);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Range);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].SkillAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].StunDuration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Type);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Vital);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].X);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Y);
+            buffer.WriteInt32(Data.Skill[skillNum].AccessReq);
+            buffer.WriteInt32(Data.Skill[skillNum].AoE);
+            buffer.WriteInt32(Data.Skill[skillNum].CastAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].CastTime);
+            buffer.WriteInt32(Data.Skill[skillNum].CdTime);
+            buffer.WriteInt32(Data.Skill[skillNum].JobReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Dir);
+            buffer.WriteInt32(Data.Skill[skillNum].Duration);
+            buffer.WriteInt32(Data.Skill[skillNum].Icon);
+            buffer.WriteInt32(Data.Skill[skillNum].Interval);
+            buffer.WriteInt32(Conversions.ToInteger(Data.Skill[skillNum].IsAoE));
+            buffer.WriteInt32(Data.Skill[skillNum].LevelReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Map);
+            buffer.WriteInt32(Data.Skill[skillNum].MpCost);
+            buffer.WriteString(Data.Skill[skillNum].Name);
+            buffer.WriteInt32(Data.Skill[skillNum].Range);
+            buffer.WriteInt32(Data.Skill[skillNum].SkillAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].StunDuration);
+            buffer.WriteInt32(Data.Skill[skillNum].Type);
+            buffer.WriteInt32(Data.Skill[skillNum].Vital);
+            buffer.WriteInt32(Data.Skill[skillNum].X);
+            buffer.WriteInt32(Data.Skill[skillNum].Y);
 
             // projectiles
-            buffer.WriteInt32(Core.Type.Skill[skillNum].IsProjectile);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Projectile);
+            buffer.WriteInt32(Data.Skill[skillNum].IsProjectile);
+            buffer.WriteInt32(Data.Skill[skillNum].Projectile);
 
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBack);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBack);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBackTiles);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -407,34 +409,34 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SUpdateSkill);
             buffer.WriteInt32(skillNum);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AccessReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AoE);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CdTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].JobReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Dir);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Duration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Icon);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Interval);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillNum].IsAoE));
-            buffer.WriteInt32(Core.Type.Skill[skillNum].LevelReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Map);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].MpCost);
-            buffer.WriteString(Core.Type.Skill[skillNum].Name);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Range);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].SkillAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].StunDuration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Type);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Vital);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].X);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Y);
+            buffer.WriteInt32(Data.Skill[skillNum].AccessReq);
+            buffer.WriteInt32(Data.Skill[skillNum].AoE);
+            buffer.WriteInt32(Data.Skill[skillNum].CastAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].CastTime);
+            buffer.WriteInt32(Data.Skill[skillNum].CdTime);
+            buffer.WriteInt32(Data.Skill[skillNum].JobReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Dir);
+            buffer.WriteInt32(Data.Skill[skillNum].Duration);
+            buffer.WriteInt32(Data.Skill[skillNum].Icon);
+            buffer.WriteInt32(Data.Skill[skillNum].Interval);
+            buffer.WriteInt32(Conversions.ToInteger(Data.Skill[skillNum].IsAoE));
+            buffer.WriteInt32(Data.Skill[skillNum].LevelReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Map);
+            buffer.WriteInt32(Data.Skill[skillNum].MpCost);
+            buffer.WriteString(Data.Skill[skillNum].Name);
+            buffer.WriteInt32(Data.Skill[skillNum].Range);
+            buffer.WriteInt32(Data.Skill[skillNum].SkillAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].StunDuration);
+            buffer.WriteInt32(Data.Skill[skillNum].Type);
+            buffer.WriteInt32(Data.Skill[skillNum].Vital);
+            buffer.WriteInt32(Data.Skill[skillNum].X);
+            buffer.WriteInt32(Data.Skill[skillNum].Y);
 
-            buffer.WriteInt32(Core.Type.Skill[skillNum].IsProjectile);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Projectile);
+            buffer.WriteInt32(Data.Skill[skillNum].IsProjectile);
+            buffer.WriteInt32(Data.Skill[skillNum].Projectile);
 
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBack);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBack);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBackTiles);
 
             NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -447,8 +449,10 @@ namespace Server
             buffer.WriteInt32((int)ServerPackets.SPlayerStats);
             buffer.WriteInt32(index);
 
-            for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
+            // Fix: Stat.Count does not exist. Use Enum.GetValues(typeof(Stat)).Length
+            int statCount = Enum.GetValues(typeof(Stat)).Length;
+            for (int i = 0; i < statCount; i++)
+                buffer.WriteInt32(GetPlayerStat(index, (Stat)i));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -457,23 +461,23 @@ namespace Server
 
         public static void SendVitals(int index)
         {
-            for (int i = 0, loopTo = (int)(VitalType.Count); i < loopTo; i++)
-                SendVital(index, (VitalType)i);
+            for (int i = 0; i < Enum.GetValues(typeof(Vital)).Length; i++)
+                SendVital(index, (Vital)i);
         }
 
-        public static void SendVital(int index, VitalType vital)
+        public static void SendVital(int index, Vital vital)
         {
             var buffer = new ByteStream(4);
 
             // Get our packet type.
             switch (vital)
             {
-                case VitalType.HP:
+                case Vital.Health:
                     {
                         buffer.WriteInt32((int)ServerPackets.SPlayerHP);
                         break;
                     }
-                case VitalType.SP:
+                case Vital.Stamina:
                     {
                         buffer.WriteInt32((int)ServerPackets.SPlayerSP);
                         break;
@@ -487,8 +491,8 @@ namespace Server
             buffer.Dispose();
 
             // send vitals to party if in one
-            if (Core.Type.TempPlayer[index].InParty >= 0)
-                Party.SendPartyVitals(Core.Type.TempPlayer[index].InParty, index);
+            if (Core.Data.TempPlayer[index].InParty >= 0)
+                Party.SendPartyVitals(Core.Data.TempPlayer[index].InParty, index);
         }
 
         public static void SendWelcome(int index)
@@ -496,7 +500,7 @@ namespace Server
             // Send them welcome
             if (SettingsManager.Instance.Welcome.Length > 0)
             {
-                PlayerMsg(index, SettingsManager.Instance.Welcome, (int)(int)ColorType.BrightCyan);
+                PlayerMsg(index, SettingsManager.Instance.Welcome, (int)(int)Core.Color.BrightCyan);
             }
 
             // Send whos online
@@ -509,7 +513,7 @@ namespace Server
             var n = default(int);
             int i;
 
-            if (GetPlayerAccess(index) < (int)AccessType.Moderator)
+            if (GetPlayerAccess(index) < (int)AccessLevel.Moderator)
                 return;
 
             var loopTo = NetworkConfig.Socket.HighIndex;
@@ -532,7 +536,7 @@ namespace Server
                 s = "There are " + n + " other players online: " + s + ".";
             }
 
-            PlayerMsg(index, s, (int)(int)ColorType.White);
+            PlayerMsg(index, s, (int)(int)Core.Color.White);
         }
 
         public static void SendWornEquipment(int index)
@@ -541,8 +545,9 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SPlayerWornEq);
 
-            for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
+            int equipmentCount = Enum.GetValues(typeof(Equipment)).Length;
+            for (int i = 0; i < equipmentCount; i++)
+                buffer.WriteInt32(GetPlayerEquipment(index, (Equipment)i));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -558,71 +563,71 @@ namespace Server
             {
                 buffer.WriteInt32(1);
                 buffer.WriteInt32(mapNum);
-                buffer.WriteString(Core.Type.Map[mapNum].Name);
-                buffer.WriteString(Core.Type.Map[mapNum].Music);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Revision);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Moral);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Tileset);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Up);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Down);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Left);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Right);
-                buffer.WriteInt32(Core.Type.Map[mapNum].BootMap);
-                buffer.WriteInt32(Core.Type.Map[mapNum].BootX);
-                buffer.WriteInt32(Core.Type.Map[mapNum].BootY);
-                buffer.WriteInt32(Core.Type.Map[mapNum].MaxX);
-                buffer.WriteInt32(Core.Type.Map[mapNum].MaxY);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Weather);
-                buffer.WriteInt32(Core.Type.Map[mapNum].Fog);
-                buffer.WriteInt32(Core.Type.Map[mapNum].WeatherIntensity);
-                buffer.WriteInt32(Core.Type.Map[mapNum].FogOpacity);
-                buffer.WriteInt32(Core.Type.Map[mapNum].FogSpeed);
-                buffer.WriteInt32(Conversions.ToInteger(Core.Type.Map[mapNum].MapTint));
-                buffer.WriteInt32(Core.Type.Map[mapNum].MapTintR);
-                buffer.WriteInt32(Core.Type.Map[mapNum].MapTintG);
-                buffer.WriteInt32(Core.Type.Map[mapNum].MapTintB);
-                buffer.WriteInt32(Core.Type.Map[mapNum].MapTintA);
-                buffer.WriteByte(Core.Type.Map[mapNum].Panorama);
-                buffer.WriteByte(Core.Type.Map[mapNum].Parallax);
-                buffer.WriteByte(Core.Type.Map[mapNum].Brightness);
-                buffer.WriteInt32(Conversions.ToInteger(Core.Type.Map[mapNum].NoRespawn));
-                buffer.WriteInt32(Conversions.ToInteger(Core.Type.Map[mapNum].Indoors));
-                buffer.WriteInt32(Core.Type.Map[mapNum].Shop);
+                buffer.WriteString(Data.Map[mapNum].Name);
+                buffer.WriteString(Data.Map[mapNum].Music);
+                buffer.WriteInt32(Data.Map[mapNum].Revision);
+                buffer.WriteInt32(Data.Map[mapNum].Moral);
+                buffer.WriteInt32(Data.Map[mapNum].Tileset);
+                buffer.WriteInt32(Data.Map[mapNum].Up);
+                buffer.WriteInt32(Data.Map[mapNum].Down);
+                buffer.WriteInt32(Data.Map[mapNum].Left);
+                buffer.WriteInt32(Data.Map[mapNum].Right);
+                buffer.WriteInt32(Data.Map[mapNum].BootMap);
+                buffer.WriteInt32(Data.Map[mapNum].BootX);
+                buffer.WriteInt32(Data.Map[mapNum].BootY);
+                buffer.WriteInt32(Data.Map[mapNum].MaxX);
+                buffer.WriteInt32(Data.Map[mapNum].MaxY);
+                buffer.WriteInt32(Data.Map[mapNum].Weather);
+                buffer.WriteInt32(Data.Map[mapNum].Fog);
+                buffer.WriteInt32(Data.Map[mapNum].WeatherIntensity);
+                buffer.WriteInt32(Data.Map[mapNum].FogOpacity);
+                buffer.WriteInt32(Data.Map[mapNum].FogSpeed);
+                buffer.WriteInt32(Conversions.ToInteger(Data.Map[mapNum].MapTint));
+                buffer.WriteInt32(Data.Map[mapNum].MapTintR);
+                buffer.WriteInt32(Data.Map[mapNum].MapTintG);
+                buffer.WriteInt32(Data.Map[mapNum].MapTintB);
+                buffer.WriteInt32(Data.Map[mapNum].MapTintA);
+                buffer.WriteByte(Data.Map[mapNum].Panorama);
+                buffer.WriteByte(Data.Map[mapNum].Parallax);
+                buffer.WriteByte(Data.Map[mapNum].Brightness);
+                buffer.WriteInt32(Conversions.ToInteger(Data.Map[mapNum].NoRespawn));
+                buffer.WriteInt32(Conversions.ToInteger(Data.Map[mapNum].Indoors));
+                buffer.WriteInt32(Data.Map[mapNum].Shop);
 
                 for (int i = 0, loopTo = Core.Constant.MAX_MAP_NPCS; i < loopTo; i++)
-                    buffer.WriteInt32(Core.Type.Map[mapNum].NPC[i]);
+                    buffer.WriteInt32(Data.Map[mapNum].Npc[i]);
 
-                for (int x = 0, loopTo1 = Core.Type.Map[mapNum].MaxX; x < (int)loopTo1; x++)
+                for (int x = 0, loopTo1 = Data.Map[mapNum].MaxX; x < (int)loopTo1; x++)
                 {
-                    for (int y = 0, loopTo2 = Core.Type.Map[mapNum].MaxY; y < (int)loopTo2; y++)
+                    for (int y = 0, loopTo2 = Data.Map[mapNum].MaxY; y < (int)loopTo2; y++)
                     {
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data1);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data3);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data1_2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data2_2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data3_2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].DirBlock);
-                        for (int i = 0, loopTo3 = (int)(LayerType.Count); i < loopTo3; i++)
+                        buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Data1);
+                        buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Data2);
+                        buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Data3);
+                        buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Data1_2);
+                        buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Data2_2);
+                        buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Data3_2);
+                        buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].DirBlock);
+                        for (int i = 0, loopTo3 = (int)Enum.GetValues(typeof(MapLayer)).Length; i < loopTo3; i++)
                         {
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].Tileset);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].X);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].Y);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].AutoTile);
+                            buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Layer[i].Tileset);
+                            buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Layer[i].X);
+                            buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Layer[i].Y);
+                            buffer.WriteInt32(Data.Map[mapNum].Tile[x, y].Layer[i].AutoTile);
                         }
-                        buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[x, y].Type);
-                        buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[x, y].Type2);
+                        buffer.WriteInt32((int)Data.Map[mapNum].Tile[x, y].Type);
+                        buffer.WriteInt32((int)Data.Map[mapNum].Tile[x, y].Type2);
                     }
                 }
 
-                buffer.WriteInt32(Core.Type.Map[mapNum].EventCount);
+                buffer.WriteInt32(Data.Map[mapNum].EventCount);
 
-                if (Core.Type.Map[mapNum].EventCount > 0)
+                if (Data.Map[mapNum].EventCount > 0)
                 {
-                    for (int i = 0, loopTo4 = Core.Type.Map[mapNum].EventCount; i < loopTo4; i++)
+                    for (int i = 0, loopTo4 = Data.Map[mapNum].EventCount; i < loopTo4; i++)
                     {
                         {
-                            ref var withBlock = ref Core.Type.Map[mapNum].Event[i];
+                            ref var withBlock = ref Data.Map[mapNum].Event[i];
                             buffer.WriteString(withBlock.Name);
                             buffer.WriteByte(withBlock.Globals);
                             buffer.WriteInt32(withBlock.X);
@@ -630,12 +635,12 @@ namespace Server
                             buffer.WriteInt32(withBlock.PageCount);
                         }
 
-                        if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
+                        if (Data.Map[mapNum].Event[i].PageCount > 0)
                         {
-                            for (int X = 0, loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount; X < loopTo5; X++)
+                            for (int X = 0, loopTo5 = Data.Map[mapNum].Event[i].PageCount; X < loopTo5; X++)
                             {
                                 {
-                                    ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i].Pages[X];
+                                    ref var withBlock1 = ref Data.Map[mapNum].Event[i].Pages[X];
                                     buffer.WriteInt32(withBlock1.ChkVariable);
                                     buffer.WriteInt32(withBlock1.VariableIndex);
                                     buffer.WriteInt32(withBlock1.VariableCondition);
@@ -685,18 +690,18 @@ namespace Server
                                     buffer.WriteByte(withBlock1.Position);
                                 }
 
-                                if (Core.Type.Map[mapNum].Event[i].Pages[X].CommandListCount > 0)
+                                if (Data.Map[mapNum].Event[i].Pages[X].CommandListCount > 0)
                                 {
-                                    for (int Y = 0, loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[X].CommandListCount; Y < loopTo7; Y++)
+                                    for (int Y = 0, loopTo7 = Data.Map[mapNum].Event[i].Pages[X].CommandListCount; Y < loopTo7; Y++)
                                     {
-                                        buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount);
-                                        buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].ParentList);
-                                        if (Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount > 0)
+                                        buffer.WriteInt32(Data.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount);
+                                        buffer.WriteInt32(Data.Map[mapNum].Event[i].Pages[X].CommandList[Y].ParentList);
+                                        if (Data.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount > 0)
                                         {
-                                            for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount; z < loopTo8; z++)
+                                            for (int z = 0, loopTo8 = Data.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount; z < loopTo8; z++)
                                             {
                                                 {
-                                                    ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].Commands[z];
+                                                    ref var withBlock2 = ref Data.Map[mapNum].Event[i].Pages[X].CommandList[Y].Commands[z];
                                                     buffer.WriteInt32(withBlock2.Index);
                                                     buffer.WriteString(withBlock2.Text1);
                                                     buffer.WriteString(withBlock2.Text2);
@@ -746,32 +751,32 @@ namespace Server
 
             for (int i = 0, loopTo10 = Core.Constant.MAX_MAP_ITEMS; i < loopTo10; i++)
             {
-                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, i].Num);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].X);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
+                buffer.WriteInt32((int)Data.MapItem[mapNum, i].Num);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].Value);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].X);
+                buffer.WriteInt32(Data.MapItem[mapNum, i].Y);
             }
 
             for (int i = 0, loopTo11 = Core.Constant.MAX_MAP_NPCS; i < loopTo11; i++)
             {
-                buffer.WriteInt32((int)Core.Type.MapNPC[mapNum].NPC[i].Num);
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].X);
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Y);
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Dir);
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(int)VitalType.HP]);
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(int)VitalType.SP]);
+                buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[i].Num);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].X);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Y);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Dir);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(int)Vital.Health]);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(int)Vital.Stamina]);
             }
 
-            if (Core.Type.MapResource[GetPlayerMap(index)].ResourceCount > 0)
+            if (Data.MapResource[GetPlayerMap(index)].ResourceCount > 0)
             {
                 buffer.WriteInt32(1);
-                buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceCount);
+                buffer.WriteInt32(Data.MapResource[GetPlayerMap(index)].ResourceCount);
 
-                for (int i = 0, loopTo12 = Core.Type.MapResource[GetPlayerMap(index)].ResourceCount; i < loopTo12; i++)
+                for (int i = 0, loopTo12 = Data.MapResource[GetPlayerMap(index)].ResourceCount; i < loopTo12; i++)
                 {
-                    buffer.WriteByte(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[i].State);
-                    buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[i].X);
-                    buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[i].Y);
+                    buffer.WriteByte(Data.MapResource[GetPlayerMap(index)].ResourceData[i].State);
+                    buffer.WriteInt32(Data.MapResource[GetPlayerMap(index)].ResourceData[i].X);
+                    buffer.WriteInt32(Data.MapResource[GetPlayerMap(index)].ResourceData[i].Y);
                 }
             }
             else
@@ -817,12 +822,12 @@ namespace Server
             buffer.WriteInt32(GetPlayerAccess(index));
             buffer.WriteBoolean(GetPlayerPK(index));
 
-            var loopTo = (int)StatType.Count;
-            for (i = 0; i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
+            var statCount = Enum.GetValues(typeof(Stat)).Length;
+            for (i = 0; i < statCount; i++)
+                buffer.WriteInt32(GetPlayerStat(index, (Stat)i));
 
-            var loopTo1 = (int)ResourceType.Count;
-            for (i = 0; i < loopTo1; i++)
+            var resourceTypeCount = Enum.GetValues(typeof(ResourceType)).Length;
+            for (i = 0; i < resourceTypeCount; i++)
             {
                 buffer.WriteInt32(GetPlayerGatherSkillLvl(index, i));
                 buffer.WriteInt32(GetPlayerGatherSkillExp(index, i));
@@ -917,7 +922,7 @@ namespace Server
 
             for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i < loopTo; i++)
             {
-                if (GetPlayerAccess(i) >= (int)AccessType.Moderator)
+                if (GetPlayerAccess(i) >= (int)AccessLevel.Moderator)
                 {
                     NetworkConfig.SendDataTo(i, buffer.UnreadData, buffer.WritePosition);
                 }
@@ -1038,8 +1043,8 @@ namespace Server
             var loopTo = Core.Constant.MAX_BANK;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32((int)Bank[index].Item[i].Num);
-                buffer.WriteInt32(Bank[index].Item[i].Value);
+                buffer.WriteInt32((int)Data.Bank[index].Item[i].Num);
+                buffer.WriteInt32(Data.Bank[index].Item[i].Value);
             }
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -1087,7 +1092,7 @@ namespace Server
             double tradeTarget;
             var totalWorth = default(int);
 
-            tradeTarget = Core.Type.TempPlayer[index].InTrade;
+            tradeTarget = Core.Data.TempPlayer[index].InTrade;
 
             if (tradeTarget == -1)
                 return;
@@ -1100,22 +1105,22 @@ namespace Server
                 var loopTo = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo; i++)
                 {
-                    if (Core.Type.TempPlayer[index].TradeOffer[i].Num >= 0)
+                    if (Core.Data.TempPlayer[index].TradeOffer[i].Num >= 0)
                     {
-                        buffer.WriteInt32((int)Core.Type.TempPlayer[index].TradeOffer[i].Num);
-                        buffer.WriteInt32(Core.Type.TempPlayer[index].TradeOffer[i].Value);
+                        buffer.WriteInt32((int)Core.Data.TempPlayer[index].TradeOffer[i].Num);
+                        buffer.WriteInt32(Core.Data.TempPlayer[index].TradeOffer[i].Value);
 
                         // add total worth
                         // currency?
-                        if (Core.Type.Item[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Type == (int)ItemType.Currency || Core.Type.Item[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Stackable == 1)
+                        if (Core.Data.Item[(int)Core.Data.TempPlayer[index].TradeOffer[i].Num].Type == (int)ItemCategory.Currency || Core.Data.Item[(int)Core.Data.TempPlayer[index].TradeOffer[i].Num].Stackable == 1)
                         {
-                            if (Core.Type.TempPlayer[index].TradeOffer[i].Value == 0)
-                                Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[index].TradeOffer[i].Value;
+                            if (Core.Data.TempPlayer[index].TradeOffer[i].Value == 0)
+                                Core.Data.TempPlayer[index].TradeOffer[i].Value = 0;
+                            totalWorth = totalWorth + Core.Data.Item[GetPlayerInv(index, (int)Core.Data.TempPlayer[index].TradeOffer[i].Num)].Price * Core.Data.TempPlayer[index].TradeOffer[i].Value;
                         }
                         else
                         {
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price;
+                            totalWorth = totalWorth + Core.Data.Item[GetPlayerInv(index, (int)Core.Data.TempPlayer[index].TradeOffer[i].Num)].Price;
                         }
                     }
                     else
@@ -1130,24 +1135,24 @@ namespace Server
                 var loopTo1 = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo1; i++)
                 {
-                    if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num >= 0)
+                    if (Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Num >= 0)
                     {
-                        buffer.WriteInt32(GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num));
-                        buffer.WriteInt32(Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value);
+                        buffer.WriteInt32(GetPlayerInv((int)tradeTarget, (int)Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Num));
+                        buffer.WriteInt32(Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Value);
 
                         // add total worth
-                        if (GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num) >= 0)
+                        if (GetPlayerInv((int)tradeTarget, (int)Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Num) >= 0)
                         {
                             // currency?
-                            if (Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Type == (int)ItemType.Currency || Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Stackable == 1)
+                            if (Core.Data.Item[GetPlayerInv((int)tradeTarget, (int)Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Type == (int)ItemCategory.Currency || Core.Data.Item[GetPlayerInv((int)tradeTarget, (int)Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Stackable == 1)
                             {
-                                if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value == 0)
-                                    Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value = 0;
-                                totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value;
+                                if (Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Value == 0)
+                                    Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Value = 0;
+                                totalWorth = totalWorth + Core.Data.Item[GetPlayerInv((int)tradeTarget, (int)Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price * Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Value;
                             }
                             else
                             {
-                                totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price;
+                                totalWorth = totalWorth + Core.Data.Item[GetPlayerInv((int)tradeTarget, (int)Core.Data.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price;
                             }
                         }
                     }
@@ -1183,7 +1188,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)ServerPackets.SStunned);
-            buffer.WriteInt32(Core.Type.TempPlayer[index].StunDuration);
+            buffer.WriteInt32(Core.Data.TempPlayer[index].StunDuration);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -1252,7 +1257,7 @@ namespace Server
 
             var loopTo = Core.Constant.MAX_MAPS;
             for (var i = 0; i < loopTo; i++)
-                buffer.WriteString(Core.Type.Map[i].Name);
+                buffer.WriteString(Data.Map[i].Name);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -1279,7 +1284,7 @@ namespace Server
 
             var loopTo = Core.Constant.MAX_MAPS;
             for (var i = 0; i < loopTo; i++)
-                buffer.WriteString(Core.Type.Map[i].Name);
+                buffer.WriteString(Data.Map[i].Name);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -1296,8 +1301,8 @@ namespace Server
             var loopTo = Core.Constant.MAX_HOTBAR;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.Player[index].Hotbar[i].Slot);
-                buffer.WriteInt32(Core.Type.Player[index].Hotbar[i].SlotType);
+                buffer.WriteInt32(Core.Data.Player[index].Hotbar[i].Slot);
+                buffer.WriteInt32(Core.Data.Player[index].Hotbar[i].SlotType);
             }
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -1377,11 +1382,11 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendNPCAttack(int mapNum, int npcIndex)
+        public static void SendNpcAttack(int mapNum, int npcIndex)
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((int)ServerPackets.SNPCAttack);
+            buffer.WriteInt32((int)ServerPackets.SNpcAttack);
             buffer.WriteInt32(npcIndex);
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
