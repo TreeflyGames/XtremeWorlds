@@ -47,6 +47,12 @@ namespace Client
 
             Configuration = Container?.Provider.GetRequiredService<IConfiguration>() ?? throw new NullReferenceException();
 
+            // Move the appsettings to home folder
+            string appSettingsPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "appsettings.json");
+            if (!File.Exists(appSettingsPath))
+            {
+                File.Copy("appsettings.json", appSettingsPath);
+            }
             GameState.InMenu = true;
             ClearGameData();
             LoadGame();
