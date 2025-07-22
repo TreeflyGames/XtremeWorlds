@@ -4,9 +4,11 @@ using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using static Core.Global.Command;
 using Color = Microsoft.Xna.Framework.Color;
@@ -643,33 +645,34 @@ namespace Client
             zOrder_Win = 0L;
             zOrder_Con = 0L;
 
-            // Menu
-            Crystalshire.UpdateWindow_Menu();
-            Crystalshire.UpdateWindow_Register();
-            Crystalshire.UpdateWindow_Login();
-            Crystalshire.UpdateWindow_NewChar();
-            Crystalshire.UpdateWindow_Jobs();
-            Crystalshire.UpdateWindow_Chars();
-            Crystalshire.UpdateWindow_ChatSmall();
-            Crystalshire.UpdateWindow_Chat();
-            Crystalshire.UpdateWindow_Menu();
-            Crystalshire.UpdateWindow_Description();
-            Crystalshire.UpdateWindow_Inventory();
-            Crystalshire.UpdateWindow_Skills();
-            Crystalshire.UpdateWindow_Character();
-            Crystalshire.UpdateWindow_Hotbar();
-            Crystalshire.UpdateWindow_Bank();
-            Crystalshire.UpdateWindow_Shop();
-            Crystalshire.UpdateWindow_EscMenu();
-            Crystalshire.UpdateWindow_Bars();
-            Crystalshire.UpdateWindow_Dialogue();
-            Crystalshire.UpdateWindow_DragBox();
-            Crystalshire.UpdateWindow_Options();
-            Crystalshire.UpdateWindow_Trade();
-            Crystalshire.UpdateWindow_Party();
-            Crystalshire.UpdateWindow_PlayerMenu();
-            Crystalshire.UpdateWindow_RightClick();
-            Crystalshire.UpdateWindow_Combobox();
+            // Menu (dynamic UI initialization via Script.Instance)
+            dynamic ui = UI.Instance;
+            ui?.UpdateWindow_Menu();
+            ui?.UpdateWindow_Register();
+            ui?.UpdateWindow_Login();
+            ui?.UpdateWindow_NewChar();
+            ui?.UpdateWindow_Jobs();
+            ui?.UpdateWindow_Chars();
+            ui?.UpdateWindow_ChatSmall();
+            ui?.UpdateWindow_Chat();
+            ui?.UpdateWindow_Menu();
+            ui?.UpdateWindow_Description();
+            ui?.UpdateWindow_Inventory();
+            ui?.UpdateWindow_Skills();
+            ui?.UpdateWindow_Character();
+            ui?.UpdateWindow_Hotbar();
+            ui?.UpdateWindow_Bank();
+            ui?.UpdateWindow_Shop();
+            ui?.UpdateWindow_EscMenu();
+            ui?.UpdateWindow_Bars();
+            ui?.UpdateWindow_Dialogue();
+            ui?.UpdateWindow_DragBox();
+            ui?.UpdateWindow_Options();
+            ui?.UpdateWindow_Trade();
+            ui?.UpdateWindow_Party();
+            ui?.UpdateWindow_PlayerMenu();
+            ui?.UpdateWindow_RightClick();
+            ui?.UpdateWindow_Combobox();
         }
 
         public static bool HandleInterfaceEvents(ControlState entState)
@@ -4031,6 +4034,8 @@ namespace Client
         public static void ResizeGUI()
         {
             long Top;
+
+            return;
 
             // move Hotbar
             Windows[GetWindowIndex("winHotbar")].Left = GameState.ResolutionWidth - 432;

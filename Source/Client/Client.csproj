@@ -88,6 +88,19 @@
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Configuration" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Content\Skins\Crystashire.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
+    <TargetFramework>net9.0-windows</TargetFramework>
+  </PropertyGroup>
   <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
     <MakeDir Directories="$(OutputPath)Content" />
   </Target>
