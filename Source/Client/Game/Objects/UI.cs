@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Client.Content.Skins;
+using Core;
 using CSScriptLib;
 using Mirage.Sharp.Asfw;
 using System;
@@ -11,8 +12,10 @@ using static Core.Packets;
 
 namespace Client.Game.Objects
 {
-    public class UI 
-{
+    public class UI
+    {
+        public static dynamic? Instance { get; private set; }
+
         public static void Load()
         {
             // Load the script file
@@ -45,7 +48,12 @@ namespace Client.Game.Objects
                 // Dynamically load and execute the script
                 dynamic script = evaluator
                     .ReferenceDomainAssemblies()
-                    .LoadCode(code);             
+                    .LoadCode(code);
+
+                if (script != null)
+                {
+                    Instance = script;
+                }
             }
             catch (Exception e)
             {

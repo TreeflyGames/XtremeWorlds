@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Client.Game.Objects;
+using Core;
 using Core.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -90,6 +91,7 @@ namespace Client
             CheckDesigns();
             Sound.InitializeBASS();
             NetworkConfig.InitNetwork();
+            UI.Load();
             Gui.Init();
             GameState.Ping = -1;
         }

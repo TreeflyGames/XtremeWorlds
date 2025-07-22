@@ -120,6 +120,11 @@
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Configuration" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Content\Skins\Crystashire.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <ApplicationIcon>icon.ico</ApplicationIcon>
