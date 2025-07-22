@@ -1,5 +1,4 @@
-﻿using Client.Content.Skins;
-using Client.Game.Objects;
+﻿using Client.Game.Objects;
 using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
