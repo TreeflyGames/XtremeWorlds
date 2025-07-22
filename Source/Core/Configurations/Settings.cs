@@ -50,6 +50,9 @@ namespace Core
 
         public int MaxSQLClients { get; set; } = 10;
 
+        public string Skin { get; set; } = "Crystalshire";
+
+
         // Methods to load and save settings
         public static void Load()
         {

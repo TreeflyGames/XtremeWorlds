@@ -8,37 +8,40 @@ namespace Core.Global
     {
         public static string GetAccountLogin(int index)
         {
-            return Type.Account[index].Login;
+            return Data.Account[index].Login;
         }
 
         public static string GetAccountPasword(int index)
         {
-            return Type.Account[index].Password;
+            return Data.Account[index].Password;
         }
 
-        public static int GetEntityMaxVital(int index, Enum.VitalType Vital)
+        public static int GetEntityMaxVital(int index, Vital Vital)
         {
             switch (Vital)
             {
-                case Enum.VitalType.HP:
-                    return (int)Math.Round(100d + (Type.Player[index].Level + GetEntityStat(index, Enum.StatType.Vitality) / 2d) * 2d);
-                case Enum.VitalType.SP:
-                    return (int)Math.Round(50d + (Type.Player[index].Level + GetEntityStat(index, Enum.StatType.Spirit) / 2d) * 2d);
+                case Vital.Health:
+                    return (int)Math.Round(100d + (Data.Player[index].Level + GetEntityStat(index, Stat.Vitality) / 2d) * 2d);
+                case Vital.Mana:
+                    return (int)Math.Round(50d + (Data.Player[index].Level + GetEntityStat(index, Stat.Intelligence) / 2d) * 2d);
+                case Vital.Stamina:
+                    return (int)Math.Round(50d + (Data.Player[index].Level + GetEntityStat(index, Stat.Spirit) / 2d) * 2d);
                 default:
                     return 0;
             }
         }
 
-        public static int GetEntityStat(int index, Enum.StatType Stat)
+        public static int GetEntityStat(int index, Stat Stat)
         {
-            int x = Type.Player[index].Stat[(int)Stat];
-            for (int i = 0; i < (int)Enum.EquipmentType.Count; i++)
+            int x = Data.Player[index].Stat[(int)Stat];
+            var count = Enum.GetNames(typeof(Equipment)).Length;
+            for (int i = 0; i < (int)count; i++)
             {
-                if (Type.Player[index].Equipment[i] >= 0)
+                if (Data.Player[index].Equipment[i] >= 0)
                 {
-                    if (Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat] > 0)
+                    if (Data.Item[(int)Data.Player[index].Equipment[i]].Add_Stat[(int)Stat] > 0)
                     {
-                        x += Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat];
+                        x += Data.Item[(int)Data.Player[index].Equipment[i]].Add_Stat[(int)Stat];
                     }
                 }
             }
@@ -47,27 +50,27 @@ namespace Core.Global
 
         public static int GetEntityAccess(int index)
         {
-            return Type.Player[index].Access;
+            return Data.Player[index].Access;
         }
 
         public static int GetEntityX(int index)
         {
-            return Type.Player[index].X;
+            return Data.Player[index].X;
         }
 
         public static int GetEntityY(int index)
         {
-            return Type.Player[index].Y;
+            return Data.Player[index].Y;
         }
 
         public static byte GetEntityDir(int index)
         {
-            return Type.Player[index].Dir;
+            return Data.Player[index].Dir;
         }
 
         public static bool GetEntityPK(int index)
         {
-            return Type.Player[index].PK;
+            return Data.Player[index].PK;
         }
 
         public static int GetEntityNextLevel(int index)
@@ -77,119 +80,125 @@ namespace Core.Global
 
         public static int GetEntityExp(int index)
         {
-            return Type.Player[index].Exp;
+            return Data.Player[index].Exp;
         }
 
-        public static int GetEntityRawStat(int index, Enum.StatType Stat)
+        public static int GetEntityRawStat(int index, Stat Stat)
         {
-            return Type.Player[index].Stat[(int)Stat];
+            return Data.Player[index].Stat[(int)Stat];
         }
 
         public static string GetEntityName(int index)
         {
-            return Type.Player[index].Name;
+            return Data.Player[index].Name;
         }
 
         public static int GetEntityGatherSkillLvl(int index, int skillSlot)
         {
-            return Type.Player[index].GatherSkills[skillSlot].SkillLevel;
+            return Data.Player[index].GatherSkills[skillSlot].SkillLevel;
         }
 
         public static int GetEntityGatherSkillExp(int index, int skillSlot)
         {
-            return Type.Player[index].GatherSkills[skillSlot].SkillCurExp;
+            return Data.Player[index].GatherSkills[skillSlot].SkillCurExp;
         }
 
         public static int GetEntityGatherSkillMaxExp(int index, int skillSlot)
         {
-            return Type.Player[index].GatherSkills[skillSlot].SkillNextLvlExp;
+            return Data.Player[index].GatherSkills[skillSlot].SkillNextLvlExp;
         }
 
         public static int GetEntityInv(int index, int invslot)
         {
-            return Type.Player[index].Inv[invslot].Num;
+            return Data.Player[index].Inv[invslot].Num;
         }
 
         public static int GetEntityInvValue(int index, int invslot)
         {
-            return Type.Player[index].Inv[invslot].Value;
+            return Data.Player[index].Inv[invslot].Value;
         }
 
         public static int GetEntityPoints(int index)
         {
-            return Type.Player[index].Points;
+            return Data.Player[index].Points;
         }
 
-        public static int GetEntityVital(int index, Enum.VitalType vital)
+        public static int GetEntityVital(int index, Vital vital)
         {
-            return Type.Player[index].Vital[(int)vital];
+            return Data.Player[index].Vital[(int)vital];
         }
 
         public static int GetEntitySprite(int index)
         {
-            return Type.Player[index].Sprite;
+            return Data.Player[index].Sprite;
         }
 
         public static int GetEntityJob(int index)
         {
-            return Type.Player[index].Job;
+            return Data.Player[index].Job;
         }
 
         public static int GetEntityMap(int index)
         {
-            return Type.Player[index].Map;
+            return Data.Player[index].Map;
         }
 
         public static int GetEntityLevel(int index)
         {
-            return Type.Player[index].Level;
+            return Data.Player[index].Level;
         }
 
-        public static int GetEntityEquipment(int index, Enum.EquipmentType equipmentSlot)
+        public static int GetEntityEquipment(int index, Equipment equipmentSlot)
         {
-            return Type.Player[index].Equipment[(int)equipmentSlot];
+            return Data.Player[index].Equipment[(int)equipmentSlot];
         }
 
         public static int GetEntitySkill(int index, int skillSlot)
         {
-            return Type.Player[index].Skill[skillSlot].Num;
+            return Data.Player[index].Skill[skillSlot].Num;
         }
 
         public static int GetEntitySkillCD(int index, int skillSlot)
         {
-            return Type.Player[index].Skill[skillSlot].CD;
+            return Data.Player[index].Skill[skillSlot].CD;
         }
 
         public static void SetPlayerLogin(int index, string login)
         {
-            Type.Account[index].Login = login;
+            Data.Account[index].Login = login;
         }
 
         public static string GetPlayerPassword(int index)
         {
             string GetPlayerPasswordRet = default;
-            GetPlayerPasswordRet = Type.Account[index].Password;
+            GetPlayerPasswordRet = Data.Account[index].Password;
             return GetPlayerPasswordRet;
         }
 
         public static void SetPlayerPassword(int index, string password)
         {
-            Type.Account[index].Password = password;
+            Data.Account[index].Password = password;
         }
-        public static int GetPlayerMaxVital(int index, Enum.VitalType Vital)
+        public static int GetPlayerMaxVital(int index, Vital Vital)
         {
             int GetPlayerMaxVitalRet = default;
             switch (Vital)
             {
-                case Enum.VitalType.HP:
+                case Vital.Health:
                     {
-                        GetPlayerMaxVitalRet = (int)Math.Round(100d + (Type.Player[index].Level + GetPlayerStat(index, Enum.StatType.Vitality) / 2d) * 2d);
+                        GetPlayerMaxVitalRet = (int)Math.Round(100d + (Data.Player[index].Level + GetPlayerStat(index, Stat.Vitality) / 2d) * 2d);
                         break;
                     }
 
-                case Enum.VitalType.SP:
+                case Vital.Mana:
                     {
-                        GetPlayerMaxVitalRet = (int)Math.Round(50d + (Type.Player[index].Level + GetPlayerStat(index, Enum.StatType.Spirit) / 2d) * 2d);
+                        GetPlayerMaxVitalRet = (int)Math.Round(50d + (Data.Player[index].Level + GetPlayerStat(index, Stat.Intelligence) / 2d) * 2d);
+                        break;
+
+                    }
+                case Vital.Stamina:
+                    {
+                        GetPlayerMaxVitalRet = (int)Math.Round(50d + (Data.Player[index].Level + GetPlayerStat(index, Stat.Spirit) / 2d) * 2d);
                         break;
                     }
             }
@@ -197,21 +206,22 @@ namespace Core.Global
             return GetPlayerMaxVitalRet;
         }
 
-        public static int GetPlayerStat(int index, Enum.StatType Stat)
+        public static int GetPlayerStat(int index, Stat Stat)
         {
             int GetPlayerStatRet = default;
             int x;
             int i;
 
-            x = Type.Player[index].Stat[(int)Stat];
+            x = Data.Player[index].Stat[(int)Stat];
+            var count = Enum.GetNames(typeof(Equipment)).Length;
 
-            for (i = 0; i < (int)Enum.EquipmentType.Count; i++)
+            for (i = 0; i < count; i++)
             {
-                if (Type.Player[index].Equipment[i] >= 0)
+                if (Data.Player[index].Equipment[i] >= 0)
                 {
-                    if (Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat] > 0)
+                    if (Data.Item[(int)Data.Player[index].Equipment[i]].Add_Stat[(int)Stat] > 0)
                     {
-                        x += Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat];
+                        x += Data.Item[(int)Data.Player[index].Equipment[i]].Add_Stat[(int)Stat];
                     }
                 }
             }
@@ -223,70 +233,70 @@ namespace Core.Global
         public static int GetPlayerAccess(int index)
         {
             int GetPlayerAccessRet = default;
-            GetPlayerAccessRet = Type.Player[index].Access;
+            GetPlayerAccessRet = Data.Player[index].Access;
             return GetPlayerAccessRet;
         }
 
         public static int GetPlayerX(int index)
         {
             int GetPlayerXRet = default;
-            GetPlayerXRet = Type.Player[index].X;
+            GetPlayerXRet = Data.Player[index].X;
             return GetPlayerXRet;
         }
 
         public static int GetPlayerY(int index)
         {
             int GetPlayerYRet = default;
-            GetPlayerYRet = Type.Player[index].Y;
+            GetPlayerYRet = Data.Player[index].Y;
             return GetPlayerYRet;
         }
 
         public static byte GetPlayerDir(int index)
         {
             byte GetPlayerDirRet = default;
-            GetPlayerDirRet = Type.Player[index].Dir;
+            GetPlayerDirRet = Data.Player[index].Dir;
             return GetPlayerDirRet;
         }
 
         public static bool GetPlayerPK(int index)
         {
             bool GetPlayerPKRet = default;
-            GetPlayerPKRet = Type.Player[index].PK;
+            GetPlayerPKRet = Data.Player[index].PK;
             return GetPlayerPKRet;
         }
 
-        public static void SetPlayerVital(int index, Enum.VitalType Vital, int Value)
+        public static void SetPlayerVital(int index, Vital Vital, int Value)
         {
-            Type.Player[index].Vital[(int)Vital] = Value;
+            Data.Player[index].Vital[(int)Vital] = Value;
 
             if (GetPlayerVital(index, Vital) > GetPlayerMaxVital(index, Vital))
             {
-                Type.Player[index].Vital[(int)Vital] = GetPlayerMaxVital(index, Vital);
+                Data.Player[index].Vital[(int)Vital] = GetPlayerMaxVital(index, Vital);
             }
 
             if (GetPlayerVital(index, Vital) < 0)
             {
-                Type.Player[index].Vital[(int)Vital] = 0;
+                Data.Player[index].Vital[(int)Vital] = 0;
             }
         }
 
         public static bool IsDirBlocked(ref byte Blockvar, byte Dir)
         {
-            if (Dir == (byte)Enum.DirectionType.UpRight)
+            if (Dir == (byte)Direction.UpRight)
             {
-                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Up)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Right)));
+                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Up)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Right)));
             }
-            else if (Dir == (byte)Enum.DirectionType.UpLeft)
+            else if (Dir == (byte)Direction.UpLeft)
             {
-                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Up)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Left)));
+                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Up)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Left)));
             }
-            else if (Dir == (byte)Enum.DirectionType.DownRight)
+            else if (Dir == (byte)Direction.DownRight)
             {
-                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Down)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Right)));
+                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Down)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Right)));
             }
-            else if (Dir == (byte)Enum.DirectionType.DownLeft)
+            else if (Dir == (byte)Direction.DownLeft)
             {
-                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Down)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Enum.DirectionType.Left)));
+                return Conversions.ToBoolean(Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Down)) | Blockvar & (long)Math.Round(Math.Pow(2d, (double)Direction.Left)));
             }
             else
             {
@@ -305,49 +315,49 @@ namespace Core.Global
         public static int GetPlayerExp(int index)
         {
             int GetPlayerExpRet = default;
-            GetPlayerExpRet = Type.Player[index].Exp;
+            GetPlayerExpRet = Data.Player[index].Exp;
             return GetPlayerExpRet;
         }
 
-        public static int GetPlayerRawStat(int index, Enum.StatType Stat)
+        public static int GetPlayerRawStat(int index, Stat Stat)
         {
             int GetPlayerRawStatRet = default;
-            GetPlayerRawStatRet = Type.Player[index].Stat[(int)Stat];
+            GetPlayerRawStatRet = Data.Player[index].Stat[(int)Stat];
             return GetPlayerRawStatRet;
         }
 
         public static void SetPlayerGatherSkillLvl(int index, int SkillSlot, int lvl)
         {
-            Type.Player[index].GatherSkills[SkillSlot].SkillLevel = lvl;
+            Data.Player[index].GatherSkills[SkillSlot].SkillLevel = lvl;
         }
 
         public static void SetPlayerGatherSkillExp(int index, int SkillSlot, int Exp)
         {
-            Type.Player[index].GatherSkills[SkillSlot].SkillCurExp = Exp;
+            Data.Player[index].GatherSkills[SkillSlot].SkillCurExp = Exp;
         }
 
         public static void SetPlayerGatherSkillMaxExp(int index, int SkillSlot, int MaxExp)
         {
-            Type.Player[index].GatherSkills[SkillSlot].SkillNextLvlExp = MaxExp;
+            Data.Player[index].GatherSkills[SkillSlot].SkillNextLvlExp = MaxExp;
         }
 
-        public static string GetResourceSkillName(Enum.ResourceType skillNum)
+        public static string GetResourceSkillName(ResourceSkill skillNum)
         {
             switch (skillNum)
             {
-                case Enum.ResourceType.Herb:
+                case ResourceSkill.Herbalism:
                     {
                         return "Herbalism";
                     }
-                case Enum.ResourceType.Woodcut:
+                case ResourceSkill.Woodcutting:
                     {
                         return "Woodcutting";
                     }
-                case Enum.ResourceType.Mine:
+                case ResourceSkill.Mining:
                     {
                         return "Mining";
                     }
-                case Enum.ResourceType.Fish:
+                case ResourceSkill.Fishing:
                     {
                         return "Fishing";
                     }
@@ -374,147 +384,147 @@ namespace Core.Global
 
         public static string GetPlayerName(int index)
         {
-            return Type.Player[index].Name;
+            return Data.Player[index].Name;
         }
 
         public static int GetPlayerGatherSkillLvl(int index, int skillSlot)
         {
-            return Type.Player[index].GatherSkills[skillSlot].SkillLevel;
+            return Data.Player[index].GatherSkills[skillSlot].SkillLevel;
         }
 
         public static int GetPlayerGatherSkillExp(int index, int skillSlot)
         {
-            return Type.Player[index].GatherSkills[skillSlot].SkillCurExp;
+            return Data.Player[index].GatherSkills[skillSlot].SkillCurExp;
         }
 
         public static int GetPlayerGatherSkillMaxExp(int index, int skillSlot)
         {
-            return Type.Player[index].GatherSkills[skillSlot].SkillNextLvlExp;
+            return Data.Player[index].GatherSkills[skillSlot].SkillNextLvlExp;
         }
 
         public static void SetPlayerMap(int index, int mapNum)
         {
-            Type.Player[index].Map = mapNum;
+            Data.Player[index].Map = mapNum;
         }
 
         public static int GetPlayerInv(int index, int invslot)
         {
-            return Type.Player[index].Inv[invslot].Num;
+            return Data.Player[index].Inv[invslot].Num;
         }
 
         public static void SetPlayerName(int index, string name)
         {
-            Type.Player[index].Name = name;
+            Data.Player[index].Name = name;
         }
 
         public static void SetPlayerJob(int index, int jobNum)
         {
-            Type.Player[index].Job = (byte)jobNum;
+            Data.Player[index].Job = (byte)jobNum;
         }
 
         public static void SetPlayerPoints(int index, int points)
         {
-            Type.Player[index].Points = (byte)points;
+            Data.Player[index].Points = (byte)points;
         }
 
-        public static void SetPlayerStat(int index, Enum.StatType stat, int value)
+        public static void SetPlayerStat(int index, Stat stat, int value)
         {
-            Type.Player[index].Stat[(int)stat] = (byte)value;
+            Data.Player[index].Stat[(int)stat] = (byte)value;
         }
 
         public static void SetPlayerInv(int index, int invSlot, int itemNum)
         {
-            Type.Player[index].Inv[invSlot].Num = itemNum;
+            Data.Player[index].Inv[invSlot].Num = itemNum;
         }
 
         public static int GetPlayerInvValue(int index, int invslot)
         {
-            return Type.Player[index].Inv[invslot].Value;
+            return Data.Player[index].Inv[invslot].Value;
         }
 
         public static void SetPlayerInvValue(int index, int invslot, int itemValue)
         {
-            Type.Player[index].Inv[invslot].Value = itemValue;
+            Data.Player[index].Inv[invslot].Value = itemValue;
         }
 
         public static int GetPlayerPoints(int index)
         {
-            return Type.Player[index].Points;
+            return Data.Player[index].Points;
         }
 
         public static void SetPlayerAccess(int index, int access)
         {
-            Type.Player[index].Access = (byte)access;
+            Data.Player[index].Access = (byte)access;
         }
 
         public static void SetPlayerPK(int index, bool pk)
         {
-            Type.Player[index].PK = pk;
+            Data.Player[index].PK = pk;
         }
 
         public static void SetPlayerX(int index, int x)
         {
-            Type.Player[index].X = (byte)x;
+            Data.Player[index].X = (byte)x;
         }
 
         public static void SetPlayerY(int index, int y)
         {
-            Type.Player[index].Y = (byte)y;
+            Data.Player[index].Y = (byte)y;
         }
 
         public static void SetPlayerSprite(int index, int sprite)
         {
-            Type.Player[index].Sprite = sprite;
+            Data.Player[index].Sprite = sprite;
         }
 
         public static void SetPlayerExp(int index, int exp)
         {
-            Type.Player[index].Exp = exp;
+            Data.Player[index].Exp = exp;
         }
 
         public static void SetPlayerLevel(int index, int level)
         {
-            Type.Player[index].Level = (byte)level;
+            Data.Player[index].Level = (byte)level;
         }
 
         public static void SetPlayerDir(int index, int dir)
         {
-            Type.Player[index].Dir = (byte)dir;
+            Data.Player[index].Dir = (byte)dir;
         }
 
-        public static int GetPlayerVital(int index, Enum.VitalType vital)
+        public static int GetPlayerVital(int index, Vital vital)
         {
-            return Type.Player[index].Vital[(int)vital];
+            return Data.Player[index].Vital[(int)vital];
         }
 
         public static int GetPlayerSprite(int index)
         {
-            return Type.Player[index].Sprite;
+            return Data.Player[index].Sprite;
         }
 
         public static int GetPlayerJob(int index)
         {
-            return Type.Player[index].Job;
+            return Data.Player[index].Job;
         }
 
         public static int GetPlayerMap(int index)
         {
-            return Type.Player[index].Map;
+            return Data.Player[index].Map;
         }
 
         public static int GetPlayerLevel(int index)
         {
-            return Type.Player[index].Level;
+            return Data.Player[index].Level;
         }
 
-        public static int GetPlayerEquipment(int index, Enum.EquipmentType equipmentSlot)
+        public static int GetPlayerEquipment(int index, Equipment equipmentSlot)
         {
-            return Type.Player[index].Equipment[(int)equipmentSlot];
+            return Data.Player[index].Equipment[(int)equipmentSlot];
         }
 
-        public static void SetPlayerEquipment(int index, int itemNum, Enum.EquipmentType equipmentSlot)
+        public static void SetPlayerEquipment(int index, int itemNum, Equipment equipmentSlot)
         {
-            Type.Player[index].Equipment[(int)equipmentSlot] = itemNum;
+            Data.Player[index].Equipment[(int)equipmentSlot] = itemNum;
         }
 
         public static string IsEditorLocked(int index, int id)
@@ -525,7 +535,7 @@ namespace Core.Global
                 {
                     if (i != index)
                     {
-                        if (Type.TempPlayer[i].Editor == id)
+                        if (Data.TempPlayer[i].Editor == id)
                         {
                             return GetPlayerName(i);
                         }
@@ -555,17 +565,17 @@ namespace Core.Global
 
         public static int GetPlayerSkill(int index, int skillSlot)
         {
-            return Type.Player[index].Skill[skillSlot].Num;
+            return Data.Player[index].Skill[skillSlot].Num;
         }
 
         public static int GetPlayerSkillCD(int index, int skillSlot)
         {
-            return Type.Player[index].Skill[skillSlot].CD;
+            return Data.Player[index].Skill[skillSlot].CD;
         }
 
         public static void SetPlayerSkillCD(int index, int skillSlot, int value)
         {
-            Type.Player[index].Skill[skillSlot].CD = value;
+            Data.Player[index].Skill[skillSlot].CD = value;
         }
 
         public static bool HasSkill(int index, double skillNum)
@@ -585,31 +595,31 @@ namespace Core.Global
 
         public static void SetPlayerSkill(int index, int Skillslot, int skillNum)
         {
-            Type.Player[index].Skill[Skillslot].Num = skillNum;
+            Data.Player[index].Skill[Skillslot].Num = skillNum;
         }
 
         public static int GetBank(int index, int bankslot)
         {
             int GetBankRet = default;
-            GetBankRet = Type.Bank[index].Item[bankslot].Num;
+            GetBankRet = Data.Bank[index].Item[bankslot].Num;
             return GetBankRet;
         }
 
         public static void SetBank(int index, byte bankSlot, int itemNum)
         {
-            Type.Bank[index].Item[bankSlot].Num = itemNum;
+            Data.Bank[index].Item[bankSlot].Num = itemNum;
         }
 
         public static int GetBankValue(int index, int bankSlot)
         {
             int GetBankValueRet = default;
-            GetBankValueRet = Type.Bank[index].Item[bankSlot].Value;
+            GetBankValueRet = Data.Bank[index].Item[bankSlot].Value;
             return GetBankValueRet;
         }
 
         public static void SetBankValue(int index, byte bankSlot, int itemValue)
         {
-            Type.Bank[index].Item[bankSlot].Value = itemValue;
+            Data.Bank[index].Item[bankSlot].Value = itemValue;
         }
 
     }

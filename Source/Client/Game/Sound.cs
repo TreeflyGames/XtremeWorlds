@@ -290,8 +290,8 @@ namespace Client
                     x = 0;
                 if (y == -1)
                     y = 0;
-                x1 = Core.Type.Player[GameState.MyIndex].X * 32 + Core.Type.Player[GameState.MyIndex].XOffset;
-                y1 = Core.Type.Player[GameState.MyIndex].Y * 32 + Core.Type.Player[GameState.MyIndex].YOffset;
+                x1 = Core.Data.Player[GameState.MyIndex].X * 32 + Core.Data.Player[GameState.MyIndex].XOffset;
+                y1 = Core.Data.Player[GameState.MyIndex].Y * 32 + Core.Data.Player[GameState.MyIndex].YOffset;
                 x2 = x * 32;
                 y2 = y * 32;
 

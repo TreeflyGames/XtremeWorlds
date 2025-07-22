@@ -18,7 +18,7 @@ namespace Mirage.Sharp.Asfw.IO
       }
     }
 
-    public static async Task<byte[]> CompressBytesAsync(byte[] value)
+    public static async System.Threading.Tasks.Task<byte[]> CompressBytesAsync(byte[] value)
     {
       int length = value.Length;
       byte[] array;
@@ -41,7 +41,7 @@ namespace Mirage.Sharp.Asfw.IO
       }
     }
 
-    public static async Task<byte[]> CompressBytesAsync(byte[] value, int offset, int size)
+    public static async System.Threading.Tasks.Task<byte[]> CompressBytesAsync(byte[] value, int offset, int size)
     {
       byte[] array;
       using (MemoryStream ms = new MemoryStream())
@@ -63,7 +63,7 @@ namespace Mirage.Sharp.Asfw.IO
         }
     }
 
-    public static async Task<byte[]> CompressFileAsync(string path)
+    public static async System.Threading.Tasks.Task<byte[]> CompressFileAsync(string path)
     {
       byte[] buffer = File.ReadAllBytes(path);
       int length = buffer.Length;
@@ -77,7 +77,7 @@ namespace Mirage.Sharp.Asfw.IO
       return array;
     }
 
-    public static async Task CompressFileAsync(string srcFile, string dstFile)
+    public static async System.Threading.Tasks.Task CompressFileAsync(string srcFile, string dstFile)
     {
       string path = dstFile;
       File.WriteAllBytes(path, await Asfw.IO.Compression.CompressFileAsync(srcFile));
@@ -111,7 +111,7 @@ namespace Mirage.Sharp.Asfw.IO
     }
 
 
-        public static async Task<byte[]> DecompressBytesAsync(byte[] value)
+        public static async System.Threading.Tasks.Task<byte[]> DecompressBytesAsync(byte[] value)
     {
       int int32 = BitConverter.ToInt32(value, value.Length - 4);
       byte[] buffer = new byte[int32];
@@ -134,7 +134,7 @@ namespace Mirage.Sharp.Asfw.IO
       return Asfw.IO.Compression.DecompressBytes(dst);
     }
 
-    public static async Task<byte[]> DecompressBytesAsync(byte[] value, int offset, int size)
+    public static async System.Threading.Tasks.Task<byte[]> DecompressBytesAsync(byte[] value, int offset, int size)
     {
       byte[] dst = new byte[size];
       Buffer.BlockCopy((Array) value, offset, (Array) dst, 0, size);
@@ -154,7 +154,7 @@ namespace Mirage.Sharp.Asfw.IO
       return buffer2;
     }
 
-    public static async Task<byte[]> DecompressFileAsync(string path)
+    public static async System.Threading.Tasks.Task<byte[]> DecompressFileAsync(string path)
     {
       byte[] buffer1 = File.ReadAllBytes(path);
       int int32 = BitConverter.ToInt32(buffer1, buffer1.Length - 4);
@@ -173,7 +173,7 @@ namespace Mirage.Sharp.Asfw.IO
 
     public static void DecompressFile(string srcFile, string dstFile) => File.WriteAllBytes(dstFile, Asfw.IO.Compression.DecompressFile(srcFile));
 
-    public static async Task DecompressFileAsync(string srcFile, string dstFile)
+    public static async System.Threading.Tasks.Task DecompressFileAsync(string srcFile, string dstFile)
     {
       string path = dstFile;
       File.WriteAllBytes(path, await Asfw.IO.Compression.DecompressFileAsync(srcFile));

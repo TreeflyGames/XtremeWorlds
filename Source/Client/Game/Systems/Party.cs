@@ -11,12 +11,12 @@ namespace Client
 
         public static void ClearParty()
         {
-            Core.Type.MyParty = new Core.Type.PartyStruct()
+            Data.MyParty = new Core.Type.Party()
             {
                 Leader = 0,
                 MemberCount = 0
             };
-            Core.Type.MyParty.Member = new int[5];
+            Data.MyParty.Member = new int[5];
         }
 
         #endregion
@@ -29,7 +29,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             name = buffer.ReadString();
-            GameLogic.Dialogue("Party Invite", name + " has invited you to a party.", "Would you like to join?", (byte)Core.Enum.DialogueType.Party, (byte)Core.Enum.DialogueStyle.YesNo);
+            GameLogic.Dialogue("Party Invite", name + " has invited you to a party.", "Would you like to join?", (byte)DialogueType.PartyInvite, (byte)DialogueStyle.YesNo);
 
             buffer.Dispose();
         }
@@ -53,10 +53,10 @@ namespace Client
             }
 
             // carry on otherwise
-            Core.Type.MyParty.Leader = buffer.ReadInt32();
+            Data.MyParty.Leader = buffer.ReadInt32();
             for (i = 0; i < Constant.MAX_PARTY_MEMBERS; i++)
-                Core.Type.MyParty.Member[i] = buffer.ReadInt32();
-            Core.Type.MyParty.MemberCount = buffer.ReadInt32();
+                Data.MyParty.Member[i] = buffer.ReadInt32();
+            Data.MyParty.MemberCount = buffer.ReadInt32();
 
             Gui.UpdatePartyInterface();
 
@@ -75,7 +75,7 @@ namespace Client
             // find the party number
             for (int i = 0; i < Constant.MAX_PARTY_MEMBERS; i++)
             {
-                if (Core.Type.MyParty.Member[i] == playerNum)
+                if (Data.MyParty.Member[i] == playerNum)
                 {
                     partyindex = i;
                 }
@@ -86,8 +86,9 @@ namespace Client
                 return;
 
             // set vitals
-            for (int i = 0; i < (int)Core.Enum.VitalType.Count; i++)
-                Core.Type.Player[playerNum].Vital[i] = buffer.ReadInt32();
+            var vitalCount = Enum.GetNames(typeof(Core.Vital)).Length;
+            for (int i = 0; i < vitalCount; i++)
+                Core.Data.Player[playerNum].Vital[i] = buffer.ReadInt32();
 
             GameLogic.UpdatePartyBars();
 

@@ -64,6 +64,10 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
 	  </Content>
+	  <Compile Remove="Content\Crystalshire.cs" />
+	  <Compile Remove="Content\UI.cs" />
+	  <Content Remove="Content\Crystalshire.cs" />
+	  <Content Remove="Content\UI.cs" />
     <EmbeddedResource Include="Icon.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -83,6 +87,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="Microsoft.VisualBasic" />
     <PackageReference Include="MonoGame.Content.Builder.Task" />
     <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />
@@ -114,6 +119,11 @@
       <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration.usersecrets\9.0.6\lib\net9.0\Microsoft.Extensions.Configuration.UserSecrets.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Content\Skins\Crystashire.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

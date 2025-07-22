@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Client.Game.Objects;
+using Core;
 using Core.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -90,6 +91,7 @@ namespace Client
             CheckDesigns();
             Sound.InitializeBASS();
             NetworkConfig.InitNetwork();
+            UI.Load();
             Gui.Init();
             GameState.Ping = -1;
         }
@@ -268,9 +270,9 @@ namespace Client
         public static void ClearGameData()
         {
             Map.ClearMap();
-            Map.ClearMapNPCs();
+            Map.ClearMapNpcs();
             Map.ClearMapItems();
-            Database.ClearNPCs();
+            Database.ClearNpcs();
             MapResource.ClearResources();
             Item.ClearItems();
             Shop.ClearShops();
@@ -291,7 +293,7 @@ namespace Client
 
             // clear chat
             for (int i = 0; i < Constant.CHAT_LINES; i++)
-                Core.Type.Chat[i].Text = "";
+                Data.Chat[i].Text = "";
         }
 
         public static int GetFileCount(string folderName)
@@ -414,12 +416,13 @@ namespace Client
         public static long IsEq(long StartX, long StartY)
         {
             long IsEqRet = default;
-            Core.Type.RectStruct tempRec;
+            Core.Type.Rect tempRec;
             long i;
 
-            for (i = 0L; i < (int)Core.Enum.EquipmentType.Count; i++)
+            int equipmentCount = Enum.GetValues(typeof(Equipment)).Length;
+            for (i = 0L; i < equipmentCount; i++)
             {
-                if (Conversions.ToBoolean(GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i)))
+                if (GetPlayerEquipment(GameState.MyIndex, (Equipment)i) >= 0)
                 {
                     tempRec.Top = StartY + GameState.EqTop + GameState.PicY * (i / GameState.EqColumns);
                     tempRec.Bottom = tempRec.Top + GameState.PicY;
@@ -443,7 +446,7 @@ namespace Client
         public static long IsInv(long StartX, long StartY)
         {
             long IsInvRet = default;
-            Core.Type.RectStruct tempRec;
+            Core.Type.Rect tempRec;
             long i;
 
             for (i = 0L; i < Constant.MAX_INV; i++)
@@ -472,12 +475,12 @@ namespace Client
         public static long IsSkill(long StartX, long StartY)
         {
             long IsSkillRet = default;
-            Core.Type.RectStruct tempRec;
+            Core.Type.Rect tempRec;
             long i;
 
             for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
-                if (Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num >= 0)
+                if (Core.Data.Player[GameState.MyIndex].Skill[(int)i].Num >= 0)
                 {
                     tempRec.Top = StartY + GameState.SkillTop + (GameState.SkillOffsetY + GameState.PicY) * (i / GameState.SkillColumns);
                     tempRec.Bottom = tempRec.Top + GameState.PicY;
@@ -501,7 +504,7 @@ namespace Client
         public static long IsBank(long StartX, long StartY)
         {
             byte IsBankRet = default;
-            Core.Type.RectStruct tempRec;
+            Core.Type.Rect tempRec;
 
             for (byte i = 0; i < Constant.MAX_BANK; i++)
             {
@@ -531,7 +534,7 @@ namespace Client
         public static long IsShop(long StartX, long StartY)
         {
             long IsShopRet = default;
-            Core.Type.RectStruct tempRec;
+            Core.Type.Rect tempRec;
             long i;
 
             for (i = 0L; i < Constant.MAX_TRADES; i++)
@@ -557,7 +560,7 @@ namespace Client
         public static long IsTrade(long StartX, long StartY)
         {
             long IsTradeRet = default;
-            Core.Type.RectStruct tempRec;
+            Core.Type.Rect tempRec;
             long i;
 
             for (i = 0L; i < Constant.MAX_INV; i++)

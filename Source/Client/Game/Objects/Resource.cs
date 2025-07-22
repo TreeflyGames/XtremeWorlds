@@ -14,14 +14,14 @@ namespace Client
 
         public static void ClearResource(int index)
         {
-            Core.Type.Resource[index] = default;
-            Core.Type.Resource[index].Name = "";
+            Data.Resource[index] = default;
+            Data.Resource[index].Name = "";
             GameState.Resource_Loaded[index] = 0;
         }
 
         public static void ClearResources()
         {
-            Array.Resize(ref Core.Type.Resource, Constant.MAX_RESOURCES);
+            Array.Resize(ref Data.Resource, Constant.MAX_RESOURCES);
 
             for (int i = 0; i < Constant.MAX_RESOURCES; i++)
                 ClearResource(i);
@@ -30,7 +30,7 @@ namespace Client
 
         public static void StreamResource(int resourceNum)
         {
-            if (resourceNum >= 0 && string.IsNullOrEmpty(Core.Type.Resource[resourceNum].Name) && GameState.Resource_Loaded[resourceNum] == 0)
+            if (resourceNum >= 0 && string.IsNullOrEmpty(Data.Resource[resourceNum].Name) && GameState.Resource_Loaded[resourceNum] == 0)
             {
                 GameState.Resource_Loaded[resourceNum] = 1;
                 SendRequestResource(resourceNum);
@@ -50,15 +50,15 @@ namespace Client
 
             if (GameState.ResourceIndex > 0)
             {
-                Array.Resize(ref Core.Type.MapResource, GameState.ResourceIndex);
-                Array.Resize(ref Core.Type.MyMapResource, GameState.ResourceIndex);
+                Array.Resize(ref Data.MapResource, GameState.ResourceIndex);
+                Array.Resize(ref Data.MyMapResource, GameState.ResourceIndex);
 
                 var loopTo = GameState.ResourceIndex;
                 for (i = 0; i < loopTo; i++)
                 {
-                    Core.Type.MyMapResource[i].State = buffer.ReadByte();
-                    Core.Type.MyMapResource[i].X = buffer.ReadInt32();
-                    Core.Type.MyMapResource[i].Y = buffer.ReadInt32();
+                    Data.MyMapResource[i].State = buffer.ReadByte();
+                    Data.MyMapResource[i].X = buffer.ReadInt32();
+                    Data.MyMapResource[i].Y = buffer.ReadInt32();
                 }
 
                 GameState.ResourcesInit = true;
@@ -73,20 +73,20 @@ namespace Client
             var buffer = new ByteStream(data);
             resourceNum = buffer.ReadInt32();
 
-            Core.Type.Resource[resourceNum].Animation = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].EmptyMessage = buffer.ReadString();
-            Core.Type.Resource[resourceNum].ExhaustedImage = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].Health = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].ExpReward = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].ItemReward = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].Name = buffer.ReadString();
-            Core.Type.Resource[resourceNum].ResourceImage = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].ResourceType = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].RespawnTime = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].SuccessMessage = buffer.ReadString();
-            Core.Type.Resource[resourceNum].LvlRequired = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].ToolRequired = buffer.ReadInt32();
-            Core.Type.Resource[resourceNum].Walkthrough = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Resource[resourceNum].Animation = buffer.ReadInt32();
+            Data.Resource[resourceNum].EmptyMessage = buffer.ReadString();
+            Data.Resource[resourceNum].ExhaustedImage = buffer.ReadInt32();
+            Data.Resource[resourceNum].Health = buffer.ReadInt32();
+            Data.Resource[resourceNum].ExpReward = buffer.ReadInt32();
+            Data.Resource[resourceNum].ItemReward = buffer.ReadInt32();
+            Data.Resource[resourceNum].Name = buffer.ReadString();
+            Data.Resource[resourceNum].ResourceImage = buffer.ReadInt32();
+            Data.Resource[resourceNum].ResourceType = buffer.ReadInt32();
+            Data.Resource[resourceNum].RespawnTime = buffer.ReadInt32();
+            Data.Resource[resourceNum].SuccessMessage = buffer.ReadString();
+            Data.Resource[resourceNum].LvlRequired = buffer.ReadInt32();
+            Data.Resource[resourceNum].ToolRequired = buffer.ReadInt32();
+            Data.Resource[resourceNum].Walkthrough = Conversions.ToBoolean(buffer.ReadInt32());
 
             buffer.Dispose();
         }
@@ -147,29 +147,29 @@ namespace Client
             if (!GameState.MapData)
                 return;
 
-            if (Core.Type.MyMapResource[resourceNum].X > Core.Type.MyMap.MaxX | Core.Type.MyMapResource[resourceNum].Y > Core.Type.MyMap.MaxY)
+            if (Data.MyMapResource[resourceNum].X > Data.MyMap.MaxX | Data.MyMapResource[resourceNum].Y > Data.MyMap.MaxY)
                 return;
 
-            mapResourceNum = Core.Type.MyMap.Tile[Core.Type.MyMapResource[resourceNum].X, Core.Type.MyMapResource[resourceNum].Y].Data1;
+            mapResourceNum = Data.MyMap.Tile[Data.MyMapResource[resourceNum].X, Data.MyMapResource[resourceNum].Y].Data1;
 
             if (mapResourceNum == 0)
-                mapResourceNum = Core.Type.MyMap.Tile[Core.Type.MyMapResource[resourceNum].X, Core.Type.MyMapResource[resourceNum].Y].Data1_2;
+                mapResourceNum = Data.MyMap.Tile[Data.MyMapResource[resourceNum].X, Data.MyMapResource[resourceNum].Y].Data1_2;
 
             StreamResource(mapResourceNum);
 
-            if (Core.Type.Resource[mapResourceNum].ResourceImage == 0)
+            if (Data.Resource[mapResourceNum].ResourceImage == 0)
                 return;
 
             // Get the Resource state
-            resourceState = Core.Type.MyMapResource[resourceNum].State;
+            resourceState = Data.MyMapResource[resourceNum].State;
 
             if (resourceState == 0) // normal
             {
-                resourceSprite = Core.Type.Resource[mapResourceNum].ResourceImage;
+                resourceSprite = Data.Resource[mapResourceNum].ResourceImage;
             }
             else if (resourceState == 1) // used
             {
-                resourceSprite = Core.Type.Resource[mapResourceNum].ExhaustedImage;
+                resourceSprite = Data.Resource[mapResourceNum].ExhaustedImage;
             }
 
             // src rect
@@ -179,8 +179,8 @@ namespace Client
             rec.Width = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Width;
 
             // Set base x + y, then the offset due to size
-            x = (int)Math.Round(Core.Type.MyMapResource[resourceNum].X * GameState.PicX - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Width / 2d + 16d);
-            y = Core.Type.MyMapResource[resourceNum].Y * GameState.PicY - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Height + 32;
+            x = (int)Math.Round(Data.MyMapResource[resourceNum].X * GameState.PicX - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Width / 2d + 16d);
+            y = Data.MyMapResource[resourceNum].Y * GameState.PicY - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Height + 32;
 
             DrawResource(resourceSprite, x, y, rec);
         }

@@ -33,54 +33,54 @@ namespace Client
 
         private void ScrlNormalPic_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].ResourceImage = (int)Math.Round(nudNormalPic.Value);
+            Core.Data.Resource[GameState.EditorIndex].ResourceImage = (int)Math.Round(nudNormalPic.Value);
             DrawSprite();
         }
 
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].ResourceType = cmbType.SelectedIndex;
+            Core.Data.Resource[GameState.EditorIndex].ResourceType = cmbType.SelectedIndex;
         }
 
         private void ScrlExhaustedPic_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].ExhaustedImage = (int)Math.Round(nudExhaustedPic.Value);
+            Core.Data.Resource[GameState.EditorIndex].ExhaustedImage = (int)Math.Round(nudExhaustedPic.Value);
             DrawSprite();
         }
 
         private void ScrlRewardItem_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].ItemReward = cmbRewardItem.SelectedIndex;
+            Core.Data.Resource[GameState.EditorIndex].ItemReward = cmbRewardItem.SelectedIndex;
         }
 
         private void ScrlRewardExp_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].ExpReward = (int)Math.Round(nudRewardExp.Value);
+            Core.Data.Resource[GameState.EditorIndex].ExpReward = (int)Math.Round(nudRewardExp.Value);
         }
 
         private void ScrlLvlReq_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].LvlRequired = (int)Math.Round(nudLvlReq.Value);
+            Core.Data.Resource[GameState.EditorIndex].LvlRequired = (int)Math.Round(nudLvlReq.Value);
         }
 
         private void CmbTool_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].ToolRequired = cmbTool.SelectedIndex;
+            Core.Data.Resource[GameState.EditorIndex].ToolRequired = cmbTool.SelectedIndex;
         }
 
         private void ScrlHealth_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].Health = (int)Math.Round(nudHealth.Value);
+            Core.Data.Resource[GameState.EditorIndex].Health = (int)Math.Round(nudHealth.Value);
         }
 
         private void ScrlRespawn_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].RespawnTime = (int)Math.Round(nudRespawn.Value);
+            Core.Data.Resource[GameState.EditorIndex].RespawnTime = (int)Math.Round(nudRespawn.Value);
         }
 
         private void ScrlAnim_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].Animation = cmbAnimation.SelectedIndex;
+            Core.Data.Resource[GameState.EditorIndex].Animation = cmbAnimation.SelectedIndex;
         }
 
         private void lstIndex_Click(object sender, EventArgs e)
@@ -102,7 +102,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Resource[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Resource[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.ResourceEditorInit();
@@ -120,16 +120,16 @@ namespace Client
 
             // Add the names
             for (int i = 0; i < Constant.MAX_RESOURCES; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Resource[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Data.Resource[i].Name);
 
             // populate combo boxes
             cmbRewardItem.Items.Clear();
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbRewardItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
+                cmbRewardItem.Items.Add(i + 1 + ": " + Core.Data.Item[i].Name);
 
             cmbAnimation.Items.Clear();
             for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
-                cmbAnimation.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
+                cmbAnimation.Items.Add(i + 1 + ": " + Core.Data.Animation[i].Name);
 
             nudExhaustedPic.Maximum = GameState.NumResources;
             nudNormalPic.Maximum = GameState.NumResources;
@@ -141,20 +141,20 @@ namespace Client
             int tmpindex;
 
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Resource[GameState.EditorIndex].Name = txtName.Text;
+            Core.Data.Resource[GameState.EditorIndex].Name = txtName.Text;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Resource[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Resource[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
         private void TxtMessage_TextChanged(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].SuccessMessage = Strings.Trim(txtMessage.Text);
+            Core.Data.Resource[GameState.EditorIndex].SuccessMessage = Strings.Trim(txtMessage.Text);
         }
 
         private void TxtMessage2_TextChanged(object sender, EventArgs e)
         {
-            Core.Type.Resource[GameState.EditorIndex].EmptyMessage = Strings.Trim(txtMessage2.Text);
+            Core.Data.Resource[GameState.EditorIndex].EmptyMessage = Strings.Trim(txtMessage2.Text);
         }
 
         private void frmEditor_Resource_FormClosing(object sender, FormClosingEventArgs e)

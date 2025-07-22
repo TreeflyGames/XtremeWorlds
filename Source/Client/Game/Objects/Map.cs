@@ -6,7 +6,6 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
-using static Core.Enum;
 using Microsoft.VisualBasic;
 
 namespace Client
@@ -48,11 +47,11 @@ namespace Client
             int i;
             int spriteLeft;
 
-            for (i = 0; i < GameState.MaxWeatherParticles; i++)
+            for (i = 0; i < Constant.MAX_WEATHER_PARTICLES; i++)
             {
                 if (Conversions.ToBoolean(GameState.WeatherParticle[i].InUse))
                 {
-                    if (GameState.WeatherParticle[i].Type == (int)Core.Enum.Weather.Storm)
+                    if (GameState.WeatherParticle[i].Type == (int)Core.WeatherType.Storm)
                     {
                         spriteLeft = 0;
                     }
@@ -100,12 +99,12 @@ namespace Client
                 return;
 
             // Ensure x and y are within the bounds of the map
-            if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
+            if (x < 0 || y < 0 || x >= Data.MyMap.MaxX || y >= Data.MyMap.MaxY)
                 return;
 
             try
             {
-                for (i = (int)Core.Enum.LayerType.Ground; i <= (int)Core.Enum.LayerType.CoverAnim; i++)
+                for (i = (int)MapLayer.Ground; i <= (int)MapLayer.CoverAnimation; i++)
                 {
                     int layerIndex = i;
 
@@ -114,40 +113,40 @@ namespace Client
                     {
                         switch (i)
                         {
-                            case (int)Core.Enum.LayerType.Mask:
-                                if (Core.Type.MyMap.Tile[x, y].Layer != null &&
-                                    Core.Type.MyMap.Tile[x, y].Layer.Length > (int)Core.Enum.LayerType.MaskAnim &&
-                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.MaskAnim].Tileset > 0)
-                                    layerIndex = (int)Core.Enum.LayerType.MaskAnim;
+                            case (int)MapLayer.Mask:
+                                if (Data.MyMap.Tile[x, y].Layer != null &&
+                                    Data.MyMap.Tile[x, y].Layer.Length > (int)MapLayer.MaskAnimation &&
+                                    Data.MyMap.Tile[x, y].Layer[(int)MapLayer.MaskAnimation].Tileset > 0)
+                                    layerIndex = (int)MapLayer.MaskAnimation;
                                 break;
-                            case (int)Core.Enum.LayerType.Cover:
-                                if (Core.Type.MyMap.Tile[x, y].Layer != null &&
-                                    Core.Type.MyMap.Tile[x, y].Layer.Length > (int)Core.Enum.LayerType.CoverAnim &&
-                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.CoverAnim].Tileset > 0)
-                                    layerIndex = (int)Core.Enum.LayerType.CoverAnim;
+                            case (int)MapLayer.Cover:
+                                if (Data.MyMap.Tile[x, y].Layer != null &&
+                                    Data.MyMap.Tile[x, y].Layer.Length > (int)MapLayer.CoverAnimation &&
+                                    Data.MyMap.Tile[x, y].Layer[(int)MapLayer.CoverAnimation].Tileset > 0)
+                                    layerIndex = (int)MapLayer.CoverAnimation;
                                 break;
                         }
                     }
                     else
                     {
                         // Skip non-animated layers
-                        if (i == (int)Core.Enum.LayerType.MaskAnim || i == (int)Core.Enum.LayerType.CoverAnim)
+                        if (i == (int)MapLayer.MaskAnimation || i == (int)MapLayer.CoverAnimation)
                             continue;
                     }
 
                     // Check if this layer has a valid tileset and array is large enough
-                    if (Core.Type.MyMap.Tile[x, y].Layer != null &&
-                        Core.Type.MyMap.Tile[x, y].Layer.Length > layerIndex &&
-                        Core.Type.Autotile[x, y].Layer != null &&
-                        Core.Type.Autotile[x, y].Layer.Length > layerIndex &&
-                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
-                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
+                    if (Data.MyMap.Tile[x, y].Layer != null &&
+                        Data.MyMap.Tile[x, y].Layer.Length > layerIndex &&
+                        Data.Autotile[x, y].Layer != null &&
+                        Data.Autotile[x, y].Layer.Length > layerIndex &&
+                        Data.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
+                        Data.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
                     {
                         // Normal rendering state
-                        if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateNormal)
+                        if (Data.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateNormal)
                         {
-                            rect.X = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].X * GameState.PicX;
-                            rect.Y = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Y * GameState.PicY;
+                            rect.X = Data.MyMap.Tile[x, y].Layer[layerIndex].X * GameState.PicX;
+                            rect.Y = Data.MyMap.Tile[x, y].Layer[layerIndex].Y * GameState.PicY;
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
@@ -165,12 +164,12 @@ namespace Client
                             }
 
                             // Render the tile
-                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset.ToString());
+                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Data.MyMap.Tile[x, y].Layer[layerIndex].Tileset.ToString());
                             GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
                         }
 
                         // Autotile rendering state
-                        else if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateAutotile)
+                        else if (Data.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateAutotile)
                         {
                             if (SettingsManager.Instance.Autotile)
                             {
@@ -200,13 +199,13 @@ namespace Client
                 return;
 
             // Ensure x and y are within valid map bounds
-            if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
+            if (x < 0 || y < 0 || x >= Data.MyMap.MaxX || y >= Data.MyMap.MaxY)
                 return;
 
             try
             {
                 // Loop through the layers from Fringe to RoofAnim
-                for (i = (int)Core.Enum.LayerType.Fringe; i <= (int)Core.Enum.LayerType.RoofAnim; i++)
+                for (i = (int)MapLayer.Fringe; i <= (int)MapLayer.RoofAnimation; i++)
                 {
                     int layerIndex = i;
 
@@ -215,38 +214,38 @@ namespace Client
                     {
                         switch (i)
                         {
-                            case (int)Core.Enum.LayerType.Fringe:
-                                if (Core.Type.MyMap.Tile[x, y].Layer?.Length > (int)Core.Enum.LayerType.FringeAnim &&
-                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
-                                    layerIndex = (int)Core.Enum.LayerType.FringeAnim;
+                            case (int)MapLayer.Fringe:
+                                if (Data.MyMap.Tile[x, y].Layer?.Length > (int)MapLayer.FringeAnimation &&
+                                    Data.MyMap.Tile[x, y].Layer[(int)MapLayer.FringeAnimation].Tileset > 0)
+                                    layerIndex = (int)MapLayer.FringeAnimation;
                                 break;
-                            case (int)Core.Enum.LayerType.Roof:
-                                if (Core.Type.MyMap.Tile[x, y].Layer.Length > (int)Core.Enum.LayerType.RoofAnim &&
-                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
-                                    layerIndex = (int)Core.Enum.LayerType.RoofAnim;
+                            case (int)MapLayer.Roof:
+                                if (Data.MyMap.Tile[x, y].Layer.Length > (int)MapLayer.RoofAnimation &&
+                                    Data.MyMap.Tile[x, y].Layer[(int)MapLayer.RoofAnimation].Tileset > 0)
+                                    layerIndex = (int)MapLayer.RoofAnimation;
                                 break;
                         }
                     }
                     else
                     {
                         // Skip non-animated layers
-                        if (i == (int)Core.Enum.LayerType.FringeAnim || i == (int)Core.Enum.LayerType.RoofAnim)
+                        if (i == (int)MapLayer.FringeAnimation || i == (int)MapLayer.RoofAnimation)
                             continue;
                     }
 
                     // Check if this layer has a valid tileset and array is large enough
-                    if (Core.Type.MyMap.Tile[x, y].Layer != null &&
-                        Core.Type.MyMap.Tile[x, y].Layer.Length > layerIndex &&
-                        Core.Type.Autotile[x, y].Layer != null &&
-                        Core.Type.Autotile[x, y].Layer.Length > layerIndex &&
-                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
-                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
+                    if (Data.MyMap.Tile[x, y].Layer != null &&
+                        Data.MyMap.Tile[x, y].Layer.Length > layerIndex &&
+                        Data.Autotile[x, y].Layer != null &&
+                        Data.Autotile[x, y].Layer.Length > layerIndex &&
+                        Data.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
+                        Data.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
                     {
                         // Check if the render state is normal and render the tile
-                        if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateNormal)
+                        if (Data.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateNormal)
                         {
-                            rect.X = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].X * GameState.PicX;
-                            rect.Y = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Y * GameState.PicY;
+                            rect.X = Data.MyMap.Tile[x, y].Layer[layerIndex].X * GameState.PicX;
+                            rect.Y = Data.MyMap.Tile[x, y].Layer[layerIndex].Y * GameState.PicY;
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
@@ -264,11 +263,11 @@ namespace Client
                             }
 
                             // Render the tile with the calculated rectangle and transparency
-                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset.ToString());
+                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Data.MyMap.Tile[x, y].Layer[layerIndex].Tileset.ToString());
                             GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
                         }
                         // Handle autotile rendering
-                        else if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateAutotile)
+                        else if (Data.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateAutotile)
                         {
                             if (SettingsManager.Instance.Autotile)
                             {
@@ -336,7 +335,7 @@ namespace Client
                 }
             }
 
-            switch (Core.Type.MyMap.Tile[x, y].Layer[layerNum].AutoTile)
+            switch (Data.MyMap.Tile[x, y].Layer[layerNum].AutoTile)
             {
                 case GameState.AutotileWaterfall:
                     {
@@ -355,15 +354,15 @@ namespace Client
                     }
             }
 
-            if (Core.Type.MyMap.Tile[x, y].Layer is null)
+            if (Data.MyMap.Tile[x, y].Layer is null)
                 return;
-            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[layerNum].Tileset.ToString());
-            GameClient.RenderTexture(ref argpath, dX, dY, Core.Type.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] + xOffset, Core.Type.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] + yOffset, 16, 16, 16, 16);
+            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Data.MyMap.Tile[x, y].Layer[layerNum].Tileset.ToString());
+            GameClient.RenderTexture(ref argpath, dX, dY, Data.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] + xOffset, Data.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] + yOffset, 16, 16, 16, 16);
         }
 
         public static void DrawMapTint()
         {
-            if (Conversions.ToInteger(Core.Type.MyMap.MapTint) == 0)
+            if (Conversions.ToInteger(Data.MyMap.MapTint) == 0)
                 return; // Skip if no tint is applied
 
             // Create a new texture matching the camera size
@@ -422,7 +421,7 @@ namespace Client
 
         public static void DrawPanorama(int index)
         {
-            if (Core.Type.MyMap.Indoors)
+            if (Data.MyMap.Indoors)
                 return;
 
             if (index < 1 | index > GameState.NumPanoramas)
@@ -437,7 +436,7 @@ namespace Client
             float horz = 0f;
             float vert = 0f;
 
-            if (Core.Type.MyMap.Moral == Conversions.ToShort(Core.Type.MyMap.Indoors))
+            if (Data.MyMap.Moral == Conversions.ToShort(Data.MyMap.Indoors))
                 return;
 
             if (index < 1 | index > GameState.NumParallax)
@@ -452,7 +451,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath, (int)Math.Round(horz), (int)Math.Round(vert), 0, 0, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Height, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Height);
         }
 
-        public static void DrawPicture(int index = 0, int @type = 0)
+        public static void DrawPicture(int index = 0, int type = 0)
         {
             if (index == 0)
             {
@@ -464,108 +463,100 @@ namespace Client
                 type = Event.Picture.SpriteType;
             }
 
-            if (index < 1 | index > GameState.NumPictures)
+            // Use enum values for comparison
+            if (index < 1 || index > GameState.NumPictures)
                 return;
 
-            if (type < 0 | type >= (int)Core.Enum.PictureType.Count)
+            if (type < (int)PictureOrigin.TopLeft || type > (int)PictureOrigin.CenterOnPlayer)
                 return;
 
             int posX = 0;
             int posY = 0;
 
             // Determine position based on type
-            switch (type)
+            switch ((PictureOrigin)type)
             {
-                case (int)Core.Enum.PictureType.TopLeft:
-                    {
-                        posX = 0 - Event.Picture.xOffset;
-                        posY = 0 - Event.Picture.yOffset;
-                        break;
-                    }
+                case PictureOrigin.TopLeft:
+                    posX = 0 - Event.Picture.xOffset;
+                    posY = 0 - Event.Picture.yOffset;
+                    break;
 
-                case (int)Core.Enum.PictureType.CenterScreen:
-                    {
-                        posX = (int)Math.Round(GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Width / 2d - GameClient.GetGfxInfo(Core.Path.Pictures + index).Width / 2d - Event.Picture.xOffset);
-                        posY = (int)Math.Round(GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Height / 2d - GameClient.GetGfxInfo(Core.Path.Pictures + index).Height / 2d - Event.Picture.yOffset);
-                        break;
-                    }
+                case PictureOrigin.CenterScreen:
+                    posX = (int)Math.Round(GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Width / 2d - GameClient.GetGfxInfo(Core.Path.Pictures + index).Width / 2d - Event.Picture.xOffset);
+                    posY = (int)Math.Round(GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Height / 2d - GameClient.GetGfxInfo(Core.Path.Pictures + index).Height / 2d - Event.Picture.yOffset);
+                    break;
 
-                case (int)Core.Enum.PictureType.CenterEvent:
+                case PictureOrigin.CenterOnEvent:
+                    if (GameState.CurrentEvents < Event.Picture.EventId)
                     {
-                        if (GameState.CurrentEvents < Event.Picture.EventId)
-                        {
-                            // Reset picture details and exit if event is invalid
-                            Event.Picture.EventId = 0;
-                            Event.Picture.Index = 0;
-                            Event.Picture.SpriteType = 0;
-                            Event.Picture.xOffset = 0;
-                            Event.Picture.yOffset = 0;
-                            return;
-                        }
-                        posX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.MapEvents[Event.Picture.EventId].X * 32) / 2d - Event.Picture.xOffset);
-                        posY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MapEvents[Event.Picture.EventId].Y * 32) / 2d - Event.Picture.yOffset);
-                        break;
+                        // Reset picture details and exit if event is invalid
+                        Event.Picture.EventId = 0;
+                        Event.Picture.Index = 0;
+                        Event.Picture.SpriteType = 0;
+                        Event.Picture.xOffset = 0;
+                        Event.Picture.yOffset = 0;
+                        return;
                     }
+                    posX = (int)Math.Round(GameLogic.ConvertMapX(Data.MapEvents[Event.Picture.EventId].X * 32) / 2d - Event.Picture.xOffset);
+                    posY = (int)Math.Round(GameLogic.ConvertMapY(Data.MapEvents[Event.Picture.EventId].Y * 32) / 2d - Event.Picture.yOffset);
+                    break;
 
-                case (int)Core.Enum.PictureType.CenterPlayer:
-                    {
-                        posX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.Player[GameState.MyIndex].X * 32) / 2d - Event.Picture.xOffset);
-                        posY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.Player[GameState.MyIndex].Y * 32) / 2d - Event.Picture.yOffset);
-                        break;
-                    }
+                case PictureOrigin.CenterOnPlayer:
+                    posX = (int)Math.Round(GameLogic.ConvertMapX(Core.Data.Player[GameState.MyIndex].X * 32) / 2d - Event.Picture.xOffset);
+                    posY = (int)Math.Round(GameLogic.ConvertMapY(Core.Data.Player[GameState.MyIndex].Y * 32) / 2d - Event.Picture.yOffset);
+                    break;
             }
 
             string argpath = System.IO.Path.Combine(Core.Path.Pictures, index.ToString());
             GameClient.RenderTexture(ref argpath, posX, posY, 0, 0, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Height, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Pictures, index.ToString())).Height);
         }
 
-        #endregion
-
-        #region Database
-
         public static void ClearMap()
         {
             // Reset basic map properties
-            Core.Type.MyMap.Name = string.Empty;
-            Core.Type.MyMap.Tileset = 1;
-            Core.Type.MyMap.MaxX = Constant.MAX_MAPX;
-            Core.Type.MyMap.MaxY = Constant.MAX_MAPY;
-            Core.Type.MyMap.BootMap = 0;
-            Core.Type.MyMap.BootX = 0;
-            Core.Type.MyMap.BootY = 0;
-            Core.Type.MyMap.Down = 0;
-            Core.Type.MyMap.Left = 0;
-            Core.Type.MyMap.Moral = 0;
-            Core.Type.MyMap.Music = string.Empty;
-            Core.Type.MyMap.Revision = 0;
-            Core.Type.MyMap.Right = 0;
-            Core.Type.MyMap.Up = 0;
+            Data.MyMap.Name = string.Empty;
+            Data.MyMap.Tileset = 1;
+            Data.MyMap.MaxX = Constant.MAX_MAPX;
+            Data.MyMap.MaxY = Constant.MAX_MAPY;
+            Data.MyMap.BootMap = 0;
+            Data.MyMap.BootX = 0;
+            Data.MyMap.BootY = 0;
+            Data.MyMap.Down = 0;
+            Data.MyMap.Left = 0;
+            Data.MyMap.Moral = 0;
+            Data.MyMap.Music = string.Empty;
+            Data.MyMap.Revision = 0;
+            Data.MyMap.Right = 0;
+            Data.MyMap.Up = 0;
 
-            // Initialize NPC and Tile arrays
-            Core.Type.MyMap.NPC = new int[Constant.MAX_MAP_NPCS];
+            // Initialize Npc and Tile arrays
+            Data.MyMap.Npc = new int[Constant.MAX_MAP_NPCS];
 
             for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                Core.Type.MyMap.NPC[i] = -1;
+                Data.MyMap.Npc[i] = -1;
             }
 
-            Core.Type.MyMap.Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
-            Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory]; 
+            Data.MyMap.Tile = new Core.Type.Tile[Data.MyMap.MaxX, Data.MyMap.MaxY];
+            Data.TileHistory = new Core.Type.TileHistory[GameState.MaxTileHistory]; // Fixed type name
 
             // Reset tile history indices
             GameState.TileHistoryIndex = 0;
 
             for (int i = 0; i < GameState.MaxTileHistory; i++)
             {
-                Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+                Data.TileHistory[i].Tile = new Core.Type.Tile[Data.MyMap.MaxX, Data.MyMap.MaxY];
             }
-            
+
+
+            int layerCount = System.Enum.GetValues(typeof(MapLayer)).Length;
+
             // Reset tiles and tile history
-            for (int x = 0; x < Core.Type.MyMap.MaxX; x++)
+            for (int x = 0; x < Data.MyMap.MaxX; x++)
             {
-                for (int y = 0; y < Core.Type.MyMap.MaxY; y++)
+                for (int y = 0; y < Data.MyMap.MaxY; y++)
                 {
-                    ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count));
+                    ResetTile(ref Data.MyMap.Tile[x, y], layerCount);
                 }
             }
 
@@ -573,13 +564,13 @@ namespace Client
             ClearMapEvents();
         }
 
-        private static void ResetTile(ref Core.Type.TileStruct tile, int maxLayers)
+        private static void ResetTile(ref Core.Type.Tile tile, int maxLayers)
         {
-            tile.Layer = new Core.Type.TileDataStruct[maxLayers];
+            tile.Layer = new Core.Type.Layer[maxLayers];
 
             for (int l = 0; l < maxLayers; l++)
             {
-                tile.Layer[l] = new Core.Type.TileDataStruct
+                tile.Layer[l] = new Core.Type.Layer
                 {
                     Tileset = 0,
                     X = 0,
@@ -608,15 +599,15 @@ namespace Client
 
         public static void ClearMapItem(int index)
         {
-            Core.Type.MyMapItem[index].Num = -1;
-            Core.Type.MyMapItem[index].Value = 0;
-            Core.Type.MyMapItem[index].X = 0;
-            Core.Type.MyMapItem[index].Y = 0;
+            Data.MyMapItem[index].Num = -1;
+            Data.MyMapItem[index].Value = 0;
+            Data.MyMapItem[index].X = 0;
+            Data.MyMapItem[index].Y = 0;
         }
 
-        public static void ClearMapNPC(int index)
+        public static void ClearMapNpc(int index)
         {
-            ref var withBlock = ref Core.Type.MyMapNPC[index];
+            ref var withBlock = ref Data.MyMapNpc[index];
             withBlock.Attacking = 0;
             withBlock.AttackTimer = 0;
             withBlock.Dir = 0;
@@ -626,19 +617,19 @@ namespace Client
             withBlock.Steps = 0;
             withBlock.Target = 0;
             withBlock.TargetType = 0;
-            withBlock.Vital = new int[(byte)VitalType.Count];
-            withBlock.Vital[(int)Core.Enum.VitalType.HP] = 0;
-            withBlock.Vital[(int)Core.Enum.VitalType.SP] = 0;
+            withBlock.Vital = new int[System.Enum.GetValues(typeof(Core.Vital)).Length];
+            withBlock.Vital[(int)Core.Vital.Health] = 0;
+            withBlock.Vital[(int)Core.Vital.Stamina] = 0;
             withBlock.X = 0;
             withBlock.XOffset = 0;
             withBlock.Y = 0;
             withBlock.YOffset = 0;
         }
 
-        public static void ClearMapNPCs()
+        public static void ClearMapNpcs()
         {
             for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
-                ClearMapNPC(i);
+                ClearMapNpc(i);
 
         }
 
@@ -676,7 +667,7 @@ namespace Client
             }
 
             // Erase all temporary tile values
-            ClearMapNPCs();
+            ClearMapNpcs();
             Database.ClearBlood();
             ClearMap();
             ClearMapItems();
@@ -685,8 +676,8 @@ namespace Client
             Animation.ClearAnimInstances();
 
             GameState.ResourceIndex = 0;
-            Core.Type.MyMapResource = default;
-            Core.Type.MapResource = default;
+            Data.MyMapResource = default;
+            Core.Data.MapResource = default;
 
             // Get map num
             x = buffer.ReadInt32();
@@ -719,121 +710,122 @@ namespace Client
             if (buffer.ReadInt32() == 1)
             {
                 mapNum = buffer.ReadInt32();
-                Core.Type.MyMap.Name = buffer.ReadString();
-                Core.Type.MyMap.Music = buffer.ReadString();
-                Core.Type.MyMap.Revision = buffer.ReadInt32();
-                Core.Type.MyMap.Moral = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.Tileset = buffer.ReadInt32();
-                Core.Type.MyMap.Up = buffer.ReadInt32();
-                Core.Type.MyMap.Down = buffer.ReadInt32();
-                Core.Type.MyMap.Left = buffer.ReadInt32();
-                Core.Type.MyMap.Right = buffer.ReadInt32();
-                Core.Type.MyMap.BootMap = buffer.ReadInt32();
-                Core.Type.MyMap.BootX = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.BootY = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.MaxX = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.MaxY = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.Weather = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.Fog = buffer.ReadInt32();
-                Core.Type.MyMap.WeatherIntensity = buffer.ReadInt32();
-                Core.Type.MyMap.FogOpacity = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.FogSpeed = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.MapTint = Conversions.ToBoolean(buffer.ReadInt32());
-                Core.Type.MyMap.MapTintR = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.MapTintG = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.MapTintB = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.MapTintA = (byte)buffer.ReadInt32();
-                Core.Type.MyMap.Panorama = buffer.ReadByte();
-                Core.Type.MyMap.Parallax = buffer.ReadByte();
-                Core.Type.MyMap.Brightness = buffer.ReadByte();
-                Core.Type.MyMap.NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
-                Core.Type.MyMap.Indoors = Conversions.ToBoolean(buffer.ReadInt32());
-                Core.Type.MyMap.Shop = buffer.ReadInt32();
+                Data.MyMap.Name = buffer.ReadString();
+                Data.MyMap.Music = buffer.ReadString();
+                Data.MyMap.Revision = buffer.ReadInt32();
+                Data.MyMap.Moral = (byte)buffer.ReadInt32();
+                Data.MyMap.Tileset = buffer.ReadInt32();
+                Data.MyMap.Up = buffer.ReadInt32();
+                Data.MyMap.Down = buffer.ReadInt32();
+                Data.MyMap.Left = buffer.ReadInt32();
+                Data.MyMap.Right = buffer.ReadInt32();
+                Data.MyMap.BootMap = buffer.ReadInt32();
+                Data.MyMap.BootX = (byte)buffer.ReadInt32();
+                Data.MyMap.BootY = (byte)buffer.ReadInt32();
+                Data.MyMap.MaxX = (byte)buffer.ReadInt32();
+                Data.MyMap.MaxY = (byte)buffer.ReadInt32();
+                Data.MyMap.Weather = (byte)buffer.ReadInt32();
+                Data.MyMap.Fog = buffer.ReadInt32();
+                Data.MyMap.WeatherIntensity = buffer.ReadInt32();
+                Data.MyMap.FogOpacity = (byte)buffer.ReadInt32();
+                Data.MyMap.FogSpeed = (byte)buffer.ReadInt32();
+                Data.MyMap.MapTint = Conversions.ToBoolean(buffer.ReadInt32());
+                Data.MyMap.MapTintR = (byte)buffer.ReadInt32();
+                Data.MyMap.MapTintG = (byte)buffer.ReadInt32();
+                Data.MyMap.MapTintB = (byte)buffer.ReadInt32();
+                Data.MyMap.MapTintA = (byte)buffer.ReadInt32();
+                Data.MyMap.Panorama = buffer.ReadByte();
+                Data.MyMap.Parallax = buffer.ReadByte();
+                Data.MyMap.Brightness = buffer.ReadByte();
+                Data.MyMap.NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
+                Data.MyMap.Indoors = Conversions.ToBoolean(buffer.ReadInt32());
+                Data.MyMap.Shop = buffer.ReadInt32();
 
-                Core.Type.MyMap.Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
-                Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory];
-
+                Data.MyMap.Tile = new Core.Type.Tile[Data.MyMap.MaxX, Data.MyMap.MaxY];
+                Data.TileHistory = new Core.Type.TileHistory[GameState.MaxTileHistory];
 
                 for (i = 0; i < GameState.MaxTileHistory; i++)
                 {
-                    Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+                    Data.TileHistory[i].Tile = new Core.Type.Tile[Data.MyMap.MaxX, Data.MyMap.MaxY];
                 }
 
+                int layerCount = System.Enum.GetValues(typeof(MapLayer)).Length;
+
                 // Reset tiles and tile history
-                for (x = 0; x < Core.Type.MyMap.MaxX; x++)
+                for (x = 0; x < Data.MyMap.MaxX; x++)
                 {
-                    for (y = 0; y < Core.Type.MyMap.MaxY; y++)
+                    for (y = 0; y < Data.MyMap.MaxY; y++)
                     {
-                        ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count));
+                        ResetTile(ref Data.MyMap.Tile[x, y], layerCount);
 
                         for (i = 0; i < GameState.MaxTileHistory; i++)
                         {
-                            ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count));
+                            ResetTile(ref Data.TileHistory[i].Tile[x, y], layerCount);
                         }
                     }
                 }
 
                 for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
-                    Core.Type.MyMap.NPC[x] = buffer.ReadInt32();
+                    Data.MyMap.Npc[x] = buffer.ReadInt32();
 
-                var loopTo = (int)Core.Type.MyMap.MaxX;
+                var loopTo = (int)Data.MyMap.MaxX;
                 for (x = 0; x < loopTo; x++)
                 {
-                    var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                    var loopTo1 = (int)Data.MyMap.MaxY;
                     for (y = 0; y < loopTo1; y++)
                     {
-                        Core.Type.MyMap.Tile[x, y].Data1 = buffer.ReadInt32();
-                        Core.Type.MyMap.Tile[x, y].Data2 = buffer.ReadInt32();
-                        Core.Type.MyMap.Tile[x, y].Data3 = buffer.ReadInt32();
-                        Core.Type.MyMap.Tile[x, y].Data1_2 = buffer.ReadInt32();
-                        Core.Type.MyMap.Tile[x, y].Data2_2 = buffer.ReadInt32();
-                        Core.Type.MyMap.Tile[x, y].Data3_2 = buffer.ReadInt32();
-                        Core.Type.MyMap.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Data1 = buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Data2 = buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Data3 = buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Data1_2 = buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Data2_2 = buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Data3_2 = buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
 
                         for (j = 0; j < GameState.MaxTileHistory; j++)
                         {
-                            Core.Type.TileHistory[j].Tile[x, y].Data1 = Core.Type.MyMap.Tile[x, y].Data1;
-                            Core.Type.TileHistory[j].Tile[x, y].Data2 = Core.Type.MyMap.Tile[x, y].Data2;
-                            Core.Type.TileHistory[j].Tile[x, y].Data3 = Core.Type.MyMap.Tile[x, y].Data3;
-                            Core.Type.TileHistory[j].Tile[x, y].Data1_2 = Core.Type.MyMap.Tile[x, y].Data1_2;
-                            Core.Type.TileHistory[j].Tile[x, y].Data2_2 = Core.Type.MyMap.Tile[x, y].Data2_2;
-                            Core.Type.TileHistory[j].Tile[x, y].Data3_2 = Core.Type.MyMap.Tile[x, y].Data3_2;
-                            Core.Type.TileHistory[j].Tile[x, y].DirBlock = Core.Type.MyMap.Tile[x, y].DirBlock;
-                            Core.Type.TileHistory[j].Tile[x, y].Type = Core.Type.MyMap.Tile[x, y].Type;
-                            Core.Type.TileHistory[j].Tile[x, y].Type2 = Core.Type.MyMap.Tile[x, y].Type2;
+                            Data.TileHistory[j].Tile[x, y].Data1 = Data.MyMap.Tile[x, y].Data1;
+                            Data.TileHistory[j].Tile[x, y].Data2 = Data.MyMap.Tile[x, y].Data2;
+                            Data.TileHistory[j].Tile[x, y].Data3 = Data.MyMap.Tile[x, y].Data3;
+                            Data.TileHistory[j].Tile[x, y].Data1_2 = Data.MyMap.Tile[x, y].Data1_2;
+                            Data.TileHistory[j].Tile[x, y].Data2_2 = Data.MyMap.Tile[x, y].Data2_2;
+                            Data.TileHistory[j].Tile[x, y].Data3_2 = Data.MyMap.Tile[x, y].Data3_2;
+                            Data.TileHistory[j].Tile[x, y].DirBlock = Data.MyMap.Tile[x, y].DirBlock;
+                            Data.TileHistory[j].Tile[x, y].Type = Data.MyMap.Tile[x, y].Type;
+                            Data.TileHistory[j].Tile[x, y].Type2 = Data.MyMap.Tile[x, y].Type2;
                         }
 
-                        for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
-                        {  
-                            Core.Type.MyMap.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
-                            Core.Type.MyMap.Tile[x, y].Layer[i].X = buffer.ReadInt32();
-                            Core.Type.MyMap.Tile[x, y].Layer[i].Y = buffer.ReadInt32();
-                            Core.Type.MyMap.Tile[x, y].Layer[i].AutoTile = (byte)buffer.ReadInt32();
+                        for (i = 0; i < layerCount; i++)
+                        {
+                            Data.MyMap.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
+                            Data.MyMap.Tile[x, y].Layer[i].X = buffer.ReadInt32();
+                            Data.MyMap.Tile[x, y].Layer[i].Y = buffer.ReadInt32();
+                            Data.MyMap.Tile[x, y].Layer[i].AutoTile = (byte)buffer.ReadInt32();
 
                             for (j = 0; j < GameState.MaxTileHistory; j++)
                             {
-                                Core.Type.TileHistory[j].Tile[x, y].Layer[i].Tileset = Core.Type.MyMap.Tile[x, y].Layer[i].Tileset;
-                                Core.Type.TileHistory[j].Tile[x, y].Layer[i].X = Core.Type.MyMap.Tile[x, y].Layer[i].X;
-                                Core.Type.TileHistory[j].Tile[x, y].Layer[i].Y = Core.Type.MyMap.Tile[x, y].Layer[i].Y;
-                                Core.Type.TileHistory[j].Tile[x, y].Layer[i].AutoTile = Core.Type.MyMap.Tile[x, y].Layer[i].AutoTile;
+                                Data.TileHistory[j].Tile[x, y].Layer[i].Tileset = Data.MyMap.Tile[x, y].Layer[i].Tileset;
+                                Data.TileHistory[j].Tile[x, y].Layer[i].X = Data.MyMap.Tile[x, y].Layer[i].X;
+                                Data.TileHistory[j].Tile[x, y].Layer[i].Y = Data.MyMap.Tile[x, y].Layer[i].Y;
+                                Data.TileHistory[j].Tile[x, y].Layer[i].AutoTile = Data.MyMap.Tile[x, y].Layer[i].AutoTile;
                             }
                         }
 
-                        Core.Type.MyMap.Tile[x, y].Type = (Core.Enum.TileType)buffer.ReadInt32();
-                        Core.Type.MyMap.Tile[x, y].Type2 = (Core.Enum.TileType)buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Type = (TileType)buffer.ReadInt32();
+                        Data.MyMap.Tile[x, y].Type2 = (TileType)buffer.ReadInt32();
                     }
                 }
 
-                Core.Type.MyMap.EventCount = buffer.ReadInt32();
+                Data.MyMap.EventCount = buffer.ReadInt32();
 
-                if (Core.Type.MyMap.EventCount > 0)
+                if (Data.MyMap.EventCount > 0)
                 {
-                    Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
-                    var loopTo2 = Core.Type.MyMap.EventCount;
+                    Data.MyMap.Event = new Core.Type.Event[Data.MyMap.EventCount];
+                    var loopTo2 = Data.MyMap.EventCount;
                     for (i = 0; i < loopTo2; i++)
                     {
                         {
-                            ref var withBlock = ref Core.Type.MyMap.Event[i];
+                            ref var withBlock = ref Data.MyMap.Event[i];
                             withBlock.Name = buffer.ReadString();
                             withBlock.Globals = buffer.ReadByte();
                             withBlock.X = buffer.ReadInt32();
@@ -841,14 +833,14 @@ namespace Client
                             withBlock.PageCount = buffer.ReadInt32();
                         }
 
-                        if (Core.Type.MyMap.Event[i].PageCount > 0)
+                        if (Data.MyMap.Event[i].PageCount > 0)
                         {
-                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
-                            var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
+                            Data.MyMap.Event[i].Pages = new Core.Type.EventPage[Data.MyMap.Event[i].PageCount];
+                            var loopTo3 = Data.MyMap.Event[i].PageCount;
                             for (x = 0; x < loopTo3; x++)
                             {
                                 {
-                                    ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
+                                    ref var withBlock1 = ref Data.MyMap.Event[i].Pages[x];
                                     withBlock1.ChkVariable = buffer.ReadInt32();
                                     withBlock1.VariableIndex = buffer.ReadInt32();
                                     withBlock1.VariableCondition = buffer.ReadInt32();
@@ -882,7 +874,7 @@ namespace Client
 
                                     if (withBlock1.MoveRouteCount > 0)
                                     {
-                                        Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount];
+                                        Data.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRoute[withBlock1.MoveRouteCount];
                                         var loopTo4 = withBlock1.MoveRouteCount;
                                         for (y = 0; y < loopTo4; y++)
                                         {
@@ -905,21 +897,21 @@ namespace Client
                                     withBlock1.Position = buffer.ReadByte();
                                 }
 
-                                if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
+                                if (Data.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
-                                    var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
+                                    Data.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandList[Data.MyMap.Event[i].Pages[x].CommandListCount];
+                                    var loopTo5 = Data.MyMap.Event[i].Pages[x].CommandListCount;
                                     for (y = 0; y < loopTo5; y++)
                                     {
-                                        Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
-                                        Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
-                                        if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
+                                        Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
+                                        Data.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
+                                        if (Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
-                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
-                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
+                                            Data.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommand[Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
+                                            for (int z = 0, loopTo6 = Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                             {
                                                 {
-                                                    ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
+                                                    ref var withBlock2 = ref Data.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
                                                     withBlock2.Index = buffer.ReadInt32();
                                                     withBlock2.Text1 = buffer.ReadString();
                                                     withBlock2.Text2 = buffer.ReadString();
@@ -966,44 +958,46 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
             {
-                Core.Type.MyMapItem[i].Num = buffer.ReadInt32();
-                Core.Type.MyMapItem[i].Value = buffer.ReadInt32();
-                Core.Type.MyMapItem[i].X = (byte)buffer.ReadInt32();
-                Core.Type.MyMapItem[i].Y = (byte)buffer.ReadInt32();
+                Data.MyMapItem[i].Num = buffer.ReadInt32();
+                Data.MyMapItem[i].Value = buffer.ReadInt32();
+                Data.MyMapItem[i].X = (byte)buffer.ReadInt32();
+                Data.MyMapItem[i].Y = (byte)buffer.ReadInt32();
             }
+
+            int vitalCount = System.Enum.GetValues(typeof(Core.Vital)).Length;
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                Core.Type.MyMapNPC[i].Num = buffer.ReadInt32();
-                Core.Type.MyMapNPC[i].X = (byte)buffer.ReadInt32();
-                Core.Type.MyMapNPC[i].Y = (byte)buffer.ReadInt32();
-                Core.Type.MyMapNPC[i].Dir = buffer.ReadInt32();
-                for (int n = 0; n < (int)Core.Enum.VitalType.Count; n++)
-                    Core.Type.MyMapNPC[i].Vital[n] = buffer.ReadInt32();
+                Data.MyMapNpc[i].Num = buffer.ReadInt32();
+                Data.MyMapNpc[i].X = (byte)buffer.ReadInt32();
+                Data.MyMapNpc[i].Y = (byte)buffer.ReadInt32();
+                Data.MyMapNpc[i].Dir = buffer.ReadInt32();
+                for (int n = 0; n < vitalCount; n++)
+                    Data.MyMapNpc[i].Vital[n] = buffer.ReadInt32();
             }
 
             if (buffer.ReadInt32() == 1)
             {
                 GameState.ResourceIndex = buffer.ReadInt32();
                 GameState.ResourcesInit = false;
-                Core.Type.MapResource = new Core.Type.MapResourceStruct[GameState.ResourceIndex];
-                Core.Type.MyMapResource = new Core.Type.MapResourceCacheStruct[Constant.MAX_RESOURCES];
+                Core.Data.MapResource = new Core.Type.MapResource[GameState.ResourceIndex];
+                Data.MyMapResource = new Core.Type.MapResourceCache[Constant.MAX_RESOURCES];
 
                 if (GameState.ResourceIndex > 0)
                 {
                     var loopTo8 = GameState.ResourceIndex;
                     for (i = 0; i < loopTo8; i++)
                     {
-                        Core.Type.MyMapResource[i].State = buffer.ReadByte();
-                        Core.Type.MyMapResource[i].X = buffer.ReadInt32();
-                        Core.Type.MyMapResource[i].Y = buffer.ReadInt32();
+                        Data.MyMapResource[i].State = buffer.ReadByte();
+                        Data.MyMapResource[i].X = buffer.ReadInt32();
+                        Data.MyMapResource[i].Y = buffer.ReadInt32();
                     }
 
                     GameState.ResourcesInit = true;
                 }
             }
 
-            Core.Type.Map[GetPlayerMap(GameState.MyIndex)] = Core.Type.MyMap;
+            Data.Map[GetPlayerMap(GameState.MyIndex)] = Data.MyMap;
 
             buffer.Dispose();
 
@@ -1014,55 +1008,54 @@ namespace Client
             for (i = 0; i < byte.MaxValue; i++)
                 GameLogic.ClearActionMsg((byte)i);
 
-            GameState.CurrentWeather = Core.Type.MyMap.Weather;
-            GameState.CurrentWeatherIntensity = Core.Type.MyMap.WeatherIntensity;
-            GameState.CurrentFog = Core.Type.MyMap.Fog;
-            GameState.CurrentFogSpeed = Core.Type.MyMap.FogSpeed;
-            GameState.CurrentFogOpacity = Core.Type.MyMap.FogOpacity;
-            GameState.CurrentTintR = Core.Type.MyMap.MapTintR;
-            GameState.CurrentTintG = Core.Type.MyMap.MapTintG;
-            GameState.CurrentTintB = Core.Type.MyMap.MapTintB;
-            GameState.CurrentTintA = Core.Type.MyMap.MapTintA;
+            GameState.CurrentWeather = Data.MyMap.Weather;
+            GameState.CurrentWeatherIntensity = Data.MyMap.WeatherIntensity;
+            GameState.CurrentFog = Data.MyMap.Fog;
+            GameState.CurrentFogSpeed = Data.MyMap.FogSpeed;
+            GameState.CurrentFogOpacity = Data.MyMap.FogOpacity;
+            GameState.CurrentTintR = Data.MyMap.MapTintR;
+            GameState.CurrentTintG = Data.MyMap.MapTintG;
+            GameState.CurrentTintB = Data.MyMap.MapTintB;
+            GameState.CurrentTintA = Data.MyMap.MapTintA;
 
             GameLogic.UpdateDrawMapName();
 
             GameState.GettingMap = false;
             GameState.CanMoveNow = true;
-
         }
 
-        public static void Packet_MapNPCData(ref byte[] data)
+        public static void Packet_MapNpcData(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                    ref var withBlock = ref Core.Type.MyMapNPC[i];
+                    ref var withBlock = ref Data.MyMapNpc[i];
                     withBlock.Num = buffer.ReadInt32();
                     withBlock.X = (byte)buffer.ReadInt32();
                     withBlock.Y = (byte)buffer.ReadInt32();
                     withBlock.Dir = buffer.ReadInt32();
-                    withBlock.Vital[(int)Core.Enum.VitalType.HP] = buffer.ReadInt32();
+                    withBlock.Vital[(int)Core.Vital.Health] = buffer.ReadInt32();
             } 
 
             buffer.Dispose();
         }
 
-        public static void Packet_MapNPCUpdate(ref byte[] data)
+        public static void Packet_MapNpcUpdate(ref byte[] data)
         {
-            int NPCNum;
+            int NpcNum;
             var buffer = new ByteStream(data);
 
-            NPCNum = buffer.ReadInt32();
+            NpcNum = buffer.ReadInt32();
 
-            ref var withBlock = ref Core.Type.MyMapNPC[NPCNum];
+            ref var withBlock = ref Data.MyMapNpc[NpcNum];
             withBlock.Num = buffer.ReadInt32();
             withBlock.X = (byte)buffer.ReadInt32();
             withBlock.Y = (byte)buffer.ReadInt32();
             withBlock.Dir = buffer.ReadInt32();
-            withBlock.Vital[(int)Core.Enum.VitalType.HP] = buffer.ReadInt32();
-            withBlock.Vital[(int)Core.Enum.VitalType.SP] = buffer.ReadInt32();
+            withBlock.Vital[(int)Core.Vital.Health] = buffer.ReadInt32();
+            withBlock.Vital[(int)Core.Vital.Stamina] = buffer.ReadInt32();
 
             buffer.Dispose();  
         }
@@ -1109,73 +1102,75 @@ namespace Client
 
             GameState.CanMoveNow = false;
 
-            buffer.WriteString(Core.Type.MyMap.Name);
-            buffer.WriteString(Core.Type.MyMap.Music);
-            buffer.WriteInt32(Core.Type.MyMap.Moral);
-            buffer.WriteInt32(Core.Type.MyMap.Tileset);
-            buffer.WriteInt32(Core.Type.MyMap.Up);
-            buffer.WriteInt32(Core.Type.MyMap.Down);
-            buffer.WriteInt32(Core.Type.MyMap.Left);
-            buffer.WriteInt32(Core.Type.MyMap.Right);
-            buffer.WriteInt32(Core.Type.MyMap.BootMap);
-            buffer.WriteInt32(Core.Type.MyMap.BootX);
-            buffer.WriteInt32(Core.Type.MyMap.BootY);
-            buffer.WriteInt32(Core.Type.MyMap.MaxX);
-            buffer.WriteInt32(Core.Type.MyMap.MaxY);
-            buffer.WriteInt32(Core.Type.MyMap.Weather);
-            buffer.WriteInt32(Core.Type.MyMap.Fog);
-            buffer.WriteInt32(Core.Type.MyMap.WeatherIntensity);
-            buffer.WriteInt32(Core.Type.MyMap.FogOpacity);
-            buffer.WriteInt32(Core.Type.MyMap.FogSpeed);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.MyMap.MapTint));
-            buffer.WriteInt32(Core.Type.MyMap.MapTintR);
-            buffer.WriteInt32(Core.Type.MyMap.MapTintG);
-            buffer.WriteInt32(Core.Type.MyMap.MapTintB);
-            buffer.WriteInt32(Core.Type.MyMap.MapTintA);
-            buffer.WriteByte(Core.Type.MyMap.Panorama);
-            buffer.WriteByte(Core.Type.MyMap.Parallax);
-            buffer.WriteByte(Core.Type.MyMap.Brightness);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.MyMap.NoRespawn));
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.MyMap.Indoors));
-            buffer.WriteInt32(Core.Type.MyMap.Shop);
+            buffer.WriteString(Data.MyMap.Name);
+            buffer.WriteString(Data.MyMap.Music);
+            buffer.WriteInt32(Data.MyMap.Moral);
+            buffer.WriteInt32(Data.MyMap.Tileset);
+            buffer.WriteInt32(Data.MyMap.Up);
+            buffer.WriteInt32(Data.MyMap.Down);
+            buffer.WriteInt32(Data.MyMap.Left);
+            buffer.WriteInt32(Data.MyMap.Right);
+            buffer.WriteInt32(Data.MyMap.BootMap);
+            buffer.WriteInt32(Data.MyMap.BootX);
+            buffer.WriteInt32(Data.MyMap.BootY);
+            buffer.WriteInt32(Data.MyMap.MaxX);
+            buffer.WriteInt32(Data.MyMap.MaxY);
+            buffer.WriteInt32(Data.MyMap.Weather);
+            buffer.WriteInt32(Data.MyMap.Fog);
+            buffer.WriteInt32(Data.MyMap.WeatherIntensity);
+            buffer.WriteInt32(Data.MyMap.FogOpacity);
+            buffer.WriteInt32(Data.MyMap.FogSpeed);
+            buffer.WriteInt32(Conversions.ToInteger(Data.MyMap.MapTint));
+            buffer.WriteInt32(Data.MyMap.MapTintR);
+            buffer.WriteInt32(Data.MyMap.MapTintG);
+            buffer.WriteInt32(Data.MyMap.MapTintB);
+            buffer.WriteInt32(Data.MyMap.MapTintA);
+            buffer.WriteByte(Data.MyMap.Panorama);
+            buffer.WriteByte(Data.MyMap.Parallax);
+            buffer.WriteByte(Data.MyMap.Brightness);
+            buffer.WriteInt32(Conversions.ToInteger(Data.MyMap.NoRespawn));
+            buffer.WriteInt32(Conversions.ToInteger(Data.MyMap.Indoors));
+            buffer.WriteInt32(Data.MyMap.Shop);
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
-                buffer.WriteInt32(Core.Type.MyMap.NPC[i]);
+                buffer.WriteInt32(Data.MyMap.Npc[i]);
 
-            var loopTo = (int)Core.Type.MyMap.MaxX;
+            var loopTo = (int)Data.MyMap.MaxX;
             for (x = 0; x < loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                var loopTo1 = (int)Data.MyMap.MaxY;
                 for (y = 0; y < loopTo1; y++)
                 {
-                    buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data1);
-                    buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data2);
-                    buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data3);
-                    buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data1_2);
-                    buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data2_2);
-                    buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data3_2);
-                    buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].DirBlock);
-                    for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
+                    buffer.WriteInt32(Data.MyMap.Tile[x, y].Data1);
+                    buffer.WriteInt32(Data.MyMap.Tile[x, y].Data2);
+                    buffer.WriteInt32(Data.MyMap.Tile[x, y].Data3);
+                    buffer.WriteInt32(Data.MyMap.Tile[x, y].Data1_2);
+                    buffer.WriteInt32(Data.MyMap.Tile[x, y].Data2_2);
+                    buffer.WriteInt32(Data.MyMap.Tile[x, y].Data3_2);
+                    buffer.WriteInt32(Data.MyMap.Tile[x, y].DirBlock);
+
+                    int layerCount = System.Enum.GetValues(typeof(MapLayer)).Length;
+                    for (i = 0; i < layerCount; i++)
                     {
-                        buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].Tileset);
-                        buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].X);
-                        buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].Y);
-                        buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].AutoTile);
+                        buffer.WriteInt32(Data.MyMap.Tile[x, y].Layer[i].Tileset);
+                        buffer.WriteInt32(Data.MyMap.Tile[x, y].Layer[i].X);
+                        buffer.WriteInt32(Data.MyMap.Tile[x, y].Layer[i].Y);
+                        buffer.WriteInt32(Data.MyMap.Tile[x, y].Layer[i].AutoTile);
                     }
-                    buffer.WriteInt32((int)Core.Type.MyMap.Tile[x, y].Type);
-                    buffer.WriteInt32((int)Core.Type.MyMap.Tile[x, y].Type2);
+                    buffer.WriteInt32((int)Data.MyMap.Tile[x, y].Type);
+                    buffer.WriteInt32((int)Data.MyMap.Tile[x, y].Type2);
                 }
             }
 
-            buffer.WriteInt32(Core.Type.MyMap.EventCount);
+            buffer.WriteInt32(Data.MyMap.EventCount);
 
-            if (Core.Type.MyMap.EventCount > 0)
+            if (Data.MyMap.EventCount > 0)
             {
-                var loopTo2 = Core.Type.MyMap.EventCount;
+                var loopTo2 = Data.MyMap.EventCount;
                 for (i = 0; i < loopTo2; i++)
                 {
                     {
-                        ref var withBlock = ref Core.Type.MyMap.Event[i];
+                        ref var withBlock = ref Data.MyMap.Event[i];
                         if (withBlock.Name is null)
                             withBlock.Name = "";
                         buffer.WriteString(withBlock.Name);
@@ -1184,13 +1179,13 @@ namespace Client
                         buffer.WriteInt32(withBlock.Y);
                         buffer.WriteInt32(withBlock.PageCount);
                     }
-                    if (Core.Type.MyMap.Event[i].PageCount > 0)
+                    if (Data.MyMap.Event[i].PageCount > 0)
                     {
-                        var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
+                        var loopTo3 = Data.MyMap.Event[i].PageCount;
                         for (x = 0; x < loopTo3; x++)
                         {
                             {
-                                ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
+                                ref var withBlock1 = ref Data.MyMap.Event[i].Pages[x];
                                 buffer.WriteInt32(withBlock1.ChkVariable);
                                 buffer.WriteInt32(withBlock1.VariableIndex);
                                 buffer.WriteInt32(withBlock1.VariableCondition);
@@ -1213,7 +1208,7 @@ namespace Client
                                 buffer.WriteByte(withBlock1.MoveType);
                                 buffer.WriteByte(withBlock1.MoveSpeed);
                                 buffer.WriteByte(withBlock1.MoveFreq);
-                                buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].MoveRouteCount);
+                                buffer.WriteInt32(Data.MyMap.Event[i].Pages[x].MoveRouteCount);
                                 buffer.WriteInt32(withBlock1.IgnoreMoveRoute);
                                 buffer.WriteInt32(withBlock1.RepeatMoveRoute);
 
@@ -1241,19 +1236,19 @@ namespace Client
                                 buffer.WriteByte(withBlock1.Position);
                             }
 
-                            if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
+                            if (Data.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
-                                var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
+                                var loopTo5 = Data.MyMap.Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < loopTo5; y++)
                                 {
-                                    buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
-                                    buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
-                                    if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
+                                    buffer.WriteInt32(Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
+                                    buffer.WriteInt32(Data.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
+                                    if (Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
+                                        for (int z = 0, loopTo6 = Data.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                         {
                                             {
-                                                ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
+                                                ref var withBlock2 = ref Data.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
                                                 buffer.WriteInt32(withBlock2.Index);
                                                 buffer.WriteString(withBlock2.Text1);
                                                 buffer.WriteString(withBlock2.Text2);
@@ -1318,12 +1313,12 @@ namespace Client
 
         public static void ClearMapEvents()
         {
-            Core.Type.MapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
+            Data.MapEvents = new Core.Type.MapEvent[Data.MyMap.EventCount];
 
-            for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
+            for (int i = 0, loopTo = Data.MyMap.EventCount; i < loopTo; i++)
             {
-                Core.Type.MapEvents = default;
-                Core.Type.MyMap.Event = default;
+                Data.MapEvents = default;
+                Data.MyMap.Event = default;
             }
 
             GameState.CurrentEvents = 0;

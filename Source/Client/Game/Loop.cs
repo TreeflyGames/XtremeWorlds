@@ -14,22 +14,22 @@ namespace Client
         private static int i;
         private static int tmr1000;
         private static int tick;
-        private static int fogtmr;
-        private static int chattmr;
-        private static int tmpfps;
-        private static int tmplps;
+        private static int fogTmr;
+        private static int chatTmr;
+        private static int tmpFps;
+        private static int tmpLps;
         private static int walkTimer;
         private static int frameTime;
-        private static int tmrweather;
+        private static int tmrWeather;
         private static int barTmr;
         private static int tmr25;
         private static int tmr500;
         private static int tmr250;
-        private static int tmrconnect;
+        private static int tmrConnect;
         private static int TickFPS;
-        private static int fadetmr;
-        private static int rendertmr;
-        private static int[] animationtmr = new int[2]; // Array of size 2
+        private static int fadeTmr;
+        private static int renderTmr;
+        private static int[] animationTmr = new int[2];
 
         public static void Game()
         {
@@ -48,7 +48,7 @@ namespace Client
 
                 if (tmr25 < tick)
                 {
-                    Sound.PlayMusic(Core.Type.MyMap.Music);
+                    Sound.PlayMusic(Data.MyMap.Music);
                     tmr25 = tick + 25;
                 }
 
@@ -60,22 +60,22 @@ namespace Client
 
                 for (int layer = 0; layer <= 1; layer++)
                 {
-                    if (animationtmr[layer] < tick)
+                    if (animationTmr[layer] < tick)
                     {
-                        for (byte x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
+                        for (byte x = 0, loopTo = Data.MyMap.MaxX; x < loopTo; x++)
                         {
-                            for (byte y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
+                            for (byte y = 0, loopTo1 = Data.MyMap.MaxY; y < loopTo1; y++)
                             {
                                 if (GameLogic.IsValidMapPoint(x, y))
                                 {
-                                    if (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Animation)
+                                    if (Data.MyMap.Tile[x, y].Type == TileType.Animation)
                                     {                                      
-                                        animationtmr[layer] = tick + Animation.PlayAnimation(Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1].Sprite[layer], layer, Core.Type.MyMap.Tile[x, y].Data1, x, y);
+                                        animationTmr[layer] = tick + Animation.PlayAnimation(Data.Animation[Data.MyMap.Tile[x, y].Data1].Sprite[layer], layer, Data.MyMap.Tile[x, y].Data1, x, y);
                                     }
 
-                                    if (Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Animation)
+                                    if (Data.MyMap.Tile[x, y].Type2 == TileType.Animation)
                                     {
-                                        animationtmr[layer] = tick + Animation.PlayAnimation(Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1_2].Sprite[layer], layer, Core.Type.MyMap.Tile[x, y].Data1_2, x, y);
+                                        animationTmr[layer] = tick + Animation.PlayAnimation(Data.Animation[Data.MyMap.Tile[x, y].Data1_2].Sprite[layer], layer, Data.MyMap.Tile[x, y].Data1_2, x, y);
                                     }
                                 }
                             }
@@ -133,13 +133,13 @@ namespace Client
                 {
                     for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
                     {
-                        if (Core.Type.Player[GameState.MyIndex].Skill[i].Num >= 0)
+                        if (Core.Data.Player[GameState.MyIndex].Skill[i].Num >= 0)
                         {
-                            if (Core.Type.Player[GameState.MyIndex].Skill[i].CD > 0)
+                            if (Core.Data.Player[GameState.MyIndex].Skill[i].CD > 0)
                             {
-                                if (Core.Type.Player[GameState.MyIndex].Skill[i].CD + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[i].Num].CdTime * 1000 < tick)
+                                if (Core.Data.Player[GameState.MyIndex].Skill[i].CD + Data.Skill[(int)Core.Data.Player[GameState.MyIndex].Skill[i].Num].CdTime * 1000 < tick)
                                 {
-                                    Core.Type.Player[GameState.MyIndex].Skill[i].CD = 0;
+                                    Core.Data.Player[GameState.MyIndex].Skill[i].CD = 0;
                                 }
                             }
                         }
@@ -149,7 +149,7 @@ namespace Client
                 // check if we need to unlock the player's skill casting restriction
                 if (GameState.SkillBuffer >= 0)
                 {
-                    if (GameState.SkillBufferTimer + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[GameState.SkillBuffer].Num].CastTime * 1000 < tick)
+                    if (GameState.SkillBufferTimer + Data.Skill[(int)Core.Data.Player[GameState.MyIndex].Skill[GameState.SkillBuffer].Num].CastTime * 1000 < tick)
                     {
                         GameState.SkillBuffer = -1;
                         GameState.SkillBufferTimer = 0;
@@ -174,12 +174,12 @@ namespace Client
                         }
                     }
 
-                    // Process NPC movements (actually move them)
+                    // Process Npc movements (actually move them)
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMap.NPC[i] >= 0)
+                        if (Data.MyMap.Npc[i] >= 0)
                         {
-                            GameLogic.ProcessNPCMovement(i);
+                            GameLogic.ProcessNpcMovement(i);
                         }
                     }
 
@@ -191,7 +191,7 @@ namespace Client
                 }
 
                 // chat timer
-                if (chattmr < tick)
+                if (chatTmr < tick)
                 {
                     // scrolling
                     if (GameState.ChatButtonUp)
@@ -204,11 +204,11 @@ namespace Client
                         GameLogic.ScrollChatBox(1);
                     }
 
-                    chattmr = tick + 50;
+                    chatTmr = tick + 50;
                 }
 
                 // fog scrolling
-                if (fogtmr < tick)
+                if (fogTmr < tick)
                 {
                     if (GameState.CurrentFogSpeed > 0)
                     {
@@ -223,7 +223,7 @@ namespace Client
                         if (GameState.FogOffsetY < -255)
                             GameState.FogOffsetY = 1;
 
-                        fogtmr = tick + 255 - GameState.CurrentFogSpeed;
+                        fogTmr = tick + 255 - GameState.CurrentFogSpeed;
                     }
                 }
 
@@ -270,13 +270,13 @@ namespace Client
                     }
 
                     // animate textbox
-                    if (GameState.chatShowLine == "|")
+                    if (GameState.ChatShowLine == "|")
                     {
-                        GameState.chatShowLine = "";
+                        GameState.ChatShowLine = "";
                     }
                     else
                     {
-                        GameState.chatShowLine = "|";
+                        GameState.ChatShowLine = "|";
                     }
 
                     tmr500 = tick + 500;
@@ -290,9 +290,9 @@ namespace Client
                     GameLogic.SetBarWidth(ref GameState.BarWidth_GuiEXP_Max, ref GameState.BarWidth_GuiEXP);
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMapNPC[i].Num >= 0)
+                        if (Data.MyMapNpc[i].Num >= 0)
                         {
-                            GameLogic.SetBarWidth(ref GameState.BarWidth_NPCHP_Max[i], ref GameState.BarWidth_NPCHP[i]);
+                            GameLogic.SetBarWidth(ref GameState.BarWidth_NpcHP_Max[i], ref GameState.BarWidth_NpcHP[i]);
                         }
                     }
 
@@ -319,13 +319,13 @@ namespace Client
                             if (GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                             {
                                 // Check if completed walking over to the next tile
-                                if (Core.Type.Player[i].Steps == 3)
+                                if (Core.Data.Player[i].Steps == 3)
                                 {
-                                    Core.Type.Player[i].Steps = 0;
+                                    Core.Data.Player[i].Steps = 0;
                                 }
                                 else
                                 {
-                                    Core.Type.Player[i].Steps++;
+                                    Core.Data.Player[i].Steps++;
                                 }                              
                             }
                         }
@@ -333,16 +333,16 @@ namespace Client
 
                     for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMapNPC[i].Num >= 0)
+                        if (Data.MyMapNpc[i].Num >= 0)
                         {
                             // Check if completed walking over to the next tile
-                            if (Core.Type.MyMapNPC[i].Steps == 3)
+                            if (Data.MyMapNpc[i].Steps == 3)
                             {
-                                Core.Type.MyMapNPC[i].Steps = 0;
+                                Data.MyMapNpc[i].Steps = 0;
                             }
                             else
                             {
-                                Core.Type.MyMapNPC[i].Steps++;
+                                Data.MyMapNpc[i].Steps++;
                             }
                         }
                     }
@@ -366,13 +366,13 @@ namespace Client
                 if (tmr500 < tick)
                 {
                     // animate textbox
-                    if (GameState.chatShowLine == "|")
+                    if (GameState.ChatShowLine == "|")
                     {
-                        GameState.chatShowLine = "";
+                        GameState.ChatShowLine = "";
                     }
                     else
                     {
-                        GameState.chatShowLine = "|";
+                        GameState.ChatShowLine = "|";
                     }
 
                     tmr500 = tick + 500;
@@ -385,13 +385,13 @@ namespace Client
                 }
             }
 
-            if (tmrweather < tick)
+            if (tmrWeather < tick)
             {
                 Weather.ProcessWeather();
-                tmrweather = tick + 50;
+                tmrWeather = tick + 50;
             }
 
-            if (fadetmr < tick)
+            if (fadeTmr < tick)
             {
                 if (GameState.FadeType != 2)
                 {
@@ -418,7 +418,7 @@ namespace Client
                         }
                     }
                 }
-                fadetmr = tick + 30;
+                fadeTmr = tick + 30;
             }
 
             Gui.ResizeGUI();

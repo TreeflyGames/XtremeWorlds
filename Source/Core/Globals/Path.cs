@@ -36,6 +36,15 @@ namespace Core
             }
         }
 
+        /// <summary> Returns skins directory </summary>
+        public static string Skins
+        {
+            get
+            {
+                return System.IO.Path.Combine(Asset, "Skins");
+            }
+        }
+
         /// <summary> Returns graphics directory </summary>
         public static string Graphics
         {

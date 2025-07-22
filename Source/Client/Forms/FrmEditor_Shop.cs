@@ -38,15 +38,15 @@ namespace Client
             int tmpindex;
 
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Shop[GameState.EditorIndex].Name = txtName.Text;
+            Core.Data.Shop[GameState.EditorIndex].Name = txtName.Text;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Shop[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Shop[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
         private void ScrlBuy_Scroll(object sender, EventArgs e)
         {
-            Core.Type.Shop[GameState.EditorIndex].BuyRate = (int)Math.Round(nudBuy.Value);
+            Core.Data.Shop[GameState.EditorIndex].BuyRate = (int)Math.Round(nudBuy.Value);
         }
 
         private void BtnUpdate_Click(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace Client
             index = lstTradeItem.SelectedIndex;
 
             {
-                ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[index];
+                ref var withBlock = ref Core.Data.Shop[GameState.EditorIndex].TradeItem[index];
                 withBlock.Item = cmbItem.SelectedIndex;
                 withBlock.ItemValue = (int)Math.Round(nudItemValue.Value);
                 withBlock.CostItem = cmbCostItem.SelectedIndex;
@@ -71,7 +71,7 @@ namespace Client
 
             index = lstTradeItem.SelectedIndex;
             {
-                ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[index];
+                ref var withBlock = ref Core.Data.Shop[GameState.EditorIndex].TradeItem[index];
                 withBlock.Item = -1;
                 withBlock.ItemValue = 0;
                 withBlock.CostItem = -1;
@@ -105,7 +105,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Shop[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Shop[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.ShopEditorInit();
@@ -117,14 +117,14 @@ namespace Client
 
             // Add the names
             for (int i = 0; i < Constant.MAX_SHOPS; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Shop[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Data.Shop[i].Name);
 
             cmbItem.Items.Clear();
             cmbCostItem.Items.Clear();
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
             {
-                cmbItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
-                cmbCostItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
+                cmbItem.Items.Add(i + 1 + ": " + Core.Data.Item[i].Name);
+                cmbCostItem.Items.Add(i + 1 + ": " + Core.Data.Item[i].Name);
             }
 
         }

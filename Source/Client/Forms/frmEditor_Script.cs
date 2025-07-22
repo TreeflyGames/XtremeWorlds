@@ -22,7 +22,7 @@ namespace Client
         private void btnOpenScript_Click(object sender, EventArgs e)
         {
             // Open code in temp file
-            System.IO.File.WriteAllLines(Script.TempFile, Core.Type.Script.Code);
+            System.IO.File.WriteAllLines(Script.TempFile, Core.Data.Script.Code);
 
             // Open with default text editor
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
@@ -41,7 +41,7 @@ namespace Client
             }
 
             // Read the script file and set the script code to the file contents
-            Core.Type.Script.Code = File.ReadAllLines(Script.TempFile);
+            Core.Data.Script.Code = File.ReadAllLines(Script.TempFile);
             Script.SendSaveScript();
         }
 

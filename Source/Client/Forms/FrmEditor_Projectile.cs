@@ -20,7 +20,7 @@ namespace Client
 
             // Add the names
             for (int i = 0; i < Constant.MAX_PROJECTILES;  i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Projectile[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Data.Projectile[i].Name);
 
             nudPic.Maximum = GameState.NumProjectiles;
         }
@@ -68,31 +68,31 @@ namespace Client
             int tmpindex;
 
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Projectile[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
+            Core.Data.Projectile[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Projectile[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Projectile[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
         private void NudPic_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Projectile[GameState.EditorIndex].Sprite = (int)Math.Round(nudPic.Value);
+            Core.Data.Projectile[GameState.EditorIndex].Sprite = (int)Math.Round(nudPic.Value);
             Drawicon();
         }
 
         private void NudRange_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Projectile[GameState.EditorIndex].Range = (byte)Math.Round(nudRange.Value);
+            Core.Data.Projectile[GameState.EditorIndex].Range = (byte)Math.Round(nudRange.Value);
         }
 
         private void NudSpeed_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Projectile[GameState.EditorIndex].Speed = (int)Math.Round(nudSpeed.Value);
+            Core.Data.Projectile[GameState.EditorIndex].Speed = (int)Math.Round(nudSpeed.Value);
         }
 
         private void NudDamage_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Projectile[GameState.EditorIndex].Damage = (int)Math.Round(nudDamage.Value);
+            Core.Data.Projectile[GameState.EditorIndex].Damage = (int)Math.Round(nudDamage.Value);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Projectile[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Projectile[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.ProjectileEditorInit();

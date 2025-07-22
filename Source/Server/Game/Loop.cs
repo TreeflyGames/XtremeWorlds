@@ -12,7 +12,6 @@ using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
-using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Type;
 
@@ -22,7 +21,7 @@ namespace Server
     public class Loop
     {
 
-        public static async Task ServerAsync()
+        public static async System.Threading.Tasks.Task ServerAsync()
         {
             int tick;
             var tmr25 = default(int);
@@ -41,7 +40,7 @@ namespace Server
                 if (General.IsServerDestroyed)
 
                     // Get all our online players.
-                    Debugger.Break(); var onlinePlayers = Core.Type.TempPlayer.Where(player => player.InGame).Select((player, index) => new { Index = Operators.AddObject(index, 1), player }).ToArray();
+                    Debugger.Break(); var onlinePlayers = Core.Data.TempPlayer.Where(player => player.InGame).Select((player, index) => new { Index = Operators.AddObject(index, 1), player }).ToArray();
 
                 await General.CheckShutDownCountDownAsync();
 
@@ -81,10 +80,10 @@ namespace Server
 
                     for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
                     {
-                        if (Core.Type.Player[index].Moving > 0 && Core.Type.Player[index].IsMoving)
+                        if (Core.Data.Player[index].Moving > 0 && Core.Data.Player[index].IsMoving)
                         {
-                            Player.PlayerMove(index, Core.Type.Player[index].Dir, Core.Type.Player[index].Moving, false);
-                            Core.Type.Player[index].IsMoving = false;
+                            Player.PlayerMove(index, Core.Data.Player[index].Dir, Core.Data.Player[index].Moving, false);
+                            Core.Data.Player[index].IsMoving = false;
                         }
                     }
 
@@ -137,7 +136,7 @@ namespace Server
                     Console.WriteLine(e.Message);
                 }
 
-                await Task.Delay(1);
+                await System.Threading.Tasks.Task.Delay(1);
             }
             while (true);
         }
@@ -153,7 +152,7 @@ namespace Server
                 var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i < loopTo; i++)
                 {
-                    Database.SaveCharacter(i, Core.Type.TempPlayer[i].Slot);
+                    Database.SaveCharacter(i, Core.Data.TempPlayer[i].Slot);
                     Database.SaveBank(i);
                 }
 
@@ -195,10 +194,10 @@ namespace Server
             // Use entities from Core.Globals.Entity class
             for (int mapNum = 0; mapNum < mapCount; mapNum++)
             {
-                // Add NPCs
+                // Add Npcs
                 for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i++)
                 {
-                    var npc = Core.Globals.Entity.FromNPC(i, Core.Type.MapNPC[mapNum].NPC[i]);
+                    var npc = Core.Globals.Entity.FromNpc(i, Data.MapNpc[mapNum].Npc[i]);
                     if (npc.Num >= 0)
                     {
                         npc.Map = mapNum;
@@ -209,9 +208,9 @@ namespace Server
                 // Add Players
                 for (int i = 0; i < NetworkConfig.Socket.HighIndex; i++)
                 {
-                    if (Core.Type.Player[i].Map == mapNum)
+                    if (Core.Data.Player[i].Map == mapNum)
                     {
-                        var player = Core.Globals.Entity.FromPlayer(i, Core.Type.Player[i]);
+                        var player = Core.Globals.Entity.FromPlayer(i, Core.Data.Player[i]);
                         if (player.Num >= 0)
                         {
                             player.Map = mapNum;
@@ -227,11 +226,11 @@ namespace Server
             {
                 switch (entity.Type)
                 {
-                    case Core.Globals.Entity.EntityType.NPC:
-                        Core.Type.MapNPC[entity.Map].NPC[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNPC(entity.Id, entity);
+                    case Core.Globals.Entity.EntityType.Npc:
+                        Data.MapNpc[entity.Map].Npc[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNpc(entity.Id, entity);
                         break;
                     case Core.Globals.Entity.EntityType.Player:
-                        Core.Type.Player[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPlayer(entity.Id, entity);
+                        Core.Data.Player[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPlayer(entity.Id, entity);
                         break;
                 }
             }

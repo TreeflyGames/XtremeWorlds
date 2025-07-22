@@ -10,54 +10,16 @@ namespace Core
 {
     public static class Type
     {
-        // Common data structure arrays with improved initialization
-        public static JobStruct[] Job = new JobStruct[Constant.MAX_JOBS];
-        public static MoralStruct[] Moral = new MoralStruct[Constant.MAX_MORALS];
-        public static ItemStruct[] Item = new ItemStruct[Constant.MAX_ITEMS];
-        public static NPCStruct[] NPC = new NPCStruct[Constant.MAX_NPCS];
-        public static ShopStruct[] Shop = new ShopStruct[Constant.MAX_SHOPS];
-        public static SkillStruct[] Skill = new SkillStruct[Constant.MAX_SKILLS];
-        public static MapResourceStruct[] MapResource = new MapResourceStruct[Constant.MAX_RESOURCES];
-        public static MapResourceCacheStruct[] MyMapResource = new MapResourceCacheStruct[Constant.MAX_RESOURCES];
-        public static AnimationStruct[] Animation = new AnimationStruct[Constant.MAX_ANIMATIONS];
-        public static MapStruct[] Map = new MapStruct[Constant.MAX_MAPS];
-        public static MapStruct MyMap;
-        public static TileStruct[,] TempTile;
-        public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, Constant.MAX_MAP_ITEMS];
-        public static MapItemStruct[] MyMapItem = new MapItemStruct[Constant.MAX_MAP_ITEMS];
-        public static MapDataStruct[] MapNPC = new MapDataStruct[Constant.MAX_MAPS];
-        public static MapNPCStruct[] MyMapNPC = new MapNPCStruct[Constant.MAX_MAP_NPCS];
-        public static BankStruct[] Bank = new BankStruct[Constant.MAX_PLAYERS];
-        public static TempPlayerStruct[] TempPlayer = new TempPlayerStruct[Constant.MAX_PLAYERS];
-        public static AccountStruct[] Account = new AccountStruct[Constant.MAX_PLAYERS];
-        public static PlayerStruct[] Player = new PlayerStruct[Constant.MAX_PLAYERS];
-        public static ProjectileStruct[] Projectile = new ProjectileStruct[Constant.MAX_PROJECTILES];
-        public static MapProjectileStruct[,] MapProjectile = new MapProjectileStruct[Constant.MAX_MAPS, Constant.MAX_PROJECTILES];
-        public static PlayerInvStruct[] TradeYourOffer = new PlayerInvStruct[Constant.MAX_INV];
-        public static PlayerInvStruct[] TradeTheirOffer = new PlayerInvStruct[Constant.MAX_INV];
-        public static PartyStruct[] Party = new PartyStruct[Constant.MAX_PARTY];
-        public static PartyStruct MyParty;
-        public static ResourceStruct[] Resource = new ResourceStruct[Constant.MAX_RESOURCES];
-        public static CharList Char;
-        public static PetStruct[] Pet = new PetStruct[Constant.MAX_PETS];
-        public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[byte.MaxValue];
-        public static ScriptStruct Script = new ScriptStruct(); 
+        #region  Definitions
 
-        public static QuestStruct[] Quests = new QuestStruct[Constant.MAX_QUESTS];
-        public static EventStruct[] Events = new EventStruct[Constant.MAX_EVENTS];
-        public static GuildStruct[] Guilds = new GuildStruct[Constant.MAX_GUILDS];
-        public static WeatherStruct Weather = new WeatherStruct();
-
-        #region Struct Definitions
-
-        public struct ResourceTypetruct
+        public struct ResourceType
         {
             public int SkillLevel;
             public int SkillCurExp;
             public int SkillNextLvlExp;
         }
 
-        public struct AnimationStruct
+        public struct Animation
         {
             public string Name;
             public string Sound;
@@ -67,7 +29,7 @@ namespace Core
             public int[] LoopTime;
         }
 
-        public struct RectStruct
+        public struct Rect
         {
             public double Top;
             public double Left;
@@ -75,7 +37,7 @@ namespace Core
             public double Bottom;
         }
 
-        public struct ResourceStruct
+        public struct Resource
         {
             public string Name;
             public string SuccessMessage;
@@ -93,7 +55,7 @@ namespace Core
             public int Animation;
         }
 
-        public struct SkillStruct
+        public struct Skill
         {
             public string Name;
             public byte Type;
@@ -123,32 +85,32 @@ namespace Core
             public byte KnockBackTiles;
         }
 
-        public struct ShopStruct
+        public struct Shop
         {
             public string Name;
             public int BuyRate;
-            public TradeItemStruct[] TradeItem;
+            public TradeItem[] TradeItem;
         }
 
-        public struct PlayerInvStruct
+        public struct PlayerInv
         {
             public int Num;
             public int Value;
             public byte Bound;
         }
 
-        public struct PlayerSkillStruct
+        public struct PlayerSkill
         {
             public int Num;
             public int CD;
         }
 
-        public struct BankStruct
+        public struct Bank
         {
-            public PlayerInvStruct[] Item;
+            public PlayerInv[] Item;
         }
 
-        public struct TileDataStruct
+        public struct Layer
         {
             public int X;
             public int Y;
@@ -156,25 +118,25 @@ namespace Core
             public byte AutoTile;
         }
 
-        public struct TileStruct
+        public struct Tile
         {
-            public TileDataStruct[] Layer;
-            public Enum.TileType Type;
+            public Layer[] Layer;
+            public TileType Type;
             public int Data1;
             public int Data2;
             public int Data3;
-            public Enum.TileType Type2;
+            public TileType Type2;
             public int Data1_2;
             public int Data2_2;
             public int Data3_2;
             public byte DirBlock;
         }
-        public struct TileHistoryStruct
+        public struct TileHistory
         {
-            public TileStruct[,] Tile;
+            public Tile[,] Tile;
         }
 
-        public struct ItemStruct
+        public struct Item
         {
             public string Name;
             public int Icon;
@@ -204,7 +166,7 @@ namespace Core
             public int Ammo;
         }
 
-        public struct AnimInstanceStruct
+        public struct AnimInstance
         {
             public int Animation;
             public int X;
@@ -217,7 +179,7 @@ namespace Core
             public int[] FrameIndex;
         }
 
-        public struct NPCStruct
+        public struct Npc
         {
             public string Name;
             public string AttackSay;
@@ -239,7 +201,7 @@ namespace Core
             public int Damage;
         }
 
-        public struct TradeItemStruct
+        public struct TradeItem
         {
             public int Item;
             public int ItemValue;
@@ -247,7 +209,7 @@ namespace Core
             public int CostValue;
         }
 
-        public struct JobStruct
+        public struct Job
         {
             public string Name;
             public string Desc;
@@ -262,7 +224,7 @@ namespace Core
             public int BaseExp;
         }
 
-        public struct PetStruct
+        public struct Pet
         {
             public int Num;
             public string Name;
@@ -281,14 +243,14 @@ namespace Core
             public int EvolveNum;
         }
 
-        public struct AccountStruct
+        public struct Account
         {
             public string Login;
             public string Password;
             public bool Banned;
         }
 
-        public struct PlayerStruct
+        public struct Player
         {
             public string Name;
             public byte Sex;
@@ -302,16 +264,16 @@ namespace Core
             public byte[] Stat;
             public byte Points;
             public int[] Equipment;
-            public PlayerInvStruct[] Inv;
-            public PlayerSkillStruct[] Skill;
+            public PlayerInv[] Inv;
+            public PlayerSkill[] Skill;
             public int Map;
             public byte X;
             public byte Y;
             public byte Dir;
-            public HotbarStruct[] Hotbar;
+            public Hotbar[] Hotbar;
             public byte[] Switches;
             public int[] Variables;
-            public ResourceTypetruct[] GatherSkills;
+            public ResourceType[] GatherSkills;
             public int XOffset;
             public int YOffset;
             public byte Moving;
@@ -323,11 +285,11 @@ namespace Core
             public int Emote;
             public int EmoteTimer;
             public int EventTimer;
-            public PlayerQuestStruct[] Quests;
+            public PlayerQuest[] Quests;
             public int GuildId;
         }
 
-        public struct TempPlayerStruct
+        public struct TempPlayer
         {
             public bool InGame;
             public int AttackTimer;
@@ -349,11 +311,11 @@ namespace Core
             public bool InBank;
             public int TradeRequest;
             public double InTrade;
-            public PlayerInvStruct[] TradeOffer;
+            public PlayerInv[] TradeOffer;
             public bool AcceptTrade;
-            public EventMapStruct EventMap;
+            public EventMap EventMap;
             public int EventProcessingCount;
-            public EventProcessingStruct[] EventProcessing;
+            public EventProcessing[] EventProcessing;
             public int StopRegenTimer;
             public byte StopRegen;
             public int TmpMap;
@@ -368,16 +330,16 @@ namespace Core
             public int PetStunDuration;
             public int PetAttackTimer;
             public int[] PetSkillCD;
-            public SkillBufferRec PetSkillBuffer;
-            public DoTStruct[] PetDoT;
-            public DoTStruct[] PetHoT;
+            public SkillBuffer PetSkillBuffer;
+            public DoT[] PetDoT;
+            public DoT[] PetHoT;
             public bool PetStopRegen;
             public int PetStopRegenTimer;
             public int Editor;
             public byte Slot;
         }
 
-        public struct MapStruct
+        public struct Map
         {
             public string Name;
             public string Music;
@@ -393,10 +355,10 @@ namespace Core
             public byte BootY;
             public byte MaxX;
             public byte MaxY;
-            public TileStruct[,] Tile;
-            public int[] NPC;
+            public Tile[,] Tile;
+            public int[] Npc;
             public int EventCount;
-            public EventStruct[] Event;
+            public Event[] Event;
             public byte Weather;
             public int Fog;
             public int WeatherIntensity;
@@ -414,10 +376,10 @@ namespace Core
             public bool NoRespawn;
             public bool Indoors;
             public int[] SpawnPoints; // New: Multiple spawn points
-            public int[] BossNPCs; // New: Boss NPCs on map
+            public int[] BossNpcs; // New: Boss Npcs on map
         }
 
-        public struct MapItemStruct
+        public struct MapItem
         {
             public int Num;
             public int Value;
@@ -429,7 +391,7 @@ namespace Core
             public long DespawnTimer;
         }
 
-        public struct MapNPCStruct
+        public struct MapNpc
         {
             public int Num;
             public int Target;
@@ -454,18 +416,18 @@ namespace Core
             public int Steps;
         }
 
-        public struct MapDataStruct
+        public struct MapData
         {
-            public MapNPCStruct[] NPC;
+            public MapNpc[] Npc;
         }
 
-        public struct HotbarStruct
+        public struct Hotbar
         {
             public int Slot;
             public byte SlotType;
         }
 
-        public struct SkillBufferRec
+        public struct SkillBuffer
         {
             public int Skill;
             public int Timer;
@@ -473,7 +435,7 @@ namespace Core
             public byte TargetType;
         }
 
-        public struct DoTStruct
+        public struct DoT
         {
             public bool Used;
             public int Skill;
@@ -488,7 +450,7 @@ namespace Core
             public int OriginalMap;
         }
 
-        public struct MoveRouteStruct
+        public struct MoveRoute
         {
             public int Index;
             public int Data1;
@@ -499,7 +461,7 @@ namespace Core
             public int Data6;
         }
 
-        public struct GlobalEventStruct
+        public struct GlobalEvent
         {
             public int X;
             public int Y;
@@ -520,7 +482,7 @@ namespace Core
             public byte MoveSpeed;
             public byte MoveFreq;
             public int MoveRouteCount;
-            public MoveRouteStruct[] MoveRoute;
+            public MoveRoute[] MoveRoute;
             public int MoveRouteStep;
             public int RepeatMoveRoute;
             public int IgnoreIfCannotMove;
@@ -529,13 +491,13 @@ namespace Core
             public int PatrolStep;
         }
 
-        public struct GlobalEventsStruct
+        public struct GlobalEvents
         {
             public int EventCount;
-            public GlobalEventStruct[] Event;
+            public GlobalEvent[] Event;
         }
 
-        public struct ConditionalBranchStruct
+        public struct ConditionalBranch
         {
             public int Condition;
             public int Data1;
@@ -545,7 +507,7 @@ namespace Core
             public int ElseCommandList;
         }
 
-        public struct EventCommandStruct
+        public struct EventCommand
         {
             public int Index;
             public string Text1;
@@ -559,19 +521,19 @@ namespace Core
             public int Data4;
             public int Data5;
             public int Data6;
-            public ConditionalBranchStruct ConditionalBranch;
+            public ConditionalBranch ConditionalBranch;
             public int MoveRouteCount;
-            public MoveRouteStruct[] MoveRoute;
+            public MoveRoute[] MoveRoute;
         }
 
-        public struct CommandListStruct
+        public struct CommandList
         {
             public int CommandCount;
             public int ParentList;
-            public EventCommandStruct[] Commands;
+            public EventCommand[] Commands;
         }
 
-        public struct EventPageStruct
+        public struct EventPage
         {
             public int ChkVariable;
             public int VariableIndex;
@@ -596,7 +558,7 @@ namespace Core
             public byte MoveSpeed;
             public byte MoveFreq;
             public int MoveRouteCount;
-            public MoveRouteStruct[] MoveRoute;
+            public MoveRoute[] MoveRoute;
             public int IgnoreMoveRoute;
             public int RepeatMoveRoute;
             public int WalkAnim;
@@ -605,24 +567,24 @@ namespace Core
             public int ShowName;
             public byte Trigger;
             public int CommandListCount;
-            public CommandListStruct[] CommandList;
+            public CommandList[] CommandList;
             public byte Position;
             public int X;
             public int Y;
         }
 
-        public struct EventStruct
+        public struct Event
         {
             public string Name;
             public byte Globals;
             public int PageCount;
-            public EventPageStruct[] Pages;
+            public EventPage[] Pages;
             public int X;
             public int Y;
             public int[] SelfSwitches;
         }
 
-        public struct GlobalMapEventsStruct
+        public struct GlobalMapEvents
         {
             public int EventId;
             public int PageId;
@@ -630,7 +592,7 @@ namespace Core
             public int Y;
         }
 
-        public struct MapEventStruct
+        public struct MapEvent
         {
             public string Name;
             public int Steps;
@@ -656,7 +618,7 @@ namespace Core
             public byte MoveSpeed;
             public byte MoveFreq;
             public int MoveRouteCount;
-            public MoveRouteStruct[] MoveRoute;
+            public MoveRoute[] MoveRoute;
             public int MoveRouteStep;
             public int RepeatMoveRoute;
             public int IgnoreIfCannotMove;
@@ -671,13 +633,13 @@ namespace Core
             public int DirFix;
         }
 
-        public struct EventMapStruct
+        public struct EventMap
         {
             public int CurrentEvents;
-            public MapEventStruct[] EventPages;
+            public MapEvent[] EventPages;
         }
 
-        public struct EventProcessingStruct
+        public struct EventProcessing
         {
             public int Active;
             public int CurList;
@@ -691,17 +653,17 @@ namespace Core
             public int[] ListLeftOff;
         }
 
-        public struct PlayerQuestStruct
+        public struct PlayerQuest
         {
             public int Status; // 0=not started, 1=started, 2=completed, 3=repeatable
             public int ActualTask;
             public int CurrentCount;
         }
 
-        public struct TaskStruct
+        public struct Task
         {
             public int Order;
-            public int NPC;
+            public int Npc;
             public int Item;
             public int Map;
             public int Resource;
@@ -712,7 +674,7 @@ namespace Core
             public int TaskType;
         }
 
-        public struct ProjectileStruct
+        public struct Projectile
         {
             public string Name;
             public int Sprite;
@@ -721,7 +683,7 @@ namespace Core
             public int Damage;
         }
 
-        public struct MapProjectileStruct
+        public struct MapProjectile
         {
             public int ProjectileNum;
             public int Owner;
@@ -734,26 +696,26 @@ namespace Core
             public int Timer;
         }
 
-        public struct EventListStruct
+        public struct EventList
         {
             public int CommandList;
             public int CommandNum;
         }
 
-        public struct PartyStruct
+        public struct Party
         {
             public int Leader;
             public int[] Member;
             public int MemberCount;
         }
 
-        public struct MapResourceStruct
+        public struct MapResource
         {
             public int ResourceCount;
-            public MapResourceCacheStruct[] ResourceData;
+            public MapResourceCache[] ResourceData;
         }
 
-        public struct MapResourceCacheStruct
+        public struct MapResourceCache
         {
             public int X;
             public int Y;
@@ -762,7 +724,7 @@ namespace Core
             public byte Health;
         }
 
-        public struct PictureStruct
+        public struct Picture
         {
             public byte Index;
             public byte SpriteType;
@@ -771,23 +733,23 @@ namespace Core
             public int EventId;
         }
 
-        public struct ControlPartStruct
+        public struct ControlPart
         {
-            public Enum.PartType Type;
-            public Enum.PartOriginType Origin;
+            public DraggablePartType Type;
+            public PartOrigin Origin;
             public long Value;
             public long Slot;
         }
 
-        public struct CSMapStruct
+        public struct CSMap
         {
-            public CSMapDataStruct MapData;
-            public CSTileStruct[,] Tile;
+            public CSMapData MapData;
+            public CSTile[,] Tile;
         }
 
-        public struct CSTileStruct
+        public struct CSTile
         {
-            public CSTileDataStruct[] Layer;
+            public CSTileType[] Layer;
             public byte[] Autotile;
             public byte Type;
             public int Data1;
@@ -798,14 +760,14 @@ namespace Core
             public byte DirBlock;
         }
 
-        public struct CSTileDataStruct
+        public struct CSTileType
         {
             public int x;
             public int y;
             public int TileSet;
         }
 
-        public struct CSMapDataStruct
+        public struct CSMapData
         {
             public string Name;
             public string Music;
@@ -828,11 +790,11 @@ namespace Core
             public int Green;
             public int Blue;
             public int Alpha;
-            public int BossNPC;
-            public int[] NPC;
+            public int BossNpc;
+            public int[] Npc;
         }
 
-        public struct XWMapStruct
+        public struct XWMap
         {
             public string Name;
             public long Revision;
@@ -847,14 +809,14 @@ namespace Core
             public byte BootY;
             public int Shop;
             public byte Indoors;
-            public XWTileStruct[,] Tile;
-            public long[] NPC;
+            public XWTile[,] Tile;
+            public long[] Npc;
             public bool Server;
             public byte Respawn;
             public byte Weather;
         }
 
-        public struct XWTileStruct
+        public struct XWTile
         {
             public short Ground;
             public short Mask;
@@ -865,8 +827,8 @@ namespace Core
             public short FringeAnim;
             public short Roof;
             public short Fringe2Anim;
-            public Enum.XWTileType Type;
-            public Enum.XWTileType Type2;
+            public TileType Type;
+            public TileType Type2;
             public short Data1;
             public short Data2;
             public short Data3;
@@ -875,7 +837,7 @@ namespace Core
             public short Data3_2;
         }
 
-        public struct MoralStruct
+        public struct Moral
         {
             public string Name;
             public byte Color;
@@ -887,50 +849,50 @@ namespace Core
             public bool CanPickupItem;
             public bool CanDropItem;
             public bool PlayerBlock;
-            public bool NPCBlock;
+            public bool NpcBlock;
         }
 
-        public struct SDLayerStruct
+        public struct SDLayer
         {
-            public List<SDMapLayerStruct> MapLayer;
+            public List<SDMapLayer> MapLayer;
         }
 
-        public struct SDMapLayerStruct
+        public struct SDMapLayer
         {
             public string Name;
-            public SDTileStruct Tiles;
+            public SDTile Tiles;
         }
 
-        public struct SDTileStruct
+        public struct SDTile
         {
-            public List<SDMapTileStruct> ArrayOfMapTile;
+            public List<SDMapTile> ArrayOfMapTile;
         }
 
-        public struct SDMapTileStruct
+        public struct SDMapTile
         {
             public int TileIndex;
         }
 
-        public struct SDWarpPosStruct
+        public struct SDWarpPos
         {
             public int X;
             public int Y;
         }
 
-        public struct SDWarpDesStruct
+        public struct SDWarpDes
         {
             public int X;
             public int Y;
         }
 
-        public struct SDWarpDataStruct
+        public struct SDWarpData
         {
-            public SDWarpPosStruct Pos;
-            public SDWarpDesStruct WarpDes;
+            public SDWarpPos Pos;
+            public SDWarpDes WarpDes;
             public int MapID;
         }
 
-        public struct SDMapStruct
+        public struct SDMap
         {
             public string Name;
             public string Music;
@@ -942,23 +904,23 @@ namespace Core
             public int Tileset;
             public int MaxX;
             public int MaxY;
-            public SDWarpDataStruct Warp;
-            public SDLayerStruct MapLayer;
+            public SDWarpData Warp;
+            public SDLayer MapLayer;
         }
 
-        // New Structs for Enhanced Features
-        public struct QuestStruct
+        // New s for Enhanced Features
+        public struct Quest
         {
             public string Name;
             public string Description;
             public int RewardExp;
             public int RewardItem;
             public int RewardItemValue;
-            public TaskStruct[] Tasks;
+            public Task[] Tasks;
             public int TaskCount;
         }
 
-        public struct GuildStruct
+        public struct Guild
         {
             public string Name;
             public int Leader;
@@ -968,7 +930,7 @@ namespace Core
             public int Exp;
         }
 
-        public struct WeatherStruct
+        public struct Weather
         {
             public int Type; // 0: None, 1: Rain, 2: Snow, etc.
             public int Intensity;
@@ -979,15 +941,7 @@ namespace Core
 
         #region Miscellaneous
 
-        public static ActionMsgStruct[] ActionMsg = new ActionMsgStruct[byte.MaxValue];
-        public static BloodStruct[] Blood = new BloodStruct[byte.MaxValue];
-        public static ChatStruct[] Chat = new ChatStruct[Constant.CHAT_LINES];
-        public static TileStruct[,] MapTile;
-        public static TileHistoryStruct[] TileHistory;
-        public static AutotileStruct[,] Autotile;
-        public static MapEventStruct[] MapEvents;
-
-        public struct RectangleStruct
+        public struct Rectangle
         {
             public int Top;
             public int Right;
@@ -995,33 +949,33 @@ namespace Core
             public int Left;
         }
 
-        public struct PointStruct
+        public struct Point
         {
             public int X;
             public int Y;
         }
 
-        public struct QuarterTileStruct
+        public struct QuarterTile
         {
-            public PointStruct[] QuarterTile;
+            public Point[] Tile;
             public byte RenderState;
             public int[] SrcX;
             public int[] SrcY;
         }
 
-        public struct AutotileStruct
+        public struct Autotile
         {
-            public QuarterTileStruct[] Layer;
-            public QuarterTileStruct[] ExLayer;
+            public QuarterTile[] Layer;
+            public QuarterTile[] ExLayer;
         }
 
-        public static PointStruct[] AutoIn = new PointStruct[5];
-        public static PointStruct[] AutoNw = new PointStruct[5];
-        public static PointStruct[] AutoNe = new PointStruct[5];
-        public static PointStruct[] AutoSw = new PointStruct[5];
-        public static PointStruct[] AutoSe = new PointStruct[5];
+        public static Point[] AutoIn = new Point[5];
+        public static Point[] AutoNw = new Point[5];
+        public static Point[] AutoNe = new Point[5];
+        public static Point[] AutoSw = new Point[5];
+        public static Point[] AutoSe = new Point[5];
 
-        public struct ChatStruct
+        public struct Chat
         {
             public string Text;
             public int Color;
@@ -1030,14 +984,14 @@ namespace Core
             public long Timer;
         }
 
-        public struct SkillAnimStruct
+        public struct SkillAnim
         {
             public int skillNum;
             public int Timer;
             public int FramePointer;
         }
 
-        public struct ChatBubbleStruct
+        public struct ChatBubble
         {
             public string Msg;
             public int Color;
@@ -1047,7 +1001,7 @@ namespace Core
             public bool Active;
         }
 
-        public struct ActionMsgStruct
+        public struct ActionMsg
         {
             public string Message;
             public int Created;
@@ -1059,7 +1013,7 @@ namespace Core
             public int Timer;
         }
 
-        public struct BloodStruct
+        public struct Blood
         {
             public int Sprite;
             public int Timer;
@@ -1067,13 +1021,13 @@ namespace Core
             public int Y;
         }
 
-        public struct TextStruct
+        public struct Text
         {
-            public string Text;
-            public Color Color;
+            public string Caption;
+            public System.Drawing.Color Color;
         }
 
-        public struct WeatherParticleStruct
+        public struct WeatherParticle
         {
             public int Type;
             public int X;
@@ -1082,7 +1036,12 @@ namespace Core
             public int InUse;
         }
 
-        public struct ScriptStruct
+        public struct Script
+        {
+            public string[] Code;
+        }
+
+        public struct UI
         {
             public string[] Code;
         }
