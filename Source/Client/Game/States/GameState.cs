@@ -89,7 +89,7 @@ namespace Client
         // Chat bubble
         public static int ChatBubbleindex;
 
-        public static string chatShowLine;
+        public static string ChatShowLine;
 
         public static string[] MapNames = new string[Core.Constant.MAX_MAPS];
 

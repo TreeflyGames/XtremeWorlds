@@ -1728,6 +1728,11 @@ namespace Server
 
             var characterData = data.ToObject<Core.Type.Player>();
 
+            if (characterData.Name == "")
+            {
+                return false;
+            }
+
             Core.Data.Player[index] = characterData;
             Core.Data.TempPlayer[index].Slot = (byte)charNum;
             return true;

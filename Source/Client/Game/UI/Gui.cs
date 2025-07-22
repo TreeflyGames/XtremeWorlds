@@ -1154,7 +1154,7 @@ namespace Client
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
             bool enabled = false;
-            UpdateLabel(Windows.Count, "lblClassName", 183L, 39L, 98L, 10L, "Warrior", Core.Font.Arial, Color.White, Alignment.Center, true, 255L, false, false, ref argcallback_norm1, ref argcallback_hover1, ref argcallback_mousedown2, ref argcallback_mousemove2, ref argcallback_dblclick2, ref enabled);
+            UpdateLabel(Windows.Count, "lblJobName", 183L, 39L, 98L, 10L, "Warrior", Core.Font.Arial, Color.White, Alignment.Center, true, 255L, false, false, ref argcallback_norm1, ref argcallback_hover1, ref argcallback_mousedown2, ref argcallback_mousemove2, ref argcallback_dblclick2, ref enabled);
 
             // Select Buttons
             var argcallback_mousedown3 = new Action(btnJobs_Left);
@@ -1917,7 +1917,7 @@ namespace Client
                             // Handle active window text input
                             if (ActiveWindow == winNum & Windows[winNum].ActiveControl == entNum)
                             {
-                                taddText = GameState.chatShowLine;
+                                taddText = GameState.ChatShowLine;
                             }
 
                             // Final text with potential censoring and additional input
@@ -3301,7 +3301,7 @@ namespace Client
                 GameState.NewCharJob = 0L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblClassName")].Text = Data.Job[(int)GameState.NewCharJob].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblJobName")].Text = Data.Job[(int)GameState.NewCharJob].Name;
         }
 
         public static void btnJobs_Right()
@@ -3314,7 +3314,7 @@ namespace Client
             GameState.NewCharJob += 1L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblClassName")].Text = Data.Job[(int)GameState.NewCharJob ].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblJobName")].Text = Data.Job[(int)GameState.NewCharJob ].Name;
         }
 
         public static void btnJobs_Accept()
@@ -5384,7 +5384,7 @@ namespace Client
             Action argcallback_mousedown2 = null;
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
-            UpdateLabel(Windows.Count, "lblClass", 5L, 102L, 92L, 10L, "Warrior", Core.Font.Georgia, Color.Green, Alignment.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
+            UpdateLabel(Windows.Count, "lblJob", 5L, 102L, 92L, 10L, "Warrior", Core.Font.Georgia, Color.Green, Alignment.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
             Action argcallback_norm3 = null;
             Action argcallback_hover3 = null;
             Action argcallback_mousedown3 = null;
