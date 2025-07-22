@@ -7,21 +7,21 @@ namespace Client
 {
 
     [Microsoft.VisualBasic.CompilerServices.DesignerGenerated()]
-    internal partial class frmEditor_NPC : Form
+    internal partial class frmEditor_Npc : Form
     {
 
         // Shared instance of the form
-        private static frmEditor_NPC _instance;
+        private static frmEditor_Npc _instance;
 
         // Public property to get the shared instance
-        public static frmEditor_NPC Instance
+        public static frmEditor_Npc Instance
         {
             get
             {
                 // Create a new instance if one does not exist or if it has been disposed
                 if (_instance is null || _instance.IsDisposed)
                 {
-                    _instance = new frmEditor_NPC();
+                    _instance = new frmEditor_Npc();
                 }
                 return _instance;
             }
@@ -154,7 +154,7 @@ namespace Client
             DarkGroupBox1.Size = new Size(265, 451);
             DarkGroupBox1.TabIndex = 0;
             DarkGroupBox1.TabStop = false;
-            DarkGroupBox1.Text = "NPC List";
+            DarkGroupBox1.Text = "Npc List";
             // 
             // lstIndex
             // 
@@ -923,7 +923,7 @@ namespace Client
             btnSave.Text = "Save";
             btnSave.Click += BtnSave_Click;
             // 
-            // frmEditor_NPC
+            // frmEditor_Npc
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -940,10 +940,10 @@ namespace Client
             Controls.Add(DarkGroupBox1);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Margin = new Padding(4, 3, 4, 3);
-            Name = "frmEditor_NPC";
-            Text = "NPC Editor";
-            FormClosing += frmEditor_NPC_FormClosing;
-            Load += frmEditor_NPC_Load;
+            Name = "frmEditor_Npc";
+            Text = "Npc Editor";
+            FormClosing += frmEditor_Npc_FormClosing;
+            Load += frmEditor_Npc_Load;
             DarkGroupBox1.ResumeLayout(false);
             DarkGroupBox2.ResumeLayout(false);
             DarkGroupBox2.PerformLayout();

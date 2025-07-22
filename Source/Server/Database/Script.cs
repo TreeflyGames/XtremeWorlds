@@ -8,7 +8,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.NetworkInformation;
 using System.Reflection;
-using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
 using static Core.Type;
@@ -17,7 +16,7 @@ using static Server.Event;
 using static Server.Item;
 using static Server.Moral;
 using static Server.NetworkSend;
-using static Server.NPC;
+using static Server.Npc;
 using static Server.Party;
 using static Server.Pet;
 using static Server.Player;
@@ -48,7 +47,7 @@ public class Script
     public void JoinGame(int index)
     {
         // Warp the player to his saved location
-        PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
+        PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Direction.Down);
 
         // Notify everyone that a player has joined the game.
         NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), SettingsManager.Instance.GameName));
@@ -76,27 +75,27 @@ public class Script
         int n;
         var tempItem = default(int);
         int m;
-        var tempdata = new int[(int)(StatType.Count + 3 + 1)];
+        var tempdata = new int[Enum.GetValues(typeof(Stat)).Length + 4];
         var tempstr = new string[3];
 
         // Find out what kind of item it is
-        switch (Core.Type.Item[itemNum].Type)
+        switch (Core.Data.Item[itemNum].Type)
         {
-            case (byte)ItemType.Equipment:
+            case (byte)ItemCategory.Equipment:
                 {
-                    switch (Core.Type.Item[itemNum].SubType)
+                    switch (Core.Data.Item[itemNum].SubType)
                     {
-                        case (byte)EquipmentType.Weapon:
+                        case (byte)Equipment.Weapon:
                             {
 
-                                if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
+                                if (GetPlayerEquipment(index, Equipment.Weapon) >= 0)
                                 {
-                                    tempItem = GetPlayerEquipment(index, EquipmentType.Weapon);
+                                    tempItem = GetPlayerEquipment(index, Equipment.Weapon);
                                 }
 
-                                SetPlayerEquipment(index, itemNum, EquipmentType.Weapon);
+                                SetPlayerEquipment(index, itemNum, Equipment.Weapon);
 
-                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int)ColorType.BrightGreen);
+                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Data.Item[itemNum].Name), (int)Core.Color.BrightGreen);
                                 TakeInv(index, itemNum, 1);
 
                                 if (tempItem >= 0) // give back the stored item
@@ -117,16 +116,16 @@ public class Script
                                 break;
                             }
 
-                        case (byte)EquipmentType.Armor:
+                        case (byte)Equipment.Armor:
                             {
-                                if (GetPlayerEquipment(index, EquipmentType.Armor) >= 0)
+                                if (GetPlayerEquipment(index, Equipment.Armor) >= 0)
                                 {
-                                    tempItem = GetPlayerEquipment(index, EquipmentType.Armor);
+                                    tempItem = GetPlayerEquipment(index, Equipment.Armor);
                                 }
 
-                                SetPlayerEquipment(index, itemNum, EquipmentType.Armor);
+                                SetPlayerEquipment(index, itemNum, Equipment.Armor);
 
-                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int)ColorType.BrightGreen);
+                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Data.Item[itemNum].Name), (int)Core.Color.BrightGreen);
                                 TakeInv(index, itemNum, 1);
 
                                 if (tempItem >= 0) // Return their old equipment to their inventory.
@@ -147,16 +146,16 @@ public class Script
                                 break;
                             }
 
-                        case (byte)EquipmentType.Helmet:
+                        case (byte)Equipment.Helmet:
                             {
-                                if (GetPlayerEquipment(index, EquipmentType.Helmet) >= 0)
+                                if (GetPlayerEquipment(index, Equipment.Helmet) >= 0)
                                 {
-                                    tempItem = GetPlayerEquipment(index, EquipmentType.Helmet);
+                                    tempItem = GetPlayerEquipment(index, Equipment.Helmet);
                                 }
 
-                                SetPlayerEquipment(index, itemNum, EquipmentType.Helmet);
+                                SetPlayerEquipment(index, itemNum, Equipment.Helmet);
 
-                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int)ColorType.BrightGreen);
+                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Data.Item[itemNum].Name), (int)Core.Color.BrightGreen);
                                 TakeInv(index, itemNum, 1);
 
                                 if (tempItem >= 0) // give back the stored item
@@ -176,16 +175,16 @@ public class Script
                                 break;
                             }
 
-                        case (byte)EquipmentType.Shield:
+                        case (byte)Equipment.Shield:
                             {
-                                if (GetPlayerEquipment(index, EquipmentType.Shield) >= 0)
+                                if (GetPlayerEquipment(index, Equipment.Shield) >= 0)
                                 {
-                                    tempItem = GetPlayerEquipment(index, EquipmentType.Shield);
+                                    tempItem = GetPlayerEquipment(index, Equipment.Shield);
                                 }
 
-                                SetPlayerEquipment(index, itemNum, EquipmentType.Shield);
+                                SetPlayerEquipment(index, itemNum, Equipment.Shield);
 
-                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int)ColorType.BrightGreen);
+                                NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Data.Item[itemNum].Name), (int)Core.Color.BrightGreen);
                                 TakeInv(index, itemNum, 1);
 
                                 if (tempItem >= 0) // give back the stored item
@@ -210,16 +209,16 @@ public class Script
                     break;
                 }
 
-            case (byte)ItemType.Consumable:
+            case (byte)ItemCategory.Consumable:
                 {
-                    switch (Core.Type.Item[itemNum].SubType)
+                    switch (Core.Data.Item[itemNum].SubType)
                     {
-                        case (byte)ConsumableType.HP:
+                        case (byte)ConsumableEffect.RestoresHealth:
                             {
-                                NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Type.Item[itemNum].Data1, (int)ColorType.BrightGreen, (byte)ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
-                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                SetPlayerVital(index, VitalType.HP, GetPlayerVital(index, VitalType.HP) + Core.Type.Item[itemNum].Data1);
-                                if (Core.Type.Item[itemNum].Stackable == 1)
+                                NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Data.Item[itemNum].Data1, (int)Core.Color.BrightGreen, (byte)Core.ActionMessageType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
+                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Data.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
+                                SetPlayerVital(index, Vital.Health, GetPlayerVital(index, Vital.Health) + Core.Data.Item[itemNum].Data1);
+                                if (Core.Data.Item[itemNum].Stackable == 1)
                                 {
                                     TakeInv(index, itemNum, 1);
                                 }
@@ -227,16 +226,16 @@ public class Script
                                 {
                                     TakeInv(index, itemNum, 0);
                                 }
-                                NetworkSend.SendVital(index, VitalType.HP);
+                                NetworkSend.SendVital(index, Vital.Health);
                                 break;
                             }
 
-                        case (byte)ConsumableType.MP:
+                        case (byte)ConsumableEffect.RestoresMana:
                             {
-                                NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Type.Item[itemNum].Data1, (int)ColorType.BrightBlue, (byte)ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
-                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Core.Type.Item[itemNum].Data1);
-                                if (Core.Type.Item[itemNum].Stackable == 1)
+                                NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Data.Item[itemNum].Data1, (int)Core.Color.BrightBlue, (byte)Core.ActionMessageType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
+                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Data.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
+                                SetPlayerVital(index, Vital.Stamina, GetPlayerVital(index, Vital.Stamina) + Core.Data.Item[itemNum].Data1);
+                                if (Core.Data.Item[itemNum].Stackable == 1)
                                 {
                                     TakeInv(index, itemNum, 1);
                                 }
@@ -244,15 +243,15 @@ public class Script
                                 {
                                     TakeInv(index, itemNum, 0);
                                 }
-                                NetworkSend.SendVital(index, VitalType.SP);
+                                NetworkSend.SendVital(index, Vital.Stamina);
                                 break;
                             }
 
-                        case (byte)ConsumableType.SP:
+                        case (byte)ConsumableEffect.RestoresStamina:
                             {
-                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Core.Type.Item[itemNum].Data1);
-                                if (Core.Type.Item[itemNum].Stackable == 1)
+                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Data.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
+                                SetPlayerVital(index, Vital.Stamina, GetPlayerVital(index, Vital.Stamina) + Core.Data.Item[itemNum].Data1);
+                                if (Core.Data.Item[itemNum].Stackable == 1)
                                 {
                                     TakeInv(index, itemNum, 1);
                                 }
@@ -260,15 +259,15 @@ public class Script
                                 {
                                     TakeInv(index, itemNum, 0);
                                 }
-                                NetworkSend.SendVital(index, VitalType.SP);
+                                NetworkSend.SendVital(index, Vital.Stamina);
                                 break;
                             }
 
-                        case (byte)ConsumableType.Exp:
+                        case (byte)ConsumableEffect.GrantsExperience:
                             {
-                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                SetPlayerExp(index, GetPlayerExp(index) + Core.Type.Item[itemNum].Data1);
-                                if (Core.Type.Item[itemNum].Stackable == 1)
+                                Server.Animation.SendAnimation(GetPlayerMap(index), Core.Data.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
+                                SetPlayerExp(index, GetPlayerExp(index) + Core.Data.Item[itemNum].Data1);
+                                if (Core.Data.Item[itemNum].Stackable == 1)
                                 {
                                     TakeInv(index, itemNum, 1);
                                 }
@@ -285,18 +284,18 @@ public class Script
                     break;
                 }
 
-            case (byte)ItemType.Projectile:
+            case (byte)ItemCategory.Projectile:
                 {
-                    if (Core.Type.Item[itemNum].Ammo > 0)
+                    if (Core.Data.Item[itemNum].Ammo > 0)
                     {
-                        if (HasItem(index, Core.Type.Item[itemNum].Ammo) > 0)
+                        if (HasItem(index, Core.Data.Item[itemNum].Ammo) > 0)
                         {
-                            TakeInv(index, Core.Type.Item[itemNum].Ammo, 1);
+                            TakeInv(index, Core.Data.Item[itemNum].Ammo, 1);
                             Server.Projectile.PlayerFireProjectile(index);
                         }
                         else
                         {
-                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int)ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "No More " + Core.Data.Item[Core.Data.Item[GetPlayerEquipment(index, Equipment.Weapon)].Ammo].Name + " !", (int)Core.Color.BrightRed);
                             return;
                         }
                     }
@@ -309,23 +308,23 @@ public class Script
                     break;
                 }
 
-            case (byte)ItemType.Event:
+            case (byte)ItemCategory.Event:
                 {
-                    n = Core.Type.Item[itemNum].Data1;
+                    n = Core.Data.Item[itemNum].Data1;
 
-                    switch (Core.Type.Item[itemNum].SubType)
+                    switch (Core.Data.Item[itemNum].SubType)
                     {
-                        case (byte)CommonEventType.Variable:
+                        case (byte)Core.EventCommand.ModifyVariable:
                             {
-                                Core.Type.Player[index].Variables[n] = Core.Type.Item[itemNum].Data2;
+                                Core.Data.Player[index].Variables[n] = Core.Data.Item[itemNum].Data2;
                                 break;
                             }
-                        case (byte)CommonEventType.Switch:
+                        case (byte)Core.EventCommand.ModifySwitch:
                             {
-                                Core.Type.Player[index].Switches[n] = (byte)Core.Type.Item[itemNum].Data2;
+                                Core.Data.Player[index].Switches[n] = (byte)Core.Data.Item[itemNum].Data2;
                                 break;
                             }
-                        case (byte)CommonEventType.Key:
+                        case (byte)Core.EventCommand.Key:
                             {
                                 EventLogic.TriggerEvent(index, 1, 0, GetPlayerX(index), GetPlayerY(index));
                                 break;
@@ -335,16 +334,16 @@ public class Script
                     break;
                 }
 
-            case (byte)ItemType.Skill:
+            case (byte)ItemCategory.Skill:
                 {
                     PlayerLearnSkill(index, itemNum);
                     break;
                 }
 
-            case (byte)ItemType.Pet:
+            case (byte)ItemCategory.Pet:
                 {
                     TakeInv(index, itemNum, 1);
-                    n = Core.Type.Item[itemNum].Data1;
+                    n = Core.Data.Item[itemNum].Data1;
                     break;
                 }
         }
@@ -362,17 +361,17 @@ public class Script
         }
         else
         {
-            n = Core.Type.Item[itemNum].Data1;
+            n = Core.Data.Item[itemNum].Data1;
         }
 
         if (n < 0 | n > Core.Constant.MAX_SKILLS)
             return;
 
         // Make sure they are the right class
-        if (Core.Type.Skill[n].JobReq == GetPlayerJob(index) | Core.Type.Skill[n].JobReq == -1)
+        if (Data.Skill[n].JobReq == GetPlayerJob(index) | Data.Skill[n].JobReq == -1)
         {
             // Make sure they are the right level
-            i = Core.Type.Skill[n].LevelReq;
+            i = Data.Skill[n].LevelReq;
 
             if (i <= GetPlayerLevel(index))
             {
@@ -387,31 +386,31 @@ public class Script
                         SetPlayerSkill(index, i, n);
                         if (itemNum >= 0)
                         {
-                            Server.Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
+                            Server.Animation.SendAnimation(GetPlayerMap(index), Core.Data.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
                             TakeInv(index, itemNum, 0);
                         }
-                        NetworkSend.PlayerMsg(index, "You study the skill carefully.", (int)ColorType.Yellow);
-                        NetworkSend.PlayerMsg(index, "You have learned a new skill!", (int)ColorType.BrightGreen);
+                        NetworkSend.PlayerMsg(index, "You study the skill carefully.", (int)Core.Color.Yellow);
+                        NetworkSend.PlayerMsg(index, "You have learned a new skill!", (int)Core.Color.BrightGreen);
                         NetworkSend.SendPlayerSkills(index);
                     }
                     else
                     {
-                        NetworkSend.PlayerMsg(index, "You have already learned this skill!", (int)ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(index, "You have already learned this skill!", (int)Core.Color.BrightRed);
                     }
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "You have learned all that you can learn!", (int)ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "You have learned all that you can learn!", (int)Core.Color.BrightRed);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "You must be level " + i + " to learn this skill.", (int)ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "You must be level " + i + " to learn this skill.", (int)Core.Color.Yellow);
             }
         }
         else
         {
-            NetworkSend.PlayerMsg(index, string.Format("Only {0} can use this skill.", GameLogic.CheckGrammar(Core.Type.Job[Core.Type.Skill[n].JobReq].Name, 1)), (int)ColorType.BrightRed);
+            NetworkSend.PlayerMsg(index, string.Format("Only {0} can use this skill.", GameLogic.CheckGrammar(Data.Job[Data.Skill[n].JobReq].Name, 1)), (int)Core.Color.BrightRed);
         }
     }
 
@@ -465,11 +464,12 @@ public class Script
     public void OnDeath(int index)
     {
         // Set HP to nothing
-        SetPlayerVital(index, Core.Enum.VitalType.HP, 0);
+        SetPlayerVital(index, Core.Vital.Health, 0);
 
         // Restore vitals
-        for (int i = 0, loopTo = (byte)Core.Enum.VitalType.Count; i < loopTo; i++)
-            SetPlayerVital(index, (Core.Enum.VitalType)i, GetPlayerMaxVital(index, (Core.Enum.VitalType)i));
+        var count = System.Enum.GetValues(typeof(Core.Vital)).Length;
+        for (int i = 0, loopTo = count; i < loopTo; i++)
+            SetPlayerVital(index, (Core.Vital)i, GetPlayerMaxVital(index, (Core.Vital)i));
 
         // If the player the attacker killed was a pk then take it away
         if (GetPlayerPK(index))
@@ -477,19 +477,19 @@ public class Script
             SetPlayerPK(index, false);
         }
 
-        ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)];
+        ref var withBlock = ref Data.Map[GetPlayerMap(index)];
 
         // Warp player away
-        SetPlayerDir(index, (byte)Core.Enum.DirectionType.Down);
+        SetPlayerDir(index, (byte)Direction.Down);
 
         // to the bootmap if it is set
         if (withBlock.BootMap > 0)
         {
-            PlayerWarp(index, withBlock.BootMap, withBlock.BootX, withBlock.BootY, (int)Core.Enum.DirectionType.Down);
+            PlayerWarp(index, withBlock.BootMap, withBlock.BootX, withBlock.BootY, (int)Direction.Down);
         }
         else
         {
-            PlayerWarp(index, Core.Type.Job[GetPlayerJob(index)].StartMap, Core.Type.Job[GetPlayerJob(index)].StartX, Core.Type.Job[GetPlayerJob(index)].StartY, (int)Core.Enum.DirectionType.Down);
+            PlayerWarp(index, Data.Job[GetPlayerJob(index)].StartMap, Data.Job[GetPlayerJob(index)].StartX, Data.Job[GetPlayerJob(index)].StartY, (int)Direction.Down);
         }
     }
 
@@ -504,12 +504,12 @@ public class Script
         
         if (exp == 0)
         {
-            NetworkSend.PlayerMsg(index, "You've lost no experience.", (int)ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(index, "You've lost no experience.", (int)Core.Color.BrightGreen);
         }
         else
         {                   
             NetworkSend.SendExp(index);
-            NetworkSend.PlayerMsg(index, string.Format("You've lost {0} experience.", exp), (int)ColorType.BrightRed);
+            NetworkSend.PlayerMsg(index, string.Format("You've lost {0} experience.", exp), (int)Core.Color.BrightRed);
         }
 
         return exp;
@@ -517,15 +517,15 @@ public class Script
 
     public void TrainStat(int index, int tmpStat)
     {
-        // make sure there stats are not maxed
-        if (GetPlayerRawStat(index, (StatType)tmpStat) >= Core.Constant.MAX_STATS)
+        // make sure their stats are not maxed
+        if (GetPlayerRawStat(index, (Stat)tmpStat) >= Core.Constant.MAX_STATS)
         {
-            NetworkSend.PlayerMsg(index, "You cannot spend any more points on that stat.", (int)ColorType.BrightRed);
+            NetworkSend.PlayerMsg(index, "You cannot spend any more points on that stat.", (int)Core.Color.BrightRed);
             return;
         }
 
         // increment stat
-        SetPlayerStat(index, (StatType)tmpStat, GetPlayerRawStat(index, (StatType)tmpStat) + 1);
+        SetPlayerStat(index, (Stat)tmpStat, GetPlayerRawStat(index, (Stat)tmpStat) + 1);
 
         // decrement points
         SetPlayerPoints(index, GetPlayerPoints(index) - 1);
@@ -551,15 +551,15 @@ public class Script
             var mapNum = entity.Map;
             if (entity == null) continue;
 
-            // Only process entities that are NPCs
+            // Only process entities that are Npcs
             if (entity.Num < 0) continue;
 
             // check if they've completed casting, and if so set the actual skill going
             if (entity.SkillBuffer >= 0)
             {
-                if (General.GetTimeMs() > entity.SkillBufferTimer + Core.Type.Skill[entity.SkillBuffer].CastTime * 1000)
+                if (General.GetTimeMs() > entity.SkillBufferTimer + Data.Skill[entity.SkillBuffer].CastTime * 1000)
                 {
-                    if (Core.Type.Moral[Map[mapNum].Moral].CanCast)
+                    if (Data.Moral[Data.Map[mapNum].Moral].CanCast)
                     {
                         //BufferSkill(mapNum, [Core.Globals.Entity.Index(entity), entity.SkillBuffer);
                         entity.SkillBuffer = -1;
@@ -570,7 +570,7 @@ public class Script
             else
             {
                 // ATTACKING ON SIGHT
-                if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || entity.Behaviour == (byte)NPCBehavior.Guard)
+                if (entity.Behaviour == (byte)NpcBehavior.AttackOnSight || entity.Behaviour == (byte)NpcBehavior.Guard)
                 {
                     // make sure it's not stunned
                     if (!(entity.StunDuration > 0))
@@ -580,7 +580,7 @@ public class Script
                         {
                             if (NetworkConfig.IsPlaying(i))
                             {
-                                if (GetPlayerMap(i) == mapNum && entity.TargetType == 0 && GetPlayerAccess(i) <= (byte)AccessType.Moderator)
+                                if (GetPlayerMap(i) == mapNum && entity.TargetType == 0 && GetPlayerAccess(i) <= (byte)AccessLevel.Moderator)
                                 {
                                     int n = entity.Range;
                                     int distanceX = entity.X - GetPlayerX(i);
@@ -591,13 +591,13 @@ public class Script
 
                                     if (distanceX <= n && distanceY <= n)
                                     {
-                                        if (entity.Behaviour == (byte)NPCBehavior.AttackOnSight || GetPlayerPK(i))
+                                        if (entity.Behaviour == (byte)NpcBehavior.AttackOnSight || GetPlayerPK(i))
                                         {
                                             if (!string.IsNullOrEmpty(entity.AttackSay))
                                             {
-                                                NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(entity.Name, 1) + " says, '" + entity.AttackSay + "' to you.", (int)ColorType.Yellow);
+                                                NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(entity.Name, 1) + " says, '" + entity.AttackSay + "' to you.", (int)Core.Color.Yellow);
                                             }
-                                            entity.TargetType = (byte)Core.Enum.TargetType.Player;
+                                            entity.TargetType = (byte)TargetType.Player;
                                             entity.Target = i;
                                         }
                                     }
@@ -605,7 +605,7 @@ public class Script
                             }
                         }
 
-                        // Check if target was found for NPC targeting
+                        // Check if target was found for Npc targeting
                         if (entity.TargetType == 0 && entity.Faction > 0)
                         {
                             for (int i = 0; i < entities.Count; i++)
@@ -624,9 +624,9 @@ public class Script
                                         if (distanceX < 0) distanceX *= -1;
                                         if (distanceY < 0) distanceY *= -1;
 
-                                        if (distanceX <= n && distanceY <= n && entity.Behaviour == (byte)NPCBehavior.AttackOnSight)
+                                        if (distanceX <= n && distanceY <= n && entity.Behaviour == (byte)NpcBehavior.AttackOnSight)
                                         {
-                                            entity.TargetType = (byte)Core.Enum.TargetType.NPC;
+                                            entity.TargetType = (byte)TargetType.Npc;
                                             entity.Target = i;
                                         }
                                     }
@@ -638,7 +638,7 @@ public class Script
 
                 bool targetVerify = false;
 
-                // NPC walking/targeting
+                // Npc walking/targeting
                 if (entity.StunDuration > 0)
                 {
                     if (General.GetTimeMs() > entity.StunTimer + entity.StunDuration * 1000)
@@ -653,9 +653,9 @@ public class Script
                     byte targetType = entity.TargetType;
                     int targetX = 0, targetY = 0;
 
-                    if (entity.Type == Core.Globals.Entity.EntityType.NPC)
+                    if (entity.Type == Core.Globals.Entity.EntityType.Npc)
                     {
-                        if (entity.Behaviour != (byte)NPCBehavior.ShopKeeper && entity.Behaviour != (byte)NPCBehavior.Quest)
+                        if (entity.Behaviour != (byte)NpcBehavior.ShopKeeper && entity.Behaviour != (byte)NpcBehavior.QuestGiver)
                         {
                             if (target > 0)
                             {
@@ -674,14 +674,14 @@ public class Script
 
                             if (targetVerify)
                             {
-                                if (!Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
+                                if (!Server.Event.IsOneBlockAway(targetX, targetY, (int)entity.X, (int)entity.Y))
                                 {
-                                    int i = EventLogic.FindNPCPath(mapNum, Core.Globals.Entity.Index(entity), targetX, targetY);
+                                    int i = EventLogic.FindNpcPath(mapNum, Core.Globals.Entity.Index(entity), targetX, targetY);
                                     if (i < 4)
                                     {
-                                        if (Server.NPC.CanNPCMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
+                                        if (Server.Npc.CanNpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
                                         {
-                                            Server.NPC.NPCMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementType.Walking);
+                                            Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementState.Walking);
                                         }
                                     }
                                     else
@@ -690,16 +690,16 @@ public class Script
                                         if (i == 1)
                                         {
                                             i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
-                                            if (Server.NPC.CanNPCMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
+                                            if (Server.Npc.CanNpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
                                             {
-                                                Server.NPC.NPCMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementType.Walking);
+                                                Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementState.Walking);
                                             }
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    Server.NPC.NPCDir(mapNum, Core.Globals.Entity.Index(entity), Event.GetNPCDir(targetX, targetY, (int)entity.X, (int)entity.Y));
+                                    Server.Npc.NpcDir(mapNum, Core.Globals.Entity.Index(entity), Server.Event.GetNpcDir(targetX, targetY, (int)entity.X, (int)entity.Y));
                                 }
                             }
                             else
@@ -708,16 +708,16 @@ public class Script
                                 if (i == 1)
                                 {
                                     i = (int)Math.Round(new Random().NextDouble() * 4);
-                                    if (Server.NPC.CanNPCMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
+                                    if (Server.Npc.CanNpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
                                     {
-                                        Server.NPC.NPCMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementType.Walking);
+                                        Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementState.Walking);
                                     }
                                 }
                             }
                         }
                     }
 
-                    // NPCs attack targets
+                    // Npcs attack targets
                     int attackTarget = entity.Target;
                     byte attackTargetType = entity.TargetType;
 
@@ -735,34 +735,34 @@ public class Script
                     }
 
                     // Regenerate HP/MP
-                    if (entity.Vital[(byte)VitalType.HP] > 0)
+                    if (entity.Vital[(byte)Vital.Health] > 0)
                     {
                         // Placeholder for HP regen
-                        if (entity.Vital[(byte)VitalType.HP] > GameLogic.GetNPCMaxVital(x, VitalType.HP))
+                        if (entity.Vital[(byte)Vital.Health] > GameLogic.GetNpcMaxVital(x, Vital.Health))
                         {
-                            entity.Vital[(byte)VitalType.HP] = GameLogic.GetNPCMaxVital(x, VitalType.HP);
+                            entity.Vital[(byte)Vital.Health] = GameLogic.GetNpcMaxVital(x, Vital.Health);
                         }
                     }
 
-                    if (entity.Vital[(byte)VitalType.SP] > 0)
+                    if (entity.Vital[(byte)Vital.Stamina] > 0)
                     {
                         // Placeholder for SP regen
-                        if (entity.Vital[(byte)VitalType.SP] > GameLogic.GetNPCMaxVital(x, VitalType.SP))
+                        if (entity.Vital[(byte)Vital.Stamina] > GameLogic.GetNpcMaxVital(x, Vital.Stamina))
                         {
-                            entity.Vital[(byte)VitalType.SP] = GameLogic.GetNPCMaxVital(x, VitalType.SP);
+                            entity.Vital[(byte)Vital.Stamina] = GameLogic.GetNpcMaxVital(x, Vital.Stamina);
                         }
                     }
 
                     // Check if the npc is dead or not
-                    if (entity.Vital[(byte)VitalType.HP] < 0 && entity.SpawnWait > 0)
+                    if (entity.Vital[(byte)Vital.Health] < 0 && entity.SpawnWait > 0)
                     {
                         entity.Num = 0;
                         entity.SpawnWait = General.GetTimeMs();
-                        entity.Vital[(byte)VitalType.HP] = 0;
+                        entity.Vital[(byte)Vital.Health] = 0;
                     }
 
-                    // Spawning an NPC
-                    if (entity.Type == Core.Globals.Entity.EntityType.NPC)
+                    // Spawning an Npc
+                    if (entity.Type == Core.Globals.Entity.EntityType.Npc)
                     {
                         if (entity.Num == -1)
                         {
@@ -770,7 +770,7 @@ public class Script
                             {
                                 if (tickCount > entity.SpawnWait + entity.SpawnSecs * 1000)
                                 {
-                                    Server.NPC.SpawnNPC(x, mapNum);
+                                    Server.Npc.SpawnNpc(x, mapNum);
                                 }
                             }
                         }
@@ -788,7 +788,7 @@ public class Script
             // Handle map items (public/despawn)
             for (int i = 0; i < itemCount; i++)
             {
-                var item = Core.Type.MapItem[mapNum, i];
+                var item = Data.MapItem[mapNum, i];
                 if (item.Num >= 0 && !string.IsNullOrEmpty(item.PlayerName))
                 {
                     if (item.PlayerTimer < now)
@@ -806,22 +806,22 @@ public class Script
             }
 
             // Respawn resources
-            var mapResource = Core.Type.MapResource[mapNum];
+            var mapResource = Data.MapResource[mapNum];
             if (mapResource.ResourceCount > 0)
             {
                 for (int i = 0; i < mapResource.ResourceCount; i++)
                 {
                     var resData = mapResource.ResourceData[i];
-                    int resourceindex = Core.Type.Map[mapNum].Tile[resData.X, resData.Y].Data1;
+                    int resourceindex = Data.Map[mapNum].Tile[resData.X, resData.Y].Data1;
                     if (resourceindex > 0)
                     {
                         if (resData.State == 1 || resData.Health < 1)
                         {
-                            if (resData.Timer + Core.Type.Resource[resourceindex].RespawnTime * 1000 < now)
+                            if (resData.Timer + Data.Resource[resourceindex].RespawnTime * 1000 < now)
                             {
                                 resData.Timer = now;
                                 resData.State = 0;
-                                resData.Health = (byte)Core.Type.Resource[resourceindex].Health;
+                                resData.Health = (byte)Data.Resource[resourceindex].Health;
                                 Server.Resource.SendMapResourceToMap(mapNum, i);
                             }
                         }

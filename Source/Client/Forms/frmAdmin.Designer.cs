@@ -90,7 +90,7 @@ namespace Client
             btnMapEditor = new DarkButton();
             btnItemEditor = new DarkButton();
             btnResourceEditor = new DarkButton();
-            btnNPCEditor = new DarkButton();
+            btnNpcEditor = new DarkButton();
             btnSkillEditor = new DarkButton();
             btnShopEditor = new DarkButton();
             btnAnimationEditor = new DarkButton();
@@ -402,7 +402,7 @@ namespace Client
             tabEditors.Controls.Add(btnMapEditor);
             tabEditors.Controls.Add(btnItemEditor);
             tabEditors.Controls.Add(btnResourceEditor);
-            tabEditors.Controls.Add(btnNPCEditor);
+            tabEditors.Controls.Add(btnNpcEditor);
             tabEditors.Controls.Add(btnSkillEditor);
             tabEditors.Controls.Add(btnShopEditor);
             tabEditors.Controls.Add(btnAnimationEditor);
@@ -502,16 +502,16 @@ namespace Client
             btnResourceEditor.Text = "Resource Editor";
             btnResourceEditor.Click += btnResourceEditor_Click;
             // 
-            // btnNPCEditor
+            // btnNpcEditor
             // 
-            btnNPCEditor.Location = new Point(8, 92);
-            btnNPCEditor.Margin = new Padding(4, 3, 4, 3);
-            btnNPCEditor.Name = "btnNPCEditor";
-            btnNPCEditor.Padding = new Padding(5);
-            btnNPCEditor.Size = new Size(131, 29);
-            btnNPCEditor.TabIndex = 58;
-            btnNPCEditor.Text = "NPC Editor";
-            btnNPCEditor.Click += btnNPCEditor_Click;
+            btnNpcEditor.Location = new Point(8, 92);
+            btnNpcEditor.Margin = new Padding(4, 3, 4, 3);
+            btnNpcEditor.Name = "btnNpcEditor";
+            btnNpcEditor.Padding = new Padding(5);
+            btnNpcEditor.Size = new Size(131, 29);
+            btnNpcEditor.TabIndex = 58;
+            btnNpcEditor.Text = "Npc Editor";
+            btnNpcEditor.Click += btnNpcEditor_Click;
             // 
             // btnSkillEditor
             // 
@@ -606,7 +606,7 @@ namespace Client
         internal DarkButton btnMapEditor;
         internal DarkButton btnItemEditor;
         internal DarkButton btnResourceEditor;
-        internal DarkButton btnNPCEditor;
+        internal DarkButton btnNpcEditor;
         internal DarkButton btnSkillEditor;
         internal DarkButton btnShopEditor;
         internal DarkButton btnAnimationEditor;

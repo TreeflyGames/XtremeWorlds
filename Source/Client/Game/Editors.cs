@@ -15,7 +15,7 @@ namespace Client
         {
             GameState.EditorIndex = frmEditor_Animation.Instance.lstIndex.SelectedIndex;
             
-            ref var withBlock = ref Core.Type.Animation[GameState.EditorIndex];
+            ref var withBlock = ref Data.Animation[GameState.EditorIndex];
             if (string.IsNullOrEmpty(withBlock.Sound))
             {
                 frmEditor_Animation.Instance.cmbSound.SelectedIndex = 0;
@@ -35,20 +35,20 @@ namespace Client
 
             frmEditor_Animation.Instance.nudSprite0.Value = withBlock.Sprite[0];
             frmEditor_Animation.Instance.nudFrameCount0.Value = withBlock.Frames[0];
-            if (Core.Type.Animation[GameState.EditorIndex].LoopCount[0] == 0)
-                Core.Type.Animation[GameState.EditorIndex].LoopCount[0] = 1;
+            if (Data.Animation[GameState.EditorIndex].LoopCount[0] == 0)
+                Data.Animation[GameState.EditorIndex].LoopCount[0] = 1;
             frmEditor_Animation.Instance.nudLoopCount0.Value = withBlock.LoopCount[0];
-            if (Core.Type.Animation[GameState.EditorIndex].LoopTime[0] == 0)
-                Core.Type.Animation[GameState.EditorIndex].LoopTime[0] = 1;
+            if (Data.Animation[GameState.EditorIndex].LoopTime[0] == 0)
+                Data.Animation[GameState.EditorIndex].LoopTime[0] = 1;
             frmEditor_Animation.Instance.nudLoopTime0.Value = withBlock.LoopTime[0];
 
             frmEditor_Animation.Instance.nudSprite1.Value = withBlock.Sprite[1];
             frmEditor_Animation.Instance.nudFrameCount1.Value = withBlock.Frames[1];
-            if (Core.Type.Animation[GameState.EditorIndex].LoopCount[1] == 0)
-                Core.Type.Animation[GameState.EditorIndex].LoopCount[1] = 1;
+            if (Data.Animation[GameState.EditorIndex].LoopCount[1] == 0)
+                Data.Animation[GameState.EditorIndex].LoopCount[1] = 1;
             frmEditor_Animation.Instance.nudLoopCount1.Value = withBlock.LoopCount[1];
-            if (Core.Type.Animation[GameState.EditorIndex].LoopTime[1] == 0)
-                Core.Type.Animation[GameState.EditorIndex].LoopTime[1] = 1;
+            if (Data.Animation[GameState.EditorIndex].LoopTime[1] == 0)
+                Data.Animation[GameState.EditorIndex].LoopTime[1] = 1;
             frmEditor_Animation.Instance.nudLoopTime1.Value = withBlock.LoopTime[1];
 
             GameState.Animation_Changed[GameState.EditorIndex] = true;
@@ -87,81 +87,81 @@ namespace Client
 
         #endregion
 
-        #region NPC Editor
+        #region Npc Editor
 
-        public static void NPCEditorInit()
+        public static void NpcEditorInit()
         {
-            var withBlock = frmEditor_NPC.Instance;
+            var withBlock = frmEditor_Npc.Instance;
             GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
 
             withBlock.cmbDropSlot.SelectedIndex = 0;
 
-            withBlock.txtName.Text = Core.Type.NPC[GameState.EditorIndex].Name;
-            withBlock.txtAttackSay.Text = Core.Type.NPC[GameState.EditorIndex].AttackSay;
-            withBlock.nudSprite.Value = Core.Type.NPC[GameState.EditorIndex].Sprite;
-            withBlock.nudSpawnSecs.Value = Core.Type.NPC[GameState.EditorIndex].SpawnSecs;
-            withBlock.cmbBehaviour.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Behaviour;
-            withBlock.cmbFaction.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Faction;
-            withBlock.nudRange.Value = Core.Type.NPC[GameState.EditorIndex].Range;
-            withBlock.nudChance.Value = Core.Type.NPC[GameState.EditorIndex].DropChance[frmEditor_NPC.Instance.cmbDropSlot.SelectedIndex];
-            withBlock.cmbItem.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].DropItem[frmEditor_NPC.Instance.cmbDropSlot.SelectedIndex];
+            withBlock.txtName.Text = Data.Npc[GameState.EditorIndex].Name;
+            withBlock.txtAttackSay.Text = Data.Npc[GameState.EditorIndex].AttackSay;
+            withBlock.nudSprite.Value = Data.Npc[GameState.EditorIndex].Sprite;
+            withBlock.nudSpawnSecs.Value = Data.Npc[GameState.EditorIndex].SpawnSecs;
+            withBlock.cmbBehaviour.SelectedIndex = Data.Npc[GameState.EditorIndex].Behaviour;
+            withBlock.cmbFaction.SelectedIndex = Data.Npc[GameState.EditorIndex].Faction;
+            withBlock.nudRange.Value = Data.Npc[GameState.EditorIndex].Range;
+            withBlock.nudChance.Value = Data.Npc[GameState.EditorIndex].DropChance[frmEditor_Npc.Instance.cmbDropSlot.SelectedIndex];
+            withBlock.cmbItem.SelectedIndex = Data.Npc[GameState.EditorIndex].DropItem[frmEditor_Npc.Instance.cmbDropSlot.SelectedIndex];
 
-            withBlock.nudAmount.Value = Core.Type.NPC[GameState.EditorIndex].DropItemValue[frmEditor_NPC.Instance.cmbDropSlot.SelectedIndex];
+            withBlock.nudAmount.Value = Data.Npc[GameState.EditorIndex].DropItemValue[frmEditor_Npc.Instance.cmbDropSlot.SelectedIndex];
 
-            withBlock.nudHp.Value = Core.Type.NPC[GameState.EditorIndex].HP;
-            withBlock.nudExp.Value = Core.Type.NPC[GameState.EditorIndex].Exp;
-            withBlock.nudLevel.Value = Core.Type.NPC[GameState.EditorIndex].Level;
-            withBlock.nudDamage.Value = Core.Type.NPC[GameState.EditorIndex].Damage;
+            withBlock.nudHp.Value = Data.Npc[GameState.EditorIndex].HP;
+            withBlock.nudExp.Value = Data.Npc[GameState.EditorIndex].Exp;
+            withBlock.nudLevel.Value = Data.Npc[GameState.EditorIndex].Level;
+            withBlock.nudDamage.Value = Data.Npc[GameState.EditorIndex].Damage;
 
-            withBlock.cmbSpawnPeriod.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].SpawnTime;
+            withBlock.cmbSpawnPeriod.SelectedIndex = Data.Npc[GameState.EditorIndex].SpawnTime;
 
-            withBlock.cmbAnimation.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Animation;
+            withBlock.cmbAnimation.SelectedIndex = Data.Npc[GameState.EditorIndex].Animation;
 
-            withBlock.nudStrength.Value = Core.Type.NPC[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Strength];
-            withBlock.nudIntelligence.Value = Core.Type.NPC[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Intelligence];
-            withBlock.nudSpirit.Value = Core.Type.NPC[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Spirit];
-            withBlock.nudLuck.Value = Core.Type.NPC[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Luck];
-            withBlock.nudVitality.Value = Core.Type.NPC[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Vitality];
+            withBlock.nudStrength.Value = Data.Npc[GameState.EditorIndex].Stat[(int)Core.Stat.Strength];
+            withBlock.nudIntelligence.Value = Data.Npc[GameState.EditorIndex].Stat[(int)Core.Stat.Intelligence];
+            withBlock.nudSpirit.Value = Data.Npc[GameState.EditorIndex].Stat[(int)Core.Stat.Spirit];
+            withBlock.nudLuck.Value = Data.Npc[GameState.EditorIndex].Stat[(int)Core.Stat.Luck];
+            withBlock.nudVitality.Value = Data.Npc[GameState.EditorIndex].Stat[(int)Core.Stat.Vitality];
 
-            withBlock.cmbSkill1.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[0];
-            withBlock.cmbSkill2.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[1];
-            withBlock.cmbSkill3.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[2];
-            withBlock.cmbSkill4.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[3];
-            withBlock.cmbSkill5.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[4];
-            withBlock.cmbSkill6.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[5];
+            withBlock.cmbSkill1.SelectedIndex = Data.Npc[GameState.EditorIndex].Skill[0];
+            withBlock.cmbSkill2.SelectedIndex = Data.Npc[GameState.EditorIndex].Skill[1];
+            withBlock.cmbSkill3.SelectedIndex = Data.Npc[GameState.EditorIndex].Skill[2];
+            withBlock.cmbSkill4.SelectedIndex = Data.Npc[GameState.EditorIndex].Skill[3];
+            withBlock.cmbSkill5.SelectedIndex = Data.Npc[GameState.EditorIndex].Skill[4];
+            withBlock.cmbSkill6.SelectedIndex = Data.Npc[GameState.EditorIndex].Skill[5];
 
-            frmEditor_NPC.Instance.DrawSprite();
+            frmEditor_Npc.Instance.DrawSprite();
 
-            GameState.NPC_Changed[GameState.EditorIndex] = true;
+            GameState.Npc_Changed[GameState.EditorIndex] = true;
         }
 
-        public static void NPCEditorOK()
+        public static void NpcEditorOK()
         {
             for (int i = 0; i < Constant.MAX_NPCS; i++)
             {
-                if (GameState.NPC_Changed[i])
+                if (GameState.Npc_Changed[i])
                 {
-                    NetworkSend.SendSaveNPC(i);
+                    NetworkSend.SendSaveNpc(i);
                 }
             }
 
             GameState.MyEditorType = -1;
-            ClearChanged_NPC();
+            ClearChanged_Npc();
             NetworkSend.SendCloseEditor();
         }
 
-        public static void NPCEditorCancel()
+        public static void NpcEditorCancel()
         {
             GameState.MyEditorType = -1;
-            ClearChanged_NPC();
-            Database.ClearNPCs();
+            ClearChanged_Npc();
+            Database.ClearNpcs();
             NetworkSend.SendCloseEditor();
         }
 
-        public static void ClearChanged_NPC()
+        public static void ClearChanged_Npc()
         {
             for (int i = 0; i < Constant.MAX_NPCS; i++)
-                GameState.NPC_Changed[i] = false;
+                GameState.Npc_Changed[i] = false;
         }
 
         #endregion
@@ -169,7 +169,7 @@ namespace Client
         #region Resource Editor
         public static void ClearChanged_Resource()
         {
-            GameState.Resource_Changed = new bool[101];
+            GameState.Resource_Changed = new bool[Constant.MAX_RESOURCES];
         }
 
         public static void ResourceEditorInit()
@@ -179,19 +179,19 @@ namespace Client
             GameState.EditorIndex = frmEditor_Resource.Instance.lstIndex.SelectedIndex;
 
             var withBlock = frmEditor_Resource.Instance;
-            withBlock.txtName.Text = Core.Type.Resource[GameState.EditorIndex].Name;
-            withBlock.txtMessage.Text = Core.Type.Resource[GameState.EditorIndex].SuccessMessage;
-            withBlock.txtMessage2.Text = Core.Type.Resource[GameState.EditorIndex].EmptyMessage;
-            withBlock.cmbType.SelectedIndex = Core.Type.Resource[GameState.EditorIndex].ResourceType;
-            withBlock.nudNormalPic.Value = Core.Type.Resource[GameState.EditorIndex].ResourceImage;
-            withBlock.nudExhaustedPic.Value = Core.Type.Resource[GameState.EditorIndex].ExhaustedImage;
-            withBlock.cmbRewardItem.SelectedIndex = Core.Type.Resource[GameState.EditorIndex].ItemReward;
-            withBlock.nudRewardExp.Value = Core.Type.Resource[GameState.EditorIndex].ExpReward;
-            withBlock.cmbTool.SelectedIndex = Core.Type.Resource[GameState.EditorIndex].ToolRequired;
-            withBlock.nudHealth.Value = Core.Type.Resource[GameState.EditorIndex].Health;
-            withBlock.nudRespawn.Value = Core.Type.Resource[GameState.EditorIndex].RespawnTime;
-            withBlock.cmbAnimation.SelectedIndex = Core.Type.Resource[GameState.EditorIndex].Animation;
-            withBlock.nudLvlReq.Value = Core.Type.Resource[GameState.EditorIndex].LvlRequired;
+            withBlock.txtName.Text = Data.Resource[GameState.EditorIndex].Name;
+            withBlock.txtMessage.Text = Data.Resource[GameState.EditorIndex].SuccessMessage;
+            withBlock.txtMessage2.Text = Data.Resource[GameState.EditorIndex].EmptyMessage;
+            withBlock.cmbType.SelectedIndex = Data.Resource[GameState.EditorIndex].ResourceType;
+            withBlock.nudNormalPic.Value = Data.Resource[GameState.EditorIndex].ResourceImage;
+            withBlock.nudExhaustedPic.Value = Data.Resource[GameState.EditorIndex].ExhaustedImage;
+            withBlock.cmbRewardItem.SelectedIndex = Data.Resource[GameState.EditorIndex].ItemReward;
+            withBlock.nudRewardExp.Value = Data.Resource[GameState.EditorIndex].ExpReward;
+            withBlock.cmbTool.SelectedIndex = Data.Resource[GameState.EditorIndex].ToolRequired;
+            withBlock.nudHealth.Value = Data.Resource[GameState.EditorIndex].Health;
+            withBlock.nudRespawn.Value = Data.Resource[GameState.EditorIndex].RespawnTime;
+            withBlock.cmbAnimation.SelectedIndex = Data.Resource[GameState.EditorIndex].Animation;
+            withBlock.nudLvlReq.Value = Data.Resource[GameState.EditorIndex].LvlRequired;
             
             frmEditor_Resource.Instance.Visible = true;
 
@@ -236,32 +236,32 @@ namespace Client
             withBlock.cmbAnim.SelectedIndex = 0;
 
             // set values
-            withBlock.txtName.Text = Strings.Trim(Core.Type.Skill[GameState.EditorIndex].Name);
-            withBlock.cmbType.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].Type;
-            withBlock.nudMp.Value = Core.Type.Skill[GameState.EditorIndex].MpCost;
-            withBlock.nudLevel.Value = Core.Type.Skill[GameState.EditorIndex].LevelReq;
-            withBlock.cmbAccessReq.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].AccessReq;
-            withBlock.cmbJob.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].JobReq;
-            withBlock.nudCast.Value = Core.Type.Skill[GameState.EditorIndex].CastTime;
-            withBlock.nudCool.Value = Core.Type.Skill[GameState.EditorIndex].CdTime;
-            withBlock.nudIcon.Value = Core.Type.Skill[GameState.EditorIndex].Icon;
-            withBlock.nudMap.Value = Core.Type.Skill[GameState.EditorIndex].Map;
-            withBlock.nudX.Value = Core.Type.Skill[GameState.EditorIndex].X;
-            withBlock.nudY.Value = Core.Type.Skill[GameState.EditorIndex].Y;
-            withBlock.cmbDir.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].Dir;
-            withBlock.nudVital.Value = Core.Type.Skill[GameState.EditorIndex].Vital;
-            withBlock.nudDuration.Value = Core.Type.Skill[GameState.EditorIndex].Duration;
-            withBlock.nudInterval.Value = Core.Type.Skill[GameState.EditorIndex].Interval;
-            withBlock.nudRange.Value = Core.Type.Skill[GameState.EditorIndex].Range;
+            withBlock.txtName.Text = Strings.Trim(Data.Skill[GameState.EditorIndex].Name);
+            withBlock.cmbType.SelectedIndex = Data.Skill[GameState.EditorIndex].Type;
+            withBlock.nudMp.Value = Data.Skill[GameState.EditorIndex].MpCost;
+            withBlock.nudLevel.Value = Data.Skill[GameState.EditorIndex].LevelReq;
+            withBlock.cmbAccessReq.SelectedIndex = Data.Skill[GameState.EditorIndex].AccessReq;
+            withBlock.cmbJob.SelectedIndex = Data.Skill[GameState.EditorIndex].JobReq;
+            withBlock.nudCast.Value = Data.Skill[GameState.EditorIndex].CastTime;
+            withBlock.nudCool.Value = Data.Skill[GameState.EditorIndex].CdTime;
+            withBlock.nudIcon.Value = Data.Skill[GameState.EditorIndex].Icon;
+            withBlock.nudMap.Value = Data.Skill[GameState.EditorIndex].Map;
+            withBlock.nudX.Value = Data.Skill[GameState.EditorIndex].X;
+            withBlock.nudY.Value = Data.Skill[GameState.EditorIndex].Y;
+            withBlock.cmbDir.SelectedIndex = Data.Skill[GameState.EditorIndex].Dir;
+            withBlock.nudVital.Value = Data.Skill[GameState.EditorIndex].Vital;
+            withBlock.nudDuration.Value = Data.Skill[GameState.EditorIndex].Duration;
+            withBlock.nudInterval.Value = Data.Skill[GameState.EditorIndex].Interval;
+            withBlock.nudRange.Value = Data.Skill[GameState.EditorIndex].Range;
 
-            withBlock.chkAoE.Checked = Core.Type.Skill[GameState.EditorIndex].IsAoE;
+            withBlock.chkAoE.Checked = Data.Skill[GameState.EditorIndex].IsAoE;
 
-            withBlock.nudAoE.Value = Core.Type.Skill[GameState.EditorIndex].AoE;
-            withBlock.cmbAnimCast.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].CastAnim;
-            withBlock.cmbAnim.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].SkillAnim;
-            withBlock.nudStun.Value = Core.Type.Skill[GameState.EditorIndex].StunDuration;
+            withBlock.nudAoE.Value = Data.Skill[GameState.EditorIndex].AoE;
+            withBlock.cmbAnimCast.SelectedIndex = Data.Skill[GameState.EditorIndex].CastAnim;
+            withBlock.cmbAnim.SelectedIndex = Data.Skill[GameState.EditorIndex].SkillAnim;
+            withBlock.nudStun.Value = Data.Skill[GameState.EditorIndex].StunDuration;
 
-            if (Core.Type.Skill[GameState.EditorIndex].IsProjectile == 1)
+            if (Data.Skill[GameState.EditorIndex].IsProjectile == 1)
             {
                 withBlock.chkProjectile.Checked = true;
             }
@@ -269,9 +269,9 @@ namespace Client
             {
                 withBlock.chkProjectile.Checked = false;
             }
-            withBlock.cmbProjectile.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].Projectile;
+            withBlock.cmbProjectile.SelectedIndex = Data.Skill[GameState.EditorIndex].Projectile;
 
-            if (Core.Type.Skill[GameState.EditorIndex].KnockBack == 1)
+            if (Data.Skill[GameState.EditorIndex].KnockBack == 1)
             {
                 withBlock.chkKnockBack.Checked = true;
             }
@@ -279,7 +279,7 @@ namespace Client
             {
                 withBlock.chkKnockBack.Checked = false;
             }
-            withBlock.cmbKnockBackTiles.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].KnockBackTiles;
+            withBlock.cmbKnockBackTiles.SelectedIndex = Data.Skill[GameState.EditorIndex].KnockBackTiles;
 
             frmEditor_Skill.Instance.DrawIcon();
           
@@ -325,11 +325,11 @@ namespace Client
             GameState.EditorIndex = frmEditor_Shop.Instance.lstIndex.SelectedIndex;
             
             var withBlock = frmEditor_Shop.Instance;
-            withBlock.txtName.Text = Core.Type.Shop[GameState.EditorIndex].Name;
+            withBlock.txtName.Text = Data.Shop[GameState.EditorIndex].Name;
 
-            if (Core.Type.Shop[GameState.EditorIndex].BuyRate > 0)
+            if (Data.Shop[GameState.EditorIndex].BuyRate > 0)
             {
-                withBlock.nudBuy.Value = Core.Type.Shop[GameState.EditorIndex].BuyRate;
+                withBlock.nudBuy.Value = Data.Shop[GameState.EditorIndex].BuyRate;
             }
             else
             {
@@ -352,7 +352,7 @@ namespace Client
             for (i = 0; i < Constant.MAX_TRADES; i++)
             {
                 {
-                    ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[i];
+                    ref var withBlock = ref Data.Shop[GameState.EditorIndex].TradeItem[i];
                     // if none, show as none
                     if (withBlock.Item == -1 & withBlock.CostItem == -1)
                     {
@@ -360,7 +360,7 @@ namespace Client
                     }
                     else
                     {
-                        frmEditor_Shop.Instance.lstTradeItem.Items.Add(i + 1 + ": " + withBlock.ItemValue + "x " + Core.Type.Item[withBlock.Item].Name + " for " + withBlock.CostValue + "x " + Core.Type.Item[withBlock.CostItem].Name);
+                        frmEditor_Shop.Instance.lstTradeItem.Items.Add(i + 1 + ": " + withBlock.ItemValue + "x " + Core.Data.Item[withBlock.Item].Name + " for " + withBlock.CostValue + "x " + Core.Data.Item[withBlock.CostItem].Name);
                     }
                 }
             }
@@ -430,36 +430,37 @@ namespace Client
             var withBlock = frmEditor_Job.Instance;
             GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
 
-            withBlock.txtName.Text = Core.Type.Job[GameState.EditorIndex].Name;
-            withBlock.txtDescription.Text = Core.Type.Job[GameState.EditorIndex].Desc;
+            withBlock.txtName.Text = Data.Job[GameState.EditorIndex].Name;
+            withBlock.txtDescription.Text = Data.Job[GameState.EditorIndex].Desc;
 
-            if (Core.Type.Job[GameState.EditorIndex].MaleSprite == 0)
-                Core.Type.Job[GameState.EditorIndex].MaleSprite = 1;
-            withBlock.nudMaleSprite.Value = Core.Type.Job[GameState.EditorIndex].MaleSprite;
-            if (Core.Type.Job[GameState.EditorIndex].FemaleSprite == 0)
-                Core.Type.Job[GameState.EditorIndex].FemaleSprite = 1;
-            withBlock.nudFemaleSprite.Value = Core.Type.Job[GameState.EditorIndex].FemaleSprite;
+            if (Data.Job[GameState.EditorIndex].MaleSprite == 0)
+                Data.Job[GameState.EditorIndex].MaleSprite = 1;
+            withBlock.nudMaleSprite.Value = Data.Job[GameState.EditorIndex].MaleSprite;
+            if (Data.Job[GameState.EditorIndex].FemaleSprite == 0)
+                Data.Job[GameState.EditorIndex].FemaleSprite = 1;
+            withBlock.nudFemaleSprite.Value = Data.Job[GameState.EditorIndex].FemaleSprite;
 
             withBlock.cmbItems.SelectedIndex = 0;
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            for (i = 0; i < statCount; i++)
             {
-                if (Core.Type.Job[GameState.EditorIndex].Stat[i] == 0)
-                    Core.Type.Job[GameState.EditorIndex].Stat[i] = 1;
+                if (Data.Job[GameState.EditorIndex].Stat[i] == 0)
+                    Data.Job[GameState.EditorIndex].Stat[i] = 1;
             }
 
-            withBlock.nudStrength.Value = Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Strength];
-            withBlock.nudLuck.Value = Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Luck];
-            withBlock.nudIntelligence.Value = Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Intelligence];
-            withBlock.nudVitality.Value = Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Vitality];
-            withBlock.nudSpirit.Value = Core.Type.Job[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Spirit];
-            withBlock.nudBaseExp.Value = Core.Type.Job[GameState.EditorIndex].BaseExp;
+            withBlock.nudStrength.Value = Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Strength];
+            withBlock.nudLuck.Value = Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Luck];
+            withBlock.nudIntelligence.Value = Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Intelligence];
+            withBlock.nudVitality.Value = Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Vitality];
+            withBlock.nudSpirit.Value = Data.Job[GameState.EditorIndex].Stat[(int)Core.Stat.Spirit];
+            withBlock.nudBaseExp.Value = Data.Job[GameState.EditorIndex].BaseExp;
 
-            if (Core.Type.Job[GameState.EditorIndex].StartMap == 0)
-                Core.Type.Job[GameState.EditorIndex].StartMap = 1;
-            withBlock.nudStartMap.Value = Core.Type.Job[GameState.EditorIndex].StartMap;
-            withBlock.nudStartX.Value = Core.Type.Job[GameState.EditorIndex].StartX;
-            withBlock.nudStartY.Value = Core.Type.Job[GameState.EditorIndex].StartY;
+            if (Data.Job[GameState.EditorIndex].StartMap == 0)
+                Data.Job[GameState.EditorIndex].StartMap = 1;
+            withBlock.nudStartMap.Value = Data.Job[GameState.EditorIndex].StartMap;
+            withBlock.nudStartX.Value = Data.Job[GameState.EditorIndex].StartX;
+            withBlock.nudStartY.Value = Data.Job[GameState.EditorIndex].StartY;
 
             GameState.Job_Changed[GameState.EditorIndex] = true;
             withBlock.DrawPreview();
@@ -472,24 +473,21 @@ namespace Client
         }
 
 
-        #endregion
-
-        #region Item
-
         public static void ItemEditorInit()
         {
             int i;
 
             GameState.EditorIndex = frmEditor_Item.Instance.lstIndex.SelectedIndex;
-            
-            ref var withBlock = ref Core.Type.Item[GameState.EditorIndex];
+
+            ref var withBlock = ref Core.Data.Item[GameState.EditorIndex];
             frmEditor_Item.Instance.txtName.Text = withBlock.Name;
             frmEditor_Item.Instance.txtDescription.Text = withBlock.Description;
 
             if (withBlock.Icon > frmEditor_Item.Instance.nudIcon.Maximum)
                 withBlock.Icon = 0;
             frmEditor_Item.Instance.nudIcon.Value = withBlock.Icon;
-            if (withBlock.Type > (int)Core.Enum.ItemType.Count)
+            int itemCategoryCount = Enum.GetValues(typeof(ItemCategory)).Length;
+            if (withBlock.Type < 0 || withBlock.Type >= itemCategoryCount)
                 withBlock.Type = 0;
             frmEditor_Item.Instance.cmbType.SelectedIndex = withBlock.Type;
             frmEditor_Item.Instance.cmbAnimation.SelectedIndex = withBlock.Animation;
@@ -499,7 +497,7 @@ namespace Client
             frmEditor_Item.Instance.nudItemLvl.Value = withBlock.ItemLevel;
 
             // Type specific settings
-            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.Equipment)
+            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)ItemCategory.Equipment)
             {
                 frmEditor_Item.Instance.fraEquipment.Visible = true;
                 frmEditor_Item.Instance.nudDamage.Value = withBlock.Data2;
@@ -513,11 +511,11 @@ namespace Client
                     withBlock.Speed = (int)Math.Round(frmEditor_Item.Instance.nudSpeed.Maximum);
                 frmEditor_Item.Instance.nudSpeed.Value = withBlock.Speed;
 
-                frmEditor_Item.Instance.nudStrength.Value = withBlock.Add_Stat[(int)Core.Enum.StatType.Strength];
-                frmEditor_Item.Instance.nudIntelligence.Value = withBlock.Add_Stat[(int)Core.Enum.StatType.Intelligence];
-                frmEditor_Item.Instance.nudVitality.Value = withBlock.Add_Stat[(int)Core.Enum.StatType.Vitality];
-                frmEditor_Item.Instance.nudLuck.Value = withBlock.Add_Stat[(int)Core.Enum.StatType.Luck];
-                frmEditor_Item.Instance.nudSpirit.Value = withBlock.Add_Stat[(int)Core.Enum.StatType.Spirit];
+                frmEditor_Item.Instance.nudStrength.Value = withBlock.Add_Stat[(int)Core.Stat.Strength];
+                frmEditor_Item.Instance.nudIntelligence.Value = withBlock.Add_Stat[(int)Core.Stat.Intelligence];
+                frmEditor_Item.Instance.nudVitality.Value = withBlock.Add_Stat[(int)Core.Stat.Vitality];
+                frmEditor_Item.Instance.nudLuck.Value = withBlock.Add_Stat[(int)Core.Stat.Luck];
+                frmEditor_Item.Instance.nudSpirit.Value = withBlock.Add_Stat[(int)Core.Stat.Spirit];
 
                 if (withBlock.KnockBack == 1)
                 {
@@ -530,7 +528,7 @@ namespace Client
                 frmEditor_Item.Instance.cmbKnockBackTiles.SelectedIndex = withBlock.KnockBackTiles;
                 frmEditor_Item.Instance.nudPaperdoll.Value = withBlock.Paperdoll;
 
-                if (withBlock.SubType == (byte)Core.Enum.EquipmentType.Weapon)
+                if (withBlock.SubType == (byte)Equipment.Weapon)
                 {
                     frmEditor_Item.Instance.fraProjectile.Visible = true;
                 }
@@ -544,7 +542,7 @@ namespace Client
                 frmEditor_Item.Instance.fraEquipment.Visible = false;
             }
 
-            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.Consumable)
+            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)ItemCategory.Consumable)
             {
                 frmEditor_Item.Instance.fraVitals.Visible = true;
                 frmEditor_Item.Instance.nudVitalMod.Value = withBlock.Data1;
@@ -554,7 +552,7 @@ namespace Client
                 frmEditor_Item.Instance.fraVitals.Visible = false;
             }
 
-            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.Skill)
+            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)ItemCategory.Skill)
             {
                 frmEditor_Item.Instance.fraSkill.Visible = true;
                 frmEditor_Item.Instance.cmbSkills.SelectedIndex = withBlock.Data1;
@@ -564,17 +562,17 @@ namespace Client
                 frmEditor_Item.Instance.fraSkill.Visible = false;
             }
 
-            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.Projectile)
+            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)ItemCategory.Projectile)
             {
                 frmEditor_Item.Instance.fraProjectile.Visible = true;
                 frmEditor_Item.Instance.fraEquipment.Visible = true;
             }
-            else if (withBlock.Type != (byte)Core.Enum.ItemType.Equipment)
+            else if (withBlock.Type != (byte)ItemCategory.Equipment)
             {
                 frmEditor_Item.Instance.fraProjectile.Visible = false;
             }
 
-            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.Event)
+            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)ItemCategory.Event)
             {
                 frmEditor_Item.Instance.fraEvents.Visible = true;
                 frmEditor_Item.Instance.nudEvent.Value = withBlock.Data1;
@@ -585,7 +583,7 @@ namespace Client
                 frmEditor_Item.Instance.fraEvents.Visible = false;
             }
 
-            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.Pet)
+            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)ItemCategory.Pet)
             {
                 frmEditor_Item.Instance.fraPet.Visible = true;
                 frmEditor_Item.Instance.cmbPet.SelectedIndex = withBlock.Data1;
@@ -603,16 +601,16 @@ namespace Client
             frmEditor_Item.Instance.cmbAccessReq.SelectedIndex = withBlock.AccessReq;
             frmEditor_Item.Instance.nudLevelReq.Value = withBlock.LevelReq;
 
-            frmEditor_Item.Instance.nudStrReq.Value = withBlock.Stat_Req[(int)Core.Enum.StatType.Strength];
-            frmEditor_Item.Instance.nudVitReq.Value = withBlock.Stat_Req[(int)Core.Enum.StatType.Vitality];
-            frmEditor_Item.Instance.nudLuckReq.Value = withBlock.Stat_Req[(int)Core.Enum.StatType.Luck];
-            frmEditor_Item.Instance.nudIntReq.Value = withBlock.Stat_Req[(int)Core.Enum.StatType.Intelligence];
-            frmEditor_Item.Instance.nudSprReq.Value = withBlock.Stat_Req[(int)Core.Enum.StatType.Spirit];
+            frmEditor_Item.Instance.nudStrReq.Value = withBlock.Stat_Req[(int)Core.Stat.Strength];
+            frmEditor_Item.Instance.nudVitReq.Value = withBlock.Stat_Req[(int)Core.Stat.Vitality];
+            frmEditor_Item.Instance.nudLuckReq.Value = withBlock.Stat_Req[(int)Core.Stat.Luck];
+            frmEditor_Item.Instance.nudIntReq.Value = withBlock.Stat_Req[(int)Core.Stat.Intelligence];
+            frmEditor_Item.Instance.nudSprReq.Value = withBlock.Stat_Req[(int)Core.Stat.Spirit];
 
             // Build cmbJobReq
             frmEditor_Item.Instance.cmbJobReq.Items.Clear();
             for (i = 0; i < Constant.MAX_JOBS; i++)
-                frmEditor_Item.Instance.cmbJobReq.Items.Add(Core.Type.Job[i].Name);
+                frmEditor_Item.Instance.cmbJobReq.Items.Add(Data.Job[i].Name);
 
             frmEditor_Item.Instance.cmbJobReq.SelectedIndex = withBlock.JobReq;
             // Info
@@ -690,17 +688,17 @@ namespace Client
             var withBlock = frmEditor_Moral.Instance;
             GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
 
-            withBlock.txtName.Text = Core.Type.Moral[GameState.EditorIndex].Name;
-            withBlock.cmbColor.SelectedIndex = Core.Type.Moral[GameState.EditorIndex].Color;
-            withBlock.chkCanCast.Checked = Core.Type.Moral[GameState.EditorIndex].CanCast;
-            withBlock.chkCanPK.Checked = Core.Type.Moral[GameState.EditorIndex].CanPK;
-            withBlock.chkCanPickupItem.Checked = Core.Type.Moral[GameState.EditorIndex].CanPickupItem;
-            withBlock.chkCanDropItem.Checked = Core.Type.Moral[GameState.EditorIndex].CanDropItem;
-            withBlock.chkCanUseItem.Checked = Core.Type.Moral[GameState.EditorIndex].CanUseItem;
-            withBlock.chkDropItems.Checked = Core.Type.Moral[GameState.EditorIndex].DropItems;
-            withBlock.chkLoseExp.Checked = Core.Type.Moral[GameState.EditorIndex].LoseExp;
-            withBlock.chkPlayerBlock.Checked = Core.Type.Moral[GameState.EditorIndex].PlayerBlock;
-            withBlock.chkNPCBlock.Checked = Core.Type.Moral[GameState.EditorIndex].NPCBlock;
+            withBlock.txtName.Text = Data.Moral[GameState.EditorIndex].Name;
+            withBlock.cmbColor.SelectedIndex = Data.Moral[GameState.EditorIndex].Color;
+            withBlock.chkCanCast.Checked = Data.Moral[GameState.EditorIndex].CanCast;
+            withBlock.chkCanPK.Checked = Data.Moral[GameState.EditorIndex].CanPK;
+            withBlock.chkCanPickupItem.Checked = Data.Moral[GameState.EditorIndex].CanPickupItem;
+            withBlock.chkCanDropItem.Checked = Data.Moral[GameState.EditorIndex].CanDropItem;
+            withBlock.chkCanUseItem.Checked = Data.Moral[GameState.EditorIndex].CanUseItem;
+            withBlock.chkDropItems.Checked = Data.Moral[GameState.EditorIndex].DropItems;
+            withBlock.chkLoseExp.Checked = Data.Moral[GameState.EditorIndex].LoseExp;
+            withBlock.chkPlayerBlock.Checked = Data.Moral[GameState.EditorIndex].PlayerBlock;
+            withBlock.chkNpcBlock.Checked = Data.Moral[GameState.EditorIndex].NpcBlock;
 
             GameState.Moral_Changed[GameState.EditorIndex] = true;
         }
@@ -717,7 +715,7 @@ namespace Client
         {
             GameState.EditorIndex = frmEditor_Projectile.Instance.lstIndex.SelectedIndex;
             
-            ref var withBlock = ref Core.Type.Projectile[GameState.EditorIndex];
+            ref var withBlock = ref Data.Projectile[GameState.EditorIndex];
             frmEditor_Projectile.Instance.txtName.Text = Strings.Trim(withBlock.Name);
             frmEditor_Projectile.Instance.nudPic.Value = withBlock.Sprite;
             frmEditor_Projectile.Instance.nudRange.Value = withBlock.Range;
@@ -778,28 +776,28 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_SKILLS; i++)
             {
-                withBlock.cmbSkill1.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
-                withBlock.cmbSkill2.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
-                withBlock.cmbSkill3.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
-                withBlock.cmbSkill4.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                withBlock.cmbSkill1.Items.Add(i + 1 + ": " + Data.Skill[i].Name);
+                withBlock.cmbSkill2.Items.Add(i + 1 + ": " + Data.Skill[i].Name);
+                withBlock.cmbSkill3.Items.Add(i + 1 + ": " + Data.Skill[i].Name);
+                withBlock.cmbSkill4.Items.Add(i + 1 + ": " + Data.Skill[i].Name);
             }
-            withBlock.txtName.Text = Core.Type.Pet[GameState.EditorIndex].Name;
-            if (Core.Type.Pet[GameState.EditorIndex].Sprite < 0 | Core.Type.Pet[GameState.EditorIndex].Sprite > withBlock.nudSprite.Maximum)
-                Core.Type.Pet[GameState.EditorIndex].Sprite = 0;
+            withBlock.txtName.Text = Data.Pet[GameState.EditorIndex].Name;
+            if (Data.Pet[GameState.EditorIndex].Sprite < 0 | Data.Pet[GameState.EditorIndex].Sprite > withBlock.nudSprite.Maximum)
+                Data.Pet[GameState.EditorIndex].Sprite = 0;
 
-            withBlock.nudSprite.Value = Core.Type.Pet[GameState.EditorIndex].Sprite;
+            withBlock.nudSprite.Value = Data.Pet[GameState.EditorIndex].Sprite;
             withBlock.EditorPet_DrawPet();
 
-            withBlock.nudRange.Value = Core.Type.Pet[GameState.EditorIndex].Range;
+            withBlock.nudRange.Value = Data.Pet[GameState.EditorIndex].Range;
 
-            withBlock.nudStrength.Value = Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Strength];
-            withBlock.nudVitality.Value = Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Vitality];
-            withBlock.nudLuck.Value = Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Luck];
-            withBlock.nudIntelligence.Value = Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Intelligence];
-            withBlock.nudSpirit.Value = Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Spirit];
-            withBlock.nudLevel.Value = Core.Type.Pet[GameState.EditorIndex].Level;
+            withBlock.nudStrength.Value = Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Strength];
+            withBlock.nudVitality.Value = Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Vitality];
+            withBlock.nudLuck.Value = Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Luck];
+            withBlock.nudIntelligence.Value = Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Intelligence];
+            withBlock.nudSpirit.Value = Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Spirit];
+            withBlock.nudLevel.Value = Data.Pet[GameState.EditorIndex].Level;
 
-            if (Core.Type.Pet[GameState.EditorIndex].StatType == 1)
+            if (Data.Pet[GameState.EditorIndex].StatType == 1)
             {
                 withBlock.optCustomStats.Checked = true;
                 withBlock.pnlCustomStats.Visible = true;
@@ -810,43 +808,43 @@ namespace Client
                 withBlock.pnlCustomStats.Visible = false;
             }
 
-            withBlock.nudPetExp.Value = Core.Type.Pet[GameState.EditorIndex].ExpGain;
+            withBlock.nudPetExp.Value = Data.Pet[GameState.EditorIndex].ExpGain;
 
-            withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].Points;
+            withBlock.nudPetPnts.Value = Data.Pet[GameState.EditorIndex].Points;
 
-            withBlock.nudMaxLevel.Value = Core.Type.Pet[GameState.EditorIndex].MaxLevel;
+            withBlock.nudMaxLevel.Value = Data.Pet[GameState.EditorIndex].MaxLevel;
 
             // Set skills
-            withBlock.cmbSkill1.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[0];
+            withBlock.cmbSkill1.SelectedIndex = Data.Pet[GameState.EditorIndex].Skill[0];
 
-            withBlock.cmbSkill2.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[1];
+            withBlock.cmbSkill2.SelectedIndex = Data.Pet[GameState.EditorIndex].Skill[1];
 
-            withBlock.cmbSkill3.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[2];
+            withBlock.cmbSkill3.SelectedIndex = Data.Pet[GameState.EditorIndex].Skill[2];
 
-            withBlock.cmbSkill4.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[3];
+            withBlock.cmbSkill4.SelectedIndex = Data.Pet[GameState.EditorIndex].Skill[3];
 
-            if (Core.Type.Pet[GameState.EditorIndex].LevelingType == 1)
+            if (Data.Pet[GameState.EditorIndex].LevelingType == 1)
             {
                 withBlock.optLevel.Checked = true;
 
                 withBlock.pnlPetlevel.Visible = true;
                 withBlock.pnlPetlevel.BringToFront();
-                withBlock.nudPetExp.Value = Core.Type.Pet[GameState.EditorIndex].ExpGain;
-                if (Core.Type.Pet[GameState.EditorIndex].MaxLevel > 0)
-                    withBlock.nudMaxLevel.Value = Core.Type.Pet[GameState.EditorIndex].MaxLevel;
-                withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].Points;
+                withBlock.nudPetExp.Value = Data.Pet[GameState.EditorIndex].ExpGain;
+                if (Data.Pet[GameState.EditorIndex].MaxLevel > 0)
+                    withBlock.nudMaxLevel.Value = Data.Pet[GameState.EditorIndex].MaxLevel;
+                withBlock.nudPetPnts.Value = Data.Pet[GameState.EditorIndex].Points;
             }
             else
             {
                 withBlock.optDoNotLevel.Checked = true;
 
                 withBlock.pnlPetlevel.Visible = false;
-                withBlock.nudPetExp.Value = Core.Type.Pet[GameState.EditorIndex].ExpGain;
-                withBlock.nudMaxLevel.Value = Core.Type.Pet[GameState.EditorIndex].MaxLevel;
-                withBlock.nudPetPnts.Value = Core.Type.Pet[GameState.EditorIndex].Points;
+                withBlock.nudPetExp.Value = Data.Pet[GameState.EditorIndex].ExpGain;
+                withBlock.nudMaxLevel.Value = Data.Pet[GameState.EditorIndex].MaxLevel;
+                withBlock.nudPetPnts.Value = Data.Pet[GameState.EditorIndex].Points;
             }
 
-            if (Core.Type.Pet[GameState.EditorIndex].Evolvable == 1)
+            if (Data.Pet[GameState.EditorIndex].Evolvable == 1)
             {
                 withBlock.chkEvolve.Checked = true;
             }
@@ -855,11 +853,11 @@ namespace Client
                 withBlock.chkEvolve.Checked = false;
             }
 
-            if (Core.Type.Pet[GameState.EditorIndex].EvolveLevel > 0)
+            if (Data.Pet[GameState.EditorIndex].EvolveLevel > 0)
             {
-                withBlock.nudEvolveLvl.Value = Core.Type.Pet[GameState.EditorIndex].EvolveLevel;
+                withBlock.nudEvolveLvl.Value = Data.Pet[GameState.EditorIndex].EvolveLevel;
             }
-            withBlock.cmbEvolve.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].EvolveNum;
+            withBlock.cmbEvolve.SelectedIndex = Data.Pet[GameState.EditorIndex].EvolveNum;
 
             withBlock.EditorPet_DrawPet();
 

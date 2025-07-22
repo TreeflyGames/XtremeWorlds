@@ -60,7 +60,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Moral[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Data.Moral[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.MoralEditorInit();
@@ -76,7 +76,7 @@ namespace Client
             lstIndex.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_MORALS; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Moral[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Data.Moral[i].Name);
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
@@ -84,60 +84,60 @@ namespace Client
             int tmpindex;
 
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Moral[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
+            Data.Moral[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Moral[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Data.Moral[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
         private void chkCanCast_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].CanCast = chkCanCast.Checked;
+            Data.Moral[GameState.EditorIndex].CanCast = chkCanCast.Checked;
         }
 
         private void chkCanPK_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].CanPK = chkCanPK.Checked;
+            Data.Moral[GameState.EditorIndex].CanPK = chkCanPK.Checked;
         }
 
         private void chkCanPickupItem_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].CanPickupItem = chkCanPickupItem.Checked;
+            Data.Moral[GameState.EditorIndex].CanPickupItem = chkCanPickupItem.Checked;
         }
 
         private void chkCanDropItem_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].CanDropItem = chkCanDropItem.Checked;
+            Data.Moral[GameState.EditorIndex].CanDropItem = chkCanDropItem.Checked;
         }
 
         private void chkCanUseItem_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].CanUseItem = chkCanUseItem.Checked;
+            Data.Moral[GameState.EditorIndex].CanUseItem = chkCanUseItem.Checked;
         }
 
         private void chkDropItems_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].DropItems = chkDropItems.Checked;
+            Data.Moral[GameState.EditorIndex].DropItems = chkDropItems.Checked;
         }
 
         private void chkLoseExp_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].LoseExp = chkLoseExp.Checked;
+            Data.Moral[GameState.EditorIndex].LoseExp = chkLoseExp.Checked;
         }
 
         private void chkPlayerBlock_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].PlayerBlock = chkPlayerBlock.Checked;
+            Data.Moral[GameState.EditorIndex].PlayerBlock = chkPlayerBlock.Checked;
         }
 
-        private void chkNPCBlock_CheckedChanged(object sender, EventArgs e)
+        private void chkNpcBlock_CheckedChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].NPCBlock = chkNPCBlock.Checked;
+            Data.Moral[GameState.EditorIndex].NpcBlock = chkNpcBlock.Checked;
         }
 
         private void cmbColor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Moral[GameState.EditorIndex].Color = (byte)cmbColor.SelectedIndex;
+            Data.Moral[GameState.EditorIndex].Color = (byte)cmbColor.SelectedIndex;
         }
 
         #endregion

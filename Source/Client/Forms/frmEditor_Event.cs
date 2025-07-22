@@ -42,7 +42,7 @@ namespace Client
             cmbCondition_HasItem.Items.Clear();
 
             for (i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbCondition_HasItem.Items.Add(i + 1 + ". " + Core.Type.Item[i].Name);
+                cmbCondition_HasItem.Items.Add(i + 1 + ". " + Core.Data.Item[i].Name);
             cmbCondition_HasItem.SelectedIndex = 0;
             nudCondition_HasItem.Enabled = false;
             nudCondition_HasItem.Value = 1m;
@@ -50,13 +50,13 @@ namespace Client
             cmbCondition_JobIs.Items.Clear();
 
             for (i = 0; i < Constant.MAX_JOBS; i++)
-                cmbCondition_JobIs.Items.Add(i + 1 + ". " + Core.Type.Job[i].Name);
+                cmbCondition_JobIs.Items.Add(i + 1 + ". " + Data.Job[i].Name);
             cmbCondition_JobIs.SelectedIndex = 0;
             cmbCondition_LearntSkill.Enabled = false;
             cmbCondition_LearntSkill.Items.Clear();
 
             for (i = 0; i < Constant.MAX_SKILLS; i++)
-                cmbCondition_LearntSkill.Items.Add(i + 1 + ". " + Strings.Trim(Core.Type.Skill[i].Name));
+                cmbCondition_LearntSkill.Items.Add(i + 1 + ". " + Strings.Trim(Data.Skill[i].Name));
             cmbCondition_LearntSkill.SelectedIndex = 0;
             cmbCondition_LevelCompare.Enabled = false;
             cmbCondition_LevelCompare.SelectedIndex = 0;
@@ -98,7 +98,7 @@ namespace Client
             cmbVariable.SelectedIndex = 0;
             cmbChangeItemIndex.Items.Clear();
             for (i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbChangeItemIndex.Items.Add(Core.Type.Item[i].Name);
+                cmbChangeItemIndex.Items.Add(Core.Data.Item[i].Name);
             cmbChangeItemIndex.SelectedIndex = 0;
             nudChangeLevel.Minimum = 1m;
             nudChangeLevel.Maximum = Constant.MAX_LEVEL;
@@ -106,18 +106,18 @@ namespace Client
             cmbChangeSkills.Items.Clear();
 
             for (i = 0; i < Constant.MAX_SKILLS; i++)
-                cmbChangeSkills.Items.Add(Core.Type.Skill[i].Name);
+                cmbChangeSkills.Items.Add(Data.Skill[i].Name);
             cmbChangeSkills.SelectedIndex = 0;
             cmbChangeJob.Items.Clear();
 
             for (i = 0; i < Constant.MAX_JOBS; i++)
-                cmbChangeJob.Items.Add(Strings.Trim(Core.Type.Job[i].Name));
+                cmbChangeJob.Items.Add(Strings.Trim(Data.Job[i].Name));
             cmbChangeJob.SelectedIndex = 0;
             nudChangeSprite.Maximum = GameState.NumCharacters;
             cmbPlayAnim.Items.Clear();
 
             for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
-                cmbPlayAnim.Items.Add(i + 1 + ". " + Core.Type.Animation[i].Name);
+                cmbPlayAnim.Items.Add(i + 1 + ". " + Data.Animation[i].Name);
             cmbPlayAnim.SelectedIndex = 0;
 
             cmbPlayBGM.Items.Clear();
@@ -137,23 +137,23 @@ namespace Client
             cmbOpenShop.Items.Clear();
 
             for (i = 0; i < Constant.MAX_SHOPS; i++)
-                cmbOpenShop.Items.Add(i + 1 + ". " + Core.Type.Shop[i].Name);
+                cmbOpenShop.Items.Add(i + 1 + ". " + Data.Shop[i].Name);
             cmbOpenShop.SelectedIndex = 0;
-            cmbSpawnNPC.Items.Clear();
+            cmbSpawnNpc.Items.Clear();
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                if (Core.Type.MyMap.NPC[i] > 0)
+                if (Data.MyMap.Npc[i] > 0)
                 {
-                    cmbSpawnNPC.Items.Add(i + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
+                    cmbSpawnNpc.Items.Add(i + 1 + ". " + Core.Data.Npc[Data.MyMap.Npc[i]].Name);
                 }
                 else
                 {
-                    cmbSpawnNPC.Items.Add(i + ". ");
+                    cmbSpawnNpc.Items.Add(i + ". ");
                 }
             }
 
-            cmbSpawnNPC.SelectedIndex = 0;
+            cmbSpawnNpc.SelectedIndex = 0;
             nudFogData0.Maximum = GameState.NumFogs;
             nudWPMap.Maximum = Constant.MAX_MAPS;
 
@@ -180,7 +180,7 @@ namespace Client
             // items
             cmbHasItem.Items.Clear();
             for (i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbHasItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
+                cmbHasItem.Items.Add(i + 1 + ": " + Core.Data.Item[i].Name);
 
             // variables
             cmbPlayerVar.Items.Clear();
@@ -236,8 +236,8 @@ namespace Client
 
         public void DrawGraphic()
         {
-            Core.Type.RectStruct sRect;
-            Core.Type.RectStruct dRect;
+            Core.Type.Rect sRect;
+            Core.Type.Rect dRect;
             Bitmap targetBitmap; // Bitmap we draw to
             Bitmap sourceBitmap; // This is our sprite or tileset that we are drawing from
             Graphics g; // This is our graphics Job that helps us draw to the targetBitmap
@@ -609,7 +609,7 @@ namespace Client
                 // Exit Event Process
                 case "Stop Event Processing":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.ExitProcess);
+                        Event.AddCommand((int)Core.EventCommand.ExitEventProcess);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -648,7 +648,7 @@ namespace Client
                 // Restore HP
                 case "Restore HP":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.RestoreHP);
+                        Event.AddCommand((int)Core.EventCommand.RestoreHealth);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -656,7 +656,15 @@ namespace Client
                 // Restore MP
                 case "Restore MP":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.RestoreSP);
+                        Event.AddCommand((int)Core.EventCommand.RestoreMana);
+                        fraCommands.Visible = false;
+                        fraDialogue.Visible = false;
+                        break;
+                    }
+                // Restore SP
+                case "Restore SP":
+                    {
+                        Event.AddCommand((int)Core.EventCommand.RestoreStamina);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -664,7 +672,7 @@ namespace Client
                 // Level Up
                 case "Level Up":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.LevelUp);
+                        Event.AddCommand((int)Core.EventCommand.ChangeLevel);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -697,7 +705,7 @@ namespace Client
                                 cmbChangeJob.Items.Clear();
 
                                 for (int i = 0; i < Constant.MAX_JOBS; i++)
-                                    cmbChangeJob.Items.Add(Strings.Trim(Core.Type.Job[i].Name));
+                                    cmbChangeJob.Items.Add(Strings.Trim(Data.Job[i].Name));
                                 cmbChangeJob.SelectedIndex = 0;
                             }
                         }
@@ -761,13 +769,13 @@ namespace Client
                     {
                         fraMoveRoute.Visible = true;
                         lstMoveRoute.Items.Clear();
-                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
+                        Event.ListOfEvents = new int[Data.MyMap.EventCount];
                         Event.ListOfEvents[0] = Event.EditorEvent;
-                        for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
+                        for (int i = 0, loopTo = Data.MyMap.EventCount; i < loopTo; i++)
                         {
                             if (i != Event.EditorEvent)
                             {
-                                cmbEvent.Items.Add(Core.Type.MyMap.Event[i].Name);
+                                cmbEvent.Items.Add(Data.MyMap.Event[i].Name);
                                 x = x + 1;
                                 Event.ListOfEvents[x] = i;
                             }
@@ -776,7 +784,7 @@ namespace Client
                         chkIgnoreMove.Checked = false;
                         chkRepeatRoute.Checked = false;
                         Event.TempMoveRouteCount = 0;
-                        Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
+                        Event.TempMoveRoute = new Core.Type.MoveRoute[1];
                         fraMoveRoute.Visible = true;
                         fraMoveRoute.BringToFront();
                         fraCommands.Visible = false;
@@ -786,16 +794,16 @@ namespace Client
                 case "Wait for Route Completion":
                     {
                         cmbMoveWait.Items.Clear();
-                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
+                        Event.ListOfEvents = new int[Data.MyMap.EventCount];
                         Event.ListOfEvents[0] = Event.EditorEvent;
                         cmbMoveWait.Items.Add("This Event");
                         cmbMoveWait.SelectedIndex = 0;
                         cmbMoveWait.Enabled = true;
-                        for (int i = 0, loopTo1 = Core.Type.MyMap.EventCount; i < loopTo1; i++)
+                        for (int i = 0, loopTo1 = Data.MyMap.EventCount; i < loopTo1; i++)
                         {
                             if (i != Event.EditorEvent)
                             {
-                                cmbMoveWait.Items.Add(Core.Type.MyMap.Event[i].Name);
+                                cmbMoveWait.Items.Add(Data.MyMap.Event[i].Name);
                                 x = x + 1;
                                 Event.ListOfEvents[x] = i;
                             }
@@ -805,23 +813,23 @@ namespace Client
                         fraCommands.Visible = false;
                         break;
                     }
-                // Force Spawn NPC
-                case "Force Spawn NPC":
+                // Force Spawn Npc
+                case "Force Spawn Npc":
                     {
                         // lets populate the combobox
-                        cmbSpawnNPC.Items.Clear();
+                        cmbSpawnNpc.Items.Clear();
                         for (int i = 0; i < Constant.MAX_NPCS; i++)
-                            cmbSpawnNPC.Items.Add(Strings.Trim(Core.Type.NPC[i].Name));
-                        cmbSpawnNPC.SelectedIndex = 0;
+                            cmbSpawnNpc.Items.Add(Strings.Trim(Core.Data.Npc[i].Name));
+                        cmbSpawnNpc.SelectedIndex = 0;
                         fraDialogue.Visible = true;
-                        fraSpawnNPC.Visible = true;
+                        fraSpawnNpc.Visible = true;
                         fraCommands.Visible = false;
                         break;
                     }
                 // Hold Player
                 case "Hold Player":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.HoldPlayer);
+                        Event.AddCommand((int)Core.EventCommand.HoldPlayer);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -829,7 +837,7 @@ namespace Client
                 // Release Player
                 case "Release Player":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.ReleasePlayer);
+                        Event.AddCommand((int)Core.EventCommand.ReleasePlayer);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -841,15 +849,15 @@ namespace Client
                     {
                         cmbPlayAnimEvent.Items.Clear();
 
-                        for (int i = 0, loopTo2 = Core.Type.MyMap.EventCount; i < loopTo2; i++)
-                            cmbPlayAnimEvent.Items.Add(i + 1 + ". " + Core.Type.MyMap.Event[i].Name);
+                        for (int i = 0, loopTo2 = Data.MyMap.EventCount; i < loopTo2; i++)
+                            cmbPlayAnimEvent.Items.Add(i + 1 + ". " + Data.MyMap.Event[i].Name);
                         cmbPlayAnimEvent.SelectedIndex = 0;
                         cmbAnimTargetType.SelectedIndex = 0;
                         cmbPlayAnim.SelectedIndex = 0;
                         nudPlayAnimTileX.Value = 0m;
                         nudPlayAnimTileY.Value = 0m;
-                        nudPlayAnimTileX.Maximum = Core.Type.MyMap.MaxX;
-                        nudPlayAnimTileY.Maximum = Core.Type.MyMap.MaxY;
+                        nudPlayAnimTileX.Maximum = Data.MyMap.MaxX;
+                        nudPlayAnimTileY.Maximum = Data.MyMap.MaxY;
                         fraDialogue.Visible = true;
                         fraPlayAnimation.Visible = true;
                         fraCommands.Visible = false;
@@ -909,7 +917,7 @@ namespace Client
                 // Stop BGM
                 case "Stop BGM":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.FadeoutBgm);
+                        Event.AddCommand((int)Core.EventCommand.FadeOutBgm);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -926,7 +934,7 @@ namespace Client
                 // Stop Sounds
                 case "Stop Sounds":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.StopSound);
+                        Event.AddCommand((int)Core.EventCommand.StopSound);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -956,7 +964,7 @@ namespace Client
                 // Open bank
                 case "Open Bank":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.OpenBank);
+                        Event.AddCommand((int)Core.EventCommand.OpenBank);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -975,7 +983,7 @@ namespace Client
                 // Fade in
                 case "Fade In":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.FadeIn);
+                        Event.AddCommand((int)Core.EventCommand.FadeIn);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -983,7 +991,7 @@ namespace Client
                 // Fade out
                 case "Fade Out":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.FadeOut);
+                        Event.AddCommand((int)Core.EventCommand.FadeOut);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -991,7 +999,7 @@ namespace Client
                 // Flash white
                 case "Flash White":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.FlashWhite);
+                        Event.AddCommand((int)Core.EventCommand.FlashScreen);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -1011,7 +1019,7 @@ namespace Client
                 // Hide pic
                 case "Hide Picture":
                     {
-                        Event.AddCommand((int)Core.Enum.EventType.HidePicture);
+                        Event.AddCommand((int)Core.EventCommand.HidePicture);
                         fraCommands.Visible = false;
                         fraDialogue.Visible = false;
                         break;
@@ -2035,7 +2043,7 @@ namespace Client
                 Event.TempMoveRouteCount = Event.TempMoveRouteCount - 1;
                 if (Event.TempMoveRouteCount == 0)
                 {
-                    Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
+                    Event.TempMoveRoute = new Core.Type.MoveRoute[1];
                 }
                 else
                 {
@@ -2307,14 +2315,14 @@ namespace Client
             {
                 if (!Event.IsEdit)
                 {
-                    Event.AddCommand((int)Core.Enum.EventType.SetMoveRoute);
+                    Event.AddCommand((int)Core.EventCommand.SetMoveRoute);
                 }
                 else
                 {
                     Event.EditCommand();
                 }
                 Event.TempMoveRouteCount = 0;
-                Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
+                Event.TempMoveRoute = new Core.Type.MoveRoute[1];
                 fraMoveRoute.Visible = false;
             }
             else
@@ -2322,7 +2330,7 @@ namespace Client
                 Event.TmpEvent.Pages[Event.CurPageNum].MoveRouteCount = Event.TempMoveRouteCount;
                 Event.TmpEvent.Pages[Event.CurPageNum].MoveRoute = Event.TempMoveRoute;
                 Event.TempMoveRouteCount = 0;
-                Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
+                Event.TempMoveRoute = new Core.Type.MoveRoute[1];
                 fraMoveRoute.Visible = false;
             }
         }
@@ -2330,7 +2338,7 @@ namespace Client
         private void BtnMoveRouteCancel_Click(object sender, EventArgs e)
         {
             Event.TempMoveRouteCount = 0;
-            Event.TempMoveRoute = new Core.Type.MoveRouteStruct[1];
+            Event.TempMoveRoute = new Core.Type.MoveRoute[1];
             fraMoveRoute.Visible = false;
         }
 
@@ -2344,7 +2352,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ShowText);
+                Event.AddCommand((int)Core.EventCommand.ShowText);
             }
             else
             {
@@ -2375,7 +2383,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.AddText);
+                Event.AddCommand((int)Core.EventCommand.AddText);
             }
             else
             {
@@ -2404,7 +2412,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ShowChoices);
+                Event.AddCommand((int)Core.EventCommand.ShowChoices);
             }
             else
             {
@@ -2432,35 +2440,35 @@ namespace Client
 
         private void CmbChatBubbleTargetType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbChatBubbleTargetType.SelectedIndex == (int)Core.Enum.TargetType.None)
+            if (cmbChatBubbleTargetType.SelectedIndex == (int)TargetType.None)
             {
                 cmbChatBubbleTarget.Visible = false;
             }
-            else if (cmbChatBubbleTargetType.SelectedIndex == (int)Core.Enum.TargetType.Player)
+            else if (cmbChatBubbleTargetType.SelectedIndex == (int)TargetType.Player)
             {
                 cmbChatBubbleTarget.Visible = true;
                 cmbChatBubbleTarget.Items.Clear();
 
                 for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
                 {
-                    if (Core.Type.MyMap.NPC[i] < 0)
+                    if (Data.MyMap.Npc[i] < 0)
                     {
                         cmbChatBubbleTarget.Items.Add(i + ". ");
                     }
                     else
                     {
-                        cmbChatBubbleTarget.Items.Add(i + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
+                        cmbChatBubbleTarget.Items.Add(i + 1 + ". " + Core.Data.Npc[Data.MyMap.Npc[i]].Name);
                     }
                 }
                 cmbChatBubbleTarget.SelectedIndex = 0;
             }
-            else if (cmbChatBubbleTargetType.SelectedIndex == (int)Core.Enum.TargetType.NPC)
+            else if (cmbChatBubbleTargetType.SelectedIndex == (int)TargetType.Npc)
             {
                 cmbChatBubbleTarget.Visible = true;
                 cmbChatBubbleTarget.Items.Clear();
 
-                for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
-                    cmbChatBubbleTarget.Items.Add(i + 1 + ". " + Core.Type.MyMap.Event[i].Name);
+                for (int i = 0, loopTo = Data.MyMap.EventCount; i < loopTo; i++)
+                    cmbChatBubbleTarget.Items.Add(i + 1 + ". " + Data.MyMap.Event[i].Name);
                 cmbChatBubbleTarget.SelectedIndex = 0;
             }
 
@@ -2470,7 +2478,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ShowChatBubble);
+                Event.AddCommand((int)Core.EventCommand.ShowChatBubble);
             }
             else
             {
@@ -2567,7 +2575,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.PlayerVar);
+                Event.AddCommand((int)Core.EventCommand.ModifyVariable);
             }
             else
             {
@@ -2597,7 +2605,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.PlayerSwitch);
+                Event.AddCommand((int)Core.EventCommand.ModifySwitch);
             }
             else
             {
@@ -2609,7 +2617,7 @@ namespace Client
             fraCommands.Visible = false;
         }
 
-        private void BtnSetPlayerswitchCancel_Click(object sender, EventArgs e)
+        private void BtnSetPlayerSwitchCancel_Click(object sender, EventArgs e)
         {
             if (!Event.IsEdit)
                 fraCommands.Visible = true;
@@ -2627,7 +2635,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.SelfSwitch);
+                Event.AddCommand((int)Core.EventCommand.ModifySelfSwitch);
             }
             else
             {
@@ -2751,7 +2759,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.Condition);
+                Event.AddCommand((int)Core.EventCommand.ConditionalBranch);
             }
             else
             {
@@ -2781,7 +2789,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.Label);
+                Event.AddCommand((int)Core.EventCommand.Label);
             }
             else
             {
@@ -2811,7 +2819,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.GoToLabel);
+                Event.AddCommand((int)Core.EventCommand.GoToLabel);
             }
             else
             {
@@ -2841,7 +2849,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ChangeItems);
+                Event.AddCommand((int)Core.EventCommand.ChangeItems);
             }
             else
             {
@@ -2871,7 +2879,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ChangeLevel);
+                Event.AddCommand((int)Core.EventCommand.ChangeLevel);
             }
             else
             {
@@ -2901,7 +2909,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ChangeSkills);
+                Event.AddCommand((int)Core.EventCommand.ChangeSkills);
             }
             else
             {
@@ -2931,7 +2939,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ChangeJob);
+                Event.AddCommand((int)Core.EventCommand.ChangeJob);
             }
             else
             {
@@ -2961,7 +2969,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ChangeSprite);
+                Event.AddCommand((int)Core.EventCommand.ChangeSprite);
             }
             else
             {
@@ -2991,7 +2999,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ChangeSex);
+                Event.AddCommand((int)Core.EventCommand.ChangeSex);
             }
             else
             {
@@ -3021,7 +3029,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ChangePk);
+                Event.AddCommand((int)Core.EventCommand.SetPlayerKillable);
             }
             else
             {
@@ -3051,7 +3059,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.GiveExp);
+                Event.AddCommand((int)Core.EventCommand.GiveExperience);
             }
             else
             {
@@ -3081,7 +3089,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.WarpPlayer);
+                Event.AddCommand((int)Core.EventCommand.WarpPlayer);
             }
             else
             {
@@ -3111,7 +3119,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.WaitMovement);
+                Event.AddCommand((int)Core.EventCommand.WaitMovementCompletion);
             }
             else
             {
@@ -3135,13 +3143,13 @@ namespace Client
 
         #endregion
 
-        #region Spawn NPC
+        #region Spawn Npc
 
-        private void BtnSpawnNPCOK_Click(object sender, EventArgs e)
+        private void BtnSpawnNpcOK_Click(object sender, EventArgs e)
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.SpawnNPC);
+                Event.AddCommand((int)Core.EventCommand.SpawnNpc);
             }
             else
             {
@@ -3149,18 +3157,18 @@ namespace Client
             }
             // hide
             fraDialogue.Visible = false;
-            fraSpawnNPC.Visible = false;
+            fraSpawnNpc.Visible = false;
             fraCommands.Visible = false;
         }
 
-        private void BtnSpawnNPCancel_Click(object sender, EventArgs e)
+        private void BtnSpawnNpcancel_Click(object sender, EventArgs e)
         {
             if (!Event.IsEdit)
                 fraCommands.Visible = true;
             else
                 fraCommands.Visible = false;
             fraDialogue.Visible = false;
-            fraSpawnNPC.Visible = false;
+            fraSpawnNpc.Visible = false;
         }
 
         #endregion
@@ -3198,7 +3206,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.PlayAnimation);
+                Event.AddCommand((int)Core.EventCommand.PlayAnimation);
             }
             else
             {
@@ -3228,7 +3236,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.SetFog);
+                Event.AddCommand((int)Core.EventCommand.SetFog);
             }
             else
             {
@@ -3258,7 +3266,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.SetWeather);
+                Event.AddCommand((int)Core.EventCommand.SetWeather);
             }
             else
             {
@@ -3288,7 +3296,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.SetTint);
+                Event.AddCommand((int)Core.EventCommand.SetScreenTint);
             }
             else
             {
@@ -3318,7 +3326,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.PlayBgm);
+                Event.AddCommand((int)Core.EventCommand.PlayBgm);
             }
             else
             {
@@ -3348,7 +3356,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.PlaySound);
+                Event.AddCommand((int)Core.EventCommand.PlaySound);
             }
             else
             {
@@ -3378,7 +3386,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.Wait);
+                Event.AddCommand((int)Core.EventCommand.Wait);
             }
             else
             {
@@ -3408,7 +3416,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.SetAccess);
+                Event.AddCommand((int)Core.EventCommand.SetAccessLevel);
             }
             else
             {
@@ -3438,7 +3446,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.ShowPicture);
+                Event.AddCommand((int)Core.EventCommand.ShowPicture);
             }
             else
             {
@@ -3493,7 +3501,7 @@ namespace Client
         {
             if (!Event.IsEdit)
             {
-                Event.AddCommand((int)Core.Enum.EventType.OpenShop);
+                Event.AddCommand((int)Core.EventCommand.OpenShop);
             }
             else
             {

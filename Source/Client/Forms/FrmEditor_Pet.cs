@@ -26,12 +26,12 @@ namespace Client
 
             // Add the names
             for (int i = 0; i < Constant.MAX_PETS; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Data.Pet[i].Name);
 
             cmbEvolve.Items.Clear();
             // Add the names
             for (int i = 0; i < Constant.MAX_PETS; i++)
-                cmbEvolve.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);
+                cmbEvolve.Items.Add(i + 1 + ": " + Core.Data.Pet[i].Name);
         }
 
         protected override void WndProc(ref Message m)
@@ -65,15 +65,15 @@ namespace Client
             int tmpindex;
 
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Pet[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
+            Core.Data.Pet[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Pet[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Pet[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
         private void NudSprite_Click(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Sprite = (int)Math.Round(nudSprite.Value);
+            Core.Data.Pet[GameState.EditorIndex].Sprite = (int)Math.Round(nudSprite.Value);
 
             EditorPet_DrawPet();
         }
@@ -105,7 +105,7 @@ namespace Client
 
         private void NudRange_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Range = (int)Math.Round(nudRange.Value);
+            Core.Data.Pet[GameState.EditorIndex].Range = (int)Math.Round(nudRange.Value);
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
@@ -128,12 +128,12 @@ namespace Client
             if (optCustomStats.Checked == true)
             {
                 pnlCustomStats.Visible = true;
-                Core.Type.Pet[GameState.EditorIndex].StatType = 1;
+                Core.Data.Pet[GameState.EditorIndex].StatType = 1;
             }
             else
             {
                 pnlCustomStats.Visible = false;
-                Core.Type.Pet[GameState.EditorIndex].StatType = 0;
+                Core.Data.Pet[GameState.EditorIndex].StatType = 0;
             }
         }
 
@@ -142,43 +142,43 @@ namespace Client
             if (optAdoptStats.Checked == true)
             {
                 pnlCustomStats.Visible = false;
-                Core.Type.Pet[GameState.EditorIndex].StatType = 0;
+                Core.Data.Pet[GameState.EditorIndex].StatType = 0;
             }
             else
             {
                 pnlCustomStats.Visible = true;
-                Core.Type.Pet[GameState.EditorIndex].StatType = 1;
+                Core.Data.Pet[GameState.EditorIndex].StatType = 1;
             }
         }
 
         private void NudStrength_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Strength] = (byte)Math.Round(nudStrength.Value);
+            Core.Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Strength] = (byte)Math.Round(nudStrength.Value);
         }
 
         private void NudVitality_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Vitality] = (byte)Math.Round(nudVitality.Value);
+            Core.Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Vitality] = (byte)Math.Round(nudVitality.Value);
         }
 
         private void NudLuck_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Luck] = (byte)Math.Round(nudLuck.Value);
+            Core.Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Luck] = (byte)Math.Round(nudLuck.Value);
         }
 
         private void NudIntelligence_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Intelligence] = (byte)Math.Round(nudIntelligence.Value);
+            Core.Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Intelligence] = (byte)Math.Round(nudIntelligence.Value);
         }
 
         private void NudSpirit_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Spirit] = (byte)Math.Round(nudSpirit.Value);
+            Core.Data.Pet[GameState.EditorIndex].Stat[(int)Core.Stat.Spirit] = (byte)Math.Round(nudSpirit.Value);
         }
 
         private void NudLevel_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Level = (byte)Math.Round(nudLevel.Value);
+            Core.Data.Pet[GameState.EditorIndex].Level = (byte)Math.Round(nudLevel.Value);
         }
 
 
@@ -189,17 +189,17 @@ namespace Client
 
         private void NudPetExp_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].ExpGain = (int)Math.Round(nudPetExp.Value);
+            Core.Data.Pet[GameState.EditorIndex].ExpGain = (int)Math.Round(nudPetExp.Value);
         }
 
         private void NudPetPnts_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Points = (byte)Math.Round(nudPetPnts.Value);
+            Core.Data.Pet[GameState.EditorIndex].Points = (byte)Math.Round(nudPetPnts.Value);
         }
 
         private void NudMaxLevel_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].MaxLevel = (int)Math.Round(nudMaxLevel.Value);
+            Core.Data.Pet[GameState.EditorIndex].MaxLevel = (int)Math.Round(nudMaxLevel.Value);
         }
 
         private void OptLevel_CheckedChanged(object sender, EventArgs e)
@@ -207,7 +207,7 @@ namespace Client
             if (optLevel.Checked == true)
             {
                 pnlPetlevel.Visible = true;
-                Core.Type.Pet[GameState.EditorIndex].LevelingType = 1;
+                Core.Data.Pet[GameState.EditorIndex].LevelingType = 1;
             }
         }
 
@@ -216,7 +216,7 @@ namespace Client
             if (optDoNotLevel.Checked == true)
             {
                 pnlPetlevel.Visible = false;
-                Core.Type.Pet[GameState.EditorIndex].LevelingType = 0;
+                Core.Data.Pet[GameState.EditorIndex].LevelingType = 0;
             }
         }
 
@@ -228,22 +228,22 @@ namespace Client
 
         private void CmbSkill1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[0] = cmbSkill1.SelectedIndex;
+            Core.Data.Pet[GameState.EditorIndex].Skill[0] = cmbSkill1.SelectedIndex;
         }
 
         private void CmbSkill2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[1] = cmbSkill2.SelectedIndex;
+            Core.Data.Pet[GameState.EditorIndex].Skill[1] = cmbSkill2.SelectedIndex;
         }
 
         private void CmbSkill3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[2] = cmbSkill3.SelectedIndex;
+            Core.Data.Pet[GameState.EditorIndex].Skill[2] = cmbSkill3.SelectedIndex;
         }
 
         private void CmbSkill4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[3] = cmbSkill4.SelectedIndex;
+            Core.Data.Pet[GameState.EditorIndex].Skill[3] = cmbSkill4.SelectedIndex;
         }
 
         #endregion
@@ -253,22 +253,22 @@ namespace Client
         {
             if (chkEvolve.Checked == true)
             {
-                Core.Type.Pet[GameState.EditorIndex].Evolvable = 1;
+                Core.Data.Pet[GameState.EditorIndex].Evolvable = 1;
             }
             else
             {
-                Core.Type.Pet[GameState.EditorIndex].Evolvable = 0;
+                Core.Data.Pet[GameState.EditorIndex].Evolvable = 0;
             }
         }
 
         private void NudEvolveLvl_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].EvolveLevel = (int)Math.Round(nudEvolveLvl.Value);
+            Core.Data.Pet[GameState.EditorIndex].EvolveLevel = (int)Math.Round(nudEvolveLvl.Value);
         }
 
         private void CmbEvolve_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].EvolveNum = cmbEvolve.SelectedIndex;
+            Core.Data.Pet[GameState.EditorIndex].EvolveNum = cmbEvolve.SelectedIndex;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -279,7 +279,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Pet[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Pet[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.PetEditorInit();

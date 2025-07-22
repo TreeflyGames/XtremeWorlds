@@ -12,9 +12,9 @@ namespace Client
         #region Database
         public static void ClearPlayers()
         {
-            Core.Type.Account = new Core.Type.AccountStruct[Constant.MAX_PLAYERS];
-            Core.Type.Player = new Core.Type.PlayerStruct[Constant.MAX_PLAYERS];
-            Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
+            Core.Data.Account = new Core.Type.Account[Constant.MAX_PLAYERS];
+            Core.Data.Player = new Core.Type.Player[Constant.MAX_PLAYERS];
+            Core.Data.TempPlayer = new Core.Type.TempPlayer[Core.Constant.MAX_PLAYERS];
 
             for (int i = 0; i < Constant.MAX_PLAYERS; i++)
             {
@@ -24,68 +24,68 @@ namespace Client
 
         public static void ClearAccount(int index)
         {
-            Core.Type.Account[index].Login = "";
-            Core.Type.Account[index].Password = "";
+            Core.Data.Account[index].Login = "";
+            Core.Data.Account[index].Password = "";
         }
 
         public static void ClearPlayer(int index)
         {
             ClearAccount(index);
 
-            Core.Type.Player[index].Name = "";
-            Core.Type.Player[index].Attacking = 0;
-            Core.Type.Player[index].AttackTimer = 0;
-            Core.Type.Player[index].Job = 0;
-            Core.Type.Player[index].Dir = 0;
-            Core.Type.Player[index].Access = (byte)Core.Enum.AccessType.Player;
+            Core.Data.Player[index].Name = "";
+            Core.Data.Player[index].Attacking = 0;
+            Core.Data.Player[index].AttackTimer = 0;
+            Core.Data.Player[index].Job = 0;
+            Core.Data.Player[index].Dir = 0;
+            Core.Data.Player[index].Access = (byte)AccessLevel.Player;
 
-            Core.Type.Player[index].Equipment = new int[(int)Core.Enum.EquipmentType.Count];
-            for (int y = 0; y < (int)Core.Enum.EquipmentType.Count; y++)
-                Core.Type.Player[index].Equipment[y] = -1;
+            Core.Data.Player[index].Equipment = new int[Enum.GetValues(typeof(Equipment)).Length];
+            for (int y = 0; y < Core.Data.Player[index].Equipment.Length; y++)
+                Core.Data.Player[index].Equipment[y] = -1;
 
-            Core.Type.Player[index].Exp = 0;
-            Core.Type.Player[index].Level = 0;
-            Core.Type.Player[index].Map = 0;
-            Core.Type.Player[index].MapGetTimer = 0;
-            Core.Type.Player[index].Moving = 0;
-            Core.Type.Player[index].PK = false;
-            Core.Type.Player[index].Points = 0;
-            Core.Type.Player[index].Sprite = 0;
+            Core.Data.Player[index].Exp = 0;
+            Core.Data.Player[index].Level = 0;
+            Core.Data.Player[index].Map = 0;
+            Core.Data.Player[index].MapGetTimer = 0;
+            Core.Data.Player[index].Moving = 0;
+            Core.Data.Player[index].PK = false;
+            Core.Data.Player[index].Points = 0;
+            Core.Data.Player[index].Sprite = 0;
 
-            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[(Constant.MAX_INV)];
+            Core.Data.Player[index].Inv = new Core.Type.PlayerInv[Constant.MAX_INV];
             for (int x = 0; x < Constant.MAX_INV; x++)
             {
-                Core.Type.Player[index].Inv[x].Num = -1;
-                Core.Type.Player[index].Inv[x].Value = 0;
-                Core.Type.TradeTheirOffer[x].Num = -1;
-                Core.Type.TradeYourOffer[x].Num = -1;
+                Core.Data.Player[index].Inv[x].Num = -1;
+                Core.Data.Player[index].Inv[x].Value = 0;
+                Data.TradeTheirOffer[x].Num = -1;
+                Data.TradeYourOffer[x].Num = -1;
             }
 
-            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[(Constant.MAX_PLAYER_SKILLS)];
+            Core.Data.Player[index].Skill = new Core.Type.PlayerSkill[Constant.MAX_PLAYER_SKILLS];
             for (int x = 0; x < Constant.MAX_PLAYER_SKILLS; x++)
             {
-                Core.Type.Player[index].Skill[x].Num = -1;
-                Core.Type.Player[index].Skill[x].CD = 0;
+                Core.Data.Player[index].Skill[x].Num = -1;
+                Core.Data.Player[index].Skill[x].CD = 0;
             }
 
-            Core.Type.Player[index].Stat = new byte[(int)Core.Enum.StatType.Count];
-            for (int x = 0; x < (int)Core.Enum.StatType.Count; x++)
-                Core.Type.Player[index].Stat[x] = 0;
+            Core.Data.Player[index].Stat = new byte[Enum.GetValues(typeof(Core.Stat)).Length];
+            foreach (Core.Stat stat in Enum.GetValues(typeof(Core.Stat)))
+                Core.Data.Player[index].Stat[(int)stat] = 0;
 
-            Core.Type.Player[index].Steps = 0;
+            Core.Data.Player[index].Steps = 0;
 
-            Core.Type.Player[index].Vital = new int[(int)Core.Enum.VitalType.Count];
-            for (int x = 0; x < (int)Core.Enum.VitalType.Count; x++)
-                Core.Type.Player[index].Vital[x] = 0;
+            int vitalCount = Enum.GetValues(typeof(Core.Vital)).Length;
+            Core.Data.Player[index].Vital = new int[vitalCount];
+            foreach (Core.Vital vital in Enum.GetValues(typeof(Core.Vital)))
+                Core.Data.Player[index].Vital[(int)vital] = 0;
 
-            Core.Type.Player[index].X = 0;
-            Core.Type.Player[index].XOffset = 0;
-            Core.Type.Player[index].Y = 0;
-            Core.Type.Player[index].YOffset = 0;
+            Core.Data.Player[index].X = 0;
+            Core.Data.Player[index].XOffset = 0;
+            Core.Data.Player[index].Y = 0;
+            Core.Data.Player[index].YOffset = 0;
 
-            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[(Constant.MAX_HOTBAR)];
-            Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
-            Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
+            Core.Data.Player[index].Hotbar = new Core.Type.Hotbar[Constant.MAX_HOTBAR];
+            Core.Data.Player[index].GatherSkills = new Core.Type.ResourceType[Enum.GetValues(typeof(Core.ResourceSkill)).Length];
 
             Trade.InTrade = -1;
         }
@@ -99,18 +99,18 @@ namespace Client
                 // Check if player has the shift key down for running
                 if (GameState.VbKeyShift)
                 {
-                    Core.Type.Player[GameState.MyIndex].Moving = (byte)Core.Enum.MovementType.Walking;
+                    Core.Data.Player[GameState.MyIndex].Moving = (byte)MovementState.Walking;
                 }
                 else
                 {
-                    Core.Type.Player[GameState.MyIndex].Moving = (byte)Core.Enum.MovementType.Running;
+                    Core.Data.Player[GameState.MyIndex].Moving = (byte)MovementState.Running;
                 }
 
                 NetworkSend.SendPlayerMove();
 
-                if (Core.Type.Player[GameState.MyIndex].XOffset == 0 & Core.Type.Player[GameState.MyIndex].YOffset == 0)
+                if (Core.Data.Player[GameState.MyIndex].XOffset == 0 & Core.Data.Player[GameState.MyIndex].YOffset == 0)
                 {
-                    if (Core.Type.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == Core.Enum.TileType.Warp | Core.Type.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type2 == Core.Enum.TileType.Warp)
+                    if (Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == TileType.Warp | Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type2 == TileType.Warp)
                     {
                         GameState.GettingMap = true;
                     }
@@ -197,176 +197,176 @@ namespace Client
 
             switch (d)
             {
-                case (int)Core.Enum.DirectionType.Up:
+                case (int)Direction.Up:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                             return CanMoveRet;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.DirectionType.Down:
+                case (int)Direction.Down:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY)
                         {
                             GameState.DirDown = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                             return CanMoveRet;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.DirectionType.Left:
+                case (int)Direction.Left:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
                             return CanMoveRet;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.DirectionType.Right:
+                case (int)Direction.Right:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirRight = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Left);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
                             return CanMoveRet;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.DirectionType.UpLeft:
+                case (int)Direction.UpLeft:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerY(GameState.MyIndex) <= 0 & GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerY(GameState.MyIndex) <= 0 & GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
                             GameState.DirDown = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                             GameState.DirLeft = false;
                             GameState.DirRight = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
                             return CanMoveRet;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.DirectionType.UpRight:
+                case (int)Direction.UpRight:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirUp = false;
                             GameState.DirDown = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                             GameState.DirRight = false;
                             GameState.DirLeft = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Left);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
                             return CanMoveRet;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.DirectionType.DownLeft:
+                case (int)Direction.DownLeft:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < 0)
                         {
                             GameState.DirDown = false;
                             GameState.DirUp = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                             GameState.DirLeft = false;
                             GameState.DirRight = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirDown = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
                             return CanMoveRet;
                         }
 
                         break;
                     }
 
-                case (int)Core.Enum.DirectionType.DownRight:
+                case (int)Direction.DownRight:
                     {
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirDown = false;
                             GameState.DirUp = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                             GameState.DirRight = false;
                             GameState.DirLeft = true;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Left);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY)
                         {
                             GameState.DirDown = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                             return CanMoveRet;
                         }
 
-                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirRight = false;
-                            SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Left);
+                            SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
                             return CanMoveRet;
                         }
 
@@ -378,20 +378,20 @@ namespace Client
             // Check for cardinal movements if no diagonal movements
             if (GameState.DirUp)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
+                SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                 if (GetPlayerY(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.Up))
+                    if (CheckDirection((byte)Direction.Up))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.Up)
+                        if (d != (int)Direction.Up)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Up > 0)
+                else if (Data.MyMap.Up > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -401,20 +401,20 @@ namespace Client
 
             if (GameState.DirDown)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
-                if (GetPlayerY(GameState.MyIndex) < Core.Type.MyMap.MaxY - 1)
+                SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
+                if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY - 1)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.Down))
+                    if (CheckDirection((byte)Direction.Down))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.Down)
+                        if (d != (int)Direction.Down)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Down > 0)
+                else if (Data.MyMap.Down > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -424,20 +424,20 @@ namespace Client
 
             if (GameState.DirLeft)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Left);
+                SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
                 if (GetPlayerX(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.Left))
+                    if (CheckDirection((byte)Direction.Left))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.Left)
+                        if (d != (int)Direction.Left)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Left > 0)
+                else if (Data.MyMap.Left > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -447,20 +447,20 @@ namespace Client
 
             if (GameState.DirRight)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
-                if (GetPlayerX(GameState.MyIndex) < Core.Type.MyMap.MaxX)
+                SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
+                if (GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.Right))
+                    if (CheckDirection((byte)Direction.Right))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.Right)
+                        if (d != (int)Direction.Right)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Right > 0)
+                else if (Data.MyMap.Right > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -471,20 +471,20 @@ namespace Client
             // Check for diagonal movements first
             if (GameState.DirUp & GameState.DirRight)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.UpRight);
-                if (GetPlayerY(GameState.MyIndex) > 0 & GetPlayerX(GameState.MyIndex) < Core.Type.MyMap.MaxX)
+                SetPlayerDir(GameState.MyIndex, (int)Direction.UpRight);
+                if (GetPlayerY(GameState.MyIndex) > 0 & GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.UpRight))
+                    if (CheckDirection((byte)Direction.UpRight))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.UpRight)
+                        if (d != (int)Direction.UpRight)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Up > 0 & Core.Type.MyMap.Right > 0)
+                else if (Data.MyMap.Up > 0 & Data.MyMap.Right > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -493,20 +493,20 @@ namespace Client
             }
             else if (GameState.DirUp & GameState.DirLeft)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.UpLeft);
+                SetPlayerDir(GameState.MyIndex, (int)Direction.UpLeft);
                 if (GetPlayerY(GameState.MyIndex) > 0 & GetPlayerX(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.UpLeft))
+                    if (CheckDirection((byte)Direction.UpLeft))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.UpLeft)
+                        if (d != (int)Direction.UpLeft)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Up > 0 & Core.Type.MyMap.Left > 0)
+                else if (Data.MyMap.Up > 0 & Data.MyMap.Left > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -515,20 +515,20 @@ namespace Client
             }
             else if (GameState.DirDown & GameState.DirRight)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.DownRight);
-                if (GetPlayerY(GameState.MyIndex) < Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < Core.Type.MyMap.MaxX)
+                SetPlayerDir(GameState.MyIndex, (int)Direction.DownRight);
+                if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.DownRight))
+                    if (CheckDirection((byte)Direction.DownRight))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.DownRight)
+                        if (d != (int)Direction.DownRight)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Down > 0 & Core.Type.MyMap.Right > 0)
+                else if (Data.MyMap.Down > 0 & Data.MyMap.Right > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -537,20 +537,20 @@ namespace Client
             }
             else if (GameState.DirDown & GameState.DirLeft)
             {
-                SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.DownLeft);
-                if (GetPlayerY(GameState.MyIndex) < Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) > 0)
+                SetPlayerDir(GameState.MyIndex, (int)Direction.DownLeft);
+                if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Core.Enum.DirectionType.DownLeft))
+                    if (CheckDirection((byte)Direction.DownLeft))
                     {
                         CanMoveRet = false;
-                        if (d != (int)Core.Enum.DirectionType.DownLeft)
+                        if (d != (int)Direction.DownLeft)
                         {
                             NetworkSend.SendPlayerDir();
                         }
                         return CanMoveRet;
                     }
                 }
-                else if (Core.Type.MyMap.Down > 0 & Core.Type.MyMap.Left > 0)
+                else if (Data.MyMap.Down > 0 & Data.MyMap.Left > 0)
                 {
                     Map.SendPlayerRequestNewMap();
                     CanMoveRet = false;
@@ -569,14 +569,14 @@ namespace Client
             var y = default(int);
             int i;
 
-            if (GetPlayerX(GameState.MyIndex) >= Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxX || GetPlayerY(GameState.MyIndex) >= Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxY)
+            if (GetPlayerX(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxX || GetPlayerY(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxY)
             {
                 CheckDirectionRet = true;
                 return CheckDirectionRet;
             }
 
             // check directional blocking
-            if (GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].DirBlock, ref direction))
+            if (GameLogic.IsDirBlocked(ref Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].DirBlock, ref direction))
             {
                 CheckDirectionRet = true;
                 return CheckDirectionRet;
@@ -584,49 +584,49 @@ namespace Client
 
             switch (direction)
             {
-                case (byte)Core.Enum.DirectionType.Up:
+                case (byte)Direction.Up:
                     {
                         x = GetPlayerX(GameState.MyIndex);
                         y = GetPlayerY(GameState.MyIndex) - 1;
                         break;
                     }
-                case (byte)Core.Enum.DirectionType.Down:
+                case (byte)Direction.Down:
                     {
                         x = GetPlayerX(GameState.MyIndex);
                         y = GetPlayerY(GameState.MyIndex) + 1;
                         break;
                     }
-                case (byte)Core.Enum.DirectionType.Left:
+                case (byte)Direction.Left:
                     {
                         x = GetPlayerX(GameState.MyIndex) - 1;
                         y = GetPlayerY(GameState.MyIndex);
                         break;
                     }
-                case (byte)Core.Enum.DirectionType.Right:
+                case (byte)Direction.Right:
                     {
                         x = GetPlayerX(GameState.MyIndex) + 1;
                         y = GetPlayerY(GameState.MyIndex);
                         break;
                     }
-                case (byte)Core.Enum.DirectionType.UpLeft:
+                case (byte)Direction.UpLeft:
                     {
                         x = GetPlayerX(GameState.MyIndex) - 1;
                         y = GetPlayerY(GameState.MyIndex) - 1;
                         break;
                     }
-                case (byte)Core.Enum.DirectionType.UpRight:
+                case (byte)Direction.UpRight:
                     {
                         x = GetPlayerX(GameState.MyIndex) + 1;
                         y = GetPlayerY(GameState.MyIndex) - 1;
                         break;
                     }
-                case (byte)Core.Enum.DirectionType.DownLeft:
+                case (byte)Direction.DownLeft:
                     {
                         x = GetPlayerX(GameState.MyIndex) - 1;
                         y = GetPlayerY(GameState.MyIndex) + 1;
                         break;
                     }
-                case (byte)Core.Enum.DirectionType.DownRight:
+                case (byte)Direction.DownRight:
                     {
                         x = GetPlayerX(GameState.MyIndex) + 1;
                         y = GetPlayerY(GameState.MyIndex) + 1;
@@ -634,36 +634,36 @@ namespace Client
                     }
             }
 
-            if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
+            if (x < 0 || y < 0 || x >= Data.MyMap.MaxX || y >= Data.MyMap.MaxY)
             {
                 CheckDirectionRet = true;
                 return CheckDirectionRet;
             }
 
             // Check to see if the map tile is blocked or not
-            if (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Blocked | Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Blocked)
+            if (Data.MyMap.Tile[x, y].Type == TileType.Blocked | Data.MyMap.Tile[x, y].Type2 == TileType.Blocked)
             {
                 CheckDirectionRet = true;
                 return CheckDirectionRet;
             }
 
             // Check to see if the map tile is tree or not
-            if (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Resource | Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Resource)
+            if (Data.MyMap.Tile[x, y].Type == TileType.Resource | Data.MyMap.Tile[x, y].Type2 == TileType.Resource)
             {
                 CheckDirectionRet = true;
                 return CheckDirectionRet;
             }
 
             // Check to see if a player is already on that tile
-            if (Core.Type.MyMap.Moral > 0)
+            if (Data.MyMap.Moral > 0)
             {
-                if (Core.Type.Moral[Core.Type.MyMap.Moral].PlayerBlock)
+                if (Data.Moral[Data.MyMap.Moral].PlayerBlock)
                 {
                     for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i))
                         {
-                            if (Core.Type.Player[i].X == x & Core.Type.Player[i].Y == y)
+                            if (Core.Data.Player[i].X == x & Core.Data.Player[i].Y == y)
                             {
                                 CheckDirectionRet = true;
                                 return CheckDirectionRet;
@@ -672,12 +672,12 @@ namespace Client
                     }
                 }
 
-                // Check to see if a NPC is already on that tile
-                if (Core.Type.Moral[Core.Type.MyMap.Moral].NPCBlock)
+                // Check to see if a Npc is already on that tile
+                if (Data.Moral[Data.MyMap.Moral].NpcBlock)
                 {
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMapNPC[i].Num >= 0 & Core.Type.MyMapNPC[i].X == x & Core.Type.MyMapNPC[i].Y == y)
+                        if (Data.MyMapNpc[i].Num >= 0 & Data.MyMapNpc[i].X == x & Data.MyMapNpc[i].Y == y)
                         {
                             CheckDirectionRet = true;
                             return CheckDirectionRet;
@@ -689,11 +689,11 @@ namespace Client
             var loopTo = GameState.CurrentEvents;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.MapEvents[i].Visible == true)
+                if (Data.MapEvents[i].Visible == true)
                 {
-                    if (Core.Type.MapEvents[i].X == x & Core.Type.MapEvents[i].Y == y)
+                    if (Data.MapEvents[i].X == x & Data.MapEvents[i].Y == y)
                     {
-                        if (Core.Type.MapEvents[i].WalkThrough == 0)
+                        if (Data.MapEvents[i].WalkThrough == 0)
                         {
                             CheckDirectionRet = true;
                             return CheckDirectionRet;
@@ -709,14 +709,14 @@ namespace Client
         public static void ProcessPlayerMovement(int index)
         {
             // Check if player is walking or running, and if so process moving them over
-            switch (Core.Type.Player[index].Moving)
+            switch (Core.Data.Player[index].Moving)
             {
-                case (byte)Core.Enum.MovementType.Walking:
+                case (byte)MovementState.Walking:
                     {
                         GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * Core.Constant.WALK_SPEED * GameState.SizeX; // Adjust speed by elapsed time
                         break;
                     }
-                case (byte)Core.Enum.MovementType.Running:
+                case (byte)MovementState.Running:
                     {
                         GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * Core.Constant.RUN_SPEED * GameState.SizeX; // Adjust speed by elapsed time
                         break;
@@ -733,72 +733,72 @@ namespace Client
             // Update player offsets based on direction
             switch (GetPlayerDir(index))
             {
-                case (int)Core.Enum.DirectionType.Up:
+                case (int)Direction.Up:
                     {
-                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset - GameState.MovementSpeed);
-                        if (Core.Type.Player[index].YOffset < 0)
-                            Core.Type.Player[index].YOffset = 0;
+                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset - GameState.MovementSpeed);
+                        if (Core.Data.Player[index].YOffset < 0)
+                            Core.Data.Player[index].YOffset = 0;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.Down:
+                case (int)Direction.Down:
                     {
-                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset + GameState.MovementSpeed);
-                        if (Core.Type.Player[index].YOffset > 0)
-                            Core.Type.Player[index].YOffset = 0;
+                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset + GameState.MovementSpeed);
+                        if (Core.Data.Player[index].YOffset > 0)
+                            Core.Data.Player[index].YOffset = 0;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.Left:
+                case (int)Direction.Left:
                     {
-                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset - GameState.MovementSpeed);
-                        if (Core.Type.Player[index].XOffset < 0)
-                            Core.Type.Player[index].XOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset - GameState.MovementSpeed);
+                        if (Core.Data.Player[index].XOffset < 0)
+                            Core.Data.Player[index].XOffset = 0;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.Right:
+                case (int)Direction.Right:
                     {
-                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
-                        if (Core.Type.Player[index].XOffset > 0)
-                            Core.Type.Player[index].XOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset + GameState.MovementSpeed);
+                        if (Core.Data.Player[index].XOffset > 0)
+                            Core.Data.Player[index].XOffset = 0;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.UpRight:
+                case (int)Direction.UpRight:
                     {
-                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
-                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset - GameState.MovementSpeed);
-                        if (Core.Type.Player[index].XOffset > 0)
-                            Core.Type.Player[index].XOffset = 0;
-                        if (Core.Type.Player[index].YOffset < 0)
-                            Core.Type.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset + GameState.MovementSpeed);
+                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset - GameState.MovementSpeed);
+                        if (Core.Data.Player[index].XOffset > 0)
+                            Core.Data.Player[index].XOffset = 0;
+                        if (Core.Data.Player[index].YOffset < 0)
+                            Core.Data.Player[index].YOffset = 0;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.UpLeft:
+                case (int)Direction.UpLeft:
                     {
-                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset - GameState.MovementSpeed);
-                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset - GameState.MovementSpeed);
-                        if (Core.Type.Player[index].XOffset < 0)
-                            Core.Type.Player[index].XOffset = 0;
-                        if (Core.Type.Player[index].YOffset < 0)
-                            Core.Type.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset - GameState.MovementSpeed);
+                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset - GameState.MovementSpeed);
+                        if (Core.Data.Player[index].XOffset < 0)
+                            Core.Data.Player[index].XOffset = 0;
+                        if (Core.Data.Player[index].YOffset < 0)
+                            Core.Data.Player[index].YOffset = 0;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.DownRight:
+                case (int)Direction.DownRight:
                     {
-                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
-                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset + GameState.MovementSpeed);
-                        if (Core.Type.Player[index].XOffset > 0)
-                            Core.Type.Player[index].XOffset = 0;
-                        if (Core.Type.Player[index].YOffset > 0)
-                            Core.Type.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset + GameState.MovementSpeed);
+                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset + GameState.MovementSpeed);
+                        if (Core.Data.Player[index].XOffset > 0)
+                            Core.Data.Player[index].XOffset = 0;
+                        if (Core.Data.Player[index].YOffset > 0)
+                            Core.Data.Player[index].YOffset = 0;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.DownLeft:
+                case (int)Direction.DownLeft:
                     {
-                        Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset - GameState.MovementSpeed);
-                        Core.Type.Player[index].YOffset = (int)Math.Round(Core.Type.Player[index].YOffset + GameState.MovementSpeed);
-                        if (Core.Type.Player[index].XOffset < 0)
-                            Core.Type.Player[index].XOffset = 0;
-                        if (Core.Type.Player[index].YOffset > 0)
-                            Core.Type.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset - GameState.MovementSpeed);
+                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset + GameState.MovementSpeed);
+                        if (Core.Data.Player[index].XOffset < 0)
+                            Core.Data.Player[index].XOffset = 0;
+                        if (Core.Data.Player[index].YOffset > 0)
+                            Core.Data.Player[index].YOffset = 0;
                         break;
                     }
             }
@@ -831,21 +831,21 @@ namespace Client
                     return; // stunned, can't attack
 
                 // speed from weapon
-                if (GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon) >= 0)
+                if (GetPlayerEquipment(GameState.MyIndex, Equipment.Weapon) >= 0)
                 {
-                    attackSpeed = Core.Type.Item[GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon)].Speed * 1000;
+                    attackSpeed = Core.Data.Item[GetPlayerEquipment(GameState.MyIndex, Equipment.Weapon)].Speed * 1000;
                 }
                 else
                 {
                     attackSpeed = 1000;
                 }
 
-                if (Core.Type.Player[GameState.MyIndex].AttackTimer + attackSpeed < General.GetTickCount())
+                if (Core.Data.Player[GameState.MyIndex].AttackTimer + attackSpeed < General.GetTickCount())
                 {
-                    if (Core.Type.Player[GameState.MyIndex].Attacking == 0)
+                    if (Core.Data.Player[GameState.MyIndex].Attacking == 0)
                     {
                         {
-                            ref var withBlock = ref Core.Type.Player[GameState.MyIndex];
+                            ref var withBlock = ref Core.Data.Player[GameState.MyIndex];
                             withBlock.Attacking = 1;
                             withBlock.AttackTimer = General.GetTickCount();
                         }
@@ -854,57 +854,57 @@ namespace Client
                     }
                 }
 
-                switch (Core.Type.Player[GameState.MyIndex].Dir)
+                switch (Core.Data.Player[GameState.MyIndex].Dir)
                 {
-                    case (byte)Core.Enum.DirectionType.Up:
+                    case (byte)Direction.Up:
                         {
                             x = GetPlayerX(GameState.MyIndex);
                             y = GetPlayerY(GameState.MyIndex) - 1;
                             break;
                         }
 
-                    case (byte)Core.Enum.DirectionType.Down:
+                    case (byte)Direction.Down:
                         {
                             x = GetPlayerX(GameState.MyIndex);
                             y = GetPlayerY(GameState.MyIndex) + 1;
                             break;
                         }
 
-                    case (byte)Core.Enum.DirectionType.Left:
+                    case (byte)Direction.Left:
                         {
                             x = GetPlayerX(GameState.MyIndex) - 1;
                             y = GetPlayerY(GameState.MyIndex);
                             break;
                         }
-                    case (byte)Core.Enum.DirectionType.Right:
+                    case (byte)Direction.Right:
                         {
                             x = GetPlayerX(GameState.MyIndex) + 1;
                             y = GetPlayerY(GameState.MyIndex);
                             break;
                         }
 
-                    case (byte)Core.Enum.DirectionType.UpRight:
+                    case (byte)Direction.UpRight:
                         {
                             x = GetPlayerX(GameState.MyIndex) + 1;
                             y = GetPlayerY(GameState.MyIndex) - 1;
                             break;
                         }
 
-                    case (byte)Core.Enum.DirectionType.UpLeft:
+                    case (byte)Direction.UpLeft:
                         {
                             x = GetPlayerX(GameState.MyIndex) - 1;
                             y = GetPlayerY(GameState.MyIndex) - 1;
                             break;
                         }
 
-                    case (byte)Core.Enum.DirectionType.DownRight:
+                    case (byte)Direction.DownRight:
                         {
                             x = GetPlayerX(GameState.MyIndex) + 1;
                             y = GetPlayerY(GameState.MyIndex) + 1;
                             break;
                         }
 
-                    case (byte)Core.Enum.DirectionType.DownLeft:
+                    case (byte)Direction.DownLeft:
                         {
                             x = GetPlayerX(GameState.MyIndex) - 1;
                             y = GetPlayerY(GameState.MyIndex) + 1;
@@ -912,23 +912,23 @@ namespace Client
                         }
                 }
 
-                if (General.GetTickCount() > Core.Type.Player[GameState.MyIndex].EventTimer)
+                if (General.GetTickCount() > Core.Data.Player[GameState.MyIndex].EventTimer)
                 {
                     for (int i = 0, loopTo = GameState.CurrentEvents; i < loopTo; i++)
                     {
-                        if (Core.Type.MapEvents.Length < GameState.CurrentEvents)
+                        if (Data.MapEvents.Length < GameState.CurrentEvents)
                             break;
 
-                        if (Core.Type.MapEvents[i].Visible == true)
+                        if (Data.MapEvents[i].Visible == true)
                         {
-                            if (Core.Type.MapEvents[i].X == x & Core.Type.MapEvents[i].Y == y)
+                            if (Data.MapEvents[i].X == x & Data.MapEvents[i].Y == y)
                             {
                                 buffer = new ByteStream(4);
                                 buffer.WriteInt32((int)Packets.ClientPackets.CEvent);
                                 buffer.WriteInt32(i);
                                 NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
                                 buffer.Dispose();
-                                Core.Type.Player[GameState.MyIndex].EventTimer = General.GetTickCount() + 200;
+                                Core.Data.Player[GameState.MyIndex].EventTimer = General.GetTickCount() + 200;
                             }
                         }
                     }
@@ -945,49 +945,49 @@ namespace Client
             if (skillSlot < 0 | skillSlot > Constant.MAX_PLAYER_SKILLS)
                 return;
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
+            if (Core.Data.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
             {
-                Text.AddText("Skill has not cooled down yet!", (int)Core.Enum.ColorType.BrightRed);
+                Text.AddText("Skill has not cooled down yet!", (int)Core.Color.BrightRed);
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num < 0)
+            if (Core.Data.Player[GameState.MyIndex].Skill[skillSlot].Num < 0)
                 return;
 
             // Check if player has enough MP
-            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].MpCost)
+            if (GetPlayerVital(GameState.MyIndex, Core.Vital.Stamina) < Data.Skill[(int)Core.Data.Player[GameState.MyIndex].Skill[skillSlot].Num].MpCost)
             {
-                Text.AddText("Not enough MP to cast " + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].Name + ".", (int)Core.Enum.ColorType.BrightRed);
+                Text.AddText("Not enough MP to cast " + Data.Skill[(int)Core.Data.Player[GameState.MyIndex].Skill[skillSlot].Num].Name + ".", (int)Core.Color.BrightRed);
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
+            if (Core.Data.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
             {
-                if (General.GetTickCount() > Core.Type.Player[GameState.MyIndex].AttackTimer + 1000)
+                if (General.GetTickCount() > Core.Data.Player[GameState.MyIndex].AttackTimer + 1000)
                 {
-                    if (Core.Type.Player[GameState.MyIndex].Moving == 0)
+                    if (Core.Data.Player[GameState.MyIndex].Moving == 0)
                     {
-                        if (Core.Type.MyMap.Moral > 0)
+                        if (Data.MyMap.Moral > 0)
                         {
-                            if (Core.Type.Moral[Core.Type.MyMap.Moral].CanCast)
+                            if (Data.Moral[Data.MyMap.Moral].CanCast)
                             {
                                 NetworkSend.SendCast(skillSlot);
                             }
                             else
                             {
-                                Text.AddText("Cannot cast here!", (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText("Cannot cast here!", (int)Core.Color.BrightRed);
                             }
                         }
                     }
                     else
                     {
-                        Text.AddText("Cannot cast while walking!", (int)Core.Enum.ColorType.BrightRed);
+                        Text.AddText("Cannot cast while walking!", (int)Core.Color.BrightRed);
                     }
                 }
             }
             else
             {
-                Text.AddText("No skill here.", (int)Core.Enum.ColorType.BrightRed);
+                Text.AddText("No skill here.", (int)Core.Color.BrightRed);
             }
 
         }
@@ -1030,12 +1030,12 @@ namespace Client
         {
             var buffer = new ByteStream(data);
 
-            SetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.HP, buffer.ReadInt32());
+            SetPlayerVital(GameState.MyIndex, Core.Vital.Health, buffer.ReadInt32());
 
             // set max width
-            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.HP) > 0)
+            if (GetPlayerVital(GameState.MyIndex, Core.Vital.Health) > 0)
             {
-                GameState.BarWidth_GuiHP_Max = (long)Math.Round(GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.HP) / 209d / (GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.HP) / 209d) * 209d);
+                GameState.BarWidth_GuiHP_Max = (long)Math.Round(GetPlayerVital(GameState.MyIndex, Core.Vital.Health) / 209d / (GetPlayerMaxVital(GameState.MyIndex, Core.Vital.Health) / 209d) * 209d);
             }
             else
             {
@@ -1047,16 +1047,37 @@ namespace Client
             buffer.Dispose();
         }
 
+        public static void Packet_PlayerMP(ref byte[] data)
+        {
+            var buffer = new ByteStream(data);
+
+            SetPlayerVital(GameState.MyIndex, Core.Vital.Mana, buffer.ReadInt32());
+
+            // set max width
+            if (GetPlayerVital(GameState.MyIndex, Core.Vital.Health) > 0)
+            {
+                //GameState.BarWidth_GuiHP_Max = (long)Math.Round(GetPlayerVital(GameState.MyIndex, Core.Vital.Health) / 209d / (GetPlayerMaxVital(GameState.MyIndex, Core.Vital.Health) / 209d) * 209d);
+            }
+            else
+            {
+                //GameState.BarWidth_GuiHP_Max = 0L;
+            }
+
+            Gui.UpdateStats_UI();
+
+            buffer.Dispose();
+        }
+
         public static void Packet_PlayerSP(ref byte[] data)
         {
             var buffer = new ByteStream(data);
 
-            SetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP, buffer.ReadInt32());
+            SetPlayerVital(GameState.MyIndex, Core.Vital.Stamina, buffer.ReadInt32());
 
             // set max width
-            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) > 0)
+            if (GetPlayerVital(GameState.MyIndex, Core.Vital.Stamina) > 0)
             {
-                GameState.BarWidth_GuiSP_Max = (long)Math.Round(GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) / 209d / (GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.SP) / 209d) * 209d);
+                GameState.BarWidth_GuiSP_Max = (long)Math.Round(GetPlayerVital(GameState.MyIndex, Core.Vital.Stamina) / 209d / (GetPlayerMaxVital(GameState.MyIndex, Core.Vital.Stamina) / 209d) * 209d);
             }
             else
             {
@@ -1076,8 +1097,9 @@ namespace Client
 
             index = buffer.ReadInt32();
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                SetPlayerStat(index, (Core.Enum.StatType)i, buffer.ReadInt32());
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            for (i = 0; i < statCount; i++)
+                SetPlayerStat(index, (Core.Stat)i, buffer.ReadInt32());
 
             buffer.Dispose();
         }
@@ -1097,16 +1119,18 @@ namespace Client
             SetPlayerMap(i, buffer.ReadInt32());
             SetPlayerAccess(i, buffer.ReadInt32());
             SetPlayerPK(i, buffer.ReadBoolean());
-            Core.Type.Player[i].Moving = 0;
+            Core.Data.Player[i].Moving = 0;
 
-            for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
-                SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            for (x = 0; x < statCount; x++)
+                SetPlayerStat(i, (Core.Stat)x, buffer.ReadInt32());
 
-            for (x = 0; x < (int)Core.Enum.ResourceType.Count; x++)
+            int resourceSkillCount = Enum.GetValues(typeof(Core.ResourceSkill)).Length;
+            for (x = 0; x < resourceSkillCount; x++)
             {
-                Core.Type.Player[i].GatherSkills[x].SkillLevel = buffer.ReadInt32();
-                Core.Type.Player[i].GatherSkills[x].SkillCurExp = buffer.ReadInt32();
-                Core.Type.Player[i].GatherSkills[x].SkillNextLvlExp = buffer.ReadInt32();
+                Core.Data.Player[i].GatherSkills[x].SkillLevel = buffer.ReadInt32();
+                Core.Data.Player[i].GatherSkills[x].SkillCurExp = buffer.ReadInt32();
+                Core.Data.Player[i].GatherSkills[x].SkillNextLvlExp = buffer.ReadInt32();
             }
 
             // Check if the player is the client player
@@ -1126,14 +1150,14 @@ namespace Client
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblLevel")].Text = "Level";
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblGuild")].Text = "Guild";
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblName2")].Text = GetPlayerName(GameState.MyIndex);
-                    withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblClass2")].Text = Core.Type.Job[GetPlayerJob(GameState.MyIndex)].Name;
+                    withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblClass2")].Text = Data.Job[GetPlayerJob(GameState.MyIndex)].Name;
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblLevel2")].Text = GetPlayerLevel(GameState.MyIndex).ToString();
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblGuild2")].Text = "None";
                     Gui.UpdateStats_UI();
 
                     // stats
-                    for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
-                        withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblStat_" + (x + 1))].Text = GetPlayerStat(GameState.MyIndex, (Core.Enum.StatType)x).ToString();
+                    for (x = 0; x < statCount; x++)
+                        withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblStat_" + (x + 1))].Text = GetPlayerStat(GameState.MyIndex, (Core.Stat)x).ToString();
 
                     // points
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblPoints")].Text = GetPlayerPoints(GameState.MyIndex).ToString();
@@ -1141,12 +1165,12 @@ namespace Client
                     // grey out buttons
                     if (GetPlayerPoints(GameState.MyIndex) == 0)
                     {
-                        for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
+                        for (x = 0; x < statCount; x++)
                             withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + (x + 1))].Visible = true;
                     }
                     else
                     {
-                        for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
+                        for (x = 0; x < statCount; x++)
                             withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + (x + 1))].Visible = false;
                     }
                 }
@@ -1174,55 +1198,55 @@ namespace Client
             SetPlayerX(i, x);
             SetPlayerY(i, y);
             SetPlayerDir(i, dir);
-            Core.Type.Player[i].XOffset = 0;
-            Core.Type.Player[i].YOffset = 0;
-            Core.Type.Player[i].Moving = n;
+            Core.Data.Player[i].XOffset = 0;
+            Core.Data.Player[i].YOffset = 0;
+            Core.Data.Player[i].Moving = n;
 
             switch (GetPlayerDir(i))
             {
-                case (int)Core.Enum.DirectionType.Up:
+                case (int)Direction.Up:
                     {
-                        Core.Type.Player[i].YOffset = GameState.PicY;
+                        Core.Data.Player[i].YOffset = GameState.PicY;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.Down:
+                case (int)Direction.Down:
                     {
-                        Core.Type.Player[i].YOffset = GameState.PicY * -1;
+                        Core.Data.Player[i].YOffset = GameState.PicY * -1;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.Left:
+                case (int)Direction.Left:
                     {
-                        Core.Type.Player[i].XOffset = GameState.PicX;
+                        Core.Data.Player[i].XOffset = GameState.PicX;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.Right:
+                case (int)Direction.Right:
                     {
-                        Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        Core.Data.Player[i].XOffset = GameState.PicX * -1;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.UpRight:
+                case (int)Direction.UpRight:
                     {
-                        Core.Type.Player[i].YOffset = GameState.PicY;
-                        Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        Core.Data.Player[i].YOffset = GameState.PicY;
+                        Core.Data.Player[i].XOffset = GameState.PicX * -1;
                         break;
 
                     }
-                case (int)Core.Enum.DirectionType.UpLeft:
+                case (int)Direction.UpLeft:
                     {
-                        Core.Type.Player[i].YOffset = GameState.PicY;
-                        Core.Type.Player[i].XOffset = GameState.PicX;
+                        Core.Data.Player[i].YOffset = GameState.PicY;
+                        Core.Data.Player[i].XOffset = GameState.PicX;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.DownRight:
+                case (int)Direction.DownRight:
                     {
-                        Core.Type.Player[i].YOffset = GameState.PicY * -1;
-                        Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        Core.Data.Player[i].YOffset = GameState.PicY * -1;
+                        Core.Data.Player[i].XOffset = GameState.PicX * -1;
                         break;
                     }
-                case (int)Core.Enum.DirectionType.DownLeft:
+                case (int)Direction.DownLeft:
                     {
-                        Core.Type.Player[i].YOffset = GameState.PicY * -1;
-                        Core.Type.Player[i].XOffset = GameState.PicX;
+                        Core.Data.Player[i].YOffset = GameState.PicY * -1;
+                        Core.Data.Player[i].XOffset = GameState.PicX;
                         break;
                     }
             }
@@ -1243,7 +1267,7 @@ namespace Client
 
             SetPlayerDir(i, dir);
 
-            ref var withBlock = ref Core.Type.Player[i];
+            ref var withBlock = ref Core.Data.Player[i];
             withBlock.XOffset = 0;
             withBlock.YOffset = 0;
             withBlock.Moving = 0;
@@ -1262,7 +1286,7 @@ namespace Client
 
             SetPlayerDir(i, dir);
 
-            ref var withBlock = ref Core.Type.Player[i];
+            ref var withBlock = ref Core.Data.Player[i];
             withBlock.XOffset = buffer.ReadInt32();
             withBlock.YOffset = buffer.ReadInt32();
             withBlock.Moving = buffer.ReadByte();
@@ -1324,9 +1348,9 @@ namespace Client
             SetPlayerDir(index, dir);
 
             // Make sure they aren't walking
-            Core.Type.Player[index].Moving = 0;
-            Core.Type.Player[index].XOffset = 0;
-            Core.Type.Player[index].YOffset = 0;
+            Core.Data.Player[index].Moving = 0;
+            Core.Data.Player[index].XOffset = 0;
+            Core.Data.Player[index].YOffset = 0;
 
             buffer.Dispose();
         }

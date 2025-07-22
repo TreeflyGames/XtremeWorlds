@@ -6,8 +6,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static Core.Type;
 using static Core.Global.Command;
-using static Core.Enum;
 using static Core.Packets;
+using Core;
 
 namespace Server
 {
@@ -18,7 +18,7 @@ namespace Server
         #region Database
         public static void SaveProjectile(int projectileNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Projectile[projectileNum]).ToString();
+            string json = JsonConvert.SerializeObject(Data.Projectile[projectileNum]).ToString();
 
             if (Database.RowExists(projectileNum, "projectile"))
             {
@@ -30,7 +30,7 @@ namespace Server
             }
         }
 
-        public static async Task LoadProjectilesAsync()
+        public static async System.Threading.Tasks.Task LoadProjectilesAsync()
         {
             int i;
 
@@ -39,7 +39,7 @@ namespace Server
                 await LoadProjectile(i);
         }
 
-        public static async Task LoadProjectile(int projectileNum)
+        public static async System.Threading.Tasks.Task LoadProjectile(int projectileNum)
         {
             JObject data;
 
@@ -51,31 +51,31 @@ namespace Server
                 return;
             }
 
-            var projectileData = JObject.FromObject(data).ToObject<Core.Type.ProjectileStruct>();
-            Core.Type.Projectile[projectileNum] = projectileData;
+            var projectileData = data.ToObject<Core.Type.Projectile>();
+            Core.Data.Projectile[projectileNum] = projectileData;
         }
 
         public static void ClearMapProjectile(int mapNum, int index)
         {
 
-            MapProjectile[mapNum, index].ProjectileNum = 0;
-            MapProjectile[mapNum, index].Owner = 0;
-            MapProjectile[mapNum, index].OwnerType = 0;
-            MapProjectile[mapNum, index].X = 0;
-            MapProjectile[mapNum, index].Y = 0;
-            MapProjectile[mapNum, index].Dir = 0;
-            MapProjectile[mapNum, index].Timer = 0;
+            Data.MapProjectile[mapNum, index].ProjectileNum = 0;
+            Data.MapProjectile[mapNum, index].Owner = 0;
+            Data.MapProjectile[mapNum, index].OwnerType = 0;
+            Data.MapProjectile[mapNum, index].X = 0;
+            Data.MapProjectile[mapNum, index].Y = 0;
+            Data.MapProjectile[mapNum, index].Dir = 0;
+            Data.MapProjectile[mapNum, index].Timer = 0;
 
         }
 
         public static void ClearProjectile(int index)
         {
 
-            Core.Type.Projectile[index].Name = "";
-            Core.Type.Projectile[index].Sprite = 0;
-            Core.Type.Projectile[index].Range = 0;
-            Core.Type.Projectile[index].Speed = 0;
-            Core.Type.Projectile[index].Damage = 0;
+            Data.Projectile[index].Name = "";
+            Data.Projectile[index].Sprite = 0;
+            Data.Projectile[index].Range = 0;
+            Data.Projectile[index].Speed = 0;
+            Data.Projectile[index].Damage = 0;
 
         }
 
@@ -88,7 +88,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Developer)
                 return;
 
             string user;
@@ -97,13 +97,13 @@ namespace Server
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Color.BrightRed);
                 return;
             }
 
             SendProjectiles(index);
 
-            Core.Type.TempPlayer[index].Editor = (byte)EditorType.Projectile;
+            Core.Data.TempPlayer[index].Editor = (byte)EditorType.Projectile;
 
             buffer.WriteInt32((int) ServerPackets.SProjectileEditor);
 
@@ -117,7 +117,7 @@ namespace Server
             int ProjectileNum;
             var buffer = new ByteStream(data);
 
-            if (GetPlayerAccess(index) < (byte)AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Developer)
                 return;
 
             ProjectileNum = buffer.ReadInt32();
@@ -128,11 +128,11 @@ namespace Server
                 return;
             }
 
-            Core.Type.Projectile[ProjectileNum].Name = buffer.ReadString();
-            Core.Type.Projectile[ProjectileNum].Sprite = buffer.ReadInt32();
-            Core.Type.Projectile[ProjectileNum].Range = (byte)buffer.ReadInt32();
-            Core.Type.Projectile[ProjectileNum].Speed = buffer.ReadInt32();
-            Core.Type.Projectile[ProjectileNum].Damage = buffer.ReadInt32();
+            Data.Projectile[ProjectileNum].Name = buffer.ReadString();
+            Data.Projectile[ProjectileNum].Sprite = buffer.ReadInt32();
+            Data.Projectile[ProjectileNum].Range = (byte)buffer.ReadInt32();
+            Data.Projectile[ProjectileNum].Speed = buffer.ReadInt32();
+            Data.Projectile[ProjectileNum].Damage = buffer.ReadInt32();
 
             // Save it
             SendUpdateProjectileToAll(ProjectileNum);
@@ -157,16 +157,16 @@ namespace Server
         {
             int ProjectileNum;
             int Targetindex;
-            TargetType TargetType;
+            Core.TargetType TargetType;
             int TargetZone;
             int mapNum;
             int Damage;
             int armor;
-            int NPCNum;
+            int NpcNum;
             var buffer = new ByteStream(data);
             ProjectileNum = buffer.ReadInt32();
             Targetindex = buffer.ReadInt32();
-            TargetType = (TargetType)buffer.ReadInt32();
+            TargetType = (Core.TargetType)buffer.ReadInt32();
             TargetZone = buffer.ReadInt32();
             buffer.Dispose();
 
@@ -188,11 +188,11 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SUpdateProjectile);
             buffer.WriteInt32(ProjectileNum);
-            buffer.WriteString(Core.Type.Projectile[ProjectileNum].Name);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Sprite);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Range);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Speed);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Damage);
+            buffer.WriteString(Data.Projectile[ProjectileNum].Name);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Sprite);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Range);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Speed);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Damage);
 
             NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -207,11 +207,11 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SUpdateProjectile);
             buffer.WriteInt32(ProjectileNum);
-            buffer.WriteString(Core.Type.Projectile[ProjectileNum].Name);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Sprite);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Range);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Speed);
-            buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Damage);
+            buffer.WriteString(Data.Projectile[ProjectileNum].Name);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Sprite);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Range);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Speed);
+            buffer.WriteInt32(Data.Projectile[ProjectileNum].Damage);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -228,7 +228,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_PROJECTILES;
             for (int i = 0; i < loopTo; i++)
             {
-                if (Strings.Len(Core.Type.Projectile[i].Name) > 0)
+                if (Strings.Len(Data.Projectile[i].Name) > 0)
                 {
                     SendUpdateProjectileTo(index, i);
                 }
@@ -244,7 +244,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SMapProjectile);
 
             {
-                var withBlock = Core.Type.MapProjectile[mapNum, ProjectileNum];
+                var withBlock = Data.MapProjectile[mapNum, ProjectileNum];
                 buffer.WriteInt32(ProjectileNum);
                 buffer.WriteInt32(withBlock.ProjectileNum);
                 buffer.WriteInt32(withBlock.Owner);
@@ -276,7 +276,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_PROJECTILES;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.MapProjectile[mapNum, i].ProjectileNum == -1) // Free Projectile
+                if (Data.MapProjectile[mapNum, i].ProjectileNum == -1) // Free Projectile
                 {
                     ProjectileSlot = i;
                     break;
@@ -286,18 +286,18 @@ namespace Server
             // Check for skill, if so then load data acordingly
             if (IsSkill > 0)
             {
-                ProjectileNum = Core.Type.Skill[IsSkill].Projectile;
+                ProjectileNum = Data.Skill[IsSkill].Projectile;
             }
             else
             {
-                ProjectileNum = Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile;
+                ProjectileNum = Core.Data.Item[(int)GetPlayerEquipment(index, Equipment.Weapon)].Projectile;
             }
 
             if (ProjectileNum == -1)
                 return;
 
             {
-                var withBlock = Core.Type.MapProjectile[mapNum, ProjectileSlot];
+                var withBlock = Data.MapProjectile[mapNum, ProjectileSlot];
                 withBlock.ProjectileNum = ProjectileNum;
                 withBlock.Owner = index;
                 withBlock.OwnerType = (byte)TargetType.Player;

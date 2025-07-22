@@ -36,7 +36,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Item[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Item[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.ItemEditorInit();
@@ -55,29 +55,29 @@ namespace Client
             // populate combo boxes
             cmbAnimation.Items.Clear();
             for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
-                cmbAnimation.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
+                cmbAnimation.Items.Add(i + 1 + ": " + Data.Animation[i].Name);
 
             cmbAmmo.Items.Clear();
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbAmmo.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
+                cmbAmmo.Items.Add(i + 1 + ": " + Core.Data.Item[i].Name);
 
             cmbProjectile.Items.Clear();
             for (int i = 0; i < Constant.MAX_PROJECTILES; i++)
-                cmbProjectile.Items.Add(i + 1 + ": " + Core.Type.Projectile[i].Name);
+                cmbProjectile.Items.Add(i + 1 + ": " + Data.Projectile[i].Name);
 
             cmbSkills.Items.Clear();
             for (int i = 0; i < Constant.MAX_SKILLS; i++)
-                cmbSkills.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                cmbSkills.Items.Add(i + 1 + ": " + Data.Skill[i].Name);
 
             cmbPet.Items.Clear();
             for (int i = 0; i < Constant.MAX_PETS; i++)
-                cmbPet.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);
+                cmbPet.Items.Add(i + 1 + ": " + Data.Pet[i].Name);
 
             lstIndex.Items.Clear();
 
             // Add the names
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Data.Item[i].Name);
             nudPaperdoll.Maximum = GameState.NumPaperdolls;
             nudSpanwAmount.Maximum = int.MaxValue;
         }
@@ -121,30 +121,30 @@ namespace Client
 
         private void NudPic_Click(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Icon = (int)Math.Round(nudIcon.Value);
+            Core.Data.Item[GameState.EditorIndex].Icon = (int)Math.Round(nudIcon.Value);
             DrawIcon();
         }
 
         private void CmbBind_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].BindType = (byte)cmbBind.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].BindType = (byte)cmbBind.SelectedIndex;
         }
 
         private void NudRarity_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Rarity = (byte)Math.Round(nudRarity.Value);
+            Core.Data.Item[GameState.EditorIndex].Rarity = (byte)Math.Round(nudRarity.Value);
         }
 
         private void CmbAnimation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Animation = cmbAnimation.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].Animation = cmbAnimation.SelectedIndex;
         }
 
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
             cmbSubType.Enabled = false;
 
-            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.Equipment)
+            if (cmbType.SelectedIndex == (int)ItemCategory.Equipment)
             {
                 fraEquipment.Visible = true;
 
@@ -156,9 +156,9 @@ namespace Client
                 cmbSubType.Items.Add("Shield");
 
                 cmbSubType.Enabled = true;
-                cmbSubType.SelectedIndex = Core.Type.Item[GameState.EditorIndex].SubType;
+                cmbSubType.SelectedIndex = Core.Data.Item[GameState.EditorIndex].SubType;
 
-                if (Core.Type.Item[GameState.EditorIndex].SubType == (byte)Core.Enum.EquipmentType.Weapon)
+                if (Core.Data.Item[GameState.EditorIndex].SubType == (byte)Equipment.Weapon)
                 {
                     fraProjectile.Visible = true;
                 }
@@ -172,7 +172,7 @@ namespace Client
                 fraEquipment.Visible = false;
             }
 
-            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.Consumable)
+            if (cmbType.SelectedIndex == (int)ItemCategory.Consumable)
             {
                 fraVitals.Visible = true;
 
@@ -184,14 +184,14 @@ namespace Client
                 cmbSubType.Items.Add("Exp");
 
                 cmbSubType.Enabled = true;
-                cmbSubType.SelectedIndex = Core.Type.Item[GameState.EditorIndex].SubType;
+                cmbSubType.SelectedIndex = Core.Data.Item[GameState.EditorIndex].SubType;
             }
             else
             {
                 fraVitals.Visible = false;
             }
 
-            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.Skill)
+            if (cmbType.SelectedIndex == (int)ItemCategory.Skill)
             {
                 fraSkill.Visible = true;
             }
@@ -200,17 +200,17 @@ namespace Client
                 fraSkill.Visible = false;
             }
 
-            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.Projectile)
+            if (cmbType.SelectedIndex == (int)ItemCategory.Projectile)
             {
                 fraProjectile.Visible = true;
                 fraEquipment.Visible = true;
             }
-            else if (cmbType.SelectedIndex != (int)Core.Enum.ItemType.Equipment)
+            else if (cmbType.SelectedIndex != (int)ItemCategory.Equipment)
             {
                 fraProjectile.Visible = false;
             }
 
-            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.Pet)
+            if (cmbType.SelectedIndex == (int)ItemCategory.Pet)
             {
                 fraPet.Visible = true;
                 fraEquipment.Visible = true;
@@ -220,7 +220,7 @@ namespace Client
                 fraPet.Visible = false;
             }
 
-            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.Event)
+            if (cmbType.SelectedIndex == (int)ItemCategory.Event)
             {
                 fraEvents.Visible = true;
 
@@ -233,24 +233,24 @@ namespace Client
                 cmbSubType.Items.Add("Key");
 
                 cmbSubType.Enabled = true;
-                cmbSubType.SelectedIndex = Core.Type.Item[GameState.EditorIndex].SubType;
+                cmbSubType.SelectedIndex = Core.Data.Item[GameState.EditorIndex].SubType;
             }
             else
             {
                 fraEvents.Visible = false;
             }
 
-            Core.Type.Item[GameState.EditorIndex].Type = (byte)cmbType.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].Type = (byte)cmbType.SelectedIndex;
         }
 
         private void NudVitalMod_Click(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Data1 = (int)Math.Round(nudVitalMod.Value);
+            Core.Data.Item[GameState.EditorIndex].Data1 = (int)Math.Round(nudVitalMod.Value);
         }
 
         private void CmbSkills_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Data1 = cmbSkills.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].Data1 = cmbSkills.SelectedIndex;
         }
 
         private void TxtName_TextChanged(object sender, EventArgs e)
@@ -258,39 +258,39 @@ namespace Client
             int tmpindex;
 
             tmpindex = lstIndex.SelectedIndex;
-            Core.Type.Item[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
+            Core.Data.Item[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex);
-            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Item[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Data.Item[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
         private void NudPrice_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Price = (int)Math.Round(nudPrice.Value);
+            Core.Data.Item[GameState.EditorIndex].Price = (int)Math.Round(nudPrice.Value);
         }
 
         private void ChkStackable_CheckedChanged(object sender, EventArgs e)
         {
             if (chkStackable.Checked == true)
             {
-                Core.Type.Item[GameState.EditorIndex].Stackable = 1;
+                Core.Data.Item[GameState.EditorIndex].Stackable = 1;
             }
             else
             {
-                Core.Type.Item[GameState.EditorIndex].Stackable = 0;
+                Core.Data.Item[GameState.EditorIndex].Stackable = 0;
             }
         }
 
         private void TxtDescription_TextChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Description = Strings.Trim(txtDescription.Text);
+            Core.Data.Item[GameState.EditorIndex].Description = Strings.Trim(txtDescription.Text);
         }
 
         private void CmbSubType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].SubType = (byte)cmbSubType.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].SubType = (byte)cmbSubType.SelectedIndex;
 
-            if (Core.Type.Item[GameState.EditorIndex].SubType == (byte)Core.Enum.EquipmentType.Weapon)
+            if (Core.Data.Item[GameState.EditorIndex].SubType == (byte)Equipment.Weapon)
             {
                 fraProjectile.Visible = true;
             }
@@ -302,17 +302,17 @@ namespace Client
 
         private void NuditemLvl_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].ItemLevel = (byte)Math.Round(nudItemLvl.Value);
+            Core.Data.Item[GameState.EditorIndex].ItemLevel = (byte)Math.Round(nudItemLvl.Value);
         }
 
         private void CmbPet_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Data1 = cmbPet.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].Data1 = cmbPet.SelectedIndex;
         }
 
         private void nudEvents_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Data1 = (int)Math.Round(nudVitalMod.Value);
+            Core.Data.Item[GameState.EditorIndex].Data1 = (int)Math.Round(nudVitalMod.Value);
         }
 
         #endregion
@@ -321,42 +321,42 @@ namespace Client
 
         private void CmbJobReq_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].JobReq = cmbJobReq.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].JobReq = cmbJobReq.SelectedIndex;
         }
 
         private void CmbAccessReq_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].AccessReq = cmbAccessReq.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].AccessReq = cmbAccessReq.SelectedIndex;
         }
 
         private void NudLevelReq_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].LevelReq = (int)Math.Round(nudLevelReq.Value);
+            Core.Data.Item[GameState.EditorIndex].LevelReq = (int)Math.Round(nudLevelReq.Value);
         }
 
         private void NudStrReq_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Stat_Req[(int)Core.Enum.StatType.Strength] = (byte)Math.Round(nudStrReq.Value);
+            Core.Data.Item[GameState.EditorIndex].Stat_Req[(int)Core.Stat.Strength] = (byte)Math.Round(nudStrReq.Value);
         }
 
         private void NudVitReq_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Stat_Req[(int)Core.Enum.StatType.Vitality] = (byte)Math.Round(nudVitReq.Value);
+            Core.Data.Item[GameState.EditorIndex].Stat_Req[(int)Core.Stat.Vitality] = (byte)Math.Round(nudVitReq.Value);
         }
 
         private void NudLuckReq_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Stat_Req[(int)Core.Enum.StatType.Luck] = (byte)Math.Round(nudLuckReq.Value);
+            Core.Data.Item[GameState.EditorIndex].Stat_Req[(int)Core.Stat.Luck] = (byte)Math.Round(nudLuckReq.Value);
         }
 
         private void NudIntReq_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Stat_Req[(int)Core.Enum.StatType.Intelligence] = (byte)Math.Round(nudIntReq.Value);
+            Core.Data.Item[GameState.EditorIndex].Stat_Req[(int)Core.Stat.Intelligence] = (byte)Math.Round(nudIntReq.Value);
         }
 
         private void NudSprReq_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Stat_Req[(int)Core.Enum.StatType.Spirit] = (byte)Math.Round(nudSprReq.Value);
+            Core.Data.Item[GameState.EditorIndex].Stat_Req[(int)Core.Stat.Spirit] = (byte)Math.Round(nudSprReq.Value);
         }
 
         #endregion
@@ -365,77 +365,77 @@ namespace Client
 
         private void CmbTool_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Data3 = cmbTool.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].Data3 = cmbTool.SelectedIndex;
         }
 
         private void NudDamage_ValueChanged(object sender, EventArgs e)
         {
 
-            Core.Type.Item[GameState.EditorIndex].Data2 = (int)Math.Round(nudDamage.Value);
+            Core.Data.Item[GameState.EditorIndex].Data2 = (int)Math.Round(nudDamage.Value);
         }
 
         private void NudSpeed_ValueChanged(object sender, EventArgs e)
         {
             lblSpeed.Text = "Speed: " + nudSpeed.Value / 1000m + " sec";
-            Core.Type.Item[GameState.EditorIndex].Speed = (int)Math.Round(nudSpeed.Value);
+            Core.Data.Item[GameState.EditorIndex].Speed = (int)Math.Round(nudSpeed.Value);
         }
 
         private void NudPaperdoll_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Paperdoll = (int)Math.Round(nudPaperdoll.Value);
+            Core.Data.Item[GameState.EditorIndex].Paperdoll = (int)Math.Round(nudPaperdoll.Value);
             DrawPaperdoll();
         }
 
         private void NudStrength_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Add_Stat[(int)Core.Enum.StatType.Strength] = (byte)Math.Round(nudStrength.Value);
+            Core.Data.Item[GameState.EditorIndex].Add_Stat[(int)Core.Stat.Strength] = (byte)Math.Round(nudStrength.Value);
         }
 
         private void NudLuck_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Add_Stat[(int)Core.Enum.StatType.Luck] = (byte)Math.Round(nudLuck.Value);
+            Core.Data.Item[GameState.EditorIndex].Add_Stat[(int)Core.Stat.Luck] = (byte)Math.Round(nudLuck.Value);
         }
 
         private void NudIntelligence_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Add_Stat[(int)Core.Enum.StatType.Intelligence] = (byte)Math.Round(nudIntelligence.Value);
+            Core.Data.Item[GameState.EditorIndex].Add_Stat[(int)Core.Stat.Intelligence] = (byte)Math.Round(nudIntelligence.Value);
         }
 
         private void NudVitality_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Add_Stat[(int)Core.Enum.StatType.Vitality] = (byte)Math.Round(nudVitality.Value);
+            Core.Data.Item[GameState.EditorIndex].Add_Stat[(int)Core.Stat.Vitality] = (byte)Math.Round(nudVitality.Value);
         }
 
         private void NudSpirit_ValueChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Add_Stat[(int)Core.Enum.StatType.Spirit] = (byte)Math.Round(nudSpirit.Value);
+            Core.Data.Item[GameState.EditorIndex].Add_Stat[(int)Core.Stat.Spirit] = (byte)Math.Round(nudSpirit.Value);
         }
 
         private void ChkKnockBack_CheckedChanged(object sender, EventArgs e)
         {
             if (chkKnockBack.Checked == true)
             {
-                Core.Type.Item[GameState.EditorIndex].KnockBack = 1;
+                Core.Data.Item[GameState.EditorIndex].KnockBack = 1;
             }
             else
             {
-                Core.Type.Item[GameState.EditorIndex].KnockBack = 0;
+                Core.Data.Item[GameState.EditorIndex].KnockBack = 0;
             }
         }
 
         private void CmbKnockBackTiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].KnockBackTiles = (byte)cmbKnockBackTiles.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].KnockBackTiles = (byte)cmbKnockBackTiles.SelectedIndex;
         }
 
         private void CmbProjectile_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Projectile = cmbProjectile.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].Projectile = cmbProjectile.SelectedIndex;
         }
 
         private void CmbAmmo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Item[GameState.EditorIndex].Ammo = cmbAmmo.SelectedIndex;
+            Core.Data.Item[GameState.EditorIndex].Ammo = cmbAmmo.SelectedIndex;
         }
 
         private void btnSpawn_Click(object sender, EventArgs e)

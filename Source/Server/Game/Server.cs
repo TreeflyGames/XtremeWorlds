@@ -2,8 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Core;
-using Microsoft.VisualBasic.CompilerServices;
-using static Core.Enum;
 using static Core.Global.Command;
 
 namespace Server
@@ -13,7 +11,7 @@ namespace Server
     {
         private static bool consoleExit;
 
-        public static async Task Main()
+        public static async System.Threading.Tasks.Task Main()
         {
             // Only spin the console thread for dev sessions
             if (!Console.IsInputRedirected &&
@@ -39,7 +37,7 @@ namespace Server
             consoleExit = true;
         }
 
-        private static async Task ConsoleThreadAsync()
+        private static async System.Threading.Tasks.Task ConsoleThreadAsync()
         {
             string line;
             string[] parts;
@@ -135,43 +133,43 @@ namespace Server
                             {
                                 switch (Access)
                                 {
-                                    case (byte)AccessType.Player:
+                                    case (byte)AccessLevel.Player:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Player!", (int)ColorType.Yellow);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Player!", (int)Core.Color.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte)AccessType.Moderator:
+                                    case (byte)AccessLevel.Moderator:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Moderator!", (int)ColorType.Yellow);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Moderator!", (int)Core.Color.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte)AccessType.Mapper:
+                                    case (byte)AccessLevel.Mapper:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Mapper!", (int)ColorType.Yellow);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Mapper!", (int)Core.Color.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte)AccessType.Developer:
+                                    case (byte)AccessLevel.Developer:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Developer!", (int)ColorType.Yellow);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Developer!", (int)Core.Color.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte)AccessType.Owner:
+                                    case (byte)AccessLevel.Owner:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Owner!", (int)ColorType.Yellow);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Owner!", (int)Core.Color.Yellow);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
@@ -203,7 +201,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkSend.AlertMsg(Pindex, (int)DialogueMsg.Kicked);
+                                NetworkSend.AlertMsg(Pindex, (int)SystemMessage.Kicked);
                                 await Player.LeftGame(Pindex);
                             }
 

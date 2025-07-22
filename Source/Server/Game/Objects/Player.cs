@@ -8,7 +8,6 @@ using System;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
-using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
 using static Core.Type;
@@ -39,7 +38,7 @@ namespace Server
         public static void HandleUseChar(int index)
         {
             // Set the flag so we know the person is in the game
-            Core.Type.TempPlayer[index].InGame = true;
+            Core.Data.TempPlayer[index].InGame = true;
 
             // Send an ok to client to start receiving in game data
             NetworkSend.SendLoginOK(index);
@@ -79,22 +78,22 @@ namespace Server
                 return;
 
             // Check if you are out of bounds
-            if (x > Core.Type.Map[mapNum].MaxX)
-                x = Core.Type.Map[mapNum].MaxX;
+            if (x > Data.Map[mapNum].MaxX)
+                x = Data.Map[mapNum].MaxX;
 
-            if (y > Core.Type.Map[mapNum].MaxY)
-                y = Core.Type.Map[mapNum].MaxY;
+            if (y > Data.Map[mapNum].MaxY)
+                y = Data.Map[mapNum].MaxY;
 
-            Core.Type.TempPlayer[index].EventProcessingCount = 0;
-            Core.Type.TempPlayer[index].EventMap.CurrentEvents = 0;
+            Core.Data.TempPlayer[index].EventProcessingCount = 0;
+            Core.Data.TempPlayer[index].EventMap.CurrentEvents = 0;
 
             // clear target
-            Core.Type.TempPlayer[index].Target = 0;
-            Core.Type.TempPlayer[index].TargetType = 0;
+            Core.Data.TempPlayer[index].Target = 0;
+            Core.Data.TempPlayer[index].TargetType = 0;
             NetworkSend.SendTarget(index, 0, 0);
 
             // clear events
-            Core.Type.TempPlayer[index].EventMap.CurrentEvents = 0;
+            Core.Data.TempPlayer[index].EventMap.CurrentEvents = 0;
 
             // Save old map to send erase player data to
             OldMap = GetPlayerMap(index);
@@ -139,27 +138,27 @@ namespace Server
             // Now we check if there were any players left on the map the player just left, and if not stop processing npcs
             if (GameLogic.GetTotalMapPlayers(OldMap) == 0)
             {
-                // Regenerate all NPCs' health
+                // Regenerate all Npcs' health
                 var loopTo1 = Core.Constant.MAX_MAP_NPCS;
                 for (i = 0; i < loopTo1; i++)
                 {
-                    if (Core.Type.MapNPC[OldMap].NPC[i].Num >= 0)
+                    if (Data.MapNpc[OldMap].Npc[i].Num >= 0)
                     {
-                        Core.Type.MapNPC[OldMap].NPC[i].Vital[(byte) VitalType.HP] = GameLogic.GetNPCMaxVital((int)Core.Type.MapNPC[OldMap].NPC[i].Num, VitalType.HP);
+                        Data.MapNpc[OldMap].Npc[i].Vital[(byte) Vital.Health] = GameLogic.GetNpcMaxVital((int)Data.MapNpc[OldMap].Npc[i].Num, Vital.Health);
                     }
 
                 }
             }
 
             // Sets it so we know to process npcs on the map
-            Core.Type.TempPlayer[index].GettingMap = true;
+            Core.Data.TempPlayer[index].GettingMap = true;
 
-            Moral.SendUpdateMoralTo(index, Core.Type.Map[mapNum].Moral);
+            Moral.SendUpdateMoralTo(index, Data.Map[mapNum].Moral);
 
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SCheckForMap);
             buffer.WriteInt32(mapNum);
-            buffer.WriteInt32(Core.Type.Map[mapNum].Revision);
+            buffer.WriteInt32(Data.Map[mapNum].Revision);
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -181,33 +180,33 @@ namespace Server
             var amount = default(int);
 
             // Check for subscript out of range
-           if (Dir < (int)DirectionType.Up || Dir > (int)DirectionType.DownRight || Movement < (int)MovementType.Standing || Movement > (int)MovementType.Running)
+           if (Dir < (int)Direction.Up || Dir > (int)Direction.DownRight || Movement < (int)MovementState.Standing || Movement > (int)MovementState.Running)
             {
                 return;
             }
 
             // Prevent player from moving if they have casted a skill
-            if (Core.Type.TempPlayer[index].SkillBuffer >= 0)
+            if (Core.Data.TempPlayer[index].SkillBuffer >= 0)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;
             }
 
             // Cant move if in the bank
-            if (Core.Type.TempPlayer[index].InBank)
+            if (Core.Data.TempPlayer[index].InBank)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;
             }
 
             // if stunned, stop them moving
-            if (Core.Type.TempPlayer[index].StunDuration > 0)
+            if (Core.Data.TempPlayer[index].StunDuration > 0)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;
             }
 
-            if (Core.Type.TempPlayer[index].InShop >= 0 || Core.Type.TempPlayer[index].InBank)
+            if (Core.Data.TempPlayer[index].InShop >= 0 || Core.Data.TempPlayer[index].InBank)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;
@@ -217,15 +216,15 @@ namespace Server
             Moved = false;
             mapNum = GetPlayerMap(index);
 
-            switch ((DirectionType)Dir)
+            switch ((Direction)Dir)
             {
-                case DirectionType.Up:
+                case Direction.Up:
                     if (GetPlayerY(index) > 0)
                     {
                         x = GetPlayerX(index);
                         y = GetPlayerY(index) - 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Up))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.Up))
                         {
                             break;
                         }
@@ -234,28 +233,28 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
+                        for (int i = 0, loopTo2 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
-                    else if (Core.Type.Map[mapNum].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[mapNum].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
+                    else if (Data.Map[mapNum].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoCrossing && Data.Map[mapNum].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoCrossing)
                     {
-                        if (Core.Type.Map[GetPlayerMap(index)].Up > 0)
+                        if (Data.Map[GetPlayerMap(index)].Up > 0)
                         {
-                            NewMapY = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Up].MaxY;
-                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY, (int)DirectionType.Up);
+                            NewMapY = Data.Map[Data.Map[GetPlayerMap(index)].Up].MaxY;
+                            PlayerWarp(index, Data.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY, (int)Direction.Up);
                             DidWarp = true;
                             Moved = true;
                         }
                     }
                     break;
 
-                case DirectionType.Down:
-                    if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY - 1)
+                case Direction.Down:
+                    if (GetPlayerY(index) < Data.Map[mapNum].MaxY - 1)
                     {
                         x = GetPlayerX(index);
                         y = GetPlayerY(index) + 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Down))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.Down))
                         {
                             break;
                         }
@@ -264,27 +263,27 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo1 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo1; i++)
+                        for (int i = 0, loopTo1 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo1; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
-                    else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
+                    else if (Data.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoCrossing && Data.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoCrossing)
                     {
-                        if (Core.Type.Map[GetPlayerMap(index)].Down > 0)
+                        if (Data.Map[GetPlayerMap(index)].Down > 0)
                         {
-                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0, (int)DirectionType.Down);
+                            PlayerWarp(index, Data.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0, (int)Direction.Down);
                             DidWarp = true;
                             Moved = true;
                         }
                     }
                     break;
 
-                case DirectionType.Left:
+                case Direction.Left:
                     if (GetPlayerX(index) > 0)
                     {
                         x = GetPlayerX(index) - 1;
                         y = GetPlayerY(index);
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Left))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.Left))
                         {
                             break;
                         }
@@ -293,28 +292,28 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
+                        for (int i = 0, loopTo2 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
-                    else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
+                    else if (Data.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoCrossing && Data.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoCrossing)
                     {
-                        if (Core.Type.Map[GetPlayerMap(index)].Left > 0)
+                        if (Data.Map[GetPlayerMap(index)].Left > 0)
                         {
-                            NewMapX = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Left].MaxX;
-                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index), (int)DirectionType.Left);
+                            NewMapX = Data.Map[Data.Map[GetPlayerMap(index)].Left].MaxX;
+                            PlayerWarp(index, Data.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index), (int)Direction.Left);
                             DidWarp = true;
                             Moved = true;
                         }
                     }
                     break;
 
-                case DirectionType.Right:
-                    if (GetPlayerX(index) < Core.Type.Map[mapNum].MaxX - 1)
+                case Direction.Right:
+                    if (GetPlayerX(index) < Data.Map[mapNum].MaxX - 1)
                     {
                         x = GetPlayerX(index) + 1;
                         y = GetPlayerY(index);
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Right))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.Right))
                         {
                             break;
                         }
@@ -323,27 +322,27 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo3 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo3; i++)
+                        for (int i = 0, loopTo3 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo3; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
-                    else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
+                    else if (Data.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoCrossing && Data.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoCrossing)
                     {
-                        if (Core.Type.Map[GetPlayerMap(index)].Right > 0)
+                        if (Data.Map[GetPlayerMap(index)].Right > 0)
                         {
-                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index), (int)DirectionType.Right);
+                            PlayerWarp(index, Data.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index), (int)Direction.Right);
                             DidWarp = true;
                             Moved = true;
                         }
                     }
                     break;
 
-                case DirectionType.UpRight:
-                    if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX - 1)
+                case Direction.UpRight:
+                    if (GetPlayerY(index) > 0 && GetPlayerX(index) < Data.Map[mapNum].MaxX - 1)
                     {
                         x = GetPlayerX(index) + 1;
                         y = GetPlayerY(index) - 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.UpRight))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.UpRight))
                         {
                             break;
                         }
@@ -353,18 +352,18 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo4 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo4; i++)
+                        for (int i = 0, loopTo4 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo4; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
                     break;
 
-                case DirectionType.UpLeft:
+                case Direction.UpLeft:
                     if (GetPlayerY(index) > 0 && GetPlayerX(index) > 0)
                     {
                         x = GetPlayerX(index) - 1;
                         y = GetPlayerY(index) - 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.UpLeft))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.UpLeft))
                         {
                             break;
                         }
@@ -374,18 +373,18 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo5 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo5; i++)
+                        for (int i = 0, loopTo5 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo5; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
                     break;
 
-                case DirectionType.DownRight:
-                    if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY - 1 && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX - 1)
+                case Direction.DownRight:
+                    if (GetPlayerY(index) < Data.Map[mapNum].MaxY - 1 && GetPlayerX(index) < Data.Map[mapNum].MaxX - 1)
                     {
                         x = GetPlayerX(index) + 1;
                         y = GetPlayerY(index) + 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.DownRight))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.DownRight))
                         {
                             break;
                         }
@@ -395,18 +394,18 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo6 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo6; i++)
+                        for (int i = 0, loopTo6 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo6; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
                     break;
 
-                case DirectionType.DownLeft:
-                    if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY - 1 && GetPlayerX(index) > 0)
+                case Direction.DownLeft:
+                    if (GetPlayerY(index) < Data.Map[mapNum].MaxY - 1 && GetPlayerX(index) > 0)
                     {
                         x = GetPlayerX(index) - 1;
                         y = GetPlayerY(index) + 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.DownLeft))
+                        if (IsTileBlocked(index, mapNum, x, y, Direction.DownLeft))
                         {
                             break;
                         }
@@ -416,15 +415,15 @@ namespace Server
                         NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
-                        for (int i = 0, loopTo7 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo7; i++)
+                        for (int i = 0, loopTo7 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo7; i++)
                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
                     break;
             }
 
-            if (GetPlayerX(index) >= 0 && GetPlayerY(index) >= 0 && GetPlayerX(index) < Map[GetPlayerMap(index)].MaxX && GetPlayerY(index) < Map[GetPlayerMap(index)].MaxY)
+            if (GetPlayerX(index) >= 0 && GetPlayerY(index) >= 0 && GetPlayerX(index) < Data.Map[GetPlayerMap(index)].MaxX && GetPlayerY(index) < Data.Map[GetPlayerMap(index)].MaxY)
             {
-                ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)];
+                ref var withBlock = ref Data.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)];
                 mapNum = -1;
                 x = 0;
                 y = 0;
@@ -446,7 +445,7 @@ namespace Server
 
                 if (mapNum >= 0)
                 {
-                    PlayerWarp(index, (int)mapNum, x, y, (int)DirectionType.Down);
+                    PlayerWarp(index, (int)mapNum, x, y, (int)Direction.Down);
 
                     DidWarp = true;
                     Moved = true;
@@ -468,10 +467,10 @@ namespace Server
 
                 if (x >= 0) // shop exists?
                 {
-                    if (Strings.Len(Core.Type.Shop[x].Name) > 0) // name exists?
+                    if (Strings.Len(Data.Shop[x].Name) > 0) // name exists?
                     {
                         NetworkSend.SendOpenShop(index, x);
-                        Core.Type.TempPlayer[index].InShop = x; // stops movement and the like
+                        Core.Data.TempPlayer[index].InShop = x; // stops movement and the like
                     }
                 }
 
@@ -479,7 +478,7 @@ namespace Server
                 if (withBlock.Type == TileType.Bank | withBlock.Type2 == TileType.Bank)
                 {
                     NetworkSend.SendBank(index);
-                    Core.Type.TempPlayer[index].InBank = true;
+                    Core.Data.TempPlayer[index].InBank = true;
                     Moved = true;
                 }
 
@@ -498,21 +497,21 @@ namespace Server
 
                 if (vital > 0)
                 {
-                    if (!(GetPlayerVital(index, (VitalType)vital) == GetPlayerMaxVital(index, (VitalType)vital)))
+                    if (!(GetPlayerVital(index, (Vital)vital) == GetPlayerMaxVital(index, (Vital)vital)))
                     {
-                        if (vital == (byte)VitalType.HP)
+                        if (vital == (byte)Vital.Health)
                         {
-                            Color = (int) ColorType.BrightGreen;
+                            Color = (int) Core.Color.BrightGreen;
                         }
                         else
                         {
-                            Color = (int) ColorType.BrightBlue;
+                            Color = (int) Core.Color.BrightBlue;
                         }
 
-                        NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + amount, Color, (byte)ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1);
-                        SetPlayerVital(index, (VitalType)vital, GetPlayerVital(index, (VitalType)vital) + amount);
-                        NetworkSend.PlayerMsg(index, "You feel rejuvenating forces coursing through your body.", (int) ColorType.BrightGreen);
-                        NetworkSend.SendVital(index, (VitalType)vital);
+                        NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + amount, Color, (byte)Core.ActionMessageType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1);
+                        SetPlayerVital(index, (Vital)vital, GetPlayerVital(index, (Vital)vital) + amount);
+                        NetworkSend.PlayerMsg(index, "You feel rejuvenating forces coursing through your body.", (int) Core.Color.BrightGreen);
+                        NetworkSend.SendVital(index, (Vital)vital);
                     }
                     Moved = true;
                 }
@@ -530,17 +529,17 @@ namespace Server
 
                 if (amount > 0)
                 {
-                    NetworkSend.SendActionMsg(GetPlayerMap(index), "-" + amount, (int) ColorType.BrightRed, (byte)ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1);
-                    if (GetPlayerVital(index, (VitalType)VitalType.HP) - amount < 0)
+                    NetworkSend.SendActionMsg(GetPlayerMap(index), "-" + amount, (int) Core.Color.BrightRed, (byte)Core.ActionMessageType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1);
+                    if (GetPlayerVital(index, (Vital)Vital.Health) - amount < 0)
                     {
                         KillPlayer(index);
-                        NetworkSend.PlayerMsg(index, "You've been killed by a trap.", (int) ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(index, "You've been killed by a trap.", (int) Core.Color.BrightRed);
                     }
                     else
                     {
-                        SetPlayerVital(index, (VitalType)VitalType.HP, GetPlayerVital(index, (VitalType)VitalType.HP) - amount);
-                        NetworkSend.PlayerMsg(index, "You've been injured by a trap.", (int) ColorType.BrightRed);
-                        NetworkSend.SendVital(index, (VitalType)VitalType.HP);
+                        SetPlayerVital(index, (Vital)Vital.Health, GetPlayerVital(index, (Vital)Vital.Health) - amount);
+                        NetworkSend.PlayerMsg(index, "You've been injured by a trap.", (int) Core.Color.BrightRed);
+                        NetworkSend.SendVital(index, (Vital)Vital.Health);
                     }
                     Moved = true;
                 }
@@ -550,7 +549,7 @@ namespace Server
             // They tried to hack
             if (Moved == false | ExpectingWarp & !DidWarp)
             {
-                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
+                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Direction.Down);
             }
 
             x = GetPlayerX(index);
@@ -567,40 +566,40 @@ namespace Server
                     Console.WriteLine(e.Message);
                 }
 
-                if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
+                if (Core.Data.TempPlayer[index].EventMap.CurrentEvents > 0)
                 {
-                    for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
+                    for (int i = 0, loopTo8 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
                         begineventprocessing = false;
 
-                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
+                        if (Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
                         {
-                            if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
+                            if ((int)Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
                             {
-                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].X == x & Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                                if (Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].X == x & Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Y == y & (int)Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Data.TempPlayer[index].EventMap.EventPages[i].Visible == true)
                                     begineventprocessing = true;
                             }
-                            else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                            else if (Core.Data.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Data.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Data.TempPlayer[index].EventMap.EventPages[i].Visible == true)
                                 begineventprocessing = true;
                           
                             if (Conversions.ToInteger(begineventprocessing) == 1)
                             {
                                 // Process this event, it is on-touch and everything checks out.
-                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount > 0)
+                                if (Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount > 0)
                                 {
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Active = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].ActionTimer = General.GetTimeMs();
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurList = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurSlot = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].WaitingForResponse = 0;
+                                    Core.Data.TempPlayer[index].EventProcessing[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Active = 0;
+                                    Core.Data.TempPlayer[index].EventProcessing[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].ActionTimer = General.GetTimeMs();
+                                    Core.Data.TempPlayer[index].EventProcessing[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].CurList = 0;
+                                    Core.Data.TempPlayer[index].EventProcessing[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].CurSlot = 0;
+                                    Core.Data.TempPlayer[index].EventProcessing[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].EventId = Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    Core.Data.TempPlayer[index].EventProcessing[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].PageId = Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    Core.Data.TempPlayer[index].EventProcessing[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].WaitingForResponse = 0;
 
-                                    int EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
-                                    int PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
-                                    int commandListCount = Core.Type.Map[GetPlayerMap(index)].Event[EventId].Pages[PageId].CommandListCount;
+                                    int EventId = Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    int PageId = Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    int commandListCount = Data.Map[GetPlayerMap(index)].Event[EventId].Pages[PageId].CommandListCount;
 
-                                    Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
+                                    Array.Resize(ref Core.Data.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
                                 }
                                 begineventprocessing = false;
                             }
@@ -610,13 +609,13 @@ namespace Server
             }
         }
 
-        public static bool IsTileBlocked(int index, int mapNum, int x, int y, DirectionType dir)
+        public static bool IsTileBlocked(int index, int mapNum, int x, int y, Direction dir)
         {      
-            // Check for NPC and player blocking  
+            // Check for Npc and player blocking  
             var loopTo = NetworkConfig.Socket.HighIndex;
             for (int i = 0; i < loopTo; i++)
             {
-                if (Core.Type.Moral[Map[mapNum].Moral].PlayerBlock)
+                if (Data.Moral[Data.Map[mapNum].Moral].PlayerBlock)
                 {
                     if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                     {
@@ -631,11 +630,11 @@ namespace Server
             var loopTo2 = Core.Constant.MAX_MAP_NPCS;
             for (int i = 0; i < loopTo2; i++)
             {
-                if (Core.Type.Moral[Core.Type.Map[mapNum].Moral].NPCBlock)
+                if (Data.Moral[Data.Map[mapNum].Moral].NpcBlock)
                 {
-                    if (Core.Type.MapNPC[mapNum].NPC[i].Num >= 0)
+                    if (Data.MapNpc[mapNum].Npc[i].Num >= 0)
                     {
-                        if (Core.Type.MapNPC[mapNum].NPC[i].X == x && Core.Type.MapNPC[mapNum].NPC[i].Y == y)
+                        if (Data.MapNpc[mapNum].Npc[i].X == x && Data.MapNpc[mapNum].Npc[i].Y == y)
                         {
                             return true;
                         }
@@ -644,12 +643,12 @@ namespace Server
             }
 
             // Check to make sure that the tile is walkable
-            if (IsDirBlocked(ref Map[mapNum].Tile[x, y].DirBlock, (byte)dir))
+            if (IsDirBlocked(ref Data.Map[mapNum].Tile[x, y].DirBlock, (byte)dir))
             {
                 return true;
             }
 
-            if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Blocked || Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Blocked)
+            if (Data.Map[mapNum].Tile[x, y].Type == TileType.Blocked || Data.Map[mapNum].Tile[x, y].Type2 == TileType.Blocked)
             {
                 return true;
             }
@@ -678,7 +677,7 @@ namespace Server
                 // Check to see if the player has the item
                 if (GetPlayerInv(index, i) == itemNum)
                 {
-                    if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
+                    if (Core.Data.Item[itemNum].Type == (byte)ItemCategory.Currency | Core.Data.Item[itemNum].Stackable == 1)
                     {
                         HasItemRet += GetPlayerInvValue(index, i);
                     }
@@ -735,47 +734,47 @@ namespace Server
             for (i = 0; i < loopTo; i++)
             {
                 // See if theres even an item here
-                if (Core.Type.MapItem[mapNum, i].Num >= 0 & Core.Type.MapItem[mapNum, i].Num < Core.Constant.MAX_ITEMS)
+                if (Data.MapItem[mapNum, i].Num >= 0 & Data.MapItem[mapNum, i].Num < Core.Constant.MAX_ITEMS)
                 {
                     // our drop?
                     if (CanPlayerPickupItem(index, i))
                     {
                         // Check if item is at the same location as the player
-                        if (Core.Type.MapItem[mapNum, i].X == GetPlayerX(index))
+                        if (Data.MapItem[mapNum, i].X == GetPlayerX(index))
                         {
-                            if (Core.Type.MapItem[mapNum, i].Y == GetPlayerY(index))
+                            if (Data.MapItem[mapNum, i].Y == GetPlayerY(index))
                             {
                                 // Find open slot
-                                n = FindOpenInvSlot(index, (int)Core.Type.MapItem[mapNum, i].Num);
+                                n = FindOpenInvSlot(index, (int)Data.MapItem[mapNum, i].Num);
 
                                 // Open slot available?
                                 if (n != -1)
                                 {
                                     // Set item in players inventor
-                                    itemnum = (int)MapItem[mapNum, i].Num;
+                                    itemnum = (int)Data.MapItem[mapNum, i].Num;
 
-                                    SetPlayerInv(index, n, (int)MapItem[mapNum, i].Num);
+                                    SetPlayerInv(index, n, (int)Data.MapItem[mapNum, i].Num);
 
-                                    if (Core.Type.Item[GetPlayerInv(index, n)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerInv(index, n)].Stackable == 1)
+                                    if (Core.Data.Item[GetPlayerInv(index, n)].Type == (byte)ItemCategory.Currency | Core.Data.Item[GetPlayerInv(index, n)].Stackable == 1)
                                     {
-                                        SetPlayerInvValue(index, n, GetPlayerInvValue(index, n) + MapItem[mapNum, i].Value);
-                                        Msg = MapItem[mapNum, i].Value + " " + Core.Type.Item[GetPlayerInv(index, n)].Name;
+                                        SetPlayerInvValue(index, n, GetPlayerInvValue(index, n) + Data.MapItem[mapNum, i].Value);
+                                        Msg = Data.MapItem[mapNum, i].Value + " " + Core.Data.Item[GetPlayerInv(index, n)].Name;
                                     }
                                     else
                                     {
                                         SetPlayerInvValue(index, n, 1);
-                                        Msg = Core.Type.Item[GetPlayerInv(index, n)].Name;
+                                        Msg = Core.Data.Item[GetPlayerInv(index, n)].Name;
                                     }
 
                                     // Erase item from the map
-                                    Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), MapItem[mapNum, i].X, MapItem[mapNum, i].Y);
+                                    Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), Data.MapItem[mapNum, i].X, Data.MapItem[mapNum, i].Y);
                                     NetworkSend.SendInventoryUpdate(index, n);                                 
-                                    NetworkSend.SendActionMsg(GetPlayerMap(index), Msg, (int) ColorType.White, (byte)ActionMsgType.Static, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
+                                    NetworkSend.SendActionMsg(GetPlayerMap(index), Msg, (int) Color.White, (byte)Core.ActionMessageType.Static, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                                     break;
                                 }
                                 else
                                 {
-                                    NetworkSend.PlayerMsg(index, "Your inventory is full.", (int) ColorType.BrightRed);
+                                    NetworkSend.PlayerMsg(index, "Your inventory is full.", (int) Color.BrightRed);
                                     break;
                                 }
                             }
@@ -792,12 +791,12 @@ namespace Server
 
             mapNum = GetPlayerMap(index);
 
-            if (Core.Type.Map[mapNum].Moral >= 0)
+            if (Data.Map[mapNum].Moral >= 0)
             {
-                if (Core.Type.Moral[Core.Type.Map[mapNum].Moral].CanPickupItem)
+                if (Data.Moral[Data.Map[mapNum].Moral].CanPickupItem)
                 {
                     // no lock or locked to player?
-                    if (string.IsNullOrEmpty(Core.Type.MapItem[mapNum, mapitemNum].PlayerName) | Core.Type.MapItem[mapNum, mapitemNum].PlayerName == GetPlayerName(index))
+                    if (string.IsNullOrEmpty(Data.MapItem[mapNum, mapitemNum].PlayerName) | Data.MapItem[mapNum, mapitemNum].PlayerName == GetPlayerName(index))
                     {
                         CanPlayerPickupItemRet = true;
                         return CanPlayerPickupItemRet;
@@ -805,7 +804,7 @@ namespace Server
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "You can't pickup items here!", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "You can't pickup items here!", (int) Color.BrightRed);
                 }
             }
 
@@ -824,7 +823,7 @@ namespace Server
                 return FindOpenInvSlotRet;
             }
 
-            if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
+            if (Core.Data.Item[itemNum].Type == (byte)ItemCategory.Currency | Core.Data.Item[itemNum].Stackable == 1)
             {
                 // If currency then check to see if they already have an instance of the item and add it to that
                 var loopTo = Core.Constant.MAX_INV;
@@ -873,7 +872,7 @@ namespace Server
                 // Check to see if the player has the item
                 if (GetPlayerInv(index, i) == itemNum)
                 {
-                    if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
+                    if (Core.Data.Item[itemNum].Type == (byte)ItemCategory.Currency | Core.Data.Item[itemNum].Stackable == 1)
                     {
 
                         // Is what we are trying to take away more then what they have?  If so just set it to zero
@@ -936,7 +935,7 @@ namespace Server
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "Your inventory is full.", (int)ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Your inventory is full.", (int)Core.Color.BrightRed);
                 GiveInvRet = false;
             }
 
@@ -955,12 +954,12 @@ namespace Server
             }
 
             // check the player isn't doing something
-            if (Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InTrade >= 0)
+            if (Core.Data.TempPlayer[index].InBank | Core.Data.TempPlayer[index].InShop >= 0 | Core.Data.TempPlayer[index].InTrade >= 0)
                 return;
 
-            if (Conversions.ToInteger(Core.Type.Moral[GetPlayerMap(index)].CanDropItem) == 0)
+            if (Conversions.ToInteger(Data.Moral[GetPlayerMap(index)].CanDropItem) == 0)
             {
-                NetworkSend.PlayerMsg(index, "You can't drop items here!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You can't drop items here!", (int) Color.BrightRed);
                 return;
             }
 
@@ -973,7 +972,7 @@ namespace Server
                     if (i != 0)
                     {
                         {
-                            var withBlock = MapItem[GetPlayerMap(index), i];
+                            var withBlock = Data.MapItem[GetPlayerMap(index), i];
                             withBlock.Num = GetPlayerInv(index, invNum);
                             withBlock.X = (byte)GetPlayerX(index);
                             withBlock.Y = (byte)GetPlayerY(index);
@@ -983,7 +982,7 @@ namespace Server
                             withBlock.CanDespawn = true;
                             withBlock.DespawnTimer = General.GetTimeMs() + Constant.ITEM_DESPAWN_TIME;
 
-                            if (Core.Type.Item[GetPlayerInv(index, invNum)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerInv(index, invNum)].Stackable == 1)
+                            if (Core.Data.Item[GetPlayerInv(index, invNum)].Type == (byte)ItemCategory.Currency | Core.Data.Item[GetPlayerInv(index, invNum)].Stackable == 1)
                             {
                                 // Check if its more then they have and if so drop it all
                                 if (amount >= GetPlayerInvValue(index, invNum))
@@ -998,7 +997,7 @@ namespace Server
                                     withBlock.Value = amount;
                                     SetPlayerInvValue(index, invNum, GetPlayerInvValue(index, invNum) - amount);
                                 }
-                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1} ({2}x).", GetPlayerName(index), GameLogic.CheckGrammar(Core.Type.Item[GetPlayerInv(index, invNum)].Name), amount), (int) ColorType.Yellow);
+                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1} ({2}x).", GetPlayerName(index), GameLogic.CheckGrammar(Core.Data.Item[GetPlayerInv(index, invNum)].Name), amount), (int) Color.Yellow);
                             }
                             else
                             {
@@ -1006,7 +1005,7 @@ namespace Server
                                 withBlock.Value = 0;
 
                                 // send message
-                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1}.", GetPlayerName(index), GameLogic.CheckGrammar(Core.Type.Item[GetPlayerInv(index, invNum)].Name)), (int) ColorType.Yellow);
+                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1}.", GetPlayerName(index), GameLogic.CheckGrammar(Core.Data.Item[GetPlayerInv(index, invNum)].Name)), (int) Color.Yellow);
                                 SetPlayerInv(index, invNum, -1);
                                 SetPlayerInvValue(index, invNum, 0);
                             }
@@ -1019,7 +1018,7 @@ namespace Server
                     }
                     else
                     {
-                        NetworkSend.PlayerMsg(index, "Too many items already on the ground.", (int) ColorType.Yellow);
+                        NetworkSend.PlayerMsg(index, "Too many items already on the ground.", (int) Color.Yellow);
                     }
                 }
             }
@@ -1039,7 +1038,7 @@ namespace Server
 
             itemNum = GetPlayerInv(index, InvSlot);
 
-            if (Core.Type.Item[Conversions.ToInteger(itemNum)].Type == (byte)ItemType.Currency | Core.Type.Item[Conversions.ToInteger(itemNum)].Stackable == 1)
+            if (Core.Data.Item[Conversions.ToInteger(itemNum)].Type == (byte)ItemCategory.Currency | Core.Data.Item[Conversions.ToInteger(itemNum)].Stackable == 1)
             {
 
                 // Is what we are trying to take away more then what they have?  If so just set it to zero
@@ -1072,49 +1071,49 @@ namespace Server
         {
             int i;
 
-            if ((int)Core.Type.Map[GetPlayerMap(index)].Moral >= 0)
+            if ((int)Data.Map[GetPlayerMap(index)].Moral >= 0)
             {
-                if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanUseItem == false)
+                if (Data.Moral[Data.Map[GetPlayerMap(index)].Moral].CanUseItem == false)
                 {
-                    NetworkSend.PlayerMsg(index, "You can't use items here!", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "You can't use items here!", (int) Color.BrightRed);
                     return false;
                 }
             }
 
-            var loopTo = (byte)StatType.Count;
+            var loopTo = Enum.GetNames(typeof(Stat)).Length;
             for (i = 0; i < loopTo; i++)
             {
-                if (GetPlayerStat(index, (StatType)i) < Core.Type.Item[itemNum].Stat_Req[i])
+                if (GetPlayerStat(index, (Stat)i) < Core.Data.Item[itemNum].Stat_Req[i])
                 {
-                    NetworkSend.PlayerMsg(index, "You do not meet the stat requirements to use this item.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "You do not meet the stat requirements to use this item.", (int) Color.BrightRed);
                     return false;
                 }
             }
 
-            if (Core.Type.Item[itemNum].LevelReq > GetPlayerLevel(index))
+            if (Core.Data.Item[itemNum].LevelReq > GetPlayerLevel(index))
             {
-                NetworkSend.PlayerMsg(index, "You do not meet the level requirements to use this item.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You do not meet the level requirements to use this item.", (int) Color.BrightRed);
                 return false;
             }
 
             // Make sure they are the right job
-            if (!(Core.Type.Item[itemNum].JobReq == GetPlayerJob(index)) & !(Core.Type.Item[itemNum].JobReq == -1))
+            if (!(Core.Data.Item[itemNum].JobReq == GetPlayerJob(index)) & !(Core.Data.Item[itemNum].JobReq == -1))
             {
-                NetworkSend.PlayerMsg(index, "You do not meet the job requirements to use this item.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You do not meet the job requirements to use this item.", (int) Color.BrightRed);
                 return false;
             }
 
             // access requirement
-            if (!(GetPlayerAccess(index) >= Core.Type.Item[itemNum].AccessReq))
+            if (!(GetPlayerAccess(index) >= Core.Data.Item[itemNum].AccessReq))
             {
-                NetworkSend.PlayerMsg(index, "You do not meet the access requirement to equip this item.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You do not meet the access requirement to equip this item.", (int) Color.BrightRed);
                 return false;
             }
 
             // check the player isn't doing something
-            if (Core.Type.TempPlayer[index].InBank == true | Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InTrade >= 0)
+            if (Core.Data.TempPlayer[index].InBank == true | Core.Data.TempPlayer[index].InShop >= 0 | Core.Data.TempPlayer[index].InTrade >= 0)
             {
-                NetworkSend.PlayerMsg(index, "You can't use items while in a bank, shop, or trade!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You can't use items while in a bank, shop, or trade!", (int) Color.BrightRed);
                 return false;
             }
 
@@ -1176,7 +1175,7 @@ namespace Server
 
             if (NewNum >= 0)
             {
-                if (OldNum == NewNum & Core.Type.Item[NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
+                if (OldNum == NewNum & Core.Data.Item[NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
                 {
                     SetPlayerInv(index, NewSlot, NewNum);
                     SetPlayerInvValue(index, NewSlot, OldValue + NewValue);
@@ -1229,7 +1228,7 @@ namespace Server
 
             if (NewNum >= 0)
             {
-                if (OldNum == NewNum & Core.Type.Item[(int)NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
+                if (OldNum == NewNum & Core.Data.Item[(int)NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
                 {
                     SetPlayerSkill(index, (int)NewSlot, NewNum);
                     SetPlayerSkillCD(index, (int)NewSlot, NewValue);
@@ -1265,49 +1264,49 @@ namespace Server
             int i;
 
             // We want to check incase an admin takes away an object but they had it equipped
-            var loopTo = EquipmentType.Count;
+            var loopTo = Enum.GetNames(typeof(Equipment)).Length;;
             for (i = 0; i < (int)loopTo; i++)
             {
-                itemNum = GetPlayerEquipment(index, (EquipmentType)i);
+                itemNum = GetPlayerEquipment(index, (Equipment)i);
 
                 if (itemNum >= 0)
                 {
 
                     switch (i)
                     {
-                        case (byte)EquipmentType.Weapon:
+                        case (byte)Equipment.Weapon:
                             {
 
-                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Weapon)
-                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
+                                if (Core.Data.Item[(int)itemNum].SubType != (byte)Equipment.Weapon)
+                                    SetPlayerEquipment(index, -1, (Equipment)i);
                                 break;
                             }
-                        case (byte)EquipmentType.Armor:
+                        case (byte)Equipment.Armor:
                             {
 
-                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Armor)
-                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
+                                if (Core.Data.Item[(int)itemNum].SubType != (byte)Equipment.Armor)
+                                    SetPlayerEquipment(index, -1, (Equipment)i);
                                 break;
                             }
-                        case (byte)EquipmentType.Helmet:
+                        case (byte)Equipment.Helmet:
                             {
 
-                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Helmet)
-                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
+                                if (Core.Data.Item[(int)itemNum].SubType != (byte)Equipment.Helmet)
+                                    SetPlayerEquipment(index, -1, (Equipment)i);
                                 break;
                             }
-                        case (byte)EquipmentType.Shield:
+                        case (byte)Equipment.Shield:
                             {
 
-                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Shield)
-                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
+                                if (Core.Data.Item[(int)itemNum].SubType != (byte)Equipment.Shield)
+                                    SetPlayerEquipment(index, -1, (Equipment)i);
                                 break;
                             }
                     }
                 }
                 else
                 {
-                    SetPlayerEquipment(index, -1, (EquipmentType)i);
+                    SetPlayerEquipment(index, -1, (Equipment)i);
                 }
 
             }
@@ -1320,24 +1319,26 @@ namespace Server
             int m;
             int itemNum;
 
-            if (EqSlot < 1 | EqSlot > (byte)EquipmentType.Count)
+            var eqCount = Enum.GetNames(typeof(Equipment)).Length;
+
+            if (EqSlot < 1 | EqSlot > eqCount)
                 return; // exit out early if error'd
 
-            if (GetPlayerEquipment(index, (EquipmentType)EqSlot) < 0 || GetPlayerEquipment(index, (EquipmentType)EqSlot) > Core.Constant.MAX_ITEMS)
+            if (GetPlayerEquipment(index, (Equipment)EqSlot) < 0 || GetPlayerEquipment(index, (Equipment)EqSlot) > Core.Constant.MAX_ITEMS)
                 return;
 
-            if (FindOpenInvSlot(index, GetPlayerEquipment(index, (EquipmentType)EqSlot)) >= 0)
+            if (FindOpenInvSlot(index, GetPlayerEquipment(index, (Equipment)EqSlot)) >= 0)
             {
-                itemNum = GetPlayerEquipment(index, (EquipmentType)EqSlot);
+                itemNum = GetPlayerEquipment(index, (Equipment)EqSlot);
 
-                m = FindOpenInvSlot(index, (int)Core.Type.Player[index].Equipment[EqSlot]);
-                SetPlayerInv(index, m, Core.Type.Player[index].Equipment[EqSlot]);
+                m = FindOpenInvSlot(index, (int)Core.Data.Player[index].Equipment[EqSlot]);
+                SetPlayerInv(index, m, Core.Data.Player[index].Equipment[EqSlot]);
                 SetPlayerInvValue(index, m, 0);
 
-                NetworkSend.PlayerMsg(index, "You unequip " + GameLogic.CheckGrammar(Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)EqSlot)].Name), (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "You unequip " + GameLogic.CheckGrammar(Core.Data.Item[GetPlayerEquipment(index, (Equipment)EqSlot)].Name), (int) Color.Yellow);
 
                 // remove equipment
-                SetPlayerEquipment(index, -1, (EquipmentType)EqSlot);
+                SetPlayerEquipment(index, -1, (Equipment)EqSlot);
                 NetworkSend.SendWornEquipment(index);
                 NetworkSend.SendMapEquipment(index);
                 NetworkSend.SendStats(index);
@@ -1348,7 +1349,7 @@ namespace Server
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "Your inventory is full.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Your inventory is full.", (int) Color.BrightRed);
             }
 
         }
@@ -1367,7 +1368,7 @@ namespace Server
             }
         }
 
-        public static async Task LeftGame(int index)
+        public static async System.Threading.Tasks.Task LeftGame(int index)
         {
             try
             {
@@ -1378,9 +1379,9 @@ namespace Server
                 Console.WriteLine(e.Message);
             }
 
-            if (Core.Type.TempPlayer[index].InGame)
+            if (Core.Data.TempPlayer[index].InGame)
             {
-                await Database.SaveCharacterAsync(index, Core.Type.TempPlayer[index].Slot);
+                await Database.SaveCharacterAsync(index, Core.Data.TempPlayer[index].Slot);
                 await Database.SaveBankAsync(index);
             }
 
@@ -1411,8 +1412,8 @@ namespace Server
             try
             {
                 // Clear skill casting
-                Core.Type.TempPlayer[index].SkillBuffer = -1;
-                Core.Type.TempPlayer[index].SkillBufferTimer = 0;
+                Core.Data.TempPlayer[index].SkillBuffer = -1;
+                Core.Data.TempPlayer[index].SkillBufferTimer = 0;
                 NetworkSend.SendClearSkillBuffer(index);
 
                 Script.Instance?.OnDeath();
@@ -1447,7 +1448,7 @@ namespace Server
 
             if (bankSlot >= 0)
             {
-                if (Core.Type.Item[GetPlayerInv(index, InvSlot)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerInv(index, InvSlot)].Stackable == 1)
+                if (Core.Data.Item[GetPlayerInv(index, InvSlot)].Type == (byte)ItemCategory.Currency | Core.Data.Item[GetPlayerInv(index, InvSlot)].Stackable == 1)
                 {
                     if (GetPlayerBank(index, bankSlot) == GetPlayerInv(index, InvSlot))
                     {
@@ -1481,25 +1482,25 @@ namespace Server
         public static int GetPlayerBank(int index, byte bankSlot)
         {
             int GetPlayerBankRet = default;
-            GetPlayerBankRet = Bank[index].Item[bankSlot].Num;
+            GetPlayerBankRet = Data.Bank[index].Item[bankSlot].Num;
             return GetPlayerBankRet;
         }
 
         public static void SetPlayerBank(int index, byte bankSlot, int itemNum)
         {
-            Bank[index].Item[bankSlot].Num = itemNum;
+            Data.Bank[index].Item[bankSlot].Num = itemNum;
         }
 
         public static int GetPlayerBankValue(int index, byte bankSlot)
         {
             int GetPlayerBankValueRet = default;
-            GetPlayerBankValueRet = Bank[index].Item[bankSlot].Value;
+            GetPlayerBankValueRet = Data.Bank[index].Item[bankSlot].Value;
             return GetPlayerBankValueRet;
         }
 
         public static void SetPlayerBankValue(int index, byte bankSlot, int Value)
         {
-            Bank[index].Item[bankSlot].Value = Value;
+            Data.Bank[index].Item[bankSlot].Value = Value;
         }
 
         public static byte FindOpenbankSlot(int index, int itemNum)
@@ -1512,7 +1513,7 @@ namespace Server
             if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
                 return FindOpenbankSlotRet;
 
-            if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
+            if (Core.Data.Item[itemNum].Type == (byte)ItemCategory.Currency | Core.Data.Item[itemNum].Stackable == 1)
             {
                 var loopTo = Core.Constant.MAX_BANK;
                 for (i = 0; i < loopTo; i++)
@@ -1556,7 +1557,7 @@ namespace Server
 
             if (invSlot >= 0)
             {
-                if (Core.Type.Item[GetPlayerBank(index, bankSlot)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerBank(index, bankSlot)].Stackable == 1)
+                if (Core.Data.Item[GetPlayerBank(index, bankSlot)].Type == (byte)ItemCategory.Currency | Core.Data.Item[GetPlayerBank(index, bankSlot)].Stackable == 1)
                 {
                     GiveInv(index, GetPlayerBank(index, bankSlot), Amount);
                     SetPlayerBankValue(index, bankSlot, GetPlayerBankValue(index, bankSlot) - Amount);

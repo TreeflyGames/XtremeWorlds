@@ -3,7 +3,6 @@ using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static Core.Enum;
 using static Core.Packets;
 using static Core.Type;
 using static Core.Global.Command;
@@ -17,20 +16,20 @@ namespace Server
         #region Database
         public static void ClearMoral(int moralNum)
         {
-            Core.Type.Moral[moralNum].Name = "";
-            Core.Type.Moral[moralNum].Color = 0;
-            Core.Type.Moral[moralNum].CanCast = false;
-            Core.Type.Moral[moralNum].CanDropItem = false;
-            Core.Type.Moral[moralNum].CanPK = false;
-            Core.Type.Moral[moralNum].CanPickupItem = false;
-            Core.Type.Moral[moralNum].CanUseItem = false;
-            Core.Type.Moral[moralNum].DropItems = false;
-            Core.Type.Moral[moralNum].LoseExp = false;
-            Core.Type.Moral[moralNum].NPCBlock = false;
-            Core.Type.Moral[moralNum].PlayerBlock = false;
+            Core.Data.Moral[moralNum].Name = "";
+            Core.Data.Moral[moralNum].Color = 0;
+            Core.Data.Moral[moralNum].CanCast = false;
+            Core.Data.Moral[moralNum].CanDropItem = false;
+            Core.Data.Moral[moralNum].CanPK = false;
+            Core.Data.Moral[moralNum].CanPickupItem = false;
+            Core.Data.Moral[moralNum].CanUseItem = false;
+            Core.Data.Moral[moralNum].DropItems = false;
+            Core.Data.Moral[moralNum].LoseExp = false;
+            Core.Data.Moral[moralNum].NpcBlock = false;
+            Core.Data.Moral[moralNum].PlayerBlock = false;
         }
 
-        public static async Task LoadMoralAsync(int moralNum)
+        public static async System.Threading.Tasks.Task LoadMoralAsync(int moralNum)
         {
             JObject data;
 
@@ -42,22 +41,22 @@ namespace Server
                 return;
             }
 
-            var moralData = JObject.FromObject(data).ToObject<MoralStruct>();
-            Core.Type.Moral[moralNum] = moralData;
+            var moralData = JObject.FromObject(data).ToObject<Core.Type.Moral>();
+            Core.Data.Moral[moralNum] = moralData;
         }
 
-        public static async Task LoadMoralsAsync()
+        public static async System.Threading.Tasks.Task LoadMoralsAsync()
         {
             int i;
 
             var loopTo = Core.Constant.MAX_MORALS;
             for (i = 0; i < loopTo; i++)
-                await Task.Run(() => LoadMoralAsync(i));
+                await System.Threading.Tasks.Task.Run(() => LoadMoralAsync(i));
         }
 
         public static void SaveMoral(int moralNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Moral[moralNum]).ToString();
+            string json = JsonConvert.SerializeObject(Core.Data.Moral[moralNum]).ToString();
 
             if (Database.RowExists(moralNum, "moral"))
             {
@@ -83,17 +82,17 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32(moralNum);
-            buffer.WriteString(Core.Type.Moral[moralNum].Name);
-            buffer.WriteByte(Core.Type.Moral[moralNum].Color);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].NPCBlock);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].PlayerBlock);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].DropItems);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanCast);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanDropItem);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanPickupItem);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanPK);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].DropItems);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].LoseExp);
+            buffer.WriteString(Core.Data.Moral[moralNum].Name);
+            buffer.WriteByte(Core.Data.Moral[moralNum].Color);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].NpcBlock);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].PlayerBlock);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].DropItems);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].CanCast);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].CanDropItem);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].CanPickupItem);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].CanPK);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].DropItems);
+            buffer.WriteBoolean(Core.Data.Moral[moralNum].LoseExp);
 
             return buffer.ToArray();
         }
@@ -109,7 +108,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MORALS;
             for (i = 0; i < loopTo; i++)
             {
-                if (Strings.Len(Core.Type.Moral[i].Name) > 0)
+                if (Strings.Len(Core.Data.Moral[i].Name) > 0)
                 {
                     SendUpdateMoralTo(index, i);
                 }
@@ -149,22 +148,22 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) Core.AccessLevel.Developer)
                 return;
 
             string user;
 
-            user = IsEditorLocked(index, (byte) EditorType.Moral);
+            user = IsEditorLocked(index, (byte) Core.EditorType.Moral);
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Core.Color.BrightRed);
                 return;
             }
 
             SendMorals(index);
 
-            Core.Type.TempPlayer[index].Editor = (byte) EditorType.Moral;
+            Core.Data.TempPlayer[index].Editor = (byte) Core.EditorType.Moral;
 
             buffer.WriteInt32((int) ServerPackets.SMoralEditor);
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -180,7 +179,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) Core.AccessLevel.Developer)
                 return;
 
             moralNum = buffer.ReadInt32();
@@ -190,7 +189,7 @@ namespace Server
                 return;
 
             {
-                ref var withBlock = ref Core.Type.Moral[moralNum];
+                ref var withBlock = ref Core.Data.Moral[moralNum];
                 withBlock.Name = buffer.ReadString();
                 withBlock.Color = buffer.ReadByte();
                 withBlock.CanCast = buffer.ReadBoolean();
@@ -201,7 +200,7 @@ namespace Server
                 withBlock.DropItems = buffer.ReadBoolean();
                 withBlock.LoseExp = buffer.ReadBoolean();
                 withBlock.PlayerBlock = buffer.ReadBoolean();
-                withBlock.NPCBlock = buffer.ReadBoolean();
+                withBlock.NpcBlock = buffer.ReadBoolean();
             }
 
             // Save it

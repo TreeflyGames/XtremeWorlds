@@ -66,8 +66,8 @@ namespace Client
             txtName = new DarkUI.Controls.DarkTextBox();
             txtName.TextChanged += new EventHandler(txtName_TextChanged);
             DarkGroupBox2 = new DarkUI.Controls.DarkGroupBox();
-            chkNPCBlock = new DarkUI.Controls.DarkCheckBox();
-            chkNPCBlock.CheckedChanged += new EventHandler(chkNPCBlock_CheckedChanged);
+            chkNpcBlock = new DarkUI.Controls.DarkCheckBox();
+            chkNpcBlock.CheckedChanged += new EventHandler(chkNpcBlock_CheckedChanged);
             chkPlayerBlock = new DarkUI.Controls.DarkCheckBox();
             chkPlayerBlock.CheckedChanged += new EventHandler(chkPlayerBlock_CheckedChanged);
             chkLoseExp = new DarkUI.Controls.DarkCheckBox();
@@ -178,7 +178,7 @@ namespace Client
             // 
             DarkGroupBox2.BackColor = Color.FromArgb(45, 45, 48);
             DarkGroupBox2.BorderColor = Color.FromArgb(90, 90, 90);
-            DarkGroupBox2.Controls.Add(chkNPCBlock);
+            DarkGroupBox2.Controls.Add(chkNpcBlock);
             DarkGroupBox2.Controls.Add(chkPlayerBlock);
             DarkGroupBox2.Controls.Add(chkLoseExp);
             DarkGroupBox2.Controls.Add(chkDropItems);
@@ -201,15 +201,15 @@ namespace Client
             DarkGroupBox2.TabStop = false;
             DarkGroupBox2.Text = "Properties";
             // 
-            // chkNPCBlock
+            // chkNpcBlock
             // 
-            chkNPCBlock.AutoSize = true;
-            chkNPCBlock.Location = new Point(201, 237);
-            chkNPCBlock.Margin = new Padding(6, 5, 6, 5);
-            chkNPCBlock.Name = "chkNPCBlock";
-            chkNPCBlock.Size = new Size(119, 29);
-            chkNPCBlock.TabIndex = 20;
-            chkNPCBlock.Text = "NPC Block";
+            chkNpcBlock.AutoSize = true;
+            chkNpcBlock.Location = new Point(201, 237);
+            chkNpcBlock.Margin = new Padding(6, 5, 6, 5);
+            chkNpcBlock.Name = "chkNpcBlock";
+            chkNpcBlock.Size = new Size(119, 29);
+            chkNpcBlock.TabIndex = 20;
+            chkNpcBlock.Text = "Npc Block";
             // 
             // chkPlayerBlock
             // 
@@ -342,7 +342,7 @@ namespace Client
         internal DarkUI.Controls.DarkCheckBox chkCanPickupItem;
         internal DarkUI.Controls.DarkCheckBox chkCanPK;
         internal DarkUI.Controls.DarkCheckBox chkCanCast;
-        internal DarkUI.Controls.DarkCheckBox chkNPCBlock;
+        internal DarkUI.Controls.DarkCheckBox chkNpcBlock;
         internal DarkUI.Controls.DarkCheckBox chkPlayerBlock;
         internal DarkUI.Controls.DarkCheckBox chkLoseExp;
         internal DarkUI.Controls.DarkCheckBox chkDropItems;

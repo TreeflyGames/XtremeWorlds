@@ -129,7 +129,7 @@ namespace Server
         /// <summary>
         /// Initializes the game server asynchronously with enhanced features.
         /// </summary>
-        public static async Task InitServerAsync()
+        public static async System.Threading.Tasks.Task InitServerAsync()
         {
             try
             {
@@ -148,52 +148,52 @@ namespace Server
             }
         }
 
-        private static async Task InitializeCoreComponentsAsync()
+        private static async System.Threading.Tasks.Task InitializeCoreComponentsAsync()
         {
-            await Task.WhenAll(LoadConfigurationAsync(), InitializeNetworkAsync(), InitializeChatSystemAsync());
+            await System.Threading.Tasks.Task.WhenAll(LoadConfigurationAsync(), InitializeNetworkAsync(), InitializeChatSystemAsync());
             await InitializeDatabaseWithRetryAsync();
         }
 
         public static void InitalizeCoreData()
         {
-            Core.Type.Job = new Core.Type.JobStruct[Core.Constant.MAX_JOBS];
-            Core.Type.Moral = new Core.Type.MoralStruct[Core.Constant.MAX_MORALS];
-            Core.Type.Map = new Core.Type.MapStruct[Core.Constant.MAX_MAPS];
-            Core.Type.Item = new Core.Type.ItemStruct[Core.Constant.MAX_ITEMS];
-            Core.Type.NPC = new Core.Type.NPCStruct[Core.Constant.MAX_NPCS];
-            Core.Type.Resource = new Core.Type.ResourceStruct[Core.Constant.MAX_RESOURCES];
-            Core.Type.Projectile = new Core.Type.ProjectileStruct[Core.Constant.MAX_PROJECTILES];
-            Core.Type.Animation = new Core.Type.AnimationStruct[Core.Constant.MAX_ANIMATIONS];
-            Core.Type.Pet = new Core.Type.PetStruct[Core.Constant.MAX_PETS];
-            Core.Type.Shop = new Core.Type.ShopStruct[Core.Constant.MAX_SHOPS];
-            Core.Type.Player = new Core.Type.PlayerStruct[Core.Constant.MAX_PLAYERS];
-            Core.Type.Party = new Core.Type.PartyStruct[Core.Constant.MAX_PARTY];
-            Core.Type.MapItem = new Core.Type.MapItemStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_MAP_ITEMS];
-            Core.Type.NPC = new NPCStruct[Core.Constant.MAX_NPCS];
-            Core.Type.MapNPC = new MapDataStruct[Core.Constant.MAX_MAPS];
+            Data.Job = new Core.Type.Job[Core.Constant.MAX_JOBS];
+            Data.Moral = new Core.Type.Moral[Core.Constant.MAX_MORALS];
+            Data.Map = new Core.Type.Map[Core.Constant.MAX_MAPS];
+            Core.Data.Item = new Core.Type.Item[Core.Constant.MAX_ITEMS];
+            Data.Npc = new Core.Type.Npc[Core.Constant.MAX_NPCS];
+            Data.Resource = new Core.Type.Resource[Core.Constant.MAX_RESOURCES];
+            Data.Projectile = new Core.Type.Projectile[Core.Constant.MAX_PROJECTILES];
+            Data.Animation = new Core.Type.Animation[Core.Constant.MAX_ANIMATIONS];
+            Data.Pet = new Core.Type.Pet[Core.Constant.MAX_PETS];
+            Data.Shop = new Core.Type.Shop[Core.Constant.MAX_SHOPS];
+            Core.Data.Player = new Core.Type.Player[Core.Constant.MAX_PLAYERS];
+            Data.Party = new Core.Type.Party[Core.Constant.MAX_PARTY];
+            Data.MapItem = new Core.Type.MapItem[Core.Constant.MAX_MAPS, Core.Constant.MAX_MAP_ITEMS];
+            Data.Npc = new Core.Type.Npc[Core.Constant.MAX_NPCS];
+            Data.MapNpc = new MapData[Core.Constant.MAX_MAPS];
 
             for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
-                Core.Type.MapNPC[i].NPC = new MapNPCStruct[Core.Constant.MAX_MAP_NPCS];
+                Data.MapNpc[i].Npc = new MapNpc[Core.Constant.MAX_MAP_NPCS];
                 for (int x = 0; x < Core.Constant.MAX_MAP_NPCS; x++)
                 {
-                    Core.Type.MapNPC[i].NPC[x].Vital = new int[(int)Core.Enum.VitalType.Count];
-                    Core.Type.MapNPC[i].NPC[x].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
-                    Core.Type.MapNPC[i].NPC[x].Num = -1;
-                    Core.Type.MapNPC[i].NPC[x].SkillBuffer = -1;
+                    Data.MapNpc[i].Npc[x].Vital = new int[Enum.GetValues(typeof(Core.Vital)).Length];
+                    Data.MapNpc[i].Npc[x].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
+                    Data.MapNpc[i].Npc[x].Num = -1;
+                    Data.MapNpc[i].Npc[x].SkillBuffer = -1;
                 }
 
                 for (int x = 0; x < Core.Constant.MAX_MAP_ITEMS; x++)
                 {
-                    Core.Type.MapItem[i, x].Num = -1;
+                    Data.MapItem[i, x].Num = -1;
                 }
             }
 
-            Core.Type.Shop = new ShopStruct[Core.Constant.MAX_SHOPS];
-            Core.Type.Skill = new SkillStruct[Core.Constant.MAX_SKILLS];
-            Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
-            Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
-            Core.Type.Account = new Core.Type.AccountStruct[Core.Constant.MAX_PLAYERS];
+            Data.Shop = new Core.Type.Shop[Core.Constant.MAX_SHOPS];
+            Data.Skill = new Skill[Core.Constant.MAX_SKILLS];
+            Data.MapResource = new Core.Type.MapResource[Core.Constant.MAX_MAPS];
+            Core.Data.TempPlayer = new Core.Type.TempPlayer[Core.Constant.MAX_PLAYERS];
+            Core.Data.Account = new Core.Type.Account[Core.Constant.MAX_PLAYERS];
 
             for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
             {
@@ -205,11 +205,11 @@ namespace Server
                 Party.ClearParty(i);
             }
 
-            Event.TempEventMap = new Core.Type.GlobalEventsStruct[Core.Constant.MAX_MAPS];
-            Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
+            Event.TempEventMap = new Core.Type.GlobalEvents[Core.Constant.MAX_MAPS];
+            Data.MapProjectile = new Core.Type.MapProjectile[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
         }
 
-        private static async Task LoadGameDataAsync()
+        private static async System.Threading.Tasks.Task LoadGameDataAsync()
         {
             var stopwatch = Stopwatch.StartNew();
             InitalizeCoreData();
@@ -218,7 +218,7 @@ namespace Server
             Logger.LogInformation($"Game data loaded in {stopwatch.ElapsedMilliseconds}ms");
         }
 
-        private static async Task StartGameLoopAsync(int startTime)
+        private static async System.Threading.Tasks.Task StartGameLoopAsync(int startTime)
         {
             InitializeSaveTimer();
             InitializeAnnouncementTimer();
@@ -240,7 +240,7 @@ namespace Server
         /// <summary>
         /// Shuts down the server gracefully, cleaning up all resources.
         /// </summary>
-        public static async Task DestroyServerAsync()
+        public static async System.Threading.Tasks.Task DestroyServerAsync()
         {
             if (ServerDestroyed) return;
             ServerDestroyed = true;
@@ -275,9 +275,9 @@ namespace Server
 
         #region Initialization Methods
 
-        private static async Task LoadConfigurationAsync()
+        private static async System.Threading.Tasks.Task LoadConfigurationAsync()
         {
-            await Task.Run(() =>
+            await System.Threading.Tasks.Task.Run(() =>
             {
                 SettingsManager.Load();
                 ValidateConfiguration();
@@ -296,12 +296,12 @@ namespace Server
                 throw new InvalidOperationException("Invalid Port number in configuration");
         }
 
-        private static async Task InitializeNetworkAsync()
+        private static async System.Threading.Tasks.Task InitializeNetworkAsync()
         {
             NetworkConfig.InitNetwork();
         }
 
-        private static async Task InitializeDatabaseWithRetryAsync()
+        private static async System.Threading.Tasks.Task InitializeDatabaseWithRetryAsync()
         {
             int maxRetries = Configuration.GetValue<int>("Database:MaxRetries", 3);
             int retryDelayMs = Configuration.GetValue<int>("Database:RetryDelayMs", 1000);
@@ -324,15 +324,15 @@ namespace Server
                         throw;
                     }
                     Logger.LogWarning(ex, $"Database initialization failed, attempt {attempt} of {maxRetries}");
-                    await Task.Delay(retryDelayMs * attempt, Cts.Token);
+                    await System.Threading.Tasks.Task.Delay(retryDelayMs * attempt, Cts.Token);
                 }
             }
         }
 
-        private static async Task LoadCharacterListAsync()
+        private static async System.Threading.Tasks.Task LoadCharacterListAsync()
         {
            var ids = await Database.GetDataAsync("account");
-            Core.Type.Char = new CharList();
+            Data.Char = new CharList();
             const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
 
@@ -349,7 +349,7 @@ namespace Server
                             string name = data["Name"].ToString();
                             if (!string.IsNullOrWhiteSpace(name))
                             {
-                                Core.Type.Char.Add(name);
+                                Data.Char.Add(name);
                             }
                         }
                     }
@@ -360,11 +360,11 @@ namespace Server
                 }
             });
 
-            await Task.WhenAll(tasks);
-            Logger.LogInformation($"Loaded {Core.Type.Char.Count} character(s).");
+            await System.Threading.Tasks.Task.WhenAll(tasks);
+            Logger.LogInformation($"Loaded {Data.Char.Count} character(s).");
         }
 
-        private static async Task LoadGameContentAsync()
+        private static async System.Threading.Tasks.Task LoadGameContentAsync()
         {
             const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
@@ -375,7 +375,7 @@ namespace Server
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading morals..."); await Moral.LoadMoralsAsync(); Logger.LogInformation("Morals loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading maps..."); await Database.LoadMapsAsync(); Logger.LogInformation("Maps loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading items..."); await Item.LoadItemsAsync(); Logger.LogInformation("Items loaded."); }),
-                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading NPCs..."); await Database.LoadNPCsAsync(); Logger.LogInformation("NPCs loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading Npcs..."); await Database.LoadNpcsAsync(); Logger.LogInformation("Npcs loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading resources..."); await Resource.LoadResourcesAsync(); Logger.LogInformation("Resources loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading shops..."); await Database.LoadShopsAsync(); Logger.LogInformation("Shops loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading skills..."); await Database.LoadSkillsAsync(); Logger.LogInformation("Skills loaded."); }),
@@ -387,11 +387,11 @@ namespace Server
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading script..."); await Script.LoadScriptAsync(0); Logger.LogInformation("Script compiled and loaded."); })
             };
 
-            await Task.WhenAll(tasks);
+            await System.Threading.Tasks.Task.WhenAll(tasks);
             Logger.LogInformation("Game content loaded successfully.");
         }
 
-        private static async Task LoadWithSemaphoreAsync(SemaphoreSlim semaphore, Func<Task> loadFunc)
+        private static async System.Threading.Tasks.Task LoadWithSemaphoreAsync(SemaphoreSlim semaphore, Func<System.Threading.Tasks.Task> loadFunc)
         {
             await semaphore.WaitAsync(Cts.Token);
             try
@@ -404,11 +404,11 @@ namespace Server
             }
         }
 
-        private static async Task SpawnGameObjectsAsync()
+        private static async System.Threading.Tasks.Task SpawnGameObjectsAsync()
         {
-            await Task.WhenAll(
+            await System.Threading.Tasks.Task.WhenAll(
                 Item.SpawnAllMapsItemsAsync(),
-                NPC.SpawnAllMapNPCs(),
+                Npc.SpawnAllMapNpcs(),
                 EventLogic.SpawnAllMapGlobalEvents()
             );
             Logger.LogInformation("Game objects spawned.");
@@ -467,7 +467,7 @@ namespace Server
         /// <summary>
         /// Performs a health check on critical server components.
         /// </summary>
-        public static async Task<bool> PerformHealthCheckAsync()
+        public static async System.Threading.Tasks.Task<bool> PerformHealthCheckAsync()
         {
             try
             {
@@ -500,7 +500,7 @@ namespace Server
                 TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
         }
 
-        private static async Task SavePlayersPeriodicallyAsync()
+        private static async System.Threading.Tasks.Task SavePlayersPeriodicallyAsync()
         {
             try
             {
@@ -513,17 +513,17 @@ namespace Server
             }
         }
 
-        private static async Task SendServerAnnouncementAsync(string message)
+        private static async System.Threading.Tasks.Task SendServerAnnouncementAsync(string message)
         {
             await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
             {
                 if (NetworkConfig.IsPlaying(i))
-                    NetworkSend.PlayerMsg(i, message, (int)Core.Enum.ColorType.Yellow);
+                    NetworkSend.PlayerMsg(i, message, (int)Core.Color.Yellow);
             });
             Logger.LogInformation("Server announcement sent.");
         }
 
-        private static async Task InitializeChatSystemAsync()
+        private static async System.Threading.Tasks.Task InitializeChatSystemAsync()
         {
             Logger.LogInformation("Chat system initialized.");
             // Additional initialization logic can be added here if needed
@@ -532,7 +532,7 @@ namespace Server
         /// <summary>
         /// Handles player commands with expanded functionality.
         /// </summary>
-        public static async Task HandlePlayerCommandAsync(int playerIndex, string command)
+        public static async System.Threading.Tasks.Task HandlePlayerCommandAsync(int playerIndex, string command)
         {
             if (string.IsNullOrWhiteSpace(command)) return;
 
@@ -543,7 +543,7 @@ namespace Server
                     if (parts.Length == 3 && int.TryParse(parts[1], out int x) && int.TryParse(parts[2], out int y))
                         await TeleportPlayerAsync(playerIndex, (byte)x, (byte)y);
                     else
-                        NetworkSend.PlayerMsg(playerIndex, "Usage: /teleport <x> <y>", (int)Core.Enum.ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(playerIndex, "Usage: /teleport <x> <y>", (int)Core.Color.BrightRed);
                     break;
 
                 case "/kick":
@@ -568,14 +568,14 @@ namespace Server
                     if (parts.Length >= 3)
                         await SendWhisperAsync(playerIndex, parts[1], string.Join(" ", parts[2..]));
                     else
-                        NetworkSend.PlayerMsg(playerIndex, "Usage: /whisper <player> <message>", (int)Core.Enum.ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(playerIndex, "Usage: /whisper <player> <message>", (int)Core.Color.BrightRed);
                     break;
 
                 case "/party":
                     if (parts.Length >= 2)
                         await HandlePartyCommandAsync(playerIndex, parts[1], parts.Length > 2 ? parts[2] : null);
                     else
-                        NetworkSend.PlayerMsg(playerIndex, "Usage: /party <create|invite|leave> [player]", (int)Core.Enum.ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(playerIndex, "Usage: /party <create|invite|leave> [player]", (int)Core.Color.BrightRed);
                     break;
 
                 case "/stats":
@@ -587,19 +587,19 @@ namespace Server
                     break;
 
                 default:
-                    NetworkSend.PlayerMsg(playerIndex, "Unknown command. Use /help for assistance.", (int)Core.Enum.ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(playerIndex, "Unknown command. Use /help for assistance.", (int)Core.Color.BrightRed);
                     break;
             }
         }
 
-        private static async Task TeleportPlayerAsync(int playerIndex, byte x, byte y)
+        private static async System.Threading.Tasks.Task TeleportPlayerAsync(int playerIndex, byte x, byte y)
         {
             try
             {
-                ref var player = ref Core.Type.Player[playerIndex];
+                ref var player = ref Core.Data.Player[playerIndex];
                 if (x < 0 || x >= 100 || y < 0 || y >= 100)
                 {
-                    NetworkSend.PlayerMsg(playerIndex, "Coordinates out of bounds.", (int)Core.Enum.ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(playerIndex, "Coordinates out of bounds.", (int)Core.Color.BrightRed);
                     return;
                 }
 
@@ -611,17 +611,17 @@ namespace Server
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to teleport player {playerIndex}");
-                NetworkSend.PlayerMsg(playerIndex, "Teleport failed.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(playerIndex, "Teleport failed.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task KickPlayerAsync(int playerIndex, int targetIndex)
+        private static async System.Threading.Tasks.Task KickPlayerAsync(int playerIndex, int targetIndex)
         {
             try
             {
                 if (!await IsAdminAsync(playerIndex))
                 {
-                    NetworkSend.PlayerMsg(playerIndex, "You are not authorized to kick players.", (int)Core.Enum.ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(playerIndex, "You are not authorized to kick players.", (int)Core.Color.BrightRed);
                     return;
                 }
 
@@ -630,41 +630,41 @@ namespace Server
                     NetworkSend.SendLeftGame(targetIndex);
                     Player.LeftGame(targetIndex);
                     Logger.LogInformation($"Player {targetIndex} kicked by {playerIndex}");
-                    NetworkSend.PlayerMsg(playerIndex, $"Player {targetIndex} has been kicked.", (int)Core.Enum.ColorType.BrightGreen);
+                    NetworkSend.PlayerMsg(playerIndex, $"Player {targetIndex} has been kicked.", (int)Core.Color.BrightGreen);
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(playerIndex, "Target player is not online.", (int)Core.Enum.ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(playerIndex, "Target player is not online.", (int)Core.Color.BrightRed);
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to kick player {targetIndex}");
-                NetworkSend.PlayerMsg(playerIndex, "Kick operation failed.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(playerIndex, "Kick operation failed.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task BroadcastMessageAsync(int playerIndex, string message)
+        private static async System.Threading.Tasks.Task BroadcastMessageAsync(int playerIndex, string message)
         {
             try
             {
                 if (!await IsAdminAsync(playerIndex))
                 {
-                    NetworkSend.PlayerMsg(playerIndex, "You are not authorized to broadcast.", (int)Core.Enum.ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(playerIndex, "You are not authorized to broadcast.", (int)Core.Color.BrightRed);
                     return;
                 }
 
-                await SendChatMessageAsync(playerIndex, "global", $"[Broadcast] {message}", Core.Enum.ColorType.BrightGreen);
+                await SendChatMessageAsync(playerIndex, "global", $"[Broadcast] {message}", Color.BrightGreen);
                 Logger.LogInformation($"Broadcast by {playerIndex}: {message}");
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Broadcast failed");
-                NetworkSend.PlayerMsg(playerIndex, "Broadcast failed.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(playerIndex, "Broadcast failed.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task SendServerStatusAsync(int playerIndex)
+        private static async System.Threading.Tasks.Task SendServerStatusAsync(int playerIndex)
         {
             try
             {
@@ -673,16 +673,16 @@ namespace Server
                                 $"Players Online: {CountPlayersOnline()}\n" +
                                 $"Uptime: {MyStopwatch.Elapsed}\n" +
                                 $"Errors: {Global.ErrorCount}";
-                NetworkSend.PlayerMsg(playerIndex, status, (int)Core.Enum.ColorType.BrightGreen);
+                NetworkSend.PlayerMsg(playerIndex, status, (int)Core.Color.BrightGreen);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Failed to send server status");
-                NetworkSend.PlayerMsg(playerIndex, "Unable to retrieve server status.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(playerIndex, "Unable to retrieve server status.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task SendHelpMessageAsync(int playerIndex)
+        private static async System.Threading.Tasks.Task SendHelpMessageAsync(int playerIndex)
         {
             string help = "Available Commands:\n" +
                           "/teleport <x> <y> - Teleport to coordinates\n" +
@@ -694,93 +694,93 @@ namespace Server
                           "/stats - View your statistics\n" +
                           "/save - Manually save your data\n" +
                           "/help - Show this message";
-            NetworkSend.PlayerMsg(playerIndex, help, (int)Core.Enum.ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(playerIndex, help, (int)Core.Color.BrightGreen);
         }
 
-        private static async Task SendWhisperAsync(int senderIndex, string targetName, string message)
+        private static async System.Threading.Tasks.Task SendWhisperAsync(int senderIndex, string targetName, string message)
         {
             try
             {
                 int targetIndex = await FindPlayerByNameAsync(targetName);
                 if (targetIndex == -1)
                 {
-                    NetworkSend.PlayerMsg(senderIndex, $"Player '{targetName}' not found.", (int)Core.Enum.ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(senderIndex, $"Player '{targetName}' not found.", (int)Core.Color.BrightRed);
                     return;
                 }
 
-                await SendChatMessageAsync(senderIndex, $"private:{targetIndex}", $"[Whisper] {message}", Core.Enum.ColorType.BrightCyan);
+                await SendChatMessageAsync(senderIndex, $"private:{targetIndex}", $"[Whisper] {message}", Color.BrightCyan);
                 Logger.LogInformation($"Whisper from {senderIndex} to {targetIndex}: {message}");
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to send whisper from {senderIndex} to {targetName}");
-                NetworkSend.PlayerMsg(senderIndex, "Failed to send whisper.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(senderIndex, "Failed to send whisper.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task HandlePartyCommandAsync(int playerIndex, string subCommand, string targetName)
+        private static async System.Threading.Tasks.Task HandlePartyCommandAsync(int playerIndex, string subCommand, string targetName)
         {
             try
             {
-                var player = Core.Type.TempPlayer[playerIndex];
+                var player = Core.Data.TempPlayer[playerIndex];
                 switch (subCommand.ToLower())
                 {
                     case "create":
                         if (player.InParty != -1)
                         {
-                            NetworkSend.PlayerMsg(playerIndex, "You are already in a party.", (int)Core.Enum.ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(playerIndex, "You are already in a party.", (int)Core.Color.BrightRed);
                             return;
                         }
                         player.InParty = (int)GenerateUniqueId();
-                        NetworkSend.PlayerMsg(playerIndex, "Party created.", (int)Core.Enum.ColorType.BrightGreen);
+                        NetworkSend.PlayerMsg(playerIndex, "Party created.", (int)Core.Color.BrightGreen);
                         break;
 
                     case "invite":
                         if (player.InParty == -1)
                         {
-                            NetworkSend.PlayerMsg(playerIndex, "You must create a party first.", (int)Core.Enum.ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(playerIndex, "You must create a party first.", (int)Core.Color.BrightRed);
                             return;
                         }
                         int targetIndex = await FindPlayerByNameAsync(targetName);
                         if (targetIndex == -1)
                         {
-                            NetworkSend.PlayerMsg(playerIndex, $"Player '{targetName}' not found.", (int)Core.Enum.ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(playerIndex, $"Player '{targetName}' not found.", (int)Core.Color.BrightRed);
                             return;
                         }
-                        var targetPlayer = Core.Type.TempPlayer[targetIndex];
+                        var targetPlayer = Core.Data.TempPlayer[targetIndex];
                         if (targetPlayer.InParty != -1)
                         {
-                            NetworkSend.PlayerMsg(playerIndex, $"{targetName} is already in a party.", (int)Core.Enum.ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(playerIndex, $"{targetName} is already in a party.", (int)Core.Color.BrightRed);
                             return;
                         }
                         targetPlayer.InParty = player.InParty;
-                        NetworkSend.PlayerMsg(targetIndex, $"You have joined {Core.Type.Player[playerIndex].Name}'s party.", (int)Core.Enum.ColorType.BrightGreen);
-                        NetworkSend.PlayerMsg(playerIndex, $"{targetName} has joined your party.", (int)Core.Enum.ColorType.BrightGreen);
+                        NetworkSend.PlayerMsg(targetIndex, $"You have joined {Core.Data.Player[playerIndex].Name}'s party.", (int)Core.Color.BrightGreen);
+                        NetworkSend.PlayerMsg(playerIndex, $"{targetName} has joined your party.", (int)Core.Color.BrightGreen);
                         break;
 
                     case "leave":
                         if (player.InParty == -1)
                         {
-                            NetworkSend.PlayerMsg(playerIndex, "You are not in a party.", (int)Core.Enum.ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(playerIndex, "You are not in a party.", (int)Core.Color.BrightRed);
                             return;
                         }
                         player.InParty = -1;
-                        NetworkSend.PlayerMsg(playerIndex, "You have left the party.", (int)Core.Enum.ColorType.BrightGreen);
+                        NetworkSend.PlayerMsg(playerIndex, "You have left the party.", (int)Core.Color.BrightGreen);
                         break;
 
                     default:
-                        NetworkSend.PlayerMsg(playerIndex, "Invalid party command. Use: create, invite, leave.", (int)Core.Enum.ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(playerIndex, "Invalid party command. Use: create, invite, leave.", (int)Core.Color.BrightRed);
                         break;
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to handle party command for player {playerIndex}");
-                NetworkSend.PlayerMsg(playerIndex, "Party command failed.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(playerIndex, "Party command failed.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task SendPlayerStatsAsync(int playerIndex)
+        private static async System.Threading.Tasks.Task SendPlayerStatsAsync(int playerIndex)
         {
             try
             {
@@ -789,35 +789,35 @@ namespace Server
                                       $"Kills: {stats.Kills}\n" +
                                       $"Deaths: {stats.Deaths}\n" +
                                       $"Playtime: {stats.PlayTime.TotalHours:F2} hours";
-                NetworkSend.PlayerMsg(playerIndex, statsMessage, (int)Core.Enum.ColorType.BrightGreen);
+                NetworkSend.PlayerMsg(playerIndex, statsMessage, (int)Core.Color.BrightGreen);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to send stats for player {playerIndex}");
-                NetworkSend.PlayerMsg(playerIndex, "Failed to retrieve stats.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(playerIndex, "Failed to retrieve stats.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task SavePlayerDataAsync(int playerIndex)
+        private static async System.Threading.Tasks.Task SavePlayerDataAsync(int playerIndex)
         {
             try
             {
                 await Database.SaveAccountAsync(playerIndex); // Assuming this method exists
-                NetworkSend.PlayerMsg(playerIndex, "Your data has been saved.", (int)Core.Enum.ColorType.BrightGreen);
+                NetworkSend.PlayerMsg(playerIndex, "Your data has been saved.", (int)Core.Color.BrightGreen);
                 Logger.LogInformation($"Player {playerIndex} data saved manually.");
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to save data for player {playerIndex}");
-                NetworkSend.PlayerMsg(playerIndex, "Failed to save data.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(playerIndex, "Failed to save data.", (int)Core.Color.BrightRed);
             }
         }
 
-        private static async Task<int> FindPlayerByNameAsync(string name)
+        private static async System.Threading.Tasks.Task<int> FindPlayerByNameAsync(string name)
         {
             for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
             {
-                if (NetworkConfig.IsPlaying(i) && Core.Type.Player[i].Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                if (NetworkConfig.IsPlaying(i) && Core.Data.Player[i].Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return i;
                 }
@@ -825,28 +825,28 @@ namespace Server
             return -1;
         }
 
-        private static async Task SendChatMessageAsync(int senderIndex, string channel, string message, Core.Enum.ColorType color)
+        private static async System.Threading.Tasks.Task SendChatMessageAsync(int senderIndex, string channel, string message, Core.Color color)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(message) || message.Length > 200) // Basic filtering
                 {
-                    NetworkSend.PlayerMsg(senderIndex, "Invalid message.", (int)Core.Enum.ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(senderIndex, "Invalid message.", (int)Core.Color.BrightRed);
                     return;
                 }
 
                 if (channel.StartsWith("private:"))
                 {
                     int targetIndex = int.Parse(channel.Split(':')[1]);
-                    NetworkSend.PlayerMsg(targetIndex, $"[From {Core.Type.Player[senderIndex].Name}] {message}", (int)color);
-                    NetworkSend.PlayerMsg(senderIndex, $"[To {Core.Type.Player[targetIndex].Name}] {message}", (int)color);
+                    NetworkSend.PlayerMsg(targetIndex, $"[From {Core.Data.Player[senderIndex].Name}] {message}", (int)color);
+                    NetworkSend.PlayerMsg(senderIndex, $"[To {Core.Data.Player[targetIndex].Name}] {message}", (int)color);
                 }
-                else if (channel == "party" && Core.Type.TempPlayer[senderIndex].InParty != 0)
+                else if (channel == "party" && Core.Data.TempPlayer[senderIndex].InParty != 0)
                 {
                     await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
                     {
-                        if (NetworkConfig.IsPlaying(i) && Core.Type.TempPlayer[i].InParty == Core.Type.TempPlayer[senderIndex].InParty)
-                            NetworkSend.PlayerMsg(i, $"[Party] {Core.Type.Player[senderIndex].Name}: {message}", (int)color);
+                        if (NetworkConfig.IsPlaying(i) && Core.Data.TempPlayer[i].InParty == Core.Data.TempPlayer[senderIndex].InParty)
+                            NetworkSend.PlayerMsg(i, $"[Party] {Core.Data.Player[senderIndex].Name}: {message}", (int)color);
                     });
                 }
                 else if (channel == "global")
@@ -861,24 +861,24 @@ namespace Server
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to send chat message from {senderIndex} to {channel}");
-                NetworkSend.PlayerMsg(senderIndex, "Failed to send message.", (int)Core.Enum.ColorType.BrightRed);
+                NetworkSend.PlayerMsg(senderIndex, "Failed to send message.", (int)Core.Color.BrightRed);
             }
         }
 
         /// <summary>
         /// Handles player login events.
         /// </summary>
-        public static async Task OnPlayerLoginAsync(int playerIndex)
+        public static async System.Threading.Tasks.Task OnPlayerLoginAsync(int playerIndex)
         {
             Logger.LogInformation($"Player {playerIndex} logged in.");
-            NetworkSend.PlayerMsg(playerIndex, "Welcome to the server!", (int)Core.Enum.ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(playerIndex, "Welcome to the server!", (int)Core.Color.BrightGreen);
             PlayerStatistics.GetOrAdd(playerIndex, new PlayerStats()).LoginTime = GetServerTime();
         }
 
         /// <summary>
         /// Handles player logout events.
         /// </summary>
-        public static async Task OnPlayerLogoutAsync(int playerIndex)
+        public static async System.Threading.Tasks.Task OnPlayerLogoutAsync(int playerIndex)
         {
             if (PlayerStatistics.TryGetValue(playerIndex, out var stats) && stats.LoginTime.HasValue)
             {
@@ -889,12 +889,12 @@ namespace Server
         }
 
         private static Task<bool> IsAdminAsync(int playerIndex) =>
-            Task.FromResult(playerIndex == 0); // Example admin check
+            System.Threading.Tasks.Task.FromResult(playerIndex == 0); // Example admin check
 
         /// <summary>
         /// Creates a backup of the database asynchronously.
         /// </summary>
-        public static async Task BackupDatabaseAsync()
+        public static async System.Threading.Tasks.Task BackupDatabaseAsync()
         {
             try
             {
@@ -910,7 +910,7 @@ namespace Server
                     .ToList();
                 foreach (var oldBackup in backups)
                 {
-                    await Task.Run(() => File.Delete(oldBackup), Cts.Token);
+                    await System.Threading.Tasks.Task.Run(() => File.Delete(oldBackup), Cts.Token);
                     Logger.LogInformation($"Deleted old backup: {oldBackup}");
                 }
             }
@@ -924,7 +924,7 @@ namespace Server
 
         #region Error Handling
 
-        private static async Task HandleCriticalErrorAsync(Exception ex)
+        private static async System.Threading.Tasks.Task HandleCriticalErrorAsync(Exception ex)
         {
             await BackupDatabaseAsync();
             Logger.LogCritical(ex, "Critical error occurred. Initiating emergency shutdown");
@@ -935,7 +935,7 @@ namespace Server
         /// <summary>
         /// Logs an error to a file and updates error count asynchronously.
         /// </summary>
-        public static async Task LogErrorAsync(Exception ex, string context = "")
+        public static async System.Threading.Tasks.Task LogErrorAsync(Exception ex, string context = "")
         {
             string errorInfo = $"{ex.Message}\nStackTrace: {ex.StackTrace}";
             string logPath = System.IO.Path.Combine(Core.Path.Logs, "Errors.log");
@@ -948,7 +948,7 @@ namespace Server
             UpdateCaption();
         }
 
-        public static async Task CheckShutDownCountDownAsync()
+        public static async System.Threading.Tasks.Task CheckShutDownCountDownAsync()
         {
             if (ShutDownTimer.ElapsedTicks <= 0) return;
 

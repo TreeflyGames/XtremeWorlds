@@ -13,14 +13,15 @@ namespace Client
 
         public static void ClearPet(int index)
         {
-            Core.Type.Pet[index] = default;
-            Core.Type.Pet[index].Name = "";
+            Data.Pet[index] = default;
+            Data.Pet[index].Name = "";
 
-            Core.Type.Pet[index].Stat = new byte[(int)Core.Enum.StatType.Count];
-            Core.Type.Pet[index].Skill = new int[Constant.MAX_PET_SKILLS];
+            int statCount = System.Enum.GetValues(typeof(Stat)).Length;
+            Data.Pet[index].Stat = new byte[statCount];
+            Data.Pet[index].Skill = new int[Constant.MAX_PET_SKILLS];
 
             for (int i = 0; i < Constant.MAX_PET_SKILLS; i++)
-                Core.Type.Pet[index].Skill[i] = -1;
+                Data.Pet[index].Skill[i] = -1;
 
             GameState.Pet_Loaded[index] = 0;
         }
@@ -29,7 +30,7 @@ namespace Client
         {
             int i;
 
-            Core.Type.Pet = new Core.Type.PetStruct[Constant.MAX_PETS];
+            Data.Pet = new Core.Type.Pet[Constant.MAX_PETS];
 
             for (i = 0; i < Constant.MAX_PETS; i++)
                 ClearPet(i);
@@ -38,7 +39,7 @@ namespace Client
 
         public static void StreamPet(int petNum)
         {
-            if (petNum >= 0 && string.IsNullOrEmpty(Core.Type.Pet[petNum].Name) && GameState.Pet_Loaded[petNum] == 0)
+            if (petNum >= 0 && string.IsNullOrEmpty(Data.Pet[petNum].Name) && GameState.Pet_Loaded[petNum] == 0)
             {
                 GameState.Pet_Loaded[petNum] = 1;
                 SendRequestPet(petNum);
@@ -92,7 +93,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSavePet);
             buffer.WriteInt32(petNum);
 
-            ref var withBlock = ref Core.Type.Pet[petNum];
+            ref var withBlock = ref Data.Pet[petNum];
             buffer.WriteInt32(withBlock.Num);
             buffer.WriteString(withBlock.Name);
             buffer.WriteInt32(withBlock.Sprite);
@@ -101,10 +102,11 @@ namespace Client
             buffer.WriteInt32(withBlock.MaxLevel);
             buffer.WriteInt32(withBlock.ExpGain);
             buffer.WriteByte(withBlock.Points);
-            buffer.WriteInt32(withBlock.StatType);
+            buffer.WriteByte(withBlock.StatType);
             buffer.WriteInt32(withBlock.LevelingType);
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
+            int statCount = System.Enum.GetValues(typeof(Stat)).Length;
+            for (i = 0; i < statCount; i++)
                 buffer.WriteInt32(withBlock.Stat[i]);
 
             for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
