@@ -762,14 +762,18 @@ namespace Server
                 buffer.WriteInt32(Data.MapItem[mapNum, i].Y);
             }
 
+            var vitalCount = System.Enum.GetNames(typeof(Vital)).Length;
+
             for (int i = 0, loopTo11 = Core.Constant.MAX_MAP_NPCS; i < loopTo11; i++)
             {
                 buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[i].Num);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].X);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Y);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Dir);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(int)Vital.Health]);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(int)Vital.Stamina]);
+                for (int x = 0; x < vitalCount; x++)
+                {
+                    buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[x]);
+                }
             }
 
             if (Data.MapResource[GetPlayerMap(index)].ResourceCount > 0)

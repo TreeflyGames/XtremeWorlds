@@ -270,13 +270,13 @@ namespace Client
                     }
 
                     // animate textbox
-                    if (GameState.chatShowLine == "|")
+                    if (GameState.ChatShowLine == "|")
                     {
-                        GameState.chatShowLine = "";
+                        GameState.ChatShowLine = "";
                     }
                     else
                     {
-                        GameState.chatShowLine = "|";
+                        GameState.ChatShowLine = "|";
                     }
 
                     tmr500 = tick + 500;
@@ -366,13 +366,13 @@ namespace Client
                 if (tmr500 < tick)
                 {
                     // animate textbox
-                    if (GameState.chatShowLine == "|")
+                    if (GameState.ChatShowLine == "|")
                     {
-                        GameState.chatShowLine = "";
+                        GameState.ChatShowLine = "";
                     }
                     else
                     {
-                        GameState.chatShowLine = "|";
+                        GameState.ChatShowLine = "|";
                     }
 
                     tmr500 = tick + 500;
