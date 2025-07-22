@@ -32,7 +32,15 @@
     <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Content\**\*.*">
+	  <Content Include="Content\**\*.*">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+	  </Content>
+	  <Compile Remove="Content\Crystalshire.cs" />
+	  <Compile Remove="Content\UI.cs" />
+	  <Content Remove="Content\Crystalshire.cs" />
+	  <Content Remove="Content\UI.cs" />
+    <EmbeddedResource Include="Icon.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
@@ -51,6 +59,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="Microsoft.VisualBasic" />
     <PackageReference Include="MonoGame.Content.Builder.Task" />
     <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />

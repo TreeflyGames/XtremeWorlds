@@ -136,10 +136,10 @@ namespace Server
                     NetworkSend.PlayerMsg(index, "Script saved successfully!", (int)Core.Color.Yellow);
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                NetworkSend.PlayerMsg(index, $"Script compile error: {ex.Message}", (int)Core.Color.BrightRed);
-                Debug.WriteLine($"Script compile error: {ex}");
+                NetworkSend.PlayerMsg(index, e.Message, (int)Core.Color.BrightRed);
+                Console.WriteLine(e.Message);
             }
         }
     }

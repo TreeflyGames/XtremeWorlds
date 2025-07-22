@@ -14,6 +14,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using System;
 using System.Reflection;
+using Client.Game.Objects;
 
 namespace Client
 {
@@ -524,6 +525,26 @@ namespace Client
             // Check for action keys
             GameState.VbKeyControl = CurrentKeyboardState.IsKeyDown(Keys.LeftControl);
             GameState.VbKeyShift = CurrentKeyboardState.IsKeyDown(Keys.LeftShift);
+
+            if (IsKeyStateActive(Keys.F8))
+            {
+                var uiPath = System.IO.Path.Combine(Core.Path.Skins, SettingsManager.Instance.Skin + ".cs");
+
+                // Open with default text editor
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = uiPath,
+                    UseShellExecute = true
+                });
+
+            }
+
+            if (IsKeyStateActive(Keys.F5))
+            {
+                UI.Load();
+                Gui.Init();
+
+            }
 
             // Handle Escape key to toggle menus
             if (IsKeyStateActive(Keys.Escape))
