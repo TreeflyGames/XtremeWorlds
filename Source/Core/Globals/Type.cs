@@ -1041,6 +1041,11 @@ namespace Core
             public string[] Code;
         }
 
+        public struct UI
+        {
+            public string[] Code;
+        }
+
         #endregion
     }
 }

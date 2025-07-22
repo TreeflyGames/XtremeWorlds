@@ -55,5 +55,7 @@ namespace Core
         public static TileHistory[] TileHistory;
         public static Autotile[,] Autotile;
         public static MapEvent[] MapEvents;
+
+        public static UI UI;
     }
 }
