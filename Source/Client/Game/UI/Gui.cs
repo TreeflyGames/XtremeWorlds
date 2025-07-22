@@ -4034,8 +4034,6 @@ namespace Client
         {
             long Top;
 
-            return;
-
             // move Hotbar
             Windows[GetWindowIndex("winHotbar")].Left = GameState.ResolutionWidth - 432;
 
