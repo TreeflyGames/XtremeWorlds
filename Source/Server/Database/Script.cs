@@ -451,6 +451,11 @@ public class Script
         NetworkSend.SendVitals(index);
     }
 
+    public void LeaveMap(int index, int mapNum)
+    {
+
+    }
+
     public void LeftGame(int index)
     {
 
