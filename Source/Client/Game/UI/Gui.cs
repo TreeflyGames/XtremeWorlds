@@ -636,7 +636,7 @@ namespace Client
         // Rendering & Initialisation
         public static void Init()
         {
-            // Erae windows
+            // Erase windows
             Gui.Windows = new ConcurrentDictionary<long, Window>();
 
             // Starter values
