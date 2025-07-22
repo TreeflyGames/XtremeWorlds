@@ -14,22 +14,22 @@ namespace Client
         private static int i;
         private static int tmr1000;
         private static int tick;
-        private static int fogtmr;
-        private static int chattmr;
-        private static int tmpfps;
-        private static int tmplps;
+        private static int fogTmr;
+        private static int chatTmr;
+        private static int tmpFps;
+        private static int tmpLps;
         private static int walkTimer;
         private static int frameTime;
-        private static int tmrweather;
+        private static int tmrWeather;
         private static int barTmr;
         private static int tmr25;
         private static int tmr500;
         private static int tmr250;
-        private static int tmrconnect;
+        private static int tmrConnect;
         private static int TickFPS;
-        private static int fadetmr;
-        private static int rendertmr;
-        private static int[] animationtmr = new int[2]; // Array of size 2
+        private static int fadeTmr;
+        private static int renderTmr;
+        private static int[] animationTmr = new int[2];
 
         public static void Game()
         {
@@ -60,7 +60,7 @@ namespace Client
 
                 for (int layer = 0; layer <= 1; layer++)
                 {
-                    if (animationtmr[layer] < tick)
+                    if (animationTmr[layer] < tick)
                     {
                         for (byte x = 0, loopTo = Data.MyMap.MaxX; x < loopTo; x++)
                         {
@@ -70,12 +70,12 @@ namespace Client
                                 {
                                     if (Data.MyMap.Tile[x, y].Type == TileType.Animation)
                                     {                                      
-                                        animationtmr[layer] = tick + Animation.PlayAnimation(Data.Animation[Data.MyMap.Tile[x, y].Data1].Sprite[layer], layer, Data.MyMap.Tile[x, y].Data1, x, y);
+                                        animationTmr[layer] = tick + Animation.PlayAnimation(Data.Animation[Data.MyMap.Tile[x, y].Data1].Sprite[layer], layer, Data.MyMap.Tile[x, y].Data1, x, y);
                                     }
 
                                     if (Data.MyMap.Tile[x, y].Type2 == TileType.Animation)
                                     {
-                                        animationtmr[layer] = tick + Animation.PlayAnimation(Data.Animation[Data.MyMap.Tile[x, y].Data1_2].Sprite[layer], layer, Data.MyMap.Tile[x, y].Data1_2, x, y);
+                                        animationTmr[layer] = tick + Animation.PlayAnimation(Data.Animation[Data.MyMap.Tile[x, y].Data1_2].Sprite[layer], layer, Data.MyMap.Tile[x, y].Data1_2, x, y);
                                     }
                                 }
                             }
@@ -191,7 +191,7 @@ namespace Client
                 }
 
                 // chat timer
-                if (chattmr < tick)
+                if (chatTmr < tick)
                 {
                     // scrolling
                     if (GameState.ChatButtonUp)
@@ -204,11 +204,11 @@ namespace Client
                         GameLogic.ScrollChatBox(1);
                     }
 
-                    chattmr = tick + 50;
+                    chatTmr = tick + 50;
                 }
 
                 // fog scrolling
-                if (fogtmr < tick)
+                if (fogTmr < tick)
                 {
                     if (GameState.CurrentFogSpeed > 0)
                     {
@@ -223,7 +223,7 @@ namespace Client
                         if (GameState.FogOffsetY < -255)
                             GameState.FogOffsetY = 1;
 
-                        fogtmr = tick + 255 - GameState.CurrentFogSpeed;
+                        fogTmr = tick + 255 - GameState.CurrentFogSpeed;
                     }
                 }
 
@@ -385,13 +385,13 @@ namespace Client
                 }
             }
 
-            if (tmrweather < tick)
+            if (tmrWeather < tick)
             {
                 Weather.ProcessWeather();
-                tmrweather = tick + 50;
+                tmrWeather = tick + 50;
             }
 
-            if (fadetmr < tick)
+            if (fadeTmr < tick)
             {
                 if (GameState.FadeType != 2)
                 {
@@ -418,7 +418,7 @@ namespace Client
                         }
                     }
                 }
-                fadetmr = tick + 30;
+                fadeTmr = tick + 30;
             }
 
             Gui.ResizeGUI();
