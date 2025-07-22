@@ -101,6 +101,15 @@ namespace Server
 
             if (OldMap != mapNum)
             {
+                try
+                {
+                    Script.Instance?.LeaveMap(index, OldMap);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
                 SendLeaveMap(index, OldMap);
             }
 
