@@ -26,6 +26,7 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerInvUpdate] = Packet_PlayerInvUpdate;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerWornEq] = Packet_PlayerWornEquipment;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerHP] = Player.Packet_PlayerHP;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerMP] = Player.Packet_PlayerMP;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerSP] = Player.Packet_PlayerSP;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerStats] = Player.Packet_PlayerStats;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerData] = Player.Packet_PlayerData;

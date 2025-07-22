@@ -1047,6 +1047,27 @@ namespace Client
             buffer.Dispose();
         }
 
+        public static void Packet_PlayerMP(ref byte[] data)
+        {
+            var buffer = new ByteStream(data);
+
+            SetPlayerVital(GameState.MyIndex, Core.Vital.Mana, buffer.ReadInt32());
+
+            // set max width
+            if (GetPlayerVital(GameState.MyIndex, Core.Vital.Health) > 0)
+            {
+                //GameState.BarWidth_GuiHP_Max = (long)Math.Round(GetPlayerVital(GameState.MyIndex, Core.Vital.Health) / 209d / (GetPlayerMaxVital(GameState.MyIndex, Core.Vital.Health) / 209d) * 209d);
+            }
+            else
+            {
+                //GameState.BarWidth_GuiHP_Max = 0L;
+            }
+
+            Gui.UpdateStats_UI();
+
+            buffer.Dispose();
+        }
+
         public static void Packet_PlayerSP(ref byte[] data)
         {
             var buffer = new ByteStream(data);

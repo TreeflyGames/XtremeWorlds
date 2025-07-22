@@ -449,7 +449,6 @@ namespace Server
             buffer.WriteInt32((int)ServerPackets.SPlayerStats);
             buffer.WriteInt32(index);
 
-            // Fix: Stat.Count does not exist. Use Enum.GetValues(typeof(Stat)).Length
             int statCount = Enum.GetValues(typeof(Stat)).Length;
             for (int i = 0; i < statCount; i++)
                 buffer.WriteInt32(GetPlayerStat(index, (Stat)i));
@@ -461,7 +460,8 @@ namespace Server
 
         public static void SendVitals(int index)
         {
-            for (int i = 0; i < Enum.GetValues(typeof(Vital)).Length; i++)
+            var vitalCount = Enum.GetValues(typeof(Vital)).Length;
+            for (int i = 0; i < vitalCount; i++)
                 SendVital(index, (Vital)i);
         }
 
@@ -475,6 +475,11 @@ namespace Server
                 case Vital.Health:
                     {
                         buffer.WriteInt32((int)ServerPackets.SPlayerHP);
+                        break;
+                    }
+                case Vital.Mana:
+                    {
+                        buffer.WriteInt32((int)ServerPackets.SPlayerMP);
                         break;
                     }
                 case Vital.Stamina:
@@ -826,8 +831,8 @@ namespace Server
             for (i = 0; i < statCount; i++)
                 buffer.WriteInt32(GetPlayerStat(index, (Stat)i));
 
-            var resourceTypeCount = Enum.GetValues(typeof(ResourceType)).Length;
-            for (i = 0; i < resourceTypeCount; i++)
+            var resourceCount = Enum.GetValues(typeof(ResourceSkill)).Length;
+            for (i = 0; i < resourceCount; i++)
             {
                 buffer.WriteInt32(GetPlayerGatherSkillLvl(index, i));
                 buffer.WriteInt32(GetPlayerGatherSkillExp(index, i));
