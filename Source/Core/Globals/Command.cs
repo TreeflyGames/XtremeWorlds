@@ -190,6 +190,12 @@ namespace Core.Global
                         break;
                     }
 
+                case Vital.Mana:
+                    {
+                        GetPlayerMaxVitalRet = (int)Math.Round(50d + (Data.Player[index].Level + GetPlayerStat(index, Stat.Intelligence) / 2d) * 2d);
+                        break;
+
+                    }
                 case Vital.Stamina:
                     {
                         GetPlayerMaxVitalRet = (int)Math.Round(50d + (Data.Player[index].Level + GetPlayerStat(index, Stat.Spirit) / 2d) * 2d);
@@ -207,7 +213,7 @@ namespace Core.Global
             int i;
 
             x = Data.Player[index].Stat[(int)Stat];
-            var count = Enum.GetNames(typeof(ItemSubCategory)).Length;
+            var count = Enum.GetNames(typeof(Equipment)).Length;
 
             for (i = 0; i < count; i++)
             {
