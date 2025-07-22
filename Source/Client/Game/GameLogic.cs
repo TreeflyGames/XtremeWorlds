@@ -1510,7 +1510,7 @@ namespace Client
             GameState.NewCharJob = 0L;
             GameState.NewCharSprite = 1L;
             GameState.NewCnarGender = (long)Sex.Male;
-            Gui.Windows[Gui.GetWindowIndex("winJobs")].Controls[(int)Gui.GetControlIndex("winJobs", "lblClassName")].Text = Data.Job[(int)GameState.NewCharJob].Name;
+            Gui.Windows[Gui.GetWindowIndex("winJobs")].Controls[(int)Gui.GetControlIndex("winJobs", "lblJobName")].Text = Data.Job[(int)GameState.NewCharJob].Name;
             Gui.ShowWindow(Gui.GetWindowIndex("winJobs"));
         }
 
@@ -1627,7 +1627,7 @@ namespace Client
             GameState.descLastItem = GameState.descItem;
 
             // show req. labels
-            Gui.Windows[Gui.GetWindowIndex("winDescription")].Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Visible = true;
+            Gui.Windows[Gui.GetWindowIndex("winDescription")].Controls[(int)Gui.GetControlIndex("winDescription", "lblJob")].Visible = true;
             Gui.Windows[Gui.GetWindowIndex("winDescription")].Controls[(int)Gui.GetControlIndex("winDescription", "lblLevel")].Visible = true;
             Gui.Windows[Gui.GetWindowIndex("winDescription")].Controls[(int)Gui.GetControlIndex("winDescription", "picBar")].Visible = false;
 
@@ -1696,8 +1696,8 @@ namespace Client
                     Color = Microsoft.Xna.Framework.Color.Green;
                 }
 
-                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Text = jobName;
-                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Color = Color;
+                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblJob")].Text = jobName;
+                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblJob")].Color = Color;
 
                 // level
                 if (Core.Data.Item[(int)itemNum].LevelReq > 0)
@@ -1997,16 +1997,16 @@ namespace Client
                     sUse = "Max Rank";
                     // End If
                     // show controls
-                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Visible = true;
+                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblJob")].Visible = true;
                     withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "picBar")].Visible = true;
                     // set vals
-                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Text = sUse;
-                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Color = Microsoft.Xna.Framework.Color.White;
+                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblJob")].Text = sUse;
+                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblJob")].Color = Microsoft.Xna.Framework.Color.White;
                 }
                 else
                 {
                     // hide some controls
-                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblClass")].Visible = false;
+                    withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblJob")].Visible = false;
                     withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "picBar")].Visible = false;
                 }
             }
