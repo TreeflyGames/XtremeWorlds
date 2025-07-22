@@ -528,13 +528,19 @@ static void LoadFonts()
             {
                 var uiPath = System.IO.Path.Combine(Core.Path.Skins, SettingsManager.Instance.Skin + ".cs");
 
-                // Open with default text editor
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                if (!System.IO.File.Exists(uiPath))
                 {
-                    FileName = uiPath,
-                    UseShellExecute = true
-                });
-
+                    Console.WriteLine($"File not found: {uiPath}");
+                }
+                else
+                { 
+                    // Open with default text editor
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = uiPath,
+                        UseShellExecute = true
+                    });
+                }
             }
 
             if (IsKeyStateActive(Keys.F5))
