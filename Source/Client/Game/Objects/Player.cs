@@ -1146,7 +1146,7 @@ namespace Client
                 {
                     var withBlock = Gui.Windows[Gui.GetWindowIndex("winCharacter")];
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblName")].Text = "Name";
-                    withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblJob")].Text = "Class";
+                    withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblJob")].Text = "Job";
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblLevel")].Text = "Level";
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblGuild")].Text = "Guild";
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblName2")].Text = GetPlayerName(GameState.MyIndex);
