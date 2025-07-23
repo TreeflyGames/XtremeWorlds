@@ -1,3 +1,8 @@
+on:
+  pull_request:
+    types:
+      - closed
+      
 build-windows:
     name: Build for Windows
     runs-on: windows-latest
