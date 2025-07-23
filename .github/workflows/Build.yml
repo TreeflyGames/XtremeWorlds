@@ -1,6 +1,5 @@
 build-windows:
     name: Build for Windows
-    needs: [generate-keys]
     runs-on: windows-latest
     steps:
     - name: Checkout Code
