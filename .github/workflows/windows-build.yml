@@ -1,0 +1,13 @@
+name: Windows Build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build for Windows
+        run: dotnet publish -c Release -r win-x64

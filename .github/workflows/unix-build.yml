@@ -1,0 +1,13 @@
+name: Linux Build
+
+on:
+  push:
+    branches: [ unix ]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build for Linux
+        run: dotnet publish -c Release -r linux-x64
