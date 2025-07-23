@@ -9,5 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build for Linux
-        run: dotnet publish -c Release -r linux-x64
+
+      - name: Install .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore and Build
+        run: dotnet publish Source/Client/Client.csproj -c Release -r linux-x64
