@@ -1,13 +1,16 @@
-name: Windows Build
-
-on:
-  push:
-    branches: [ master ]
-
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Build for Windows
-        run: dotnet publish -c Release -r win-x64
+      - name: Checkout code with submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build project
+        run: dotnet publish Source/Client/Client.csproj -c Release -r win-x64
