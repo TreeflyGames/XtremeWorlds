@@ -1,3 +1,4 @@
+using System;
 using Core;
 using Core.Database;
 using Microsoft.Extensions.Configuration;
@@ -11,10 +12,16 @@ using Reoria.Engine.Container.Interfaces;
 using Reoria.Engine.Container.Logging;
 using Reoria.Engine.Container.Logging.Interfaces;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using static Core.Type;
+using Path = System.IO.Path;
 
 namespace Server
 {
@@ -39,6 +46,23 @@ namespace Server
 
         static General()
         {
+            if (OperatingSystem.IsMacOS())
+            {
+                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "XtremeWorlds");
+                string targetFile = Path.Combine(configDir, "appsettings.json");
+
+                if (!File.Exists(targetFile))
+                {
+                    string bundledFile = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+                    if (File.Exists(bundledFile))
+                    {
+                        Directory.CreateDirectory(configDir);
+                        File.Copy(bundledFile, targetFile);
+                    }
+                }
+            }
+            
             IServiceCollection services = new ServiceCollection()
                 .AddTransient<IEngineConfigurationSources, EngineConfigurationSources>()
                 .AddTransient<IEngineConfigurationProvider, EngineConfigurationProvider>()

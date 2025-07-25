@@ -1,4 +1,7 @@
-﻿using Client.Game.Objects;
+﻿using System;
+using System.IO;
+using System.Linq;
+using Client.Game.Objects;
 using Core;
 using Core.Localization;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +17,7 @@ using Reoria.Engine.Container.Logging;
 using Reoria.Engine.Container.Logging.Interfaces;
 using System.Runtime.InteropServices;
 using static Core.Global.Command;
+using Path = System.IO.Path;
 
 namespace Client
 {
@@ -38,6 +42,23 @@ namespace Client
         
         public static void Startup()
         {
+            if (OperatingSystem.IsMacOS())
+            {
+                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "XtremeWorlds");
+                string targetFile = Path.Combine(configDir, "appsettings.json");
+
+                if (!File.Exists(targetFile))
+                {
+                    string bundledFile = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+                    if (File.Exists(bundledFile))
+                    {
+                        Directory.CreateDirectory(configDir);
+                        File.Copy(bundledFile, targetFile);
+                    }
+                }
+            }
+
             IServiceCollection services = new ServiceCollection()
                 .AddTransient<IEngineConfigurationSources, EngineConfigurationSources>()
                 .AddTransient<IEngineConfigurationProvider, EngineConfigurationProvider>()
