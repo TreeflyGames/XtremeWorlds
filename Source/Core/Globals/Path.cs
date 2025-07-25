@@ -33,15 +33,6 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Config");
-            }
-        }
-
-        /// <summary> Returns skins directory </summary>
-        public static string Skins
-        {
-            get
-            {
                 if (OperatingSystem.IsMacOS())
                 {
                     var appData = System.IO.Path.Combine(
@@ -55,6 +46,15 @@ namespace Core
                 {
                     return System.IO.Path.Combine(Local, "Config");
                 }
+            }
+        }
+
+        /// <summary> Returns skins directory </summary>
+        public static string Skins
+        {
+            get
+            {
+                return System.IO.Path.Combine(Asset, "Skins");
             }
         }
 
