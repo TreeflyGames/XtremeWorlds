@@ -827,8 +827,8 @@ namespace Core
             public short FringeAnim;
             public short Roof;
             public short Fringe2Anim;
-            public TileType Type;
-            public TileType Type2;
+            public XWTileType Type;
+            public XWTileType Type2;
             public short Data1;
             public short Data2;
             public short Data3;
@@ -907,8 +907,7 @@ namespace Core
             public SDWarpData Warp;
             public SDLayer MapLayer;
         }
-
-        // New s for Enhanced Features
+        
         public struct Quest
         {
             public string Name;

@@ -1,6 +1,8 @@
 // Filename: CoreEnums.cs
 // It's recommended to rename the file to avoid confusion with the old "Enum.cs"
 
+using System;
+
 namespace Core
 {
     /// <summary>
@@ -65,7 +67,7 @@ namespace Core
     /// Defines special attributes or data flags for a map tile, often used for map serialization.
     /// Note the explicit integer values, which differ from the logical TileType enum.
     /// </summary>
-    public enum TileAttribute : byte
+    public enum XWTileType : byte
     {
         None = 0,
         Block = 1,

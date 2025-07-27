@@ -17,10 +17,12 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using static Core.Global.Command;
 using static Core.Type;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Net.WebRequestMethods;
+using File=System.IO.File;
 using Path = System.IO.Path;
 namespace Server
 {
@@ -879,34 +881,36 @@ namespace Server
             // Construct the path to the "maps" directory
             string mapsDir = Path.Combine(baseDir, "maps");
             Directory.CreateDirectory(mapsDir);
+            
+            string xwMapsDir = Path.Combine(mapsDir, "xw");
+            Directory.CreateDirectory(xwMapsDir);
+            
+            string csMapsDir = Path.Combine(mapsDir, "cs");
+            Directory.CreateDirectory(csMapsDir);
+            
+            string sdMapDir = Path.Combine(mapsDir, "sd");
+            Directory.CreateDirectory(sdMapDir);
 
-            //if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
-            //{
-            //var csMap = LoadCSMap(mapNum);
-            //Data.Map[mapNum] = MapFromCSMap(csMap);
-            //    return;
-            //}
+            if (System.IO.File.Exists(xwMapsDir + @"\map" + mapNum + ".dat"))
+            {
+                var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum + ".dat");
+                Data.Map[mapNum] = MapFromXWMap(xwMap);
+                return;
+            }
+            
+            if (File.Exists(csMapsDir + @"\map" + mapNum + ".ini"))
+            {
+                var csMap = LoadCSMap(mapNum);
+                Data.Map[mapNum] = MapFromCSMap(csMap);
+                return;
+            }
 
-                if (System.IO.File.Exists(mapsDir + @"\map" + mapNum + ".dat"))
-                {
-                    try
-                    {
-                        var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
-                        Data.Map[mapNum] = MapFromXWMap(xwMap);
-                        return;
-                    }
-                    catch { Exception e; }
-                    {
-                        Console.WriteLine(mapNum + " failed to load map!");
-                    }
-                }
-
-            //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
-            //{
-                // Dim sdMap As SDMap = loadsdmap(Type.MapsDir & "\sd\map" & mapNum.ToString() & ".dat")
-                // Type.Map(mapNum) = MapFromSDMap(sdMap)
-            //    return;
-            //}
+            if (File.Exists(sdMapDir + @"\map" + mapNum + ".dat"))
+            {
+                var sdMap = LoadSDMap(sdMapDir + @"\map" +  mapNum + ".dat")
+                Type.Map(mapNum) = MapFromSDMap(sdMap);
+                return;
+            }
 
             JObject data;
 
@@ -1077,11 +1081,11 @@ namespace Server
                             xwMap.Tile[x, y].Mask = reader.ReadInt16(); // 44
                             xwMap.Tile[x, y].MaskAnim = reader.ReadInt16(); // 46
                             xwMap.Tile[x, y].Fringe = reader.ReadInt16(); // 48
-                            xwMap.Tile[x, y].Type = (TileType)(TileType)reader.ReadByte(); // 50
+                            xwMap.Tile[x, y].Type = (XWTileType)reader.ReadByte(); // 50
                             xwMap.Tile[x, y].Data1 = reader.ReadInt16(); // 51
                             xwMap.Tile[x, y].Data2 = reader.ReadInt16(); // 53
                             xwMap.Tile[x, y].Data3 = reader.ReadInt16(); // 55
-                            xwMap.Tile[x, y].Type2 = (TileType)(TileType)reader.ReadByte(); // 57
+                            xwMap.Tile[x, y].Type2 = (XWTileType)reader.ReadByte(); // 57
                             xwMap.Tile[x, y].Data1_2 = reader.ReadInt16(); // 59
                             xwMap.Tile[x, y].Data2_2 = reader.ReadInt16(); // 61
                             xwMap.Tile[x, y].Data3_2 = reader.ReadInt16(); // 63
@@ -1165,55 +1169,36 @@ namespace Server
             tile.Data1_2 = xwTile.Data1_2;
             tile.Data2_2 = xwTile.Data2_2;
             tile.Data3_2 = xwTile.Data3_2;
-            tile.Type = (TileType)xwTile.Type;
-            tile.Type2 = (TileType)xwTile.Type2;
-
-            SetTileType(ref tile.Type);
-            SetTileType(ref tile.Type2);
+            
+            tile.Type = ToTileType(xwTile.Type);
+            tile.Type2 = ToTileType(xwTile.Type2);
 
             return tile;
-        }
-
-        public static void SetTileType(ref TileType tileType)
+        } 
+        
+        public static TileType ToTileType(XWTileType xwTileType)
         {
-            switch (tileType)
+            string name = Enum.GetName(typeof(XWTileType), xwTileType);
+            return name switch
             {
-                case TileType _ when tileType == (TileType)TileType.Warp:
-                    tileType = TileType.Warp;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.Trap:
-                    tileType = TileType.Trap;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.Heal:
-                    tileType = TileType.Heal;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.Shop:
-                    tileType = TileType.Shop;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.NoCrossing:
-                    tileType = TileType.NoCrossing;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.Key:
-                    tileType = TileType.Key;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.KeyOpen:
-                    tileType = TileType.KeyOpen;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.Door:
-                    tileType = TileType.Door;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.WalkThrough:
-                    tileType = TileType.WalkThrough;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.Arena:
-                    tileType = TileType.Arena;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.Roof:
-                    tileType = TileType.Roof;
-                    break;
-                case TileType _ when tileType == (TileType)TileType.NoCrossing:
-                    break;
-            }
+                "None" => TileType.None,
+                "Block" => TileType.Blocked,
+                "Warp" => TileType.Warp,
+                "Item" => TileType.Item,
+                "NpcAvoid" => TileType.NpcAvoid,
+                "NpcSpawn" => TileType.NpcSpawn,
+                "Shop" => TileType.Shop,
+                "Heal" => TileType.Heal,
+                "Damage" => TileType.Trap,
+                "NoCrossing" => TileType.NoCrossing,
+                "Key" => TileType.Key,
+                "KeyOpen" => TileType.KeyOpen,
+                "Door" => TileType.Door,
+                "WalkThrough" => TileType.WalkThrough,
+                "Arena" => TileType.Arena,
+                "Roof" => TileType.Roof,
+                _ => TileType.None // Default for unmapped types (e.g., Sign, DirectionBlock)
+            };
         }
 
         public static Map MapFromXWMap(XWMap xwMap)
@@ -1262,6 +1247,11 @@ namespace Server
             map.MaxY = 11;
 
             return map;
+        }
+        
+        public static void LoadSDMap(SDMap sdMap, string fileName)
+        {
+            
         }
 
         public static Map MapFromCSMap(CSMap csMap)
