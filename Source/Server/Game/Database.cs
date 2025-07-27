@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using static Core.Global.Command;
 using static Core.Type;
 using static System.Net.Mime.MediaTypeNames;
@@ -900,15 +901,15 @@ namespace Server
             
             if (File.Exists(csMapsDir + @"\map" + mapNum + ".ini"))
             {
-                var csMap = LoadCSMap(mapNum);
+                var csMap = LoadCSMap(csMapsDir + @"\map" + mapNum + ".ini");
                 Data.Map[mapNum] = MapFromCSMap(csMap);
                 return;
             }
 
             if (File.Exists(sdMapDir + @"\map" + mapNum + ".dat"))
             {
-                var sdMap = LoadSDMap(sdMapDir + @"\map" +  mapNum + ".dat")
-                Type.Map(mapNum) = MapFromSDMap(sdMap);
+                SDMap sdMap = LoadSDMap(sdMapDir + @"\map" + mapNum + ".dat");
+                Data.Map[mapNum] = MapFromSDMap(sdMap);
                 return;
             }
 
@@ -928,54 +929,48 @@ namespace Server
             Resource.CacheResources(mapNum);
         }
 
-        public static CSMap LoadCSMap(long mapNum)
+        public static CSMap  LoadCSMap(string fileName)
         {
-            string filename;
             long i;
             long x;
             long y;
             var csMap = new CSMap();
 
-            // Load map data
-            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + mapNum + ".ini";
-
             // General
             {
                 var withBlock = csMap.MapData;
-                withBlock.Name = GetVar(filename, "General", "Name");
-                withBlock.Music = GetVar(filename, "General", "Music");
-                withBlock.Moral = (byte)Conversion.Val(GetVar(filename, "General", "Moral"));
-                withBlock.Up = (int)Conversion.Val(GetVar(filename, "General", "Up"));
-                withBlock.Down = (int)Conversion.Val(GetVar(filename, "General", "Down"));
-                withBlock.Left = (int)Conversion.Val(GetVar(filename, "General", "Left"));
-                withBlock.Right = (int)Conversion.Val(GetVar(filename, "General", "Right"));
-                withBlock.BootMap = (int)Conversion.Val(GetVar(filename, "General", "BootMap"));
-                withBlock.BootX = (byte)Conversion.Val(GetVar(filename, "General", "BootX"));
-                withBlock.BootY = (byte)Conversion.Val(GetVar(filename, "General", "BootY"));
-                withBlock.MaxX = (byte)Conversion.Val(GetVar(filename, "General", "MaxX"));
-                withBlock.MaxY = (byte)Conversion.Val(GetVar(filename, "General", "MaxY"));
+                withBlock.Name = GetVar(fileName, "General", "Name");
+                withBlock.Music = GetVar(fileName, "General", "Music");
+                withBlock.Moral = (byte)Conversion.Val(GetVar(fileName, "General", "Moral"));
+                withBlock.Up = (int)Conversion.Val(GetVar(fileName, "General", "Up"));
+                withBlock.Down = (int)Conversion.Val(GetVar(fileName, "General", "Down"));
+                withBlock.Left = (int)Conversion.Val(GetVar(fileName, "General", "Left"));
+                withBlock.Right = (int)Conversion.Val(GetVar(fileName, "General", "Right"));
+                withBlock.BootMap = (int)Conversion.Val(GetVar(fileName, "General", "BootMap"));
+                withBlock.BootX = (byte)Conversion.Val(GetVar(fileName, "General", "BootX"));
+                withBlock.BootY = (byte)Conversion.Val(GetVar(fileName, "General", "BootY"));
+                withBlock.MaxX = (byte)Conversion.Val(GetVar(fileName, "General", "MaxX"));
+                withBlock.MaxY = (byte)Conversion.Val(GetVar(fileName, "General", "MaxY"));
 
-                withBlock.Weather = (int)Conversion.Val(GetVar(filename, "General", "Weather"));
-                withBlock.WeatherIntensity = (int)Conversion.Val(GetVar(filename, "General", "WeatherIntensity"));
+                withBlock.Weather = (int)Conversion.Val(GetVar(fileName, "General", "Weather"));
+                withBlock.WeatherIntensity = (int)Conversion.Val(GetVar(fileName, "General", "WeatherIntensity"));
 
-                withBlock.Fog = (int)Conversion.Val(GetVar(filename, "General", "Fog"));
-                withBlock.FogSpeed = (int)Conversion.Val(GetVar(filename, "General", "FogSpeed"));
-                withBlock.FogOpacity = (int)Conversion.Val(GetVar(filename, "General", "FogOpacity"));
+                withBlock.Fog = (int)Conversion.Val(GetVar(fileName, "General", "Fog"));
+                withBlock.FogSpeed = (int)Conversion.Val(GetVar(fileName, "General", "FogSpeed"));
+                withBlock.FogOpacity = (int)Conversion.Val(GetVar(fileName, "General", "FogOpacity"));
 
-                withBlock.Red = (int)Conversion.Val(GetVar(filename, "General", "Red"));
-                withBlock.Green = (int)Conversion.Val(GetVar(filename, "General", "Green"));
-                withBlock.Blue = (int)Conversion.Val(GetVar(filename, "General", "Blue"));
-                withBlock.Alpha = (int)Conversion.Val(GetVar(filename, "General", "Alpha"));
+                withBlock.Red = (int)Conversion.Val(GetVar(fileName, "General", "Red"));
+                withBlock.Green = (int)Conversion.Val(GetVar(fileName, "General", "Green"));
+                withBlock.Blue = (int)Conversion.Val(GetVar(fileName, "General", "Blue"));
+                withBlock.Alpha = (int)Conversion.Val(GetVar(fileName, "General", "Alpha"));
 
-                withBlock.BossNpc = (int)Conversion.Val(GetVar(filename, "General", "BossNpc"));
+                withBlock.BossNpc = (int)Conversion.Val(GetVar(fileName, "General", "BossNpc"));
             }
 
             // Redim the map
             csMap.Tile = new CSTile[csMap.MapData.MaxX, csMap.MapData.MaxY];
-
-            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + mapNum + ".dat";
-
-            using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             using (var binaryReader = new BinaryReader(fileStream))
             {
                 // Assuming Core.Constant.MAX_X and Core.Constant.MAX_Y are the dimensions of your map
@@ -1169,7 +1164,6 @@ namespace Server
             tile.Data1_2 = xwTile.Data1_2;
             tile.Data2_2 = xwTile.Data2_2;
             tile.Data3_2 = xwTile.Data3_2;
-            
             tile.Type = ToTileType(xwTile.Type);
             tile.Type2 = ToTileType(xwTile.Type2);
 
@@ -1249,9 +1243,126 @@ namespace Server
             return map;
         }
         
-        public static void LoadSDMap(SDMap sdMap, string fileName)
+        public static SDMap LoadSDMap(string fileName)
         {
-            
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException($"The file {fileName} does not exist.");
+            }
+
+            // Load XML content
+            string xmlContent = File.ReadAllText(fileName);
+            XDocument doc;
+            try
+            {
+                doc = XDocument.Parse(xmlContent);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidDataException($"Invalid XML format in {fileName}.", ex);
+            }
+
+            SDMap sdMap = new SDMap();
+            var root = doc.Root;
+            if (root == null)
+            {
+                throw new InvalidDataException("XML document has no root element.");
+            }
+
+            var elements = root.Elements().ToList();
+            if (elements.Count < 9)
+            {
+                throw new InvalidDataException("Insufficient elements in XML document.");
+            }
+
+            // Parse basic properties
+            sdMap.Revision = int.Parse(elements[0].Value.Trim());
+            sdMap.Tileset = int.Parse(elements[1].Value.Trim());
+            sdMap.Name = elements[2].Value.Trim();
+            sdMap.Music = elements[4].Value.Trim();
+
+            // Parse connections (elements[3] contains first connection, elements[5] contains connections)
+            var connections = elements[5].Elements().ToList();
+            if (connections.Count >= 4)
+            {
+                sdMap.Up = int.Parse(connections[0].Value.Trim());
+                sdMap.Down = int.Parse(connections[1].Value.Trim());
+                sdMap.Left = int.Parse(connections[2].Value.Trim());
+                sdMap.Right = int.Parse(connections[3].Value.Trim());
+            }
+            else
+            {
+                throw new InvalidDataException("Invalid connections data.");
+            }
+
+            // Parse dimensions
+            sdMap.MaxX = int.Parse(elements[6].Value.Trim());
+            sdMap.MaxY = int.Parse(elements[7].Value.Trim());
+
+            // Parse warp data (elements[3] contains warp-like data)
+            var warpNode = elements[3].Elements().ToList();
+            if (warpNode.Count >= 3)
+            {
+                var pos1 = warpNode[0].Elements().ToList();
+                var pos2 = warpNode[1].Elements().ToList();
+                sdMap.Warp = new SDWarpData
+                {
+                    Pos = new SDWarpPos
+                    {
+                        X = int.Parse(pos1[0].Value.Trim() as string),
+                        Y = int.Parse(pos1[1].Value.Trim())
+                    },
+                    WarpDes = new SDWarpDes
+                    {
+                        X = int.Parse(pos2[0].Value.Trim()),
+                        Y = int.Parse(pos2[1].Value.Trim())
+                    },
+                    MapID = int.Parse(warpNode[2].Value.Trim())
+                };
+            }
+            else
+            {
+                throw new InvalidDataException("Invalid warp data.");
+            }
+
+            // Parse layer data (elements[8] contains layer data)
+            var layerNode = elements[8].Elements().ToList();
+            if (layerNode.Count < 2)
+            {
+                throw new InvalidDataException("Invalid layer data.");
+            }
+
+            string layerName = layerNode[0].Value.Trim();
+            var tileRows = layerNode[1].Elements().ToList();
+            var tiles = new List<SDMapTile>();
+
+            // Process each row of tiles
+            foreach (var row in tileRows)
+            {
+                var tileNodes = row.Elements().ToList();
+                foreach (var tile in tileNodes)
+                {
+                    tiles.Add(new SDMapTile { TileIndex = int.Parse(tile.Value.Trim()) });
+                }
+            }
+
+            // Create layer structure
+            sdMap.MapLayer = new SDLayer
+            {
+                MapLayer = new List<SDMapLayer>
+                {
+                    new SDMapLayer
+                    {
+                        Name = layerName,
+                        Tiles = new SDTile
+                        {
+                            ArrayOfMapTile = tiles
+                        }
+                    }
+                }
+            };
+
+            return sdMap;
         }
 
         public static Map MapFromCSMap(CSMap csMap)
@@ -1315,6 +1426,7 @@ namespace Server
 
         private static Map MapFromSDMap(SDMap sdMap)
         {
+            int i = 0;
             var mwMap = default(Map);
 
             mwMap.Name = sdMap.Name;
@@ -1329,6 +1441,24 @@ namespace Server
             mwMap.Tileset = sdMap.Tileset;
             mwMap.MaxX = (byte)sdMap.MaxX;
             mwMap.MaxY = (byte)sdMap.MaxY;
+
+            int count = sdMap.MapLayer.MapLayer.Count;
+            foreach (var layer in sdMap.MapLayer.MapLayer)
+            {
+                mwMap.Tile = new Tile[mwMap.MaxX, mwMap.MaxY];
+                for (int y = 0; y < mwMap.MaxY; y++)
+                {
+                    for (int x = 0; x < mwMap.MaxX; x++)
+                    {
+                        mwMap.Tile[x, y].Layer = new Layer[count];
+                        mwMap.Tile[x, y].Layer[i].Tileset = sdMap.Tileset;
+                        int tileIndex = layer.Tiles.ArrayOfMapTile[x + y].TileIndex;
+                        mwMap.Tile[x, y].Layer[i].X = tileIndex % 12;
+                        mwMap.Tile[x, y].Layer[i].Y = tileIndex % 12;
+                    }
+                }
+                i++;
+            }
 
             return mwMap;
         }
