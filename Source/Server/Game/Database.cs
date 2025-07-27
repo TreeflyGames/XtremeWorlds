@@ -906,9 +906,10 @@ namespace Server
                 return;
             }
 
-            if (File.Exists(sdMapDir + @"\map" + mapNum + ".dat"))
+            var mapPath = Path.Combine(sdMapDir, mapNum + ".map");
+            if (File.Exists(mapPath))
             {
-                SDMap sdMap = LoadSDMap(sdMapDir + @"\map" + mapNum + ".dat");
+                SDMap sdMap = LoadSDMap(mapPath);
                 Data.Map[mapNum] = MapFromSDMap(sdMap);
                 return;
             }
@@ -1245,11 +1246,6 @@ namespace Server
         
         public static SDMap LoadSDMap(string fileName)
         {
-            if (!File.Exists(fileName))
-            {
-                throw new FileNotFoundException($"The file {fileName} does not exist.");
-            }
-
             // Load XML content
             string xmlContent = File.ReadAllText(fileName);
             XDocument doc;
