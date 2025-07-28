@@ -1488,6 +1488,7 @@ namespace Server
             mwMap.MaxY = (byte)sdMap.MaxY;
 
             int layerCount = sdMap.MapLayer.MapLayer.Count;
+            int mapLayerEnumCount = Enum.GetValues(typeof(MapLayer)).Length;
             mwMap.Tile = new Tile[mwMap.MaxX, mwMap.MaxY];
 
             // Initialize all tiles and their layers
@@ -1495,7 +1496,7 @@ namespace Server
             {
                 for (int x = 0; x < mwMap.MaxX; x++)
                 {
-                    mwMap.Tile[x, y].Layer = new Layer[layerCount];
+                    mwMap.Tile[x, y].Layer = new Layer[mapLayerEnumCount];
                 }
             }
 
