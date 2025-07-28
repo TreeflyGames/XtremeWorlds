@@ -337,8 +337,7 @@ namespace Client
 
         public static void UpdatePictureBox(long winNum, string name, long left, long top, long width, long height, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(false)] bool canDrag, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(true)] bool clickThrough, [Optional, DefaultParameterValue(0L)] long image_norm, [Optional, DefaultParameterValue(0L)] long image_hover, [Optional, DefaultParameterValue(0L)] long image_mousedown, [Optional, DefaultParameterValue(0L)] long design_norm, [Optional, DefaultParameterValue(0L)] long design_hover, [Optional, DefaultParameterValue(0L)] long design_mousedown, [Optional, DefaultParameterValue("")] string texturePath, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick, [Optional] ref Action onDraw)
         {
-            const int stateCount = 6; // ControlState enum has 6 states used here: Normal, Hover, MouseDown, MouseMove, MouseUp, DoubleClick
-
+            var stateCount = Enum.GetValues(typeof(ControlState)).Length;
             var design = new List<long>(Enumerable.Repeat(0L, stateCount));
             var image = new List<long>(Enumerable.Repeat(0L, stateCount));
             var texture = new List<string>(Enumerable.Repeat(string.Empty, stateCount));
@@ -373,7 +372,6 @@ namespace Client
         public static void UpdateButton(long winNum, string name, long left, long top, long width, long height, [Optional, DefaultParameterValue("")] string text, [Optional, DefaultParameterValue(Core.Font.Georgia)] Core.Font font, [Optional, DefaultParameterValue(0L)] long icon, [Optional, DefaultParameterValue(0L)] long image_norm, [Optional, DefaultParameterValue(0L)] long image_hover, [Optional, DefaultParameterValue(0L)] long image_mousedown, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(0L)] long design_norm, [Optional, DefaultParameterValue(0L)] long design_hover, [Optional, DefaultParameterValue(0L)] long design_mousedown, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick, long xOffset = 0L, long yOffset = 0L, string tooltip = "", bool censor = false)
         {
             int stateCount = Enum.GetValues(typeof(ControlState)).Length;
-
             var design = new List<long>(Enumerable.Repeat(0L, stateCount).ToList());
             var image = new List<long>(Enumerable.Repeat(0L, stateCount).ToList());
             var texture = new List<string>(Enumerable.Repeat(Path.Designs, stateCount).ToList());
@@ -401,9 +399,7 @@ namespace Client
 
         public static void UpdateLabel(long winNum, string name, long left, long top, long width, long height, string text, Core.Font font, Color color, [Optional, DefaultParameterValue(Alignment.Left)] Alignment align, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(false)] bool clickThrough, [Optional, DefaultParameterValue(false)] bool censor, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick, [Optional] ref bool enabled)
         {
-            // Get the number of states in ControlState enum
             int controlStateCount = Enum.GetValues(typeof(ControlState)).Length;
-
             var designLabel = new List<long>(Enumerable.Repeat(0L, controlStateCount).ToList());
             var imageLabel = new List<long>(Enumerable.Repeat(0L, controlStateCount).ToList());
             var textureLabel = new List<string>(Enumerable.Repeat(Path.Designs, controlStateCount).ToList());
