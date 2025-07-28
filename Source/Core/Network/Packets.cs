@@ -17,6 +17,7 @@ namespace Core
             CPlayerMsg,
             CAdminMsg,
             CPlayerMove,
+            CStopPlayerMove,
             CPlayerDir,
             CUseItem,
             CAttack,

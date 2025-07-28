@@ -159,7 +159,10 @@ namespace Client
                     {
                         if (IsPlaying(i))
                         {
-                            Player.ProcessPlayerMovement(i);
+                            if (Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                Player.ProcessPlayerMovement(i);
+                            }
                         }
                     }
 
