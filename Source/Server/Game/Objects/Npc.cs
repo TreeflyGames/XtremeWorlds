@@ -102,6 +102,7 @@ namespace Server
 
                         if (x > Data.Map[mapNum].MaxX)
                             x = Data.Map[mapNum].MaxX - 1;
+
                         if (y > Data.Map[mapNum].MaxY)
                             y = Data.Map[mapNum].MaxY - 1;
 

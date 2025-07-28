@@ -1310,8 +1310,8 @@ namespace Server
             }
 
             // Parse dimensions
-            sdMap.MaxX = int.Parse(GetElementValue("MaxX"));
-            sdMap.MaxY = int.Parse(GetElementValue("MaxY"));
+            sdMap.MaxX = int.Parse(GetElementValue("Width"));
+            sdMap.MaxY = int.Parse(GetElementValue("Height"));
 
             // Parse warp data (support multiple <WarpData> nodes)
             var warpDataParent = root.Element("WarpData");
@@ -1522,6 +1522,12 @@ namespace Server
                 }
             }
 
+            mwMap.Npc = new int[Core.Constant.MAX_MAP_NPCS];
+
+            for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i++)
+            {
+                mwMap.Npc[i] = -1;
+            }
             return mwMap;
         }
 
