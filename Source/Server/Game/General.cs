@@ -131,7 +131,7 @@ namespace Server
         /// </summary>
         public static async System.Threading.Tasks.Task InitServerAsync()
         {
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (!System.Diagnostics.Debugger.IsAttached)
             {
                 try
                 {
@@ -238,7 +238,7 @@ namespace Server
             UpdateCaption();
             await NetworkConfig.Socket.StartListeningAsync(SettingsManager.Instance.Port, 5);
 
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (!System.Diagnostics.Debugger.IsAttached)
             {
                 try
                 {
