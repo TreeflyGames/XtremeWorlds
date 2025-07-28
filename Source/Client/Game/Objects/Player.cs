@@ -1338,7 +1338,7 @@ namespace Client
             int y;
             int dir;
             int index;
-            return;
+            
             var buffer = new ByteStream(data);
 
             index = buffer.ReadInt32();
