@@ -42,6 +42,14 @@ namespace Server
             if (Data.Map[mapNum].NoRespawn)
                 return;
 
+            if (Data.Map[mapNum].Npc == null)
+            {
+                return;
+            }
+
+            if (MapNpcNum < 0 || MapNpcNum >= Information.UBound(Data.Map[mapNum].Npc))
+                return;
+
             NpcNum = Data.Map[mapNum].Npc[(int)MapNpcNum];
 
             if (NpcNum >= 0)
@@ -105,7 +113,7 @@ namespace Server
                             spawned = true;
                             break;
                         }
-                        i += 0;
+                        i += 1;
                     }
                 }
 
