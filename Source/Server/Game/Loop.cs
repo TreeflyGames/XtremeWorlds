@@ -26,6 +26,7 @@ namespace Server
             int tick;
             var tmr25 = default(int);
             var tmr500 = default(int);
+            var tmr250 = default(int);
             var tmr1000 = default(int);
             var tmr60000 = default(int);
             var lastUpdateSavePlayers = default(int);
@@ -52,6 +53,21 @@ namespace Server
                     // Move the timer up 25ms.
                     tmr25 = General.GetTimeMs() + 25;
                 }
+                
+                if (tick > tmr250)
+                {
+                    for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
+                    {
+                        if (Core.Data.Player[index].Moving > 0 && Core.Data.Player[index].IsMoving)
+                        {
+                            Player.PlayerMove(index, Core.Data.Player[index].Dir, Core.Data.Player[index].Moving, false);
+                            Core.Data.Player[index].IsMoving = false;
+                        }
+                    }
+                    
+                    // Move the timer up 250ms.
+                    tmr250 = General.GetTimeMs() + 250;
+                }
 
                 if (tick > tmr60000)
                 {
@@ -76,15 +92,6 @@ namespace Server
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
-                    }
-
-                    for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
-                    {
-                        if (Core.Data.Player[index].Moving > 0 && Core.Data.Player[index].IsMoving)
-                        {
-                            Player.PlayerMove(index, Core.Data.Player[index].Dir, Core.Data.Player[index].Moving, false);
-                            Core.Data.Player[index].IsMoving = false;
-                        }
                     }
 
                     Clock.Instance.Tick();
