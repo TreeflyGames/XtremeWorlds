@@ -277,6 +277,15 @@ namespace Core
         RoofAnimation
     }
 
+    public enum SDMapLayer : byte
+    {
+        Ground,
+        Mask,
+        Mask2,
+        Fringe,
+        Fringe2
+    }
+
     /// <summary>
     /// Defines resource gathering skills.
     /// </summary>
