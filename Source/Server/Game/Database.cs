@@ -1013,7 +1013,7 @@ namespace Server
         public static void ClearMapItem(int index, int mapNum)
         {
             Data.MapItem[mapNum, index].PlayerName = "";
-            Data.MapItem[mapNum, index].Num = - 1;
+            Data.MapItem[mapNum, index].Num = -1;
         }
 
         public static XWMap LoadXWMap(string fileName)
@@ -1259,32 +1259,50 @@ namespace Server
             }
 
             SDMap sdMap = new SDMap();
+            if (doc == null || doc.Root == null)
+            {
+                throw new InvalidDataException("XML document is empty or has no root element.");
+            }
+
             var root = doc.Root;
-            if (root == null)
+
+            // Helper to get element by name and throw if missing
+            string GetElementValue(string name)
             {
-                throw new InvalidDataException("XML document has no root element.");
+                var el = root.Element(name);
+                if (el == null)
+                    return "0";
+                return el.Value.Trim();
             }
 
-            var elements = root.Elements().ToList();
-            if (elements.Count < 9)
-            {
-                throw new InvalidDataException("Insufficient elements in XML document.");
-            }
+            sdMap.Revision = int.Parse(GetElementValue("Revision"));
+            //sdMap.Tileset = int.Parse(GetElementValue("Tileset"));
+            sdMap.Name = GetElementValue("Name");
+            sdMap.Music = Path.GetFileName(GetElementValue("Music"));
 
-            // Parse basic properties
-            sdMap.Revision = int.Parse(elements[0].Value.Trim());
-            sdMap.Tileset = int.Parse(elements[1].Value.Trim());
-            sdMap.Name = elements[2].Value.Trim();
-            sdMap.Music = elements[4].Value.Trim();
+            // Parse connections
+            var connectionsNode = root.Element("Border");
+            if (connectionsNode == null)
+                throw new InvalidDataException("Missing 'Connections' element in XML document.");
 
-            // Parse connections (elements[3] contains first connection, elements[5] contains connections)
-            var connections = elements[5].Elements().ToList();
+            var connections = connectionsNode.Elements().ToList();
             if (connections.Count >= 4)
             {
-                sdMap.Up = int.Parse(connections[0].Value.Trim());
-                sdMap.Down = int.Parse(connections[1].Value.Trim());
-                sdMap.Left = int.Parse(connections[2].Value.Trim());
-                sdMap.Right = int.Parse(connections[3].Value.Trim());
+                if (connectionsNode == null)
+                    throw new InvalidDataException("Missing 'Border' element in XML document.");
+
+                var connectionInts = connectionsNode.Elements("int").ToList();
+                if (connectionInts.Count >= 4)
+                {
+                    sdMap.Up = int.Parse(connectionInts[0]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Up' in Border."));
+                    sdMap.Down = int.Parse(connectionInts[1]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Down' in Border."));
+                    sdMap.Left = int.Parse(connectionInts[2]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Left' in Border."));
+                    sdMap.Right = int.Parse(connectionInts[3]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Right' in Border."));
+                }
+                else
+                {
+                    throw new InvalidDataException("Invalid Border data: not enough <int> elements.");
+                }
             }
             else
             {
@@ -1292,70 +1310,102 @@ namespace Server
             }
 
             // Parse dimensions
-            sdMap.MaxX = int.Parse(elements[6].Value.Trim());
-            sdMap.MaxY = int.Parse(elements[7].Value.Trim());
+            sdMap.MaxX = int.Parse(GetElementValue("MaxX"));
+            sdMap.MaxY = int.Parse(GetElementValue("MaxY"));
 
-            // Parse warp data (elements[3] contains warp-like data)
-            var warpNode = elements[3].Elements().ToList();
-            if (warpNode.Count >= 3)
+            // Parse warp data (support multiple <WarpData> nodes)
+            var warpDataParent = root.Element("WarpData");
+            if (warpDataParent != null)
             {
-                var pos1 = warpNode[0].Elements().ToList();
-                var pos2 = warpNode[1].Elements().ToList();
-                sdMap.Warp = new SDWarpData
+                var warpDataList = warpDataParent.Elements("WarpData").ToList();
+                if (warpDataList?.Count > 0)
                 {
-                    Pos = new SDWarpPos
+                    // If there are multiple <WarpData> nodes, pick the first one for backward compatibility
+                    var warpNode = warpDataList[0];
+                    var posElement = warpNode.Element("Position");
+                    var destElement = warpNode.Element("WarpDest");
+
+                    // Extract Position data
+                    var posX = int.Parse(posElement?.Element("X")?.Value?.Trim() ?? throw new InvalidDataException("Missing Position X in warp data."));
+                    var posY = int.Parse(posElement?.Element("Y")?.Value?.Trim() ?? throw new InvalidDataException("Missing Position Y in warp data."));
+
+                    // Extract WarpDest data
+                    var destX = int.Parse(destElement?.Element("X")?.Value?.Trim() ?? throw new InvalidDataException("Missing WarpDest X in warp data."));
+                    var destY = int.Parse(destElement?.Element("Y")?.Value?.Trim() ?? throw new InvalidDataException("Missing WarpDest Y in warp data."));
+
+                    // Extract MapID data
+                    var mapID = int.Parse(warpNode.Element("MapID")?.Value?.Trim() ?? throw new InvalidDataException("Missing MapID in warp data."));
+
+                    sdMap.Warp = new SDWarpData
                     {
-                        X = int.Parse(pos1[0].Value.Trim() as string),
-                        Y = int.Parse(pos1[1].Value.Trim())
-                    },
-                    WarpDes = new SDWarpDes
-                    {
-                        X = int.Parse(pos2[0].Value.Trim()),
-                        Y = int.Parse(pos2[1].Value.Trim())
-                    },
-                    MapID = int.Parse(warpNode[2].Value.Trim())
-                };
-            }
-            else
-            {
-                throw new InvalidDataException("Invalid warp data.");
-            }
-
-            // Parse layer data (elements[8] contains layer data)
-            var layerNode = elements[8].Elements().ToList();
-            if (layerNode.Count < 2)
-            {
-                throw new InvalidDataException("Invalid layer data.");
-            }
-
-            string layerName = layerNode[0].Value.Trim();
-            var tileRows = layerNode[1].Elements().ToList();
-            var tiles = new List<SDMapTile>();
-
-            // Process each row of tiles
-            foreach (var row in tileRows)
-            {
-                var tileNodes = row.Elements().ToList();
-                foreach (var tile in tileNodes)
-                {
-                    tiles.Add(new SDMapTile { TileIndex = int.Parse(tile.Value.Trim()) });
+                        Pos = new SDWarpPos
+                        {
+                            X = posX,
+                            Y = posY
+                        },
+                        WarpDes = new SDWarpDes
+                        {
+                            X = destX,
+                            Y = destY
+                        },
+                        MapID = mapID
+                    };
                 }
             }
+
+            // Parse layer data
+            var mapGridNode = root.Element("MapGrid");
+            var layersNode = mapGridNode.Element("Layers");
+            if (layersNode == null)
+            {
+                throw new InvalidDataException("Invalid layer data: 'Layers' node missing.");
+            }
+
+            var mapLayersNode = layersNode.Element("MapLayer");
+            if (mapLayersNode == null)
+            {
+                throw new InvalidDataException("Invalid layer data: 'MapLayer' node missing inside 'Layers'.");
+            }
+
+            var mapLayers = new List<SDMapLayer>();
+
+            // Extract Layer Name
+            var layerNameElement = mapLayersNode.Element("Name");
+            string layerName = layerNameElement != null ? layerNameElement.Value.Trim() : "";
+
+            // Extract ArrayOfMapTile
+            var tilesElement = mapLayersNode.Element("Tiles");
+            var arrayOfMapTileElement = tilesElement != null ? tilesElement.Element("ArrayOfMapTile") : null;
+
+            var tiles = new List<SDMapTile>();
+
+            if (arrayOfMapTileElement != null)
+            {
+                // Each child is a MapTile element
+                foreach (var tileElement in arrayOfMapTileElement.Elements())
+                {
+                    int tileIndex = 0;
+                    if (int.TryParse(tileElement.Value.Trim(), out tileIndex))
+                    {
+                        tiles.Add(new SDMapTile { TileIndex = tileIndex });
+                    }
+                }
+            }
+
+            // Add this layer to the list
+            mapLayers.Add(new SDMapLayer
+            {
+                Name = layerName,
+                Tiles = new SDTile
+                {
+                    ArrayOfMapTile = tiles
+                }
+            });
 
             // Create layer structure
             sdMap.MapLayer = new SDLayer
             {
-                MapLayer = new List<SDMapLayer>
-                {
-                    new SDMapLayer
-                    {
-                        Name = layerName,
-                        Tiles = new SDTile
-                        {
-                            ArrayOfMapTile = tiles
-                        }
-                    }
-                }
+                MapLayer = mapLayers
             };
 
             return sdMap;
@@ -1422,8 +1472,7 @@ namespace Server
 
         private static Map MapFromSDMap(SDMap sdMap)
         {
-            int i = 0;
-            var mwMap = default(Map);
+            var mwMap = new Map();
 
             mwMap.Name = sdMap.Name;
             mwMap.Music = sdMap.Music;
@@ -1438,22 +1487,39 @@ namespace Server
             mwMap.MaxX = (byte)sdMap.MaxX;
             mwMap.MaxY = (byte)sdMap.MaxY;
 
-            int count = sdMap.MapLayer.MapLayer.Count;
-            foreach (var layer in sdMap.MapLayer.MapLayer)
+            int layerCount = sdMap.MapLayer.MapLayer.Count;
+            mwMap.Tile = new Tile[mwMap.MaxX, mwMap.MaxY];
+
+            // Initialize all tiles and their layers
+            for (int y = 0; y < mwMap.MaxY; y++)
             {
-                mwMap.Tile = new Tile[mwMap.MaxX, mwMap.MaxY];
+                for (int x = 0; x < mwMap.MaxX; x++)
+                {
+                    mwMap.Tile[x, y].Layer = new Layer[layerCount];
+                }
+            }
+
+            // Fill in tile data for each layer
+            for (int i = 0; i < layerCount; i++)
+            {
+                var layer = sdMap.MapLayer.MapLayer[i];
+                // Flatten the tiles for this layer into a 2D grid
+                var tiles = layer.Tiles.ArrayOfMapTile;
+                int tileCounter = 0;
                 for (int y = 0; y < mwMap.MaxY; y++)
                 {
                     for (int x = 0; x < mwMap.MaxX; x++)
                     {
-                        mwMap.Tile[x, y].Layer = new Layer[count];
-                        mwMap.Tile[x, y].Layer[i].Tileset = sdMap.Tileset;
-                        int tileIndex = layer.Tiles.ArrayOfMapTile[x + y].TileIndex;
-                        mwMap.Tile[x, y].Layer[i].X = tileIndex % 12;
-                        mwMap.Tile[x, y].Layer[i].Y = tileIndex % 12;
+                        if (tileCounter < tiles.Count)
+                        {
+                            int tileIndex = tiles[tileCounter].TileIndex;
+                            mwMap.Tile[x, y].Layer[i].X = tileIndex % 12;
+                            mwMap.Tile[x, y].Layer[i].Y = tileIndex / 12;
+                            // mwMap.Tile[x, y].Layer[i].Tileset = mwMap.Tileset;
+                        }
+                        tileCounter++;
                     }
                 }
-                i++;
             }
 
             return mwMap;
