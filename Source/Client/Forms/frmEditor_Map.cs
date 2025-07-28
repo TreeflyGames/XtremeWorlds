@@ -1975,6 +1975,24 @@ namespace Client
             GameClient.TakeScreenshot();
         }
 
+        private void tsbTileset_Click(object sender, EventArgs e)
+        {
+            for (int x = 0; x < Data.MyMap.MaxX; x++)
+            {
+                for (int y = 0; y < Data.MyMap.MaxY; y++)
+                {
+                    for (int i = 0; i < Data.MyMap.Tile[x, y].Layer.Length; i++)
+                    {
+                        ref var tile = ref Data.MyMap.Tile[x, y];
+
+                        tile.Layer[i].Tileset++;
+                        
+                        Autotile.CacheRenderState(x, y, i);
+                    }
+                }
+            }
+        }
+
         private void optAnimation_CheckedChanged(object sender, EventArgs e)
         {
             if (optAnimation.Checked == false)
@@ -2100,7 +2118,7 @@ namespace Client
 
                             tile.Layer[(int)layer].AutoTile = 0;
                             Autotile.CacheRenderState(x, y, (int)layer);
-                        }                      
+                        }
                     }
                     else if ((int)MapEditorTab.Attributes == GameState.MapEditorTab)
                     {

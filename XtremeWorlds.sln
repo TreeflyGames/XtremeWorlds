@@ -15,12 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reoria.Engine", "Source\Modules\Reoria.Engine\Reoria.Engine.shproj", "{FEF01654-46BB-4F6E-AB19-77950B369A0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DarkUI", "Source\Modules\DarkUI\DarkUI\DarkUI.csproj", "{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{F8F25688-9C29-4E3A-83C0-892D99200A91}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentMetaGenerator", "Tools\ContentMetaGenerator\ContentMetaGenerator.csproj", "{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,38 +91,6 @@ Global
 		{1919AC79-B888-4705-AF34-56FD9A26EC3C}.RelWithDebInfo|Any CPU.Build.0 = Debug|Any CPU
 		{1919AC79-B888-4705-AF34-56FD9A26EC3C}.RelWithDebInfo|x64.ActiveCfg = Debug|Any CPU
 		{1919AC79-B888-4705-AF34-56FD9A26EC3C}.RelWithDebInfo|x64.Build.0 = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Debug|x64.Build.0 = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.MinSizeRel|Any CPU.ActiveCfg = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.MinSizeRel|Any CPU.Build.0 = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.MinSizeRel|x64.ActiveCfg = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.MinSizeRel|x64.Build.0 = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Release|x64.ActiveCfg = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.Release|x64.Build.0 = Release|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.RelWithDebInfo|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.RelWithDebInfo|Any CPU.Build.0 = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.RelWithDebInfo|x64.ActiveCfg = Debug|Any CPU
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64}.RelWithDebInfo|x64.Build.0 = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Debug|x64.Build.0 = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.MinSizeRel|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.MinSizeRel|Any CPU.Build.0 = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.MinSizeRel|x64.ActiveCfg = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.MinSizeRel|x64.Build.0 = Debug|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Release|x64.ActiveCfg = Release|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.Release|x64.Build.0 = Release|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.RelWithDebInfo|Any CPU.ActiveCfg = Release|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.RelWithDebInfo|Any CPU.Build.0 = Release|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.RelWithDebInfo|x64.ActiveCfg = Release|Any CPU
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,8 +98,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1919AC79-B888-4705-AF34-56FD9A26EC3C} = {17067D41-98EF-470E-8A86-9C6587C3C69F}
 		{FEF01654-46BB-4F6E-AB19-77950B369A0A} = {17067D41-98EF-470E-8A86-9C6587C3C69F}
-		{AB6712D4-A6D3-8CC4-C9FD-4DD2D2515E64} = {17067D41-98EF-470E-8A86-9C6587C3C69F}
-		{E8CAF959-F7DA-4358-9865-3D9FB9C9D197} = {F8F25688-9C29-4E3A-83C0-892D99200A91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34F4C6E4-D681-43B9-A894-4D9A534ABC40}
@@ -145,7 +105,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{07707c48-c41c-0620-2202-1de28844ceda}*SharedItemsImports = 5
 		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{e13fb217-705a-0b1c-129a-0e369cc6a402}*SharedItemsImports = 5
-		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{e8caf959-f7da-4358-9865-3d9fb9c9d197}*SharedItemsImports = 5
 		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{fef01654-46bb-4f6e-ab19-77950b369a0a}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
