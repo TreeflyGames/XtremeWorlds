@@ -1977,16 +1977,16 @@ namespace Client
 
         private void tsbTileset_Click(object sender, EventArgs e)
         {
-            for (int x = 0; x < Data.MyMap.MaxX; x++)
+            for (int y = 0; y < Data.MyMap.MaxY; y++)
             {
-                for (int y = 0; y < Data.MyMap.MaxY; y++)
+                for (int x = 0; x < Data.MyMap.MaxX; x++)
                 {
                     for (int i = 0; i < Data.MyMap.Tile[x, y].Layer.Length; i++)
                     {
                         ref var tile = ref Data.MyMap.Tile[x, y];
 
                         tile.Layer[i].Tileset++;
-                        
+
                         Autotile.CacheRenderState(x, y, i);
                     }
                 }
