@@ -1514,7 +1514,7 @@ namespace Server
                         {
                             int tileIndex = tiles[tileCounter].TileIndex;
                             mwMap.Tile[x, y].Layer[i].X = tileIndex % 12;
-                            mwMap.Tile[x, y].Layer[i].Y = tileIndex / 12;
+                            mwMap.Tile[x, y].Layer[i].Y = (tileIndex - mwMap.Tile[x, y].Layer[i].X) / 12;
                             // mwMap.Tile[x, y].Layer[i].Tileset = mwMap.Tileset;
                         }
                         tileCounter++;
