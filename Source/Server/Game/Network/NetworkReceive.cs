@@ -37,6 +37,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerMsg] = Packet_PlayerMsg;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CAdminMsg] = Packet_AdminMsg;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerMove] = Packet_PlayerMove;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CStopPlayerMove] = Packet_StopPlayerMove;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerDir] = Packet_PlayerDirection;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CUseItem] = Packet_UseItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CAttack] = Packet_Attack;
@@ -639,6 +640,23 @@ namespace Server
             buffer.WriteInt32(Core.Data.Player[index].YOffset);
             buffer.WriteByte(Core.Data.Player[index].Moving);
             NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
+
+            buffer.Dispose();
+        }
+        
+        public static void Packet_StopPlayerMove(int index, ref byte[] data)
+        {
+            var buffer = new ByteStream(data);
+
+            if (Core.Data.TempPlayer[index].GettingMap)
+                return;
+
+            Core.Data.Player[index].IsMoving = false;
+            Core.Data.Player[index].Moving = 0;
+
+            // Reset offsets
+            Core.Data.Player[index].XOffset = 0;
+            Core.Data.Player[index].YOffset = 0;
 
             buffer.Dispose();
         }

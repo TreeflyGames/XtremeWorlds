@@ -140,6 +140,17 @@ namespace Client
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
+        
+        public static void SendStopPlayerMove()
+        {
+            var buffer = new ByteStream(4);
+
+            buffer.WriteInt32((int)Packets.ClientPackets.CStopPlayerMove);
+            buffer.WriteByte(GetPlayerDir(GameState.MyIndex));
+            
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
+            buffer.Dispose();
+        }
 
         public static void SayMsg(string text)
         {

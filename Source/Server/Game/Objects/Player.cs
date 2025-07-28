@@ -5,9 +5,12 @@ using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.Network;
 using System;
+using System.Data;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using Autofac.Features.Indexed;
+using Microsoft.Xna.Framework.Input;
 using static Core.Global.Command;
 using static Core.Packets;
 using static Core.Type;
@@ -215,6 +218,7 @@ namespace Server
             SetPlayerDir(index, Dir);
             Moved = false;
             mapNum = GetPlayerMap(index);
+            Data.Player[index].IsMoving = true;
 
             switch ((Direction)Dir)
             {

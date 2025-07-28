@@ -61,7 +61,6 @@ namespace Server
                         if (Core.Data.Player[index].Moving > 0 && Core.Data.Player[index].IsMoving)
                         {
                             Player.PlayerMove(index, Core.Data.Player[index].Dir, Core.Data.Player[index].Moving, false);
-                            Core.Data.Player[index].IsMoving = false;
                         }
                     }
                     
