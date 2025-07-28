@@ -354,19 +354,13 @@
 
             asyncState.Buffer = new byte[this._packetSize];
 
-            try
+            if (_socket.ContainsKey(asyncState.Index) && _socket[asyncState.Index].Connected)
             {
-                if (_socket.ContainsKey(asyncState.Index) && _socket[asyncState.Index].Connected)
-                {
-                    _socket[asyncState.Index].BeginReceive(
-                        asyncState.Buffer, 0, this._packetSize, SocketFlags.None,
-                        new AsyncCallback(this.DoReceive), asyncState);
-                }
+                _socket[asyncState.Index].BeginReceive(
+                    asyncState.Buffer, 0, this._packetSize, SocketFlags.None,
+                    new AsyncCallback(this.DoReceive), asyncState);
             }
-            catch (Exception ex)
-            {
-                HandleSocketError(asyncState, "BeginReceiveException", ex);
-            }
+        
         }
 
         // Helper to handle socket errors and cleanup
