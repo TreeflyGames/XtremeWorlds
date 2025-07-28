@@ -250,15 +250,23 @@ namespace Server
             UpdateCaption();
             await NetworkConfig.Socket.StartListeningAsync(SettingsManager.Instance.Port, 5);
 
-            try
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                try
+                {
+                    await Loop.ServerAsync();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogCritical(ex, "Server loop crashed");
+                    await HandleCriticalErrorAsync(ex);
+                }
+            }
+            else
             {
                 await Loop.ServerAsync();
             }
-            catch (Exception ex)
-            {
-                Logger.LogCritical(ex, "Server loop crashed");
-                await HandleCriticalErrorAsync(ex);
-            }
+
         }
 
         /// <summary>
