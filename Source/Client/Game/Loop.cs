@@ -170,7 +170,10 @@ namespace Client
                     {
                         if (IsPlaying(i))
                         {
-                            Player.ProcessPlayerMovement(i);
+                            if (Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                Player.ProcessPlayerMovement(i);
+                            }
                         }
                     }
 
@@ -187,7 +190,7 @@ namespace Client
                     for (i = 0; i < loopTo2; i++)
                         Event.ProcessEventMovement(i);
 
-                    walkTimer = tick + 25; // edit this value to change WalkTimer
+                    walkTimer = tick + 30;
                 }
 
                 // chat timer

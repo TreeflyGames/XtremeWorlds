@@ -242,11 +242,11 @@ namespace Client
             int tY;
             int tA;
 
-            var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
-            for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo; x++)
+            var loopTo = (int)GameState.TileView.Right;
+            for (x = (int)GameState.TileView.Left; x < loopTo; x++)
             {
-                var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
+                var loopTo1 = (int)GameState.TileView.Bottom;
+                for (y = (int)GameState.TileView.Top; y < loopTo1; y++)
                 {
                     if (GameLogic.IsValidMapPoint(x, y))
                     {

@@ -1,7 +1,9 @@
-﻿using Core;
+﻿using System.Data;
+using Core;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using System.Net.Security;
+using Mirage.Sharp.Asfw.Network;
 using static Core.Global.Command;
 
 namespace Client
@@ -126,6 +128,14 @@ namespace Client
             if (GameState.DirUp | GameState.DirDown | GameState.DirLeft | GameState.DirRight)
             {
                 IsTryingToMoveRet = true;
+            }
+            else
+            {
+                if (Data.Player[GameState.MyIndex].Moving > 0)
+                {
+                    NetworkSend.SendStopPlayerMove();
+                    Data.Player[GameState.MyIndex].IsMoving = false;
+                }
             }
 
             return IsTryingToMoveRet;
@@ -708,97 +718,52 @@ namespace Client
 
         public static void ProcessPlayerMovement(int index)
         {
-            // Check if player is walking or running, and if so process moving them over
-            switch (Core.Data.Player[index].Moving)
-            {
-                case (byte)MovementState.Walking:
-                    {
-                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * Core.Constant.WALK_SPEED * GameState.SizeX; // Adjust speed by elapsed time
-                        break;
-                    }
-                case (byte)MovementState.Running:
-                    {
-                        GameState.MovementSpeed = GameState.ElapsedTime / 1000.0d * Core.Constant.RUN_SPEED * GameState.SizeX; // Adjust speed by elapsed time
-                        break;
-                    }
-
-                default:
-                    {
-                        return;
-                    }
-            }
-
-            GameState.MovementSpeed = Math.Round(GameState.MovementSpeed);
-
             // Update player offsets based on direction
             switch (GetPlayerDir(index))
             {
                 case (int)Direction.Up:
-                    {
-                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset - GameState.MovementSpeed);
-                        if (Core.Data.Player[index].YOffset < 0)
-                            Core.Data.Player[index].YOffset = 0;
+                {
+                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset - 1);
+
                         break;
                     }
                 case (int)Direction.Down:
                     {
-                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset + GameState.MovementSpeed);
-                        if (Core.Data.Player[index].YOffset > 0)
-                            Core.Data.Player[index].YOffset = 0;
+                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset + 1);
                         break;
                     }
                 case (int)Direction.Left:
                     {
-                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset - GameState.MovementSpeed);
-                        if (Core.Data.Player[index].XOffset < 0)
-                            Core.Data.Player[index].XOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
                         break;
                     }
                 case (int)Direction.Right:
                     {
-                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset + GameState.MovementSpeed);
-                        if (Core.Data.Player[index].XOffset > 0)
-                            Core.Data.Player[index].XOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
                         break;
                     }
                 case (int)Direction.UpRight:
                     {
-                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset + GameState.MovementSpeed);
-                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset - GameState.MovementSpeed);
-                        if (Core.Data.Player[index].XOffset > 0)
-                            Core.Data.Player[index].XOffset = 0;
-                        if (Core.Data.Player[index].YOffset < 0)
-                            Core.Data.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
                         break;
                     }
                 case (int)Direction.UpLeft:
                     {
-                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset - GameState.MovementSpeed);
-                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset - GameState.MovementSpeed);
-                        if (Core.Data.Player[index].XOffset < 0)
-                            Core.Data.Player[index].XOffset = 0;
-                        if (Core.Data.Player[index].YOffset < 0)
-                            Core.Data.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
                         break;
                     }
                 case (int)Direction.DownRight:
                     {
-                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset + GameState.MovementSpeed);
-                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset + GameState.MovementSpeed);
-                        if (Core.Data.Player[index].XOffset > 0)
-                            Core.Data.Player[index].XOffset = 0;
-                        if (Core.Data.Player[index].YOffset > 0)
-                            Core.Data.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
                         break;
                     }
                 case (int)Direction.DownLeft:
                     {
-                        Core.Data.Player[index].XOffset = (int)Math.Round(Core.Data.Player[index].XOffset - GameState.MovementSpeed);
-                        Core.Data.Player[index].YOffset = (int)Math.Round(Core.Data.Player[index].YOffset + GameState.MovementSpeed);
-                        if (Core.Data.Player[index].XOffset < 0)
-                            Core.Data.Player[index].XOffset = 0;
-                        if (Core.Data.Player[index].YOffset > 0)
-                            Core.Data.Player[index].YOffset = 0;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
                         break;
                     }
             }
@@ -1250,8 +1215,25 @@ namespace Client
                         break;
                     }
             }
-
             
+            buffer.Dispose();
+        }
+        
+        public static void Packet_StopPlayerMove(ref byte[] data)
+        {
+            int i;
+            var buffer = new ByteStream(data);
+
+            i = buffer.ReadInt32();
+
+            // Make sure the player is in range
+            if (i < 0 || i >= Constant.MAX_PLAYERS)
+                return;
+
+            // Stop the player from moving
+            Core.Data.Player[i].Moving = 0;
+            Core.Data.Player[i].XOffset = 0;
+            Core.Data.Player[i].YOffset = 0;
 
             buffer.Dispose();
         }
@@ -1335,7 +1317,6 @@ namespace Client
             int y;
             int dir;
             int index;
-            return;
             var buffer = new ByteStream(data);
 
             index = buffer.ReadInt32();

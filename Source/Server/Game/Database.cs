@@ -1361,46 +1361,44 @@ namespace Server
                 throw new InvalidDataException("Invalid layer data: 'Layers' node missing.");
             }
 
-            var mapLayersNode = layersNode.Element("MapLayer");
-            if (mapLayersNode == null)
+            var mapLayers = new List<Core.Type.SDMapLayer>();
+
+            // There may be multiple <MapLayer> nodes
+            foreach (var mapLayersNode in layersNode.Elements("MapLayer"))
             {
-                throw new InvalidDataException("Invalid layer data: 'MapLayer' node missing inside 'Layers'.");
-            }
+                // Extract Layer Name
+                var layerNameElement = mapLayersNode.Element("Name");
+                string layerName = layerNameElement != null ? layerNameElement.Value.Trim() : "";
 
-            var mapLayers = new List<SDMapLayer>();
+                // Extract ArrayOfMapTile
+                var tilesElement = mapLayersNode.Element("Tiles");
+                var arrayOfMapTileElement = tilesElement != null ? tilesElement.Element("ArrayOfMapTile") : null;
 
-            // Extract Layer Name
-            var layerNameElement = mapLayersNode.Element("Name");
-            string layerName = layerNameElement != null ? layerNameElement.Value.Trim() : "";
+                var tiles = new List<SDMapTile>();
 
-            // Extract ArrayOfMapTile
-            var tilesElement = mapLayersNode.Element("Tiles");
-            var arrayOfMapTileElement = tilesElement != null ? tilesElement.Element("ArrayOfMapTile") : null;
-
-            var tiles = new List<SDMapTile>();
-
-            if (arrayOfMapTileElement != null)
-            {
-                // Each child is a MapTile element
-                foreach (var tileElement in arrayOfMapTileElement.Elements())
+                if (arrayOfMapTileElement != null)
                 {
-                    int tileIndex = 0;
-                    if (int.TryParse(tileElement.Value.Trim(), out tileIndex))
+                    // Each child is a MapTile element
+                    foreach (var tileElement in arrayOfMapTileElement.Elements())
                     {
-                        tiles.Add(new SDMapTile { TileIndex = tileIndex });
+                        int tileIndex = 0;
+                        if (int.TryParse(tileElement.Value.Trim(), out tileIndex))
+                        {
+                            tiles.Add(new SDMapTile { TileIndex = tileIndex });
+                        }
                     }
                 }
-            }
 
-            // Add this layer to the list
-            mapLayers.Add(new SDMapLayer
-            {
-                Name = layerName,
-                Tiles = new SDTile
+                // Add this layer to the list
+                mapLayers.Add(new Core.Type.SDMapLayer
                 {
-                    ArrayOfMapTile = tiles
-                }
-            });
+                    Name = layerName,
+                    Tiles = new SDTile
+                    {
+                        ArrayOfMapTile = tiles
+                    }
+                });
+            }
 
             // Create layer structure
             sdMap.MapLayer = new SDLayer
@@ -1488,6 +1486,7 @@ namespace Server
             mwMap.MaxY = (byte)sdMap.MaxY;
 
             int layerCount = sdMap.MapLayer.MapLayer.Count;
+            int mapLayerEnumCount = Enum.GetValues(typeof(MapLayer)).Length;
             mwMap.Tile = new Tile[mwMap.MaxX, mwMap.MaxY];
 
             // Initialize all tiles and their layers
@@ -1495,7 +1494,7 @@ namespace Server
             {
                 for (int x = 0; x < mwMap.MaxX; x++)
                 {
-                    mwMap.Tile[x, y].Layer = new Layer[layerCount];
+                    mwMap.Tile[x, y].Layer = new Layer[mapLayerEnumCount];
                 }
             }
 
@@ -1503,7 +1502,6 @@ namespace Server
             for (int i = 0; i < layerCount; i++)
             {
                 var layer = sdMap.MapLayer.MapLayer[i];
-                // Flatten the tiles for this layer into a 2D grid
                 var tiles = layer.Tiles.ArrayOfMapTile;
                 int tileCounter = 0;
                 for (int y = 0; y < mwMap.MaxY; y++)
@@ -1513,9 +1511,24 @@ namespace Server
                         if (tileCounter < tiles.Count)
                         {
                             int tileIndex = tiles[tileCounter].TileIndex;
-                            mwMap.Tile[x, y].Layer[i].X = tileIndex % 12;
-                            mwMap.Tile[x, y].Layer[i].Y = tileIndex / 12;
-                            // mwMap.Tile[x, y].Layer[i].Tileset = mwMap.Tileset;
+                            int targetLayer = i;
+
+                            // Move the layer up for animation layers
+                            switch (i)
+                            {
+                                case (int)Core.SDMapLayer.Mask2:
+                                    targetLayer = (int)Core.MapLayer.Cover;
+                                    break;
+                                case (int)Core.SDMapLayer.Fringe:
+                                    targetLayer = (int)Core.MapLayer.Fringe;
+                                    break;
+                                case (int)Core.SDMapLayer.Fringe2:
+                                    targetLayer = (int)Core.MapLayer.Roof;
+                                    break;
+                            }
+                            mwMap.Tile[x, y].Layer[targetLayer].X = tileIndex % 12;
+                            mwMap.Tile[x, y].Layer[targetLayer].Y = (tileIndex - mwMap.Tile[x, y].Layer[targetLayer].X) / 12;
+                            mwMap.Tile[x, y].Layer[targetLayer].Tileset = 1;
                         }
                         tileCounter++;
                     }

@@ -1,10 +1,11 @@
-﻿using System.Data.Common;
-using Core;
+﻿using Core;
 using Core.Localization;
 using Microsoft.Toolkit.HighPerformance;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using System;
+using System.Data.Common;
 using static Core.Global.Command;
 using Color = Core.Color;
 
@@ -14,76 +15,33 @@ namespace Client
     public class GameLogic
     {
         public static void ProcessNpcMovement(double MapNpcNum)
-        {
+        {        
             // Check if Npc is walking, and if so process moving them over
             if (Data.MyMapNpc[(int)MapNpcNum].Moving == (byte)MovementState.Walking)
             {
-
                 switch (Data.MyMapNpc[(int)MapNpcNum].Dir)
                 {
                     case (int)Direction.Up:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
-                            if (Data.MyMapNpc[(int)MapNpcNum].YOffset < 0)
-                                Data.MyMapNpc[(int)MapNpcNum].YOffset = 0;
+                            Core.Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)(Core.Data.MyMapNpc[(int)MapNpcNum].YOffset - 1);
+
                             break;
                         }
-
                     case (int)Direction.Down:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeY));
-                            if (Data.MyMapNpc[(int)MapNpcNum].YOffset > 0)
-                                Data.MyMapNpc[(int)MapNpcNum].YOffset = 0;
+                            Core.Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)(Core.Data.MyMapNpc[(int)MapNpcNum].YOffset + 1);
                             break;
                         }
-
                     case (int)Direction.Left:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].XOffset - GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
-                            if (Data.MyMapNpc[(int)MapNpcNum].XOffset < 0)
-                                Data.MyMapNpc[(int)MapNpcNum].XOffset = 0;
+                            Core.Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Core.Data.MyMapNpc[(int)MapNpcNum].XOffset - 1;
                             break;
                         }
-
                     case (int)Direction.Right:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].XOffset + GameState.ElapsedTime / 1000d * (Core.Constant.WALK_SPEED * GameState.SizeX));
-                            if (Data.MyMapNpc[(int)MapNpcNum].XOffset > 0)
-                                Data.MyMapNpc[(int)MapNpcNum].XOffset = 0;
+                            Core.Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Core.Data.MyMapNpc[(int)MapNpcNum].XOffset + 1;
                             break;
                         }
-                }
-
-                // Check if completed walking over to the next tile
-                if (Data.MyMapNpc[(int)MapNpcNum].Moving > 0)
-                {
-                    if (Data.MyMapNpc[(int)MapNpcNum].Dir == (int)Direction.Right | Data.MyMapNpc[(int)MapNpcNum].Dir == (int)Direction.Down)
-                    {
-                        if (Data.MyMapNpc[(int)MapNpcNum].XOffset >= 0 & Data.MyMapNpc[(int)MapNpcNum].YOffset >= 0)
-                        {
-                            Data.MyMapNpc[(int)MapNpcNum].Moving = 0;
-                            if (Data.MyMapNpc[(int)MapNpcNum].Steps == 1)
-                            {
-                                Data.MyMapNpc[(int)MapNpcNum].Steps = 3;
-                            }
-                            else
-                            {
-                                Data.MyMapNpc[(int)MapNpcNum].Steps = 1;
-                            }
-                        }
-                    }
-                    else if (Data.MyMapNpc[(int)MapNpcNum].XOffset <= 0 & Data.MyMapNpc[(int)MapNpcNum].YOffset <= 0)
-                    {
-                        Data.MyMapNpc[(int)MapNpcNum].Moving = 0;
-                        if (Data.MyMapNpc[(int)MapNpcNum].Steps == 1)
-                        {
-                            Data.MyMapNpc[(int)MapNpcNum].Steps = 3;
-                        }
-                        else
-                        {
-                            Data.MyMapNpc[(int)MapNpcNum].Steps = 1;
-                        }
-                    }
                 }
             }
         }

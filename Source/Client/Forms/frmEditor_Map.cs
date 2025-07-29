@@ -646,9 +646,9 @@ namespace Client
 
         private void CmbNpcList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstMapNpc.SelectedIndex >= 0)
+            if (lstMapNpc.SelectedIndex > 0)
             {
-                lstMapNpc.Items[lstMapNpc.SelectedIndex] = lstMapNpc.SelectedIndex + 1 + ": " + Data.Npc[cmbNpcList.SelectedIndex].Name;
+                lstMapNpc.Items[lstMapNpc.SelectedIndex] = lstMapNpc.SelectedIndex + ": " + Data.Npc[cmbNpcList.SelectedIndex].Name;
                 Data.MyMap.Npc[lstMapNpc.SelectedIndex] = cmbNpcList.SelectedIndex;
             }
         }
@@ -869,13 +869,19 @@ namespace Client
 
             for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
             {
+                if (x == 0)
+                {
+                    Instance.lstMapNpc.Items.Add("None");
+                    continue;
+                }
+
                 if (Data.MyMap.Npc[x] >= 0 && Data.MyMap.Npc[x] <= Core.Constant.MAX_NPCS)
                 {
-                    Instance.lstMapNpc.Items.Add(x + 1 + ": " + Strings.Trim(Data.Npc[Data.MyMap.Npc[x]].Name));
+                    Instance.lstMapNpc.Items.Add(x + ": " + Strings.Trim(Data.Npc[Data.MyMap.Npc[x]].Name));
                 }
                 else
                 {
-                    Instance.lstMapNpc.Items.Add(x + 1 + ": None");
+                    Instance.lstMapNpc.Items.Add(x + ": None");
                 }
             }
 
@@ -1975,6 +1981,27 @@ namespace Client
             GameClient.TakeScreenshot();
         }
 
+        private void tsbTileset_Click(object sender, EventArgs e)
+        {
+            for (int y = 0; y < Data.MyMap.MaxY; y++)
+            {
+                for (int x = 0; x < Data.MyMap.MaxX; x++)
+                {
+                    for (int i = 0; i < Data.MyMap.Tile[x, y].Layer.Length; i++)
+                    {
+                        ref var tile = ref Data.MyMap.Tile[x, y];
+
+                        if (tile.Layer[i].Tileset == 0)
+                            continue;
+
+                        tile.Layer[i].Tileset++;
+
+                        Autotile.CacheRenderState(x, y, i);
+                    }
+                }
+            }
+        }
+
         private void optAnimation_CheckedChanged(object sender, EventArgs e)
         {
             if (optAnimation.Checked == false)
@@ -2100,7 +2127,7 @@ namespace Client
 
                             tile.Layer[(int)layer].AutoTile = 0;
                             Autotile.CacheRenderState(x, y, (int)layer);
-                        }                      
+                        }
                     }
                     else if ((int)MapEditorTab.Attributes == GameState.MapEditorTab)
                     {

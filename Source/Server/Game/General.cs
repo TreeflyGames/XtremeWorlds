@@ -131,21 +131,33 @@ namespace Server
         /// </summary>
         public static async System.Threading.Tasks.Task InitServerAsync()
         {
-            try
+            if (!System.Diagnostics.Debugger.IsAttached)
             {
-                MyStopwatch.Start();
-                int startTime = GetTimeMs();
+                try
+                {
+                    await ServerStartAsync();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogCritical(ex, "Server initialization failed");
+                    await HandleCriticalErrorAsync(ex);
+                }
+            }
+            else
+            {
+                await ServerStartAsync();
+            }
+        }
 
-                await InitializeCoreComponentsAsync();
-                await LoadGameDataAsync();
-                await StartGameLoopAsync(startTime);
-                TimeManager = new TimeManager();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogCritical(ex, "Server initialization failed");
-                await HandleCriticalErrorAsync(ex);
-            }
+        private static async System.Threading.Tasks.Task ServerStartAsync()
+        {
+            MyStopwatch.Start();
+            int startTime = GetTimeMs();
+
+            await InitializeCoreComponentsAsync();
+            await LoadGameDataAsync();
+            await StartGameLoopAsync(startTime);
+            TimeManager = new TimeManager();
         }
 
         private static async System.Threading.Tasks.Task InitializeCoreComponentsAsync()
@@ -226,15 +238,23 @@ namespace Server
             UpdateCaption();
             await NetworkConfig.Socket.StartListeningAsync(SettingsManager.Instance.Port, 5);
 
-            try
+            if (!System.Diagnostics.Debugger.IsAttached)
+            {
+                try
+                {
+                    await Loop.ServerAsync();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogCritical(ex, "Server loop crashed");
+                    await HandleCriticalErrorAsync(ex);
+                }
+            }
+            else
             {
                 await Loop.ServerAsync();
             }
-            catch (Exception ex)
-            {
-                Logger.LogCritical(ex, "Server loop crashed");
-                await HandleCriticalErrorAsync(ex);
-            }
+
         }
 
         /// <summary>

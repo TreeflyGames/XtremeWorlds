@@ -382,6 +382,19 @@ static void LoadFonts()
                 ProcessInputs();
             }
 
+            if (GameState.MyEditorType == (int)EditorType.Map)
+            {
+                if (IsKeyStateActive(Keys.Z))
+                {
+                    frmEditor_Map.MapEditorUndo();
+                }
+
+                if (IsKeyStateActive(Keys.Y))
+                {
+                    frmEditor_Map.MapEditorRedo();
+                }
+            }
+
             if (IsKeyStateActive(Keys.F12))
             {
                 TakeScreenshot();
