@@ -44,13 +44,13 @@ namespace Client
         {
             if (OperatingSystem.IsMacOS())
             {
-                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                string configDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     "XtremeWorlds");
-                string targetFile = Path.Combine(configDir, "appsettings.json");
+                string targetFile = System.IO.Path.Combine(configDir, "appsettings.json");
 
                 if (!File.Exists(targetFile))
                 {
-                    string bundledFile = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+                    string bundledFile = System.IO.Path.Combine(AppContext.BaseDirectory, "appsettings.json");
                     if (File.Exists(bundledFile))
                     {
                         Directory.CreateDirectory(configDir);

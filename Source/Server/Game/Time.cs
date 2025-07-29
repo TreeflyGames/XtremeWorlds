@@ -69,8 +69,14 @@ public sealed class TimeManager : IDisposable
         get
         {
             _tzLock.EnterReadLock();
-            try => _timeZones.ToList();
-            finally _tzLock.ExitReadLock();
+            try
+            {
+                return _timeZones.ToList();
+            }
+            finally
+            {
+                _tzLock.ExitReadLock();
+            }
         }
     }
 
@@ -80,7 +86,7 @@ public sealed class TimeManager : IDisposable
     /// <inheritdoc cref="Clock.GameSpeed"/>
     public int GameSpeed
     {
-        get => _clock.GameSpeed;
+        get => (int)_clock.GameSpeed;
         set
         {
             if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
@@ -96,8 +102,14 @@ public sealed class TimeManager : IDisposable
     {
         ArgumentNullException.ThrowIfNull(timeZone);
         _tzLock.EnterWriteLock();
-        try => _timeZones.Add(timeZone);
-        finally _tzLock.ExitWriteLock();
+        try
+        {
+            return _timeZones.Add(timeZone);
+        }
+        finally
+        {
+            _tzLock.ExitWriteLock();
+        }
     }
 
     /// <summary>
@@ -107,8 +119,14 @@ public sealed class TimeManager : IDisposable
     {
         ArgumentNullException.ThrowIfNull(timeZone);
         _tzLock.EnterWriteLock();
-        try => _timeZones.Remove(timeZone);
-        finally _tzLock.ExitWriteLock();
+        try
+        {
+            return _timeZones.Remove(timeZone);
+        }
+        finally
+        {
+            _tzLock.ExitWriteLock();
+        }
     }
 
     /// <summary>
