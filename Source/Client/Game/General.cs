@@ -55,6 +55,40 @@ namespace Client
 
         public static void Startup()
         {
+            if (OperatingSystem.IsMacOS())
+            {
+                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "XtremeWorlds");
+                string targetFile = Path.Combine(configDir, "appsettings.json");
+
+                if (!File.Exists(targetFile))
+                {
+                    string bundledFile = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+                    if (File.Exists(bundledFile))
+                    {
+                        Directory.CreateDirectory(configDir);
+                        File.Copy(bundledFile, targetFile);
+                    }
+                }
+            }
+            
+            if (OperatingSystem.IsLinux())
+            {
+                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    ".xtremeworlds");
+                string targetFile = Path.Combine(configDir, "appsettings.json");
+
+                if (!File.Exists(targetFile))
+                {
+                    string bundledFile = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+                    if (File.Exists(bundledFile))
+                    {
+                        Directory.CreateDirectory(configDir);
+                        File.Copy(bundledFile, targetFile);
+                    }
+                }
+            }
+
             IServiceCollection services = new ServiceCollection()
                 .AddTransient<IEngineConfigurationSources, EngineConfigurationSources>()
                 .AddTransient<IEngineConfigurationProvider, EngineConfigurationProvider>()
