@@ -215,10 +215,6 @@ namespace Client
         {
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
-        
-        public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
-        {
-            float newAspect = (float)screenWidth / screenHeight;
 
        public static Rectangle GetAspectRatio(int x, int y, int screenWidth, int screenHeight, int texWidth, int texHeight, float targetAspect)
         {
