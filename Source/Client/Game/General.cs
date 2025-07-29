@@ -58,22 +58,6 @@ namespace Client
                     }
                 }
             }
-            
-            if (OperatingSystem.IsLinux())
-            {
-                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
-                string targetFile = Path.Combine(configDir, "appsettings.json");
-
-                if (!File.Exists(targetFile))
-                {
-                    string bundledFile = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
-                    if (File.Exists(bundledFile))
-                    {
-                        Directory.CreateDirectory(configDir);
-                        File.Copy(bundledFile, targetFile);
-                    }
-                }
-            }
 
             IServiceCollection services = new ServiceCollection()
                 .AddTransient<IEngineConfigurationSources, EngineConfigurationSources>()
