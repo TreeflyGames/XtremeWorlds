@@ -74,8 +74,7 @@ namespace Client
             
             if (OperatingSystem.IsLinux())
             {
-                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    ".xtremeworlds");
+                string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
                 string targetFile = Path.Combine(configDir, "appsettings.json");
 
                 if (!File.Exists(targetFile))
