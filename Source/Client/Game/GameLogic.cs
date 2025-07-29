@@ -1,10 +1,11 @@
-﻿using System.Data.Common;
-using Core;
+﻿using Core;
 using Core.Localization;
 using Microsoft.Toolkit.HighPerformance;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using System;
+using System.Data.Common;
 using static Core.Global.Command;
 using Color = Core.Color;
 
@@ -14,34 +15,31 @@ namespace Client
     public class GameLogic
     {
         public static void ProcessNpcMovement(double MapNpcNum)
-        {
+        {        
             // Check if Npc is walking, and if so process moving them over
             if (Data.MyMapNpc[(int)MapNpcNum].Moving == (byte)MovementState.Walking)
             {
-
                 switch (Data.MyMapNpc[(int)MapNpcNum].Dir)
                 {
                     case (int)Direction.Up:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeY));
+                            Core.Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)(Core.Data.MyMapNpc[(int)MapNpcNum].YOffset - 1);
+
                             break;
                         }
-
                     case (int)Direction.Down:
-                    {
-                        Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeY));
+                        {
+                            Core.Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)(Core.Data.MyMapNpc[(int)MapNpcNum].YOffset + 1);
                             break;
                         }
-
                     case (int)Direction.Left:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeX));
+                            Core.Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Core.Data.MyMapNpc[(int)MapNpcNum].XOffset - 1;
                             break;
                         }
-
                     case (int)Direction.Right:
-                    {
-                        Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeX));
+                        {
+                            Core.Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Core.Data.MyMapNpc[(int)MapNpcNum].XOffset + 1;
                             break;
                         }
                 }
