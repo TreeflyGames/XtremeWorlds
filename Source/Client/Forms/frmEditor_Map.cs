@@ -646,7 +646,7 @@ namespace Client
 
         private void CmbNpcList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstMapNpc.SelectedIndex >= 0)
+            if (lstMapNpc.SelectedIndex > 0)
             {
                 lstMapNpc.Items[lstMapNpc.SelectedIndex] = lstMapNpc.SelectedIndex + 1 + ": " + Data.Npc[cmbNpcList.SelectedIndex].Name;
                 Data.MyMap.Npc[lstMapNpc.SelectedIndex] = cmbNpcList.SelectedIndex;
@@ -869,13 +869,19 @@ namespace Client
 
             for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
             {
+                if (x == 0)
+                {
+                    Instance.lstMapNpc.Items.Add("None");
+                    continue;
+                }
+
                 if (Data.MyMap.Npc[x] >= 0 && Data.MyMap.Npc[x] <= Core.Constant.MAX_NPCS)
                 {
-                    Instance.lstMapNpc.Items.Add(x + 1 + ": " + Strings.Trim(Data.Npc[Data.MyMap.Npc[x]].Name));
+                    Instance.lstMapNpc.Items.Add(x + ": " + Strings.Trim(Data.Npc[Data.MyMap.Npc[x]].Name));
                 }
                 else
                 {
-                    Instance.lstMapNpc.Items.Add(x + 1 + ": None");
+                    Instance.lstMapNpc.Items.Add(x + ": None");
                 }
             }
 
