@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Core;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using Mirage.Sharp.Asfw;
+using Mirage.Sharp.Asfw.Network;
+using Newtonsoft.Json.Linq;
+using Npgsql.Replication.PgOutput.Messages;
+using Server;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Runtime.Intrinsics.Arm;
 using System.Xml.Linq;
-using Core;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-using Mirage.Sharp.Asfw;
-using Newtonsoft.Json.Linq;
-using Npgsql.Replication.PgOutput.Messages;
-using Server;
-using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
 using static Core.Type;
@@ -36,6 +37,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerMsg] = Packet_PlayerMsg;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CAdminMsg] = Packet_AdminMsg;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerMove] = Packet_PlayerMove;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CStopPlayerMove] = Packet_StopPlayerMove;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerDir] = Packet_PlayerDirection;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CUseItem] = Packet_UseItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CAttack] = Packet_Attack;
@@ -72,7 +74,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CUnequip] = Packet_Unequip;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPlayerData] = Packet_RequestPlayerData;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestItem] = Item.Packet_RequestItem;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestNPC] = Packet_RequestNPC;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestNpc] = Packet_RequestNpc;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestResource] = Resource.Packet_RequestResource;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSpawnItem] = Packet_SpawnItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CTrainStat] = Packet_TrainStat;
@@ -127,8 +129,8 @@ namespace Server
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_RequestEditItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveItem] = Item.Packet_SaveItem;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNPC] = NPC.Packet_RequestEditNPC;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveNPC] = NPC.Packet_SaveNPC;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNpc] = Npc.Packet_RequestEditNpc;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveNpc] = Npc.Packet_SaveNpc;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditShop] = Packet_RequestEditShop;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveShop] = Packet_SaveShop;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditSkill] = Packet_RequestEditSkill;
@@ -158,7 +160,7 @@ namespace Server
 
         private static void Packet_Ping(int index, ref byte[] data)
         {
-            Core.Type.TempPlayer[index].DataPackets = Core.Type.TempPlayer[index].DataPackets + 1;
+            Core.Data.TempPlayer[index].DataPackets = Core.Data.TempPlayer[index].DataPackets + 1;
         }
 
         private static void Packet_Login(int index, ref byte[] data)
@@ -179,61 +181,68 @@ namespace Server
 
                     if (General.GetShutDownTimer != null && General.GetShutDownTimer.IsRunning)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.ServerMaintenance, (byte)Menu.Login);
                         return;
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
+                    // Use the same pattern as Packet_Register for AES lookup
+                    Reoria.Engine.Common.Security.Encryption.AesEncryption aes;
+                    General.Aes.TryGetValue(index, out aes);
+                    byte[] usernameBytes = buffer.ReadBytes().ToArray();
+                    username = System.Text.Encoding.UTF8.GetString(aes.Decrypt(usernameBytes)).ToLower().Replace("\0", "");
+
+                    byte[] passwordBytes = buffer.ReadBytes().ToArray();
+                    password = System.Text.Encoding.UTF8.GetString(aes.Decrypt(passwordBytes)).Replace("\0", "");
 
                     // Get the current executing assembly
-                    var @assembly = Assembly.GetExecutingAssembly();
+                    var assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
+                    byte[] clientVersionBytes = buffer.ReadBytes().ToArray();
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
-                        
+                    var clientVersion = System.Text.Encoding.UTF8.GetString(aes.Decrypt(clientVersionBytes));
+
                     // Check versions
                     if (clientVersion != serverVersion)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.ClientOutdated, (byte)Menu.Login);
                         return;
                     }
 
                     if (username.Length > Core.Constant.NAME_LENGTH | username.Length < Core.Constant.MIN_NAME_LENGTH)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.NameLengthInvalid);
                         return;
                     }
 
                     if (NetworkConfig.IsMultiLogin(index, username))
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.MultipleAccountsNotAllowed, (byte)Menu.Login);
                         return;
                     }
 
                     if (!Database.LoadAccount(index, username))
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Login, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.Login, (byte)Menu.Login);
                         return;
                     }
 
                     if (GetPlayerPassword(index) != password)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.WrongPass, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.WrongPassword, (byte)Menu.Login);
                         return;
                     }
 
                     if (Database.IsBanned(index, IP))
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Banned, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.Banned, (byte)Menu.Login);
                         return;
                     }
 
                     if (GetAccountLogin(index) == "")
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.DatabaseError, (byte)Menu.Login);
                         return;
                     }
 
@@ -248,7 +257,7 @@ namespace Server
             }
             else
             {
-                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+                NetworkSend.AlertMsg(index, (byte)SystemMessage.Connection, (byte)Menu.Login);
             }
         }
 
@@ -272,31 +281,37 @@ namespace Server
 
                     if (Database.IsBanned(index, IP))
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Banned, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.Banned, (byte)Menu.Register);
                         return;
                     }
 
                     if (General.GetShutDownTimer.IsRunning)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.ServerMaintenance, (byte)Menu.Register);
                         return;
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
+                    Reoria.Engine.Common.Security.Encryption.AesEncryption aes;
+                    General.Aes.TryGetValue(index, out aes);
+                    byte[] usernameBytes = buffer.ReadBytes().ToArray();
+                    username = System.Text.Encoding.UTF8.GetString(aes.Decrypt(usernameBytes)).ToLower().Replace("\0", "");
+
+                    byte[] passwordBytes = buffer.ReadBytes().ToArray();
+                    password = System.Text.Encoding.UTF8.GetString(aes.Decrypt(passwordBytes)).Replace("\0", "");
 
                     // Get the current executing assembly
-                    var @assembly = Assembly.GetExecutingAssembly();
+                    var assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
+                    byte[] clientVersionBytes = buffer.ReadBytes().ToArray();
                     var serverVersion = assembly.GetName().Version.ToString();
-                    var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
+                    var clientVersion = System.Text.Encoding.UTF8.GetString(aes.Decrypt(clientVersionBytes));
 
                     // Check versions
                     if (clientVersion != serverVersion)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.ClientOutdated, (byte)Menu.Register);
                         return;
                     }
 
@@ -305,24 +320,24 @@ namespace Server
                     // Check if the username is valid
                     if (x == -1)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.NameContainsIllegalChars, (byte)Menu.Register);
                         return;
                     }
                     else if (x == 0)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.NameLengthInvalid, (byte)Menu.Register);
                         return;
                     }
 
                     if (NetworkConfig.IsMultiLogin(index, username))
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.MultipleAccountsNotAllowed, (byte)Menu.Register);
                         return;
                     }
 
                     if (NetworkConfig.IsMultiLogin(index, username))
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.MultipleAccountsNotAllowed, (byte)Menu.Register);
                         return;
                     }
 
@@ -330,7 +345,7 @@ namespace Server
 
                     if (userData is not null)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameTaken, (byte)MenuType.Register);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.NameTaken, (byte)Menu.Register);
                         return;
                     }
 
@@ -356,33 +371,16 @@ namespace Server
 
                     if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                     {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MaxChar, (byte)MenuType.Chars);
+                        NetworkSend.AlertMsg(index, (byte)SystemMessage.MaxCharactersReached, (byte)Menu.CharacterSelect);
                         return;
                     }
 
-                    if (!NetworkConfig.IsMultiAccount(index, Account[index].Login))
-                    {
-                        Database.LoadCharacter(index, slot);
-                        Database.LoadBank(index);
-
-                    }
-
-                    // Check if character data has been created
-                    if (Strings.Len(Core.Type.Player[index].Name) > 0)
-                    {
-                        // we have a char!                        
-                        Player.HandleUseChar(index);
-                    }
-                    else
-                    {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.Database, (byte)MenuType.Chars);
-                        return;
-                    }
+                    NetworkConfig.LoadAccount(index, Core.Data.Account[index].Login, slot);
                 }
             }
             else
             {
-                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+                NetworkSend.AlertMsg(index, (byte)SystemMessage.Connection, (byte)Menu.Login);
             }
         }
 
@@ -406,7 +404,7 @@ namespace Server
 
                 if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                 {
-                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.MaxChar, (byte)MenuType.Chars);
+                    NetworkSend.AlertMsg(index, (byte)SystemMessage.MaxCharactersReached, (byte)Menu.CharacterSelect);
                     return;
                 }
 
@@ -421,35 +419,35 @@ namespace Server
                 // Check if the username is valid
                 if (x == -1)
                 {
-                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
+                    NetworkSend.AlertMsg(index, (byte)SystemMessage.NameContainsIllegalChars, (byte)Menu.Register);
                     return;
                 }
                 else if (x == 0)
                 {
-                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.Register);
+                    NetworkSend.AlertMsg(index, (byte)SystemMessage.NameLengthInvalid, (byte)Menu.Register);
                     return;
                 }
 
                 // Check if name is already in use
-                if (Core.Type.Char.Contains(name))
+                if (Data.Char.Contains(name))
                 {
-                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameTaken, (byte)MenuType.NewChar);
+                    NetworkSend.AlertMsg(index, (byte)SystemMessage.NameTaken, (byte)Menu.NewCharacter);
                     return;
                 }
 
-                if (sexNum < (byte) SexType.Male | sexNum > (byte) SexType.Female)
+                if (sexNum < (byte) Sex.Male | sexNum > (byte) Sex.Female)
                     return;
 
                 if (jobNum < 0 | jobNum > Core.Constant.MAX_JOBS)
                     return;
 
-                if (sexNum == (byte) SexType.Male)
+                if (sexNum == (byte) Sex.Male)
                 {
-                    sprite = Core.Type.Job[jobNum].MaleSprite;
+                    sprite = Data.Job[jobNum].MaleSprite;
                 }
                 else
                 {
-                    sprite = Core.Type.Job[jobNum].FemaleSprite;
+                    sprite = Data.Job[jobNum].FemaleSprite;
                 }
 
                 if (sprite == 0)
@@ -458,11 +456,11 @@ namespace Server
                 }
 
                 // Everything went ok, add the character
-                Core.Type.Char.Add(name);
+                Data.Char.Add(name);
                 Database.AddChar(index, slot, name, (byte)sexNum, (byte)jobNum, sprite);
 
-                if (Core.Type.Char.Count == 1)
-                    SetPlayerAccess(index, (int)AccessType.Owner);
+                if (Data.Char.Count == 1)
+                    SetPlayerAccess(index, (int)AccessLevel.Owner);
 
                 Log.Add("Character " + name + " added to " + GetAccountLogin(index) + "'s account.", Constant.PLAYER_LOG);
                 Player.HandleUseChar(index);
@@ -482,12 +480,12 @@ namespace Server
 
                 if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                 {
-                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.MaxChar, (byte)MenuType.Chars);
+                    NetworkSend.AlertMsg(index, (byte)SystemMessage.MaxCharactersReached, (byte)Menu.CharacterSelect);
                     return;
                 }
 
                 Database.LoadCharacter(index, slot);
-                Core.Type.Char.Remove(GetPlayerName(index));
+                Data.Char.Remove(GetPlayerName(index));
                 Database.ClearCharacter(index);
                 Database.SaveCharacter(index, slot);
 
@@ -498,7 +496,7 @@ namespace Server
             }
             else
             {
-                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+                NetworkSend.AlertMsg(index, (byte)SystemMessage.Connection, (byte)Menu.Login);
             }
         }
 
@@ -511,8 +509,8 @@ namespace Server
 
             Log.Add("Map #" + GetPlayerMap(index) + ": " + GetPlayerName(index) + " says, '" + msg + "'", Constant.PLAYER_LOG);
 
-            NetworkSend.SayMsg_Map(GetPlayerMap(index), index, msg, (int) ColorType.White);
-            NetworkSend.SendChatBubble(GetPlayerMap(index), index, (int)TargetType.Player, msg, (int) ColorType.White);
+            NetworkSend.SayMsg_Map(GetPlayerMap(index), index, msg, (int) Color.White);
+            NetworkSend.SendChatBubble(GetPlayerMap(index), index, (int)TargetType.Player, msg, (int) Color.White);
 
             buffer.Dispose();
         }
@@ -526,7 +524,7 @@ namespace Server
             msg = buffer.ReadString();
 
             s = "[Global] " + GetPlayerName(index) + ": " + msg;
-            NetworkSend.SayMsg_Global(index, msg, (int) ColorType.White);
+            NetworkSend.SayMsg_Global(index, msg, (int) Color.White);
             Log.Add(s, Constant.PLAYER_LOG);
             Console.WriteLine(s);
 
@@ -550,17 +548,17 @@ namespace Server
                 if (OtherPlayerindex >= 0)
                 {
                     Log.Add(GetPlayerName(index) + " tells " + GetPlayerName(index) + ", '" + Msg + "'", Constant.PLAYER_LOG);
-                    NetworkSend.PlayerMsg(OtherPlayerindex, GetPlayerName(index) + " tells you, '" + Msg + "'", (int) ColorType.Pink);
-                    NetworkSend.PlayerMsg(index, "You tell " + GetPlayerName(OtherPlayerindex) + ", '" + Msg + "'", (int) ColorType.Pink);
+                    NetworkSend.PlayerMsg(OtherPlayerindex, GetPlayerName(index) + " tells you, '" + Msg + "'", (int) Color.Pink);
+                    NetworkSend.PlayerMsg(index, "You tell " + GetPlayerName(OtherPlayerindex) + ", '" + Msg + "'", (int) Color.Pink);
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) Color.BrightRed);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "Cannot message your self!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Cannot message your self!", (int) Color.BrightRed);
             }
         }
 
@@ -572,7 +570,7 @@ namespace Server
 
             msg = buffer.ReadString();
 
-            NetworkSend.AdminMsg(GetPlayerMap(index), msg, (int) ColorType.BrightCyan);
+            NetworkSend.AdminMsg(GetPlayerMap(index), msg, (int) Color.BrightCyan);
             Log.Add(s, Constant.PLAYER_LOG);
             Console.WriteLine(s);
 
@@ -581,37 +579,84 @@ namespace Server
 
         private static void Packet_PlayerMove(int index, ref byte[] data)
         {
-            int Dir;
-            int movement;
+            byte Dir;
+            byte movement;
             int tmpX;
             int tmpY;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].GettingMap)
+            if (Core.Data.TempPlayer[index].GettingMap)
                 return;
 
-            Dir = buffer.ReadInt32();
-            movement = buffer.ReadInt32();
+            Dir = buffer.ReadByte();
+            movement = buffer.ReadByte();
             tmpX = buffer.ReadInt32();
             tmpY = buffer.ReadInt32();
             buffer.Dispose();
 
-            // Desynced
-            int x = GetPlayerX(index);
-            if (x != tmpX)
+            SetPlayerDir(index, Dir);
+            Core.Data.Player[index].Moving = movement;
+            Core.Data.Player[index].IsMoving = true;
+
+            // Set movement offset directly to 32 or -32 based on direction
+            int offset = Core.Constant.TILE_SIZE;
+
+            switch (Dir)
             {
-                NetworkSend.SendPlayerXY(index);
-                return;
+                case (int)Direction.Up:
+                    Core.Data.Player[index].YOffset -= offset;
+                    break;
+                case (int)Direction.Down:
+                    Core.Data.Player[index].YOffset += offset;
+                    break;
+                case (int)Direction.Left:
+                    Core.Data.Player[index].XOffset -= offset;
+                    break;
+                case (int)Direction.Right:
+                    Core.Data.Player[index].XOffset += offset;
+                    break;
+                case (int)Direction.UpRight:
+                    Core.Data.Player[index].XOffset += offset;
+                    Core.Data.Player[index].YOffset -= offset;
+                    break;
+                case (int)Direction.UpLeft:
+                    Core.Data.Player[index].XOffset -= offset;
+                    Core.Data.Player[index].YOffset -= offset;
+                    break;
+                case (int)Direction.DownRight:
+                    Core.Data.Player[index].XOffset += offset;
+                    Core.Data.Player[index].YOffset += offset;
+                    break;
+                case (int)Direction.DownLeft:
+                    Core.Data.Player[index].XOffset -= offset;
+                    Core.Data.Player[index].YOffset += offset;
+                    break;
             }
 
-            int y = GetPlayerY(index);
-            if (y != tmpY)
-            {
-                NetworkSend.SendPlayerXY(index);
-                return;
-            }
+            buffer = new ByteStream(4);
+            buffer.WriteInt32((int)ServerPackets.SPlayerXYOffset);
+            buffer.WriteByte(GetPlayerDir(index));
+            buffer.WriteInt32(Core.Data.Player[index].XOffset);
+            buffer.WriteInt32(Core.Data.Player[index].YOffset);
+            buffer.WriteByte(Core.Data.Player[index].Moving);
+            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
-            Player.PlayerMove(index, Dir, movement, false);
+            buffer.Dispose();
+        }
+        
+        public static void Packet_StopPlayerMove(int index, ref byte[] data)
+        {
+            var buffer = new ByteStream(data);
+
+            if (Core.Data.TempPlayer[index].GettingMap)
+                return;
+
+            Core.Data.Player[index].IsMoving = false;
+            Core.Data.Player[index].Moving = 0;
+
+            // Reset offsets
+            Core.Data.Player[index].XOffset = 0;
+            Core.Data.Player[index].YOffset = 0;
 
             buffer.Dispose();
         }
@@ -621,14 +666,14 @@ namespace Server
             int dir;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].GettingMap == true)
+            if (Core.Data.TempPlayer[index].GettingMap == true)
                 return;
 
             dir = buffer.ReadInt32();
             buffer.Dispose();
 
             // Prevent hacking
-            if (dir < (byte) DirectionType.Up | dir > (byte) DirectionType.Left)
+            if (dir < (byte) Direction.Up | dir > (byte) Direction.DownRight)
                 return;
 
             SetPlayerDir(index, dir);
@@ -636,7 +681,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SPlayerDir);
             buffer.WriteInt32(index);
-            buffer.WriteInt32(GetPlayerDir(index));
+            buffer.WriteByte(GetPlayerDir(index));
             NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -663,31 +708,31 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // can't attack whilst casting
-            if (Core.Type.TempPlayer[index].SkillBuffer >= 0)
+            if (Core.Data.TempPlayer[index].SkillBuffer >= 0)
                 return;
 
             // can't attack whilst stunned
-            if (Core.Type.TempPlayer[index].StunDuration > 0)
+            if (Core.Data.TempPlayer[index].StunDuration > 0)
                 return;
 
             NetworkSend.SendPlayerAttack(index);
 
             // Projectile check
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
+            if (GetPlayerEquipment(index, Equipment.Weapon) >= 0)
             {
-                if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile > 0) // Item has a projectile
+                if (Core.Data.Item[GetPlayerEquipment(index, Equipment.Weapon)].Projectile > 0) // Item has a projectile
                 {
-                    if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo > 0)
+                    if (Core.Data.Item[GetPlayerEquipment(index, Equipment.Weapon)].Ammo > 0)
                     {
-                        if (Conversions.ToBoolean(Player.HasItem(index, Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo)))
+                        if (Conversions.ToBoolean(Player.HasItem(index, Core.Data.Item[GetPlayerEquipment(index, Equipment.Weapon)].Ammo)))
                         {
-                            Player.TakeInv(index, Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo, 1);
+                            Player.TakeInv(index, Core.Data.Item[GetPlayerEquipment(index, Equipment.Weapon)].Ammo, 1);
                             Projectile.PlayerFireProjectile(index);
                             return;
                         }
                         else
                         {
-                            NetworkSend.PlayerMsg(index, "No more " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int)ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "No more " + Core.Data.Item[Core.Data.Item[GetPlayerEquipment(index, Equipment.Weapon)].Ammo].Name + " !", (int)Core.Color.BrightRed);
                             return;
                         }
                     }
@@ -702,7 +747,7 @@ namespace Server
             // Check tradeskills
             switch (GetPlayerDir(index))
             {
-                case  (byte) DirectionType.Up:
+                case  (byte) Direction.Up:
                     {
 
                         if (GetPlayerY(index) == 0)
@@ -711,16 +756,16 @@ namespace Server
                         y = GetPlayerY(index) - 1;
                         break;
                     }
-                case (byte) DirectionType.Down:
+                case (byte) Direction.Down:
                     {
 
-                        if (GetPlayerY(index) == Core.Type.Map[GetPlayerMap(index)].MaxY)
+                        if (GetPlayerY(index) == Data.Map[GetPlayerMap(index)].MaxY)
                             return;
                         x = GetPlayerX(index);
                         y = GetPlayerY(index) + 1;
                         break;
                     }
-                case (byte) DirectionType.Left:
+                case (byte) Direction.Left:
                     {
 
                         if (GetPlayerX(index) == 0)
@@ -729,58 +774,58 @@ namespace Server
                         y = GetPlayerY(index);
                         break;
                     }
-                case (byte) DirectionType.Right:
+                case (byte) Direction.Right:
                     {
 
-                        if (GetPlayerX(index) == Core.Type.Map[GetPlayerMap(index)].MaxX)
+                        if (GetPlayerX(index) == Data.Map[GetPlayerMap(index)].MaxX)
                             return;
                         x = GetPlayerX(index) + 1;
                         y = GetPlayerY(index);
                         break;
                     }
 
-                case var case4 when case4 == (byte) DirectionType.UpRight:
+                case var case4 when case4 == (byte) Direction.UpRight:
                     {
 
-                        if (GetPlayerX(index) == Core.Type.Map[GetPlayerMap(index)].MaxX)
+                        if (GetPlayerX(index) == Data.Map[GetPlayerMap(index)].MaxX)
                             return;
-                        if (GetPlayerY(index) == Core.Type.Map[GetPlayerMap(index)].MaxY)
+                        if (GetPlayerY(index) == Data.Map[GetPlayerMap(index)].MaxY)
                             return;
                         x = GetPlayerX(index) + 1;
                         y = GetPlayerY(index) - 1;
                         break;
                     }
 
-                case var case5 when case5 == (byte) DirectionType.UpLeft:
+                case var case5 when case5 == (byte) Direction.UpLeft:
                     {
 
-                        if (GetPlayerX(index) == Core.Type.Map[GetPlayerMap(index)].MaxX)
+                        if (GetPlayerX(index) == Data.Map[GetPlayerMap(index)].MaxX)
                             return;
-                        if (GetPlayerY(index) == Core.Type.Map[GetPlayerMap(index)].MaxY)
+                        if (GetPlayerY(index) == Data.Map[GetPlayerMap(index)].MaxY)
                             return;
                         x = GetPlayerX(index) - 1;
                         y = GetPlayerY(index) - 1;
                         break;
                     }
 
-                case var case6 when case6 == (byte) DirectionType.DownRight:
+                case var case6 when case6 == (byte) Direction.DownRight:
                     {
 
-                        if (GetPlayerX(index) == Core.Type.Map[GetPlayerMap(index)].MaxX)
+                        if (GetPlayerX(index) == Data.Map[GetPlayerMap(index)].MaxX)
                             return;
-                        if (GetPlayerY(index) == Core.Type.Map[GetPlayerMap(index)].MaxY)
+                        if (GetPlayerY(index) == Data.Map[GetPlayerMap(index)].MaxY)
                             return;
                         x = GetPlayerX(index) + 1;
                         y = GetPlayerY(index) + 1;
                         break;
                     }
 
-                case var case7 when case7 == (byte) DirectionType.DownLeft:
+                case var case7 when case7 == (byte) Direction.DownLeft:
                     {
 
-                        if (GetPlayerX(index) == Core.Type.Map[GetPlayerMap(index)].MaxX)
+                        if (GetPlayerX(index) == Data.Map[GetPlayerMap(index)].MaxX)
                             return;
-                        if (GetPlayerY(index) == Core.Type.Map[GetPlayerMap(index)].MaxY)
+                        if (GetPlayerY(index) == Data.Map[GetPlayerMap(index)].MaxY)
                             return;
                         x = GetPlayerX(index) - 1;
                         y = GetPlayerY(index) + 1;
@@ -805,27 +850,27 @@ namespace Server
 
             if (i >= 0)
             {
-                NetworkSend.PlayerMsg(index, "Account:  " + GetAccountLogin(i) + ", Name: " + GetPlayerName(i), (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "Account:  " + GetAccountLogin(i) + ", Name: " + GetPlayerName(i), (int) Color.Yellow);
 
-                if (GetPlayerAccess(index) > (byte)AccessType.Moderator)
+                if (GetPlayerAccess(index) > (byte)AccessLevel.Moderator)
                 {
-                    NetworkSend.PlayerMsg(index, " Stats for " + GetPlayerName(i) + " ", (int) ColorType.Yellow);
-                    NetworkSend.PlayerMsg(index, "Level: " + GetPlayerLevel(i) + "  Exp: " + GetPlayerExp(i) + "/" + GetPlayerNextLevel(i), (int) ColorType.Yellow);
-                    NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(i, VitalType.HP) + "/" + GetPlayerMaxVital(i, VitalType.HP) + "  MP: " + GetPlayerVital(i, VitalType.SP) + "/" + GetPlayerMaxVital(i, VitalType.SP) + "  SP: " + GetPlayerVital(i, VitalType.SP) + "/" + GetPlayerMaxVital(i, VitalType.SP), (int) ColorType.Yellow);
-                    NetworkSend.PlayerMsg(index, "Strength: " + GetPlayerStat(i, StatType.Strength) + "  Defense: " + GetPlayerStat(i, StatType.Luck) + "  Magic: " + GetPlayerStat(i, StatType.Intelligence) + "  Speed: " + GetPlayerStat(i, StatType.Spirit), (int) ColorType.Yellow);
-                    n = GetPlayerStat(i, StatType.Strength) / 2 + GetPlayerLevel(i) / 2;
-                    i = GetPlayerStat(i, StatType.Luck) / 2 + GetPlayerLevel(i) / 2;
+                    NetworkSend.PlayerMsg(index, " Stats for " + GetPlayerName(i) + " ", (int) Color.Yellow);
+                    NetworkSend.PlayerMsg(index, "Level: " + GetPlayerLevel(i) + "  Exp: " + GetPlayerExp(i) + "/" + GetPlayerNextLevel(i), (int) Color.Yellow);
+                    NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(i, Vital.Health) + "/" + GetPlayerMaxVital(i, Vital.Health) + "  MP: " + GetPlayerVital(i, Vital.Stamina) + "/" + GetPlayerMaxVital(i, Vital.Stamina) + "  SP: " + GetPlayerVital(i, Vital.Stamina) + "/" + GetPlayerMaxVital(i, Vital.Stamina), (int) Color.Yellow);
+                    NetworkSend.PlayerMsg(index, "Strength: " + GetPlayerStat(i, Stat.Strength) + "  Defense: " + GetPlayerStat(i, Stat.Luck) + "  Magic: " + GetPlayerStat(i, Stat.Intelligence) + "  Speed: " + GetPlayerStat(i, Stat.Spirit), (int) Color.Yellow);
+                    n = GetPlayerStat(i, Stat.Strength) / 2 + GetPlayerLevel(i) / 2;
+                    i = GetPlayerStat(i, Stat.Luck) / 2 + GetPlayerLevel(i) / 2;
 
                     if (n > 100)
                         n = 100;
                     if (i > 100)
                         i = 100;
-                    NetworkSend.PlayerMsg(index, "Critical Hit Chance: " + n + "%, Block Chance: " + i + "%", (int) ColorType.Yellow);
+                    NetworkSend.PlayerMsg(index, "Critical Hit Chance: " + n + "%, Block Chance: " + i + "%", (int) Color.Yellow);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "Player is not online.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Player is not online.", (int) Color.BrightRed);
             }
 
             buffer.Dispose();
@@ -837,7 +882,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Mapper)
                 return;
 
             // The player
@@ -848,19 +893,19 @@ namespace Server
             {
                 if (n >= 0)
                 {
-                    Player.PlayerWarp(index, GetPlayerMap(n), GetPlayerX(n), GetPlayerY(n), (byte)Core.Enum.DirectionType.Down);
-                    NetworkSend.PlayerMsg(n, GetPlayerName(index) + " has warped to you.", (int) ColorType.Yellow);
-                    NetworkSend.PlayerMsg(index, "You have been warped to " + GetPlayerName(n) + ".", (int) ColorType.Yellow);
+                    Player.PlayerWarp(index, GetPlayerMap(n), GetPlayerX(n), GetPlayerY(n), (byte)Direction.Down);
+                    NetworkSend.PlayerMsg(n, GetPlayerName(index) + " has warped to you.", (int) Color.Yellow);
+                    NetworkSend.PlayerMsg(index, "You have been warped to " + GetPlayerName(n) + ".", (int) Color.Yellow);
                     Log.Add(GetPlayerName(index) + " has warped to " + GetPlayerName(n) + ", map #" + GetPlayerMap(n) + ".", Constant.ADMIN_LOG);
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) Color.BrightRed);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "You cannot warp to yourself, dumbass!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You cannot warp to yourself, dumbass!", (int) Color.BrightRed);
             }
 
         }
@@ -871,7 +916,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Mapper)
                 return;
 
             // The player
@@ -882,19 +927,19 @@ namespace Server
             {
                 if (n >= 0)
                 {
-                    Player.PlayerWarp(n, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
-                    NetworkSend.PlayerMsg(n, "You have been summoned by " + GetPlayerName(index) + ".", (int) ColorType.Yellow);
-                    NetworkSend.PlayerMsg(index, GetPlayerName(n) + " has been summoned.", (int) ColorType.Yellow);
+                    Player.PlayerWarp(n, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Direction.Down);
+                    NetworkSend.PlayerMsg(n, "You have been summoned by " + GetPlayerName(index) + ".", (int) Color.Yellow);
+                    NetworkSend.PlayerMsg(index, GetPlayerName(n) + " has been summoned.", (int) Color.Yellow);
                     Log.Add(GetPlayerName(index) + " has warped " + GetPlayerName(n) + " to self, map #" + GetPlayerMap(index) + ".", Constant.ADMIN_LOG);
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) Color.BrightRed);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "You cannot warp yourself to yourself, dumbass!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You cannot warp yourself to yourself, dumbass!", (int) Color.BrightRed);
             }
 
         }
@@ -905,7 +950,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Mapper)
                 return;
 
             // The map
@@ -916,8 +961,8 @@ namespace Server
             if (n < 0 | n > Core.Constant.MAX_MAPS)
                 return;
 
-            Player.PlayerWarp(index, n, GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
-            NetworkSend.PlayerMsg(index, "You have been warped to map #" + n, (int) ColorType.Yellow);
+            Player.PlayerWarp(index, n, GetPlayerX(index), GetPlayerY(index), (byte)Direction.Down);
+            NetworkSend.PlayerMsg(index, "You have been warped to map #" + n, (int) Color.Yellow);
             Log.Add(GetPlayerName(index) + " warped to map #" + n + ".", Constant.ADMIN_LOG);
         }
 
@@ -927,7 +972,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Mapper)
                 return;
 
             // The sprite
@@ -945,18 +990,18 @@ namespace Server
             int n;
             var buffer = new ByteStream(data);
 
-            NetworkSend.PlayerMsg(index, "Stats: " + GetPlayerName(index), (int) ColorType.Yellow);
-            NetworkSend.PlayerMsg(index, "Level: " + GetPlayerLevel(index) + "  Exp: " + GetPlayerExp(index) + "/" + GetPlayerNextLevel(index), (int) ColorType.Yellow);
-            NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(index, VitalType.HP) + "/" + GetPlayerMaxVital(index, VitalType.HP) + "  MP: " + GetPlayerVital(index, VitalType.SP) + "/" + GetPlayerMaxVital(index, VitalType.SP) + "  SP: " + GetPlayerVital(index, VitalType.SP) + "/" + GetPlayerMaxVital(index, VitalType.SP), (int) ColorType.Yellow);
-            NetworkSend.PlayerMsg(index, "STR: " + GetPlayerStat(index, StatType.Strength) + "  DEF: " + GetPlayerStat(index, StatType.Luck) + "  MAGI: " + GetPlayerStat(index, StatType.Intelligence) + "  Speed: " + GetPlayerStat(index, StatType.Spirit), (int) ColorType.Yellow);
-            n = GetPlayerStat(index, StatType.Strength) / 2 + GetPlayerLevel(index) / 2;
-            i = GetPlayerStat(index, StatType.Luck) / 2 + GetPlayerLevel(index) / 2;
+            NetworkSend.PlayerMsg(index, "Stats: " + GetPlayerName(index), (int) Color.Yellow);
+            NetworkSend.PlayerMsg(index, "Level: " + GetPlayerLevel(index) + "  Exp: " + GetPlayerExp(index) + "/" + GetPlayerNextLevel(index), (int) Color.Yellow);
+            NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(index, Vital.Health) + "/" + GetPlayerMaxVital(index, Vital.Health) + "  MP: " + GetPlayerVital(index, Vital.Stamina) + "/" + GetPlayerMaxVital(index, Vital.Stamina) + "  SP: " + GetPlayerVital(index, Vital.Stamina) + "/" + GetPlayerMaxVital(index, Vital.Stamina), (int) Color.Yellow);
+            NetworkSend.PlayerMsg(index, "STR: " + GetPlayerStat(index, Stat.Strength) + "  DEF: " + GetPlayerStat(index, Stat.Luck) + "  MAGI: " + GetPlayerStat(index, Stat.Intelligence) + "  Speed: " + GetPlayerStat(index, Stat.Spirit), (int) Color.Yellow);
+            n = GetPlayerStat(index, Stat.Strength) / 2 + GetPlayerLevel(index) / 2;
+            i = GetPlayerStat(index, Stat.Luck) / 2 + GetPlayerLevel(index) / 2;
 
             if (n > 100)
                 n = 100;
             if (i > 100)
                 i = 100;
-            NetworkSend.PlayerMsg(index, "Critical Hit Chance: " + n + "%, Block Chance: " + i + "%", (int) ColorType.Yellow);
+            NetworkSend.PlayerMsg(index, "Critical Hit Chance: " + n + "%, Block Chance: " + i + "%", (int) Color.Yellow);
             buffer.Dispose();
         }
 
@@ -979,58 +1024,58 @@ namespace Server
             int y;
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Mapper)
                 return;
 
             var buffer = new ByteStream(Mirage.Sharp.Asfw.IO.Compression.DecompressBytes(data));
 
             mapNum = GetPlayerMap(index);
 
-            i = Core.Type.Map[mapNum].Revision + 1;
+            i = Data.Map[mapNum].Revision + 1;
             Database.ClearMap(mapNum);
 
-            Core.Type.Map[mapNum].Name = buffer.ReadString();
-            Core.Type.Map[mapNum].Music = buffer.ReadString();
-            Core.Type.Map[mapNum].Revision = i;
-            Core.Type.Map[mapNum].Moral = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].Tileset = buffer.ReadInt32();
-            Core.Type.Map[mapNum].Up = buffer.ReadInt32();
-            Core.Type.Map[mapNum].Down = buffer.ReadInt32();
-            Core.Type.Map[mapNum].Left = buffer.ReadInt32();
-            Core.Type.Map[mapNum].Right = buffer.ReadInt32();
-            Core.Type.Map[mapNum].BootMap = buffer.ReadInt32();
-            Core.Type.Map[mapNum].BootX = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].BootY = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].MaxX = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].MaxY = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].Weather = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].Fog = buffer.ReadInt32();
-            Core.Type.Map[mapNum].WeatherIntensity = buffer.ReadInt32();
-            Core.Type.Map[mapNum].FogOpacity = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].FogSpeed = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].MapTint = Conversions.ToBoolean(buffer.ReadInt32());
-            Core.Type.Map[mapNum].MapTintR = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].MapTintG = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].MapTintB = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].MapTintA = (byte)buffer.ReadInt32();
-            Core.Type.Map[mapNum].Panorama = buffer.ReadByte();
-            Core.Type.Map[mapNum].Parallax = buffer.ReadByte();
-            Core.Type.Map[mapNum].Brightness = buffer.ReadByte();
-            Core.Type.Map[mapNum].NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
-            Core.Type.Map[mapNum].Indoors = Conversions.ToBoolean(buffer.ReadInt32());
-            Core.Type.Map[mapNum].Shop = buffer.ReadInt32();
+            Data.Map[mapNum].Name = buffer.ReadString();
+            Data.Map[mapNum].Music = buffer.ReadString();
+            Data.Map[mapNum].Revision = i;
+            Data.Map[mapNum].Moral = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].Tileset = buffer.ReadInt32();
+            Data.Map[mapNum].Up = buffer.ReadInt32();
+            Data.Map[mapNum].Down = buffer.ReadInt32();
+            Data.Map[mapNum].Left = buffer.ReadInt32();
+            Data.Map[mapNum].Right = buffer.ReadInt32();
+            Data.Map[mapNum].BootMap = buffer.ReadInt32();
+            Data.Map[mapNum].BootX = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].BootY = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].MaxX = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].MaxY = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].Weather = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].Fog = buffer.ReadInt32();
+            Data.Map[mapNum].WeatherIntensity = buffer.ReadInt32();
+            Data.Map[mapNum].FogOpacity = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].FogSpeed = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].MapTint = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Map[mapNum].MapTintR = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].MapTintG = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].MapTintB = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].MapTintA = (byte)buffer.ReadInt32();
+            Data.Map[mapNum].Panorama = buffer.ReadByte();
+            Data.Map[mapNum].Parallax = buffer.ReadByte();
+            Data.Map[mapNum].Brightness = buffer.ReadByte();
+            Data.Map[mapNum].NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Map[mapNum].Indoors = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Map[mapNum].Shop = buffer.ReadInt32();
 
-            Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
+            Data.Map[mapNum].Tile = new Core.Type.Tile[(Data.Map[mapNum].MaxX), (Data.Map[mapNum].MaxY)];
 
             var loopTo = Core.Constant.MAX_MAP_NPCS;
             for (x = 0; x < loopTo; x++)
             {
-                Database.ClearMapNPC(x, mapNum);
-                Core.Type.Map[mapNum].NPC[x] = buffer.ReadInt32();
+                Database.ClearMapNpc(x, mapNum);
+                Data.Map[mapNum].Npc[x] = buffer.ReadInt32();
             }
 
             {
-                ref var withBlock = ref Core.Type.Map[mapNum];
+                ref var withBlock = ref Data.Map[mapNum];
                 var loopTo1 = (int)withBlock.MaxX;
                 for (x = 0; x < loopTo1; x++)
                 {
@@ -1044,8 +1089,8 @@ namespace Server
                         withBlock.Tile[x, y].Data2_2 = buffer.ReadInt32();
                         withBlock.Tile[x, y].Data3_2 = buffer.ReadInt32();
                         withBlock.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
-                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
-                        var loopTo3 = LayerType.Count;
+                        var loopTo3 = System.Enum.GetValues(typeof(MapLayer)).Length;
+						withBlock.Tile[x, y].Layer = new Core.Type.Layer[loopTo3];
                         for (i = 0; i < (int)loopTo3; i++)
                         {
                             withBlock.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
@@ -1053,23 +1098,23 @@ namespace Server
                             withBlock.Tile[x, y].Layer[i].Y = buffer.ReadInt32();
                             withBlock.Tile[x, y].Layer[i].AutoTile = (byte)buffer.ReadInt32();
                         }
-                        withBlock.Tile[x, y].Type = (Core.Enum.TileType)buffer.ReadInt32();
-                        withBlock.Tile[x, y].Type2 = (Core.Enum.TileType)buffer.ReadInt32();
+                        withBlock.Tile[x, y].Type = (TileType)buffer.ReadInt32();
+                        withBlock.Tile[x, y].Type2 = (TileType)buffer.ReadInt32();
                     }
                 }
 
             }
 
-            Core.Type.Map[mapNum].EventCount = buffer.ReadInt32();
+            Data.Map[mapNum].EventCount = buffer.ReadInt32();
 
-            if (Core.Type.Map[mapNum].EventCount > 0)
+            if (Data.Map[mapNum].EventCount > 0)
             {
-                Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[Core.Type.Map[mapNum].EventCount];
-                var loopTo4 = Core.Type.Map[mapNum].EventCount;
+                Data.Map[mapNum].Event = new Core.Type.Event[Data.Map[mapNum].EventCount];
+                var loopTo4 = Data.Map[mapNum].EventCount;
                 for (i = 0; i < loopTo4; i++)
                 {
                     {
-                        ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i];
+                        ref var withBlock1 = ref Data.Map[mapNum].Event[i];
                         withBlock1.Name = buffer.ReadString();
                         withBlock1.Globals = buffer.ReadByte();
                         withBlock1.X = buffer.ReadInt32();
@@ -1077,17 +1122,17 @@ namespace Server
                         withBlock1.PageCount = buffer.ReadInt32();
                     }
 
-                    if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
+                    if (Data.Map[mapNum].Event[i].PageCount > 0)
                     {
-                        Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount];
+                        Data.Map[mapNum].Event[i].Pages = new Core.Type.EventPage[Data.Map[mapNum].Event[i].PageCount];
                         ;
-                        Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount);
+                        Array.Resize(ref Core.Data.TempPlayer[i].EventMap.EventPages, Data.Map[mapNum].Event[i].PageCount);
 
-                        var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount;
+                        var loopTo5 = Data.Map[mapNum].Event[i].PageCount;
                         for (x = 0; x < (int)loopTo5; x++)
                         {
                             {
-                                ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x];
+                                ref var withBlock2 = ref Data.Map[mapNum].Event[i].Pages[x];
                                 withBlock2.ChkVariable = buffer.ReadInt32();
                                 withBlock2.VariableIndex = buffer.ReadInt32();
                                 withBlock2.VariableCondition = buffer.ReadInt32();
@@ -1121,7 +1166,7 @@ namespace Server
 
                                 if (withBlock2.MoveRouteCount > 0)
                                 {
-                                    Core.Type.Map[mapNum].Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount];
+                                    Data.Map[mapNum].Event[i].Pages[x].MoveRoute = new Core.Type.MoveRoute[withBlock2.MoveRouteCount];
                                     var loopTo6 = withBlock2.MoveRouteCount;
                                     for (y = 0; y < (int)loopTo6; y++)
                                     {
@@ -1144,21 +1189,21 @@ namespace Server
                                 withBlock2.Position = buffer.ReadByte();
                             }
 
-                            if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
+                            if (Data.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
-                                Core.Type.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount];
-                                var loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
+                                Data.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandList[Data.Map[mapNum].Event[i].Pages[x].CommandListCount];
+                                var loopTo7 = Data.Map[mapNum].Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < (int)loopTo7; y++)
                                 {
-                                    Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
-                                    Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
-                                    if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
+                                    Data.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
+                                    Data.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
+                                    if (Data.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount];
-                                        for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount; z < (int)loopTo8; z++)
+                                        Data.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommand[Data.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount];
+                                        for (int z = 0, loopTo8 = Data.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount; z < (int)loopTo8; z++)
                                         {
                                             {
-                                                ref var withBlock3 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
+                                                ref var withBlock3 = ref Data.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
                                                 withBlock3.Index = buffer.ReadInt32();
                                                 withBlock3.Text1 = buffer.ReadString();
                                                 withBlock3.Text2 = buffer.ReadString();
@@ -1203,20 +1248,20 @@ namespace Server
                 }
             }
 
-            var loopTo13 = Core.Type.Map[mapNum].EventCount;
+            var loopTo13 = Data.Map[mapNum].EventCount;
             for (i = 0; i < loopTo13 - 1; i++)
             {
-                if (Map[mapNum].Event[i].PageCount == 0)
+                if (Data.Map[mapNum].Event[i].PageCount == 0)
                 {
-                    Map[mapNum].Event[i] = Map[mapNum].Event[i + 1];
-                    Map[mapNum].Event[i + 1] = default;
-                    Map[mapNum].EventCount = Map[mapNum].EventCount - 1;
+                    Data.Map[mapNum].Event[i] = Data.Map[mapNum].Event[i + 1];
+                    Data.Map[mapNum].Event[i + 1] = default;
+                    Data.Map[mapNum].EventCount = Data.Map[mapNum].EventCount - 1;
                 }
             }
 
             // Save the map
             Database.SaveMap(mapNum); 
-            NPC.SpawnMapNPCs(mapNum);
+            Npc.SpawnMapNpcs(mapNum);
             EventLogic.SpawnGlobalEvents(mapNum);
             
             var loopTo10 = NetworkConfig.Socket.HighIndex;
@@ -1224,7 +1269,7 @@ namespace Server
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
-                    if (Core.Type.Player[i].Map == mapNum)
+                    if (Core.Data.Player[i].Map == mapNum)
                     {
                         EventLogic.SpawnMapEventsFor(i, mapNum);
                     }
@@ -1235,7 +1280,7 @@ namespace Server
             var loopTo11 = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo11; i++)
             {
-                Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
+                Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), Data.MapItem[GetPlayerMap(index), i].X, Data.MapItem[GetPlayerMap(index), i].Y);
                 Database.ClearMapItem(i, GetPlayerMap(index));
             }
 
@@ -1249,7 +1294,7 @@ namespace Server
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                 {
-                    Player.PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i), (byte)Core.Enum.DirectionType.Down);
+                    Player.PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i), (byte)Direction.Down);
                     NetworkSend.SendMapData(i, mapNum, true);
                 }
             }
@@ -1276,16 +1321,16 @@ namespace Server
                 NetworkSend.SendMapData(index, GetPlayerMap(index), false);
             }
 
-            if (Core.Type.Map[GetPlayerMap(index)].Shop >= 0 && Core.Type.Map[GetPlayerMap(index)].Shop < Core.Constant.MAX_SHOPS)
+            if (Data.Map[GetPlayerMap(index)].Shop >= 0 && Data.Map[GetPlayerMap(index)].Shop < Core.Constant.MAX_SHOPS)
             {
-                if (!string.IsNullOrEmpty(Core.Type.Shop[Core.Type.Map[GetPlayerMap(index)].Shop].Name))
+                if (!string.IsNullOrEmpty(Data.Shop[Data.Map[GetPlayerMap(index)].Shop].Name))
                 {
-                    Core.Type.TempPlayer[index].InShop = Core.Type.Map[GetPlayerMap(index)].Shop;
-                    NetworkSend.SendOpenShop(index, Core.Type.Map[GetPlayerMap(index)].Shop);
+                    Core.Data.TempPlayer[index].InShop = Data.Map[GetPlayerMap(index)].Shop;
+                    NetworkSend.SendOpenShop(index, Data.Map[GetPlayerMap(index)].Shop);
                 }
             }
 
-            Core.Type.TempPlayer[index].GettingMap = false;
+            Core.Data.TempPlayer[index].GettingMap = false;
         }
 
         public static void Packet_RespawnMap(int index, ref byte[] data)
@@ -1294,29 +1339,29 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Mapper)
                 return;
 
             // Clear out it all
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
+                Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), Data.MapItem[GetPlayerMap(index), i].X, Data.MapItem[GetPlayerMap(index), i].Y);
                 Database.ClearMapItem(i, GetPlayerMap(index));
             }
 
             // Respawn
             Item.SpawnMapItems(GetPlayerMap(index));
 
-            // Respawn NPCS
+            // Respawn NpcS
             var loopTo1 = Core.Constant.MAX_MAP_NPCS;
             for (i = 0; i < loopTo1; i++)
-                NPC.SpawnNPC(i, GetPlayerMap(index));
+                Npc.SpawnNpc(i, GetPlayerMap(index));
 
             EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
 
             Resource.CacheResources(GetPlayerMap(index));
-            NetworkSend.PlayerMsg(index, "Map respawned.", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(index, "Map respawned.", (int) Color.BrightGreen);
             Log.Add(GetPlayerName(index) + " has respawned map #" + GetPlayerMap(index), Constant.ADMIN_LOG);
 
             buffer.Dispose();
@@ -1328,7 +1373,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Moderator)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Moderator)
             {
                 return;
             }
@@ -1345,33 +1390,33 @@ namespace Server
                     {
                         NetworkSend.GlobalMsg(GetPlayerName(n) + " has been kicked from " + SettingsManager.Instance.GameName + " by " + GetPlayerName(index) + "!");
                         Log.Add(GetPlayerName(index) + " has kicked " + GetPlayerName(n) + ".", Constant.ADMIN_LOG);
-                        NetworkSend.AlertMsg(n, (byte)DialogueMsg.Kicked, (byte)MenuType.Login);
+                        NetworkSend.AlertMsg(n, (byte)SystemMessage.Kicked, (byte)Menu.Login);
                     }
                     else
                     {
-                        NetworkSend.PlayerMsg(index, "That is a higher or same access admin then you!", (int) ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(index, "That is a higher or same access admin then you!", (int) Color.BrightRed);
                     }
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) Color.BrightRed);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "You cannot kick yourself!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You cannot kick yourself!", (int) Color.BrightRed);
             }
         }
 
         public static void Packet_Banlist(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Moderator)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Moderator)
             {
                 return;
             }
 
-            NetworkSend.PlayerMsg(index, "Command /banlist is not available.", (int) ColorType.Yellow);
+            NetworkSend.PlayerMsg(index, "Command /banlist is not available.", (int) Color.Yellow);
         }
 
         public static void Packet_DestroyBans(int index, ref byte[] data)
@@ -1379,7 +1424,7 @@ namespace Server
             string filename;
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Owner)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Owner)
                 return;
 
             filename = System.IO.Path.Combine(Core.Path.Database, "banlist.txt");
@@ -1387,7 +1432,7 @@ namespace Server
             if (File.Exists(filename))
                 FileSystem.Kill(filename);
 
-            NetworkSend.PlayerMsg(index, "Ban list destroyed.", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(index, "Ban list destroyed.", (int) Color.BrightGreen);
         }
 
         public static void Packet_BanPlayer(int index, ref byte[] data)
@@ -1396,7 +1441,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Moderator)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Moderator)
                 return;
 
             // The player index
@@ -1413,17 +1458,17 @@ namespace Server
                     }
                     else
                     {
-                        NetworkSend.PlayerMsg(index, "That is a higher or same access admin then you!", (int) ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(index, "That is a higher or same access admin then you!", (int) Color.BrightRed);
                     }
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) Color.BrightRed);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "You cannot ban yourself!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You cannot ban yourself!", (int) Color.BrightRed);
             }
 
         }
@@ -1431,7 +1476,7 @@ namespace Server
         private static void Packet_RequestEditMap(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Mapper)
                 return;
 
             string user;
@@ -1440,11 +1485,11 @@ namespace Server
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Color.BrightRed);
                 return;
             }
 
-            NPC.SendNPCs(index);
+            Npc.SendNpcs(index);
             Item.SendItems(index);
             Animation.SendAnimations(index);
             NetworkSend.SendShops(index);
@@ -1452,7 +1497,7 @@ namespace Server
             Event.SendMapEventData(index);
             Moral.SendMorals(index);
 
-            Core.Type.TempPlayer[index].Editor = (byte) EditorType.Map;
+            Core.Data.TempPlayer[index].Editor = (byte) EditorType.Map;
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SEditMap);
@@ -1464,7 +1509,7 @@ namespace Server
         public static void Packet_RequestEditShop(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             string user;
@@ -1473,11 +1518,11 @@ namespace Server
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Color.BrightRed);
                 return;
             }
 
-            Core.Type.TempPlayer[index].Editor = (byte) EditorType.Shop;
+            Core.Data.TempPlayer[index].Editor = (byte) EditorType.Shop;
 
             Item.SendItems(index);
             NetworkSend.SendShops(index);
@@ -1495,7 +1540,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             ShopNum = buffer.ReadInt32();
@@ -1504,15 +1549,15 @@ namespace Server
             if (ShopNum < 0 | ShopNum > Core.Constant.MAX_SHOPS)
                 return;
 
-            Core.Type.Shop[ShopNum].BuyRate = buffer.ReadInt32();
-            Core.Type.Shop[ShopNum].Name = buffer.ReadString();
+            Data.Shop[ShopNum].BuyRate = buffer.ReadInt32();
+            Data.Shop[ShopNum].Name = buffer.ReadString();
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                Core.Type.Shop[ShopNum].TradeItem[i].CostItem = buffer.ReadInt32();
-                Core.Type.Shop[ShopNum].TradeItem[i].CostValue = buffer.ReadInt32();
-                Core.Type.Shop[ShopNum].TradeItem[i].Item = buffer.ReadInt32();
-                Core.Type.Shop[ShopNum].TradeItem[i].ItemValue = buffer.ReadInt32();
+                Data.Shop[ShopNum].TradeItem[i].CostItem = buffer.ReadInt32();
+                Data.Shop[ShopNum].TradeItem[i].CostValue = buffer.ReadInt32();
+                Data.Shop[ShopNum].TradeItem[i].Item = buffer.ReadInt32();
+                Data.Shop[ShopNum].TradeItem[i].ItemValue = buffer.ReadInt32();
             }
 
             buffer.Dispose();
@@ -1526,7 +1571,7 @@ namespace Server
         public static void Packet_RequestEditSkill(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             string user;
@@ -1535,11 +1580,11 @@ namespace Server
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Color.BrightRed);
                 return;
             }
 
-            Core.Type.TempPlayer[index].Editor = (byte) EditorType.Skill;
+            Core.Data.TempPlayer[index].Editor = (byte) EditorType.Skill;
 
             NetworkSend.SendJobs(index);
             Projectile.SendProjectiles(index);
@@ -1564,35 +1609,35 @@ namespace Server
             if (skillNum < 0 | skillNum > Core.Constant.MAX_SKILLS)
                 return;
 
-            Core.Type.Skill[skillNum].AccessReq = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].AoE = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].CastAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].CastTime = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].CdTime = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].JobReq = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Dir = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Duration = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Icon = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Interval = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
-            Core.Type.Skill[skillNum].LevelReq = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Map = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].MpCost = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Name = buffer.ReadString();
-            Core.Type.Skill[skillNum].Range = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].SkillAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].StunDuration = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Type = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Vital = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].X = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Y = buffer.ReadInt32();
+            Data.Skill[skillNum].AccessReq = buffer.ReadInt32();
+            Data.Skill[skillNum].AoE = buffer.ReadInt32();
+            Data.Skill[skillNum].CastAnim = buffer.ReadInt32();
+            Data.Skill[skillNum].CastTime = buffer.ReadInt32();
+            Data.Skill[skillNum].CdTime = buffer.ReadInt32();
+            Data.Skill[skillNum].JobReq = buffer.ReadInt32();
+            Data.Skill[skillNum].Dir = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].Duration = buffer.ReadInt32();
+            Data.Skill[skillNum].Icon = buffer.ReadInt32();
+            Data.Skill[skillNum].Interval = buffer.ReadInt32();
+            Data.Skill[skillNum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Skill[skillNum].LevelReq = buffer.ReadInt32();
+            Data.Skill[skillNum].Map = buffer.ReadInt32();
+            Data.Skill[skillNum].MpCost = buffer.ReadInt32();
+            Data.Skill[skillNum].Name = buffer.ReadString();
+            Data.Skill[skillNum].Range = buffer.ReadInt32();
+            Data.Skill[skillNum].SkillAnim = buffer.ReadInt32();
+            Data.Skill[skillNum].StunDuration = buffer.ReadInt32();
+            Data.Skill[skillNum].Type = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].Vital = buffer.ReadInt32();
+            Data.Skill[skillNum].X = buffer.ReadInt32();
+            Data.Skill[skillNum].Y = buffer.ReadInt32();
 
             // projectiles
-            Core.Type.Skill[skillNum].IsProjectile = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Projectile = buffer.ReadInt32();
+            Data.Skill[skillNum].IsProjectile = buffer.ReadInt32();
+            Data.Skill[skillNum].Projectile = buffer.ReadInt32();
 
-            Core.Type.Skill[skillNum].KnockBack = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillNum].KnockBackTiles = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].KnockBack = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].KnockBackTiles = (byte)buffer.ReadInt32();
 
             // Save it
             NetworkSend.SendUpdateSkillToAll(skillNum);
@@ -1609,7 +1654,7 @@ namespace Server
             int i;
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Owner)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Owner)
                 return;
 
             // The index
@@ -1619,7 +1664,7 @@ namespace Server
             i = buffer.ReadInt32();
 
             // Check for invalid access level
-            if (i >= (int)Core.Enum.AccessType.Player && i <= (int)Core.Enum.AccessType.Owner)
+            if (i >= (int)AccessLevel.Player && i <= (int)AccessLevel.Owner)
             {
                 // Check if player is on
                 if (n >= 0)
@@ -1629,12 +1674,12 @@ namespace Server
                         // check to see if same level access is trying to change another access of the very same level and boot them if they are.
                         if (GetPlayerAccess(n) == GetPlayerAccess(index))
                         {
-                            NetworkSend.PlayerMsg(index, "Invalid access level.", (int)ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "Invalid access level.", (int)Core.Color.BrightRed);
                             return;
                         }
                     }
 
-                    if (GetPlayerAccess(n) == (int)Core.Enum.AccessType.Player && i > (int)AccessType.Player)
+                    if (GetPlayerAccess(n) == (int)AccessLevel.Player && i > (int)AccessLevel.Player)
                     {
                         NetworkSend.GlobalMsg(GetPlayerName(n) + " has been blessed with administrative access.");
                     }
@@ -1645,12 +1690,12 @@ namespace Server
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "Player is not online.", (int) Color.BrightRed);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "Invalid access level.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Invalid access level.", (int) Color.BrightRed);
             }
 
             buffer.Dispose();
@@ -1666,7 +1711,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Mapper)
                 return;
 
             SettingsManager.Instance.Welcome = buffer.ReadString();
@@ -1691,7 +1736,7 @@ namespace Server
             rclick = (byte)buffer.ReadInt32();
 
             // Prevent subscript out of range
-            if (x < 0 | x > (int)Core.Type.Map[GetPlayerMap(index)].MaxX | y < 0 | y > (int)Core.Type.Map[GetPlayerMap(index)].MaxY)
+            if (x < 0 | x > (int)Data.Map[GetPlayerMap(index)].MaxX | y < 0 | y > (int)Data.Map[GetPlayerMap(index)].MaxY)
                 return;
 
             // Check for a player   
@@ -1710,48 +1755,48 @@ namespace Server
                             {
                                 if (GetPlayerLevel(i) >= GetPlayerLevel(index) + 5)
                                 {
-                                    NetworkSend.PlayerMsg(index, "You wouldn't stand a chance.", (int) ColorType.BrightRed);
+                                    NetworkSend.PlayerMsg(index, "You wouldn't stand a chance.", (int) Color.BrightRed);
                                 }
 
                                 else if (GetPlayerLevel(i) > GetPlayerLevel(index))
                                 {
-                                    NetworkSend.PlayerMsg(index, "This one seems to have an advantage over you.", (int) ColorType.Yellow);
+                                    NetworkSend.PlayerMsg(index, "This one seems to have an advantage over you.", (int) Color.Yellow);
                                 }
 
                                 else if (GetPlayerLevel(i) == GetPlayerLevel(index))
                                 {
-                                    NetworkSend.PlayerMsg(index, "This would be an even fight.", (int) ColorType.White);
+                                    NetworkSend.PlayerMsg(index, "This would be an even fight.", (int) Color.White);
                                 }
 
                                 else if (GetPlayerLevel(index) >= GetPlayerLevel(i) + 5)
                                 {
-                                    NetworkSend.PlayerMsg(index, "You could slaughter that player.", (int) ColorType.BrightBlue);
+                                    NetworkSend.PlayerMsg(index, "You could slaughter that player.", (int) Color.BrightBlue);
                                 }
 
                                 else if (GetPlayerLevel(index) > GetPlayerLevel(i))
                                 {
-                                    NetworkSend.PlayerMsg(index, "You would have an advantage over that player.", (int) ColorType.BrightCyan);
+                                    NetworkSend.PlayerMsg(index, "You would have an advantage over that player.", (int) Color.BrightCyan);
                                 }
                             }
 
                             // Change target
-                            if (Core.Type.TempPlayer[index].TargetType == 0 | i != Core.Type.TempPlayer[index].Target)
+                            if (Core.Data.TempPlayer[index].TargetType == 0 | i != Core.Data.TempPlayer[index].Target)
                             {
-                                Core.Type.TempPlayer[index].Target = i;
-                                Core.Type.TempPlayer[index].TargetType = (byte)TargetType.Player;
+                                Core.Data.TempPlayer[index].Target = i;
+                                Core.Data.TempPlayer[index].TargetType = (byte)TargetType.Player;
                             }
                             else
                             {
-                                Core.Type.TempPlayer[index].Target = -1;
-                                Core.Type.TempPlayer[index].TargetType = 0;
+                                Core.Data.TempPlayer[index].Target = -1;
+                                Core.Data.TempPlayer[index].TargetType = 0;
                             }
 
-                            if (Core.Type.TempPlayer[index].Target >= 0)
+                            if (Core.Data.TempPlayer[index].Target >= 0)
                             {
-                                NetworkSend.PlayerMsg(index, "Your target is now " + GetPlayerName(i) + ".", (int)ColorType.Yellow);
+                                NetworkSend.PlayerMsg(index, "Your target is now " + GetPlayerName(i) + ".", (int)Core.Color.Yellow);
                             }
 
-                            NetworkSend.SendTarget(index, Core.Type.TempPlayer[index].Target, Core.Type.TempPlayer[index].TargetType);
+                            NetworkSend.SendTarget(index, Core.Data.TempPlayer[index].Target, Core.Data.TempPlayer[index].TargetType);
                             if (rclick == 1)
                                 NetworkSend.SendRightClick(index);
                             return;
@@ -1765,15 +1810,15 @@ namespace Server
             var loopTo1 = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo1; i++)
             {
-                if (Core.Type.MapItem[GetPlayerMap(index), i].Num >= 0)
+                if (Data.MapItem[GetPlayerMap(index), i].Num >= 0)
                 {
-                    if (!string.IsNullOrEmpty(Core.Type.Item[(int)Core.Type.MapItem[GetPlayerMap(index), i].Num].Name))
+                    if (!string.IsNullOrEmpty(Core.Data.Item[(int)Data.MapItem[GetPlayerMap(index), i].Num].Name))
                     {
-                        if ((int)Core.Type.MapItem[GetPlayerMap(index), i].X == x)
+                        if ((int)Data.MapItem[GetPlayerMap(index), i].X == x)
                         {
-                            if ((int)Core.Type.MapItem[GetPlayerMap(index), i].Y == y)
+                            if ((int)Data.MapItem[GetPlayerMap(index), i].Y == y)
                             {
-                                NetworkSend.PlayerMsg(index, "You see " + Core.Type.MapItem[GetPlayerMap(index), i].Value + " " + Core.Type.Item[(int)Core.Type.MapItem[GetPlayerMap(index), i].Num].Name + ".", (int) ColorType.BrightGreen);
+                                NetworkSend.PlayerMsg(index, "You see " + Data.MapItem[GetPlayerMap(index), i].Value + " " + Core.Data.Item[(int)Data.MapItem[GetPlayerMap(index), i].Num].Name + ".", (int) Color.BrightGreen);
                                 return;
                             }
                         }
@@ -1785,29 +1830,29 @@ namespace Server
             var loopTo2 = Core.Constant.MAX_MAP_NPCS;
             for (i = 0; i < loopTo2; i++)
             {
-                if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num >= 0)
+                if (Data.MapNpc[GetPlayerMap(index)].Npc[i].Num >= 0)
                 {
-                    if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].X == x)
+                    if (Data.MapNpc[GetPlayerMap(index)].Npc[i].X == x)
                     {
-                        if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Y == y)
+                        if (Data.MapNpc[GetPlayerMap(index)].Npc[i].Y == y)
                         {
                             // Change target
-                            if (Core.Type.TempPlayer[index].TargetType == 0)
+                            if (Core.Data.TempPlayer[index].TargetType == 0)
                             {
-                                Core.Type.TempPlayer[index].Target = i;
-                                Core.Type.TempPlayer[index].TargetType = (byte)TargetType.NPC;
+                                Core.Data.TempPlayer[index].Target = i;
+                                Core.Data.TempPlayer[index].TargetType = (byte)TargetType.Npc;
                             }
                             else
                             {
-                                Core.Type.TempPlayer[index].Target = -1;
-                                Core.Type.TempPlayer[index].TargetType = 0;
+                                Core.Data.TempPlayer[index].Target = -1;
+                                Core.Data.TempPlayer[index].TargetType = 0;
                             }
 
-                            if (Core.Type.TempPlayer[index].Target >= 0)
+                            if (Core.Data.TempPlayer[index].Target >= 0)
                             {
-                                NetworkSend.PlayerMsg(index, "Your target is now " + GameLogic.CheckGrammar(Core.Type.NPC[(int)Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num].Name) + ".", (int)ColorType.Yellow);
+                                NetworkSend.PlayerMsg(index, "Your target is now " + GameLogic.CheckGrammar(Data.Npc[(int)Data.MapNpc[GetPlayerMap(index)].Npc[i].Num].Name) + ".", (int)Core.Color.Yellow);
                             }
-                            NetworkSend.SendTarget(index, Core.Type.TempPlayer[index].Target, Core.Type.TempPlayer[index].TargetType);
+                            NetworkSend.SendTarget(index, Core.Data.TempPlayer[index].Target, Core.Data.TempPlayer[index].TargetType);
                             return;
                         }
                     }
@@ -1832,9 +1877,9 @@ namespace Server
             n = buffer.ReadInt32();
             buffer.Dispose();
 
-            if ((int)Core.Type.Map[GetPlayerMap(index)].Moral >= 0)
+            if ((int)Data.Map[GetPlayerMap(index)].Moral >= 0)
             {
-                if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanCast)
+                if (Data.Moral[Data.Map[GetPlayerMap(index)].Moral].CanCast)
                 {
                     try
                     {
@@ -1854,7 +1899,7 @@ namespace Server
             double newSlot;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].InTrade >= 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
+            if (Core.Data.TempPlayer[index].InTrade >= 0 | Core.Data.TempPlayer[index].InBank | Core.Data.TempPlayer[index].InShop >= 0)
                 return;
 
             // Old Slot
@@ -1873,7 +1918,7 @@ namespace Server
             double newSlot;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].InTrade >= 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
+            if (Core.Data.TempPlayer[index].InTrade >= 0 | Core.Data.TempPlayer[index].InBank | Core.Data.TempPlayer[index].InShop >= 0)
                 return;
 
             // Old Slot
@@ -1911,7 +1956,7 @@ namespace Server
             NetworkSend.SendPlayerData(index);
         }
 
-        public static void Packet_RequestNPC(int index, ref byte[] data)
+        public static void Packet_RequestNpc(int index, ref byte[] data)
         {
             var buffer = new ByteStream(data);
             int n;
@@ -1921,7 +1966,7 @@ namespace Server
             if (n < 0 | n > Core.Constant.MAX_NPCS)
                 return;
 
-            NPC.SendUpdateNPCTo(index, n);
+            Npc.SendUpdateNpcTo(index, n);
         }
 
         public static void Packet_SpawnItem(int index, ref byte[] data)
@@ -1934,7 +1979,7 @@ namespace Server
             tmpItem = buffer.ReadInt32();
             tmpAmount = buffer.ReadInt32();
 
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             Item.SpawnItem(tmpItem, tmpAmount, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
@@ -1994,7 +2039,7 @@ namespace Server
         public static void Packet_RequestLevelUp(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             SetPlayerExp(index, GetPlayerNextLevel(index));
@@ -2013,20 +2058,20 @@ namespace Server
                 return;
 
             // dont let them forget a skill which is in CD
-            if (Core.Type.TempPlayer[index].SkillCD[SkillSlot] > 0)
+            if (Core.Data.TempPlayer[index].SkillCD[SkillSlot] > 0)
             {
-                NetworkSend.PlayerMsg(index, "Cannot forget a skill which is cooling down!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Cannot forget a skill which is cooling down!", (int) Color.BrightRed);
                 return;
             }
 
             // dont let them forget a skill which is buffered
-            if (Core.Type.TempPlayer[index].SkillBuffer == SkillSlot)
+            if (Core.Data.TempPlayer[index].SkillBuffer == SkillSlot)
             {
-                NetworkSend.PlayerMsg(index, "Cannot forget a skill which you are casting!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Cannot forget a skill which you are casting!", (int) Color.BrightRed);
                 return;
             }
 
-            Core.Type.Player[index].Skill[SkillSlot].Num = -1;
+            Core.Data.Player[index].Skill[SkillSlot].Num = -1;
             NetworkSend.SendPlayerSkills(index);
 
             buffer.Dispose();
@@ -2034,7 +2079,7 @@ namespace Server
 
         public static void Packet_CloseShop(int index, ref byte[] data)
         {
-            Core.Type.TempPlayer[index].InShop = -1;
+            Core.Data.TempPlayer[index].InShop = -1;
         }
 
         public static void Packet_BuyItem(int index, ref byte[] data)
@@ -2047,12 +2092,12 @@ namespace Server
             shopSlot = buffer.ReadInt32();
 
             // not in shop, exit out
-            shopMum = Core.Type.TempPlayer[index].InShop;
+            shopMum = Core.Data.TempPlayer[index].InShop;
 
             if (shopMum < 0 | shopMum > Core.Constant.MAX_SHOPS)
                 return;
 
-            ref var withBlock = ref Core.Type.Shop[(int)shopMum].TradeItem[shopSlot];
+            ref var withBlock = ref Data.Shop[(int)shopMum].TradeItem[shopSlot];
 
             // check trade exists
             if (withBlock.Item < 0)
@@ -2062,7 +2107,7 @@ namespace Server
             itemAmount = Player.HasItem(index, withBlock.CostItem);
             if (itemAmount == 0 | itemAmount < withBlock.CostValue)
             {
-                NetworkSend.PlayerMsg(index, "You do not have enough to buy this item.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You do not have enough to buy this item.", (int) Color.BrightRed);
                 NetworkSend.ResetShopAction(index);
                 return;
             }
@@ -2073,7 +2118,7 @@ namespace Server
             Player.GiveInv(index, withBlock.Item, withBlock.ItemValue);
 
             // send confirmation message & reset their shop action
-            NetworkSend.PlayerMsg(index, "Trade successful.", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(index, "Trade successful.", (int) Color.BrightGreen);
             NetworkSend.ResetShopAction(index);
 
             buffer.Dispose();
@@ -2100,7 +2145,7 @@ namespace Server
 
             // seems to be valid
             itemNum = GetPlayerInv(index, invSlot);
-            shopNum = Core.Type.TempPlayer[index].InShop;
+            shopNum = Core.Data.TempPlayer[index].InShop;
 
             if (shopNum < 0 || shopNum > Core.Constant.MAX_SHOPS)
             {
@@ -2108,13 +2153,13 @@ namespace Server
             }
 
             // work out price
-            multiplier = Core.Type.Shop[(int)shopNum].BuyRate / 100d;
-            price = (int)Math.Round(Core.Type.Item[(int)itemNum].Price * multiplier);
+            multiplier = Data.Shop[(int)shopNum].BuyRate / 100d;
+            price = (int)Math.Round(Core.Data.Item[(int)itemNum].Price * multiplier);
 
             // item has cost?
             if (price < 0)
             {
-                NetworkSend.PlayerMsg(index, "The shop doesn't want that item.", (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "The shop doesn't want that item.", (int) Color.Yellow);
                 NetworkSend.ResetShopAction(index);
                 return;
             }
@@ -2124,7 +2169,7 @@ namespace Server
             Player.GiveInv(index, 0, price);
 
             // send confirmation message & reset their shop action
-            NetworkSend.PlayerMsg(index, "Sold the " + Core.Type.Item[(int)itemNum].Name + " for " + price + " " + Core.Type.Item[(int)itemNum].Name + "!", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(index, "Sold the " + Core.Data.Item[(int)itemNum].Name + " for " + price + " " + Core.Data.Item[(int)itemNum].Name + "!", (int) Color.BrightGreen);
             NetworkSend.ResetShopAction(index);
 
             buffer.Dispose();
@@ -2174,7 +2219,7 @@ namespace Server
 
         public static void Packet_CloseBank(int index, ref byte[] data)
         {
-            Core.Type.TempPlayer[index].InBank = false;
+            Core.Data.TempPlayer[index].InBank = false;
         }
 
         public static void Packet_AdminWarp(int index, ref byte[] data)
@@ -2186,17 +2231,18 @@ namespace Server
             x = buffer.ReadInt32();
             y = buffer.ReadInt32();
 
-            if (x < 0 || x > Core.Type.Map[GetPlayerMap(index)].MaxX || y < 0 || y > Core.Type.Map[GetPlayerMap(index)].MaxY)
+            if (x < 0 || x > Data.Map[GetPlayerMap(index)].MaxX || y < 0 || y > Data.Map[GetPlayerMap(index)].MaxY)
                 return;
 
-            if (GetPlayerAccess(index) >= (byte) AccessType.Mapper)
+            if (GetPlayerAccess(index) >= (byte) AccessLevel.Mapper)
             {
+                Core.Data.Player[index].IsMoving = false;
                 // Set the information
                 SetPlayerX(index, x);
                 SetPlayerY(index, y);
+                SetPlayerDir(index, (byte)Direction.Down);
 
-                // send the stuff
-                NetworkSend.SendPlayerXY(index);
+                NetworkSend.SendPlayerMove(index, 0);
             }
 
             buffer.Dispose();
@@ -2221,16 +2267,16 @@ namespace Server
             // can't trade with yourself..
             if (tradeTarget == index)
             {
-                NetworkSend.PlayerMsg(index, "You can't trade with yourself!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You can't trade with yourself!", (int) Color.BrightRed);
                 return;
             }
 
             // send the trade request
-            Core.Type.TempPlayer[index].TradeRequest = tradeTarget;
-            Core.Type.TempPlayer[tradeTarget].TradeRequest = index;
+            Core.Data.TempPlayer[index].TradeRequest = tradeTarget;
+            Core.Data.TempPlayer[tradeTarget].TradeRequest = index;
 
-            NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has invited you to trade.", (int) ColorType.Yellow);
-            NetworkSend.PlayerMsg(index, "You have invited " + GetPlayerName(tradeTarget) + " to trade.", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has invited you to trade.", (int) Color.Yellow);
+            NetworkSend.PlayerMsg(index, "You have invited " + GetPlayerName(tradeTarget) + " to trade.", (int) Color.BrightGreen);
 
             NetworkSend.SendTradeInvite(tradeTarget, index);
         }
@@ -2245,45 +2291,45 @@ namespace Server
 
             buffer.Dispose();
 
-            tradeTarget = Core.Type.TempPlayer[index].TradeRequest;
+            tradeTarget = Core.Data.TempPlayer[index].TradeRequest;
 
             if (tradeTarget < 0 | tradeTarget >= Core.Constant.MAX_PLAYERS)
                 return;
 
             if (status == 0)
             {
-                NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has declined your trade request.", (int) ColorType.BrightRed);
-                NetworkSend.PlayerMsg(index, "You have declined the trade with " + GetPlayerName(tradeTarget) + ".", (int) ColorType.BrightRed);
-                Core.Type.TempPlayer[index].TradeRequest = -1;
+                NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has declined your trade request.", (int) Color.BrightRed);
+                NetworkSend.PlayerMsg(index, "You have declined the trade with " + GetPlayerName(tradeTarget) + ".", (int) Color.BrightRed);
+                Core.Data.TempPlayer[index].TradeRequest = -1;
                 return;
             }
 
             // Let them tradetradeTarget
-            if (Core.Type.TempPlayer[tradeTarget].TradeRequest == index)
+            if (Core.Data.TempPlayer[tradeTarget].TradeRequest == index)
             {
                 // let them know they're trading
-                NetworkSend.PlayerMsg(index, "You have accepted " + GetPlayerName(tradeTarget) + "'s trade request.", (int) ColorType.Yellow);
-                NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has accepted your trade request.", (int) ColorType.BrightGreen);
+                NetworkSend.PlayerMsg(index, "You have accepted " + GetPlayerName(tradeTarget) + "'s trade request.", (int) Color.Yellow);
+                NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has accepted your trade request.", (int) Color.BrightGreen);
 
                 // clear the tradeRequest server-side
-                Core.Type.TempPlayer[index].TradeRequest = -1;
-                Core.Type.TempPlayer[tradeTarget].TradeRequest = -1;
+                Core.Data.TempPlayer[index].TradeRequest = -1;
+                Core.Data.TempPlayer[tradeTarget].TradeRequest = -1;
 
                 // set that they're trading with each other
-                Core.Type.TempPlayer[index].InTrade = tradeTarget;
+                Core.Data.TempPlayer[index].InTrade = tradeTarget;
 
                 // clear out their trade offers
-                Core.Type.TempPlayer[tradeTarget].InTrade = index;
+                Core.Data.TempPlayer[tradeTarget].InTrade = index;
                 ;
-                Array.Resize(ref Core.Type.TempPlayer[index].TradeOffer, Core.Constant.MAX_INV);
-                Array.Resize(ref Core.Type.TempPlayer[tradeTarget].TradeOffer, Core.Constant.MAX_INV);
+                Array.Resize(ref Core.Data.TempPlayer[index].TradeOffer, Core.Constant.MAX_INV);
+                Array.Resize(ref Core.Data.TempPlayer[tradeTarget].TradeOffer, Core.Constant.MAX_INV);
 
                 for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
                 {
-                    Core.Type.TempPlayer[index].TradeOffer[i].Num = -1;
-                    Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                    Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
-                    Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
+                    Core.Data.TempPlayer[index].TradeOffer[i].Num = -1;
+                    Core.Data.TempPlayer[index].TradeOffer[i].Value = 0;
+                    Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
+                    Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
                 }
 
                 // Used to init the trade window clientside
@@ -2300,7 +2346,7 @@ namespace Server
 
         public static void Packet_TradeInviteDecline(int index, ref byte[] data)
         {
-            Core.Type.TempPlayer[index].TradeRequest = -1;
+            Core.Data.TempPlayer[index].TradeRequest = -1;
         }
 
         public static void Packet_AcceptTrade(int index, ref byte[] data)
@@ -2308,15 +2354,15 @@ namespace Server
             int itemNum;
             int tradeTarget;
             int i;
-            var tmpTradeItem = new PlayerInvStruct[Core.Constant.MAX_INV];
-            var tmpTradeItem2 = new PlayerInvStruct[Core.Constant.MAX_INV];
+            var tmpTradeItem = new PlayerInv[Core.Constant.MAX_INV];
+            var tmpTradeItem2 = new PlayerInv[Core.Constant.MAX_INV];
 
-            Core.Type.TempPlayer[index].AcceptTrade = true;
+            Core.Data.TempPlayer[index].AcceptTrade = true;
 
-            tradeTarget = (int)Core.Type.TempPlayer[index].InTrade;
+            tradeTarget = (int)Core.Data.TempPlayer[index].InTrade;
 
             // if not both of them accept, then exit
-            if (!Core.Type.TempPlayer[tradeTarget].AcceptTrade)
+            if (!Core.Data.TempPlayer[tradeTarget].AcceptTrade)
             {
                 NetworkSend.SendTradeStatus(index, 2);
                 NetworkSend.SendTradeStatus(tradeTarget, 1);
@@ -2331,29 +2377,29 @@ namespace Server
                 tmpTradeItem2[i].Num = -1;
 
                 // player
-                if (Core.Type.TempPlayer[index].TradeOffer[i].Num >= 0)
+                if (Core.Data.TempPlayer[index].TradeOffer[i].Num >= 0)
                 {
-                    itemNum = (int)Core.Type.Player[index].Inv[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Num;
+                    itemNum = (int)Core.Data.Player[index].Inv[(int)Core.Data.TempPlayer[index].TradeOffer[i].Num].Num;
                     if (itemNum >= 0)
                     {
                         // store temp
                         tmpTradeItem[i].Num = itemNum;
-                        tmpTradeItem[i].Value = Core.Type.TempPlayer[index].TradeOffer[i].Value;
+                        tmpTradeItem[i].Value = Core.Data.TempPlayer[index].TradeOffer[i].Value;
                         // take item
-                        Player.TakeInvSlot(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num, tmpTradeItem[i].Value);
+                        Player.TakeInvSlot(index, (int)Core.Data.TempPlayer[index].TradeOffer[i].Num, tmpTradeItem[i].Value);
                     }
                 }
                 // target
-                if (Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num >= 0)
+                if (Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Num >= 0)
                 {
-                    itemNum = GetPlayerInv(tradeTarget, (int)Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num);
+                    itemNum = GetPlayerInv(tradeTarget, (int)Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Num);
                     if (itemNum >= 0)
                     {
                         // store temp
                         tmpTradeItem2[i].Num = itemNum;
-                        tmpTradeItem2[i].Value = Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value;
+                        tmpTradeItem2[i].Value = Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Value;
                         // take item
-                        Player.TakeInvSlot(tradeTarget, (int)Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num, tmpTradeItem2[i].Value);
+                        Player.TakeInvSlot(tradeTarget, (int)Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Num, tmpTradeItem2[i].Value);
                     }
                 }
             }
@@ -2383,17 +2429,17 @@ namespace Server
             var loopTo2 = Core.Constant.MAX_INV;
             for (i = 0; i < loopTo2; i++)
             {
-                Core.Type.TempPlayer[index].TradeOffer[i].Num = -1;
-                Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
-                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
+                Core.Data.TempPlayer[index].TradeOffer[i].Num = -1;
+                Core.Data.TempPlayer[index].TradeOffer[i].Value = 0;
+                Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
+                Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
             }
 
-            Core.Type.TempPlayer[index].InTrade = -1;
-            Core.Type.TempPlayer[tradeTarget].InTrade = -1;
+            Core.Data.TempPlayer[index].InTrade = -1;
+            Core.Data.TempPlayer[tradeTarget].InTrade = -1;
 
-            NetworkSend.PlayerMsg(index, "Trade completed.", (int) ColorType.BrightGreen);
-            NetworkSend.PlayerMsg(tradeTarget, "Trade completed.", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(index, "Trade completed.", (int) Color.BrightGreen);
+            NetworkSend.PlayerMsg(tradeTarget, "Trade completed.", (int) Color.BrightGreen);
 
             NetworkSend.SendCloseTrade(index);
             NetworkSend.SendCloseTrade(tradeTarget);
@@ -2403,21 +2449,21 @@ namespace Server
         {
             int tradeTarget;
 
-            tradeTarget = (int)Core.Type.TempPlayer[index].InTrade;
+            tradeTarget = (int)Core.Data.TempPlayer[index].InTrade;
 
             for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
             {
-                Core.Type.TempPlayer[index].TradeOffer[i].Num = -1;
-                Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
-                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
+                Core.Data.TempPlayer[index].TradeOffer[i].Num = -1;
+                Core.Data.TempPlayer[index].TradeOffer[i].Value = 0;
+                Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
+                Core.Data.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
             }
 
-            Core.Type.TempPlayer[index].InTrade = -1;
-            Core.Type.TempPlayer[tradeTarget].InTrade = -1;
+            Core.Data.TempPlayer[index].InTrade = -1;
+            Core.Data.TempPlayer[tradeTarget].InTrade = -1;
 
-            NetworkSend.PlayerMsg(index, "You declined the trade.", (int) ColorType.BrightRed);
-            NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has declined the trade.", (int) ColorType.BrightRed);
+            NetworkSend.PlayerMsg(index, "You declined the trade.", (int) Color.BrightRed);
+            NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has declined the trade.", (int) Color.BrightRed);
 
             NetworkSend.SendCloseTrade(index);
             NetworkSend.SendCloseTrade(tradeTarget);
@@ -2449,7 +2495,7 @@ namespace Server
             if (amount < 0 | amount > GetPlayerInvValue(index, invslot))
                 return;
 
-            if (Core.Type.Item[itemnum].Type == (byte)ItemType.Currency | Core.Type.Item[itemnum].Stackable == 1)
+            if (Core.Data.Item[itemnum].Type == (byte)ItemCategory.Currency | Core.Data.Item[itemnum].Stackable == 1)
             {
 
                 // check if already offering same currency item
@@ -2457,28 +2503,28 @@ namespace Server
                 for (i = 0; i < loopTo; i++)
                 {
 
-                    if (Core.Type.TempPlayer[index].TradeOffer[i].Num == invslot)
+                    if (Core.Data.TempPlayer[index].TradeOffer[i].Num == invslot)
                     {
                         // add amount
-                        Core.Type.TempPlayer[index].TradeOffer[i].Value = Core.Type.TempPlayer[index].TradeOffer[i].Value + amount;
+                        Core.Data.TempPlayer[index].TradeOffer[i].Value = Core.Data.TempPlayer[index].TradeOffer[i].Value + amount;
 
                         // clamp to limits
-                        if (Core.Type.TempPlayer[index].TradeOffer[i].Value > GetPlayerInvValue(index, invslot))
+                        if (Core.Data.TempPlayer[index].TradeOffer[i].Value > GetPlayerInvValue(index, invslot))
                         {
-                            Core.Type.TempPlayer[index].TradeOffer[i].Value = GetPlayerInvValue(index, invslot);
+                            Core.Data.TempPlayer[index].TradeOffer[i].Value = GetPlayerInvValue(index, invslot);
                         }
 
                         // cancel any trade agreement
-                        Core.Type.TempPlayer[index].AcceptTrade = false;
-                        Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
+                        Core.Data.TempPlayer[index].AcceptTrade = false;
+                        Core.Data.TempPlayer[(int)Core.Data.TempPlayer[index].InTrade].AcceptTrade = false;
 
                         NetworkSend.SendTradeStatus(index, 0);
-                        NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 1);
+                        NetworkSend.SendTradeStatus((int)Core.Data.TempPlayer[index].InTrade, 1);
 
                         NetworkSend.SendTradeUpdate(index, 0);
                         NetworkSend.SendTradeUpdate(index, 1);
-                        NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 0);
-                        NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
+                        NetworkSend.SendTradeUpdate((int)Core.Data.TempPlayer[index].InTrade, 0);
+                        NetworkSend.SendTradeUpdate((int)Core.Data.TempPlayer[index].InTrade, 1);
                         return;
                     }
                 }
@@ -2489,9 +2535,9 @@ namespace Server
                 var loopTo1 = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo1; i++)
                 {
-                    if (Core.Type.TempPlayer[index].TradeOffer[i].Num == invslot)
+                    if (Core.Data.TempPlayer[index].TradeOffer[i].Num == invslot)
                     {
-                        NetworkSend.PlayerMsg(index, "You've already offered this item.", (int) ColorType.BrightRed);
+                        NetworkSend.PlayerMsg(index, "You've already offered this item.", (int) Color.BrightRed);
                         return;
                     }
                 }
@@ -2501,26 +2547,26 @@ namespace Server
             var loopTo2 = Core.Constant.MAX_INV;
             for (i = 0; i < loopTo2; i++)
             {
-                if (Core.Type.TempPlayer[index].TradeOffer[i].Num == -1)
+                if (Core.Data.TempPlayer[index].TradeOffer[i].Num == -1)
                 {
                     emptyslot = i;
                     break;
                 }
             }
-            Core.Type.TempPlayer[index].TradeOffer[emptyslot].Num = invslot;
-            Core.Type.TempPlayer[index].TradeOffer[emptyslot].Value = amount;
+            Core.Data.TempPlayer[index].TradeOffer[emptyslot].Num = invslot;
+            Core.Data.TempPlayer[index].TradeOffer[emptyslot].Value = amount;
 
             // cancel any trade agreement and send new data
-            Core.Type.TempPlayer[index].AcceptTrade = false;
-            Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
+            Core.Data.TempPlayer[index].AcceptTrade = false;
+            Core.Data.TempPlayer[(int)Core.Data.TempPlayer[index].InTrade].AcceptTrade = false;
 
             NetworkSend.SendTradeStatus(index, 0);
-            NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 0);
+            NetworkSend.SendTradeStatus((int)Core.Data.TempPlayer[index].InTrade, 0);
 
             NetworkSend.SendTradeUpdate(index, 0);
             NetworkSend.SendTradeUpdate(index, 1);
-            NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 0);
-            NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
+            NetworkSend.SendTradeUpdate((int)Core.Data.TempPlayer[index].InTrade, 0);
+            NetworkSend.SendTradeUpdate((int)Core.Data.TempPlayer[index].InTrade, 1);
         }
 
         public static void Packet_UntradeItem(int index, ref byte[] data)
@@ -2535,22 +2581,22 @@ namespace Server
             if (tradeslot < 0 | tradeslot > Core.Constant.MAX_INV)
                 return;
 
-            if (Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num < 0)
+            if (Core.Data.TempPlayer[index].TradeOffer[tradeslot].Num < 0)
                 return;
 
-            Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num = -1;
-            Core.Type.TempPlayer[index].TradeOffer[tradeslot].Value = 0;
+            Core.Data.TempPlayer[index].TradeOffer[tradeslot].Num = -1;
+            Core.Data.TempPlayer[index].TradeOffer[tradeslot].Value = 0;
 
-            if (Core.Type.TempPlayer[index].AcceptTrade)
-                Core.Type.TempPlayer[index].AcceptTrade = false;
-            if (Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade)
-                Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
+            if (Core.Data.TempPlayer[index].AcceptTrade)
+                Core.Data.TempPlayer[index].AcceptTrade = false;
+            if (Core.Data.TempPlayer[(int)Core.Data.TempPlayer[index].InTrade].AcceptTrade)
+                Core.Data.TempPlayer[(int)Core.Data.TempPlayer[index].InTrade].AcceptTrade = false;
 
             NetworkSend.SendTradeStatus(index, 0);
-            NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 0);
+            NetworkSend.SendTradeStatus((int)Core.Data.TempPlayer[index].InTrade, 0);
 
             NetworkSend.SendTradeUpdate(index, 0);
-            NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
+            NetworkSend.SendTradeUpdate((int)Core.Data.TempPlayer[index].InTrade, 1);
         }
 
         public static void HackingAttempt(int index, string Reason)
@@ -2560,7 +2606,7 @@ namespace Server
             {
                 NetworkSend.GlobalMsg(GetAccountLogin(index) + "/" + GetPlayerName(index) + " has been booted for (" + Reason + ")");
 
-                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+                NetworkSend.AlertMsg(index, (byte)SystemMessage.Connection, (byte)Menu.Login);
             }
 
         }
@@ -2568,7 +2614,7 @@ namespace Server
         public static void Packet_MapReport(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Mapper)
                 return;
 
             NetworkSend.SendMapReport(index);
@@ -2577,7 +2623,7 @@ namespace Server
         public static void Packet_Admin(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Moderator)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Moderator)
                 return;
 
             NetworkSend.SendAdminPanel(index);
@@ -2599,26 +2645,26 @@ namespace Server
             if (newSlot < 0 | newSlot > Core.Constant.MAX_HOTBAR)
                 return;
 
-            if (type == (byte)PartOriginType.Hotbar)
+            if (type == (byte)PartOrigin.Hotbar)
             {
                 if (oldSlot < 0 | oldSlot > Core.Constant.MAX_HOTBAR)
                     return;
 
-                int oldItem = Core.Type.Player[index].Hotbar[oldSlot].Slot;
-                byte oldType = Core.Type.Player[index].Hotbar[oldSlot].SlotType;
-                int newItem = Core.Type.Player[index].Hotbar[newSlot].Slot;
-                byte newType = Core.Type.Player[index].Hotbar[newSlot].SlotType;
+                int oldItem = Core.Data.Player[index].Hotbar[oldSlot].Slot;
+                byte oldType = Core.Data.Player[index].Hotbar[oldSlot].SlotType;
+                int newItem = Core.Data.Player[index].Hotbar[newSlot].Slot;
+                byte newType = Core.Data.Player[index].Hotbar[newSlot].SlotType;
 
-                Core.Type.Player[index].Hotbar[newSlot].Slot = oldItem;
-                Core.Type.Player[index].Hotbar[newSlot].SlotType = oldType;
+                Core.Data.Player[index].Hotbar[newSlot].Slot = oldItem;
+                Core.Data.Player[index].Hotbar[newSlot].SlotType = oldType;
 
-                Core.Type.Player[index].Hotbar[oldSlot].Slot = newItem;
-                Core.Type.Player[index].Hotbar[oldSlot].SlotType = newType;
+                Core.Data.Player[index].Hotbar[oldSlot].Slot = newItem;
+                Core.Data.Player[index].Hotbar[oldSlot].SlotType = newType;
             }
             else
             {
-                Core.Type.Player[index].Hotbar[newSlot].Slot = skill;
-                Core.Type.Player[index].Hotbar[newSlot].SlotType = type;
+                Core.Data.Player[index].Hotbar[newSlot].Slot = skill;
+                Core.Data.Player[index].Hotbar[newSlot].SlotType = type;
             }
 
             NetworkSend.SendHotbar(index);
@@ -2636,8 +2682,8 @@ namespace Server
             if (slot < 0 | slot > Core.Constant.MAX_HOTBAR)
                 return;
 
-            Core.Type.Player[index].Hotbar[slot].Slot = -1;
-            Core.Type.Player[index].Hotbar[slot].SlotType = 0;
+            Core.Data.Player[index].Hotbar[slot].Slot = -1;
+            Core.Data.Player[index].Hotbar[slot].SlotType = 0;
 
             NetworkSend.SendHotbar(index);
 
@@ -2655,11 +2701,11 @@ namespace Server
             if (slot < 0 | slot > Core.Constant.MAX_HOTBAR)
                 return;
 
-            if (Core.Type.Player[index].Hotbar[slot].Slot >= 0)
+            if (Core.Data.Player[index].Hotbar[slot].Slot >= 0)
             {
-                if (Core.Type.Player[index].Hotbar[slot].SlotType == (byte)PartType.Item)
+                if (Core.Data.Player[index].Hotbar[slot].SlotType == (byte)DraggablePartType.Item)
                 {
-                    Player.UseItem(index, Player.FindItemSlot(index, (int)Core.Type.Player[index].Hotbar[slot].Slot));
+                    Player.UseItem(index, Player.FindItemSlot(index, (int)Core.Data.Player[index].Hotbar[slot].Slot));
                 }
             }
 
@@ -2672,7 +2718,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Developer)
                 return;
 
             skillNum = buffer.ReadInt32();
@@ -2691,7 +2737,7 @@ namespace Server
         public static void Packet_RequestEditJob(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte)AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte)AccessLevel.Developer)
                 return;
 
             string user;
@@ -2700,14 +2746,14 @@ namespace Server
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Color.BrightRed);
                 return;
             }
 
             Item.SendItems(index);
             NetworkSend.SendJobs(index);
 
-            Core.Type.TempPlayer[index].Editor = (byte)EditorType.Job;
+            Core.Data.TempPlayer[index].Editor = (byte)EditorType.Job;
 
             NetworkSend.SendJobs(index);
 
@@ -2723,20 +2769,20 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             jobNum = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.Job[jobNum];
+                ref var withBlock = ref Data.Job[jobNum];
                 withBlock.Name = buffer.ReadString();
                 withBlock.Desc = buffer.ReadString();
 
                 withBlock.MaleSprite = buffer.ReadInt32();
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
-                var loopTo = (byte)StatType.Count;
+				var loopTo = Enum.GetNames(typeof(Stat)).Length;
                 for (x = 0; x < loopTo; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
@@ -2773,13 +2819,13 @@ namespace Server
         private static void Packet_CloseEditor(int index, ref byte[] data)
         {
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Mapper)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Mapper)
                 return;
 
-            if (Core.Type.TempPlayer[index].Editor == -1)
+            if (Core.Data.TempPlayer[index].Editor == -1)
                 return;
 
-            Core.Type.TempPlayer[index].Editor = -1;
+            Core.Data.TempPlayer[index].Editor = -1;
         }
 
     }

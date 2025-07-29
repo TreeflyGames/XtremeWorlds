@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using static Core.Enum;
 using static Core.Packets;
 
 namespace Server
@@ -21,28 +20,28 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            if (Core.Global.Command.GetPlayerAccess(index) < (byte)AccessType.Owner)
+            if (Core.Global.Command.GetPlayerAccess(index) < (byte)Core.AccessLevel.Owner)
                 return;
 
             string user;
 
-            user = Core.Global.Command.IsEditorLocked(index, (byte)EditorType.Script);
+            user = Core.Global.Command.IsEditorLocked(index, (byte)Core.EditorType.Script);
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int)ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int)Core.Color.BrightRed);
                 return;
             }
 
-            Core.Type.TempPlayer[index].Editor = (byte)EditorType.Script;
+            Core.Data.TempPlayer[index].Editor = (byte)Core.EditorType.Script;
 
             buffer.WriteInt32((int)ServerPackets.SScriptEditor);
 
-            buffer.WriteInt32(Core.Type.Script.Code != null ? Core.Type.Script.Code.Length : 0);
+            buffer.WriteInt32(Core.Data.Script.Code != null ? Core.Data.Script.Code.Length : 0);
 
-            if (Core.Type.Script.Code != null)
+            if (Core.Data.Script.Code != null)
             {
-                foreach (var line in Core.Type.Script.Code)
+                foreach (var line in Core.Data.Script.Code)
                 {
                     buffer.WriteString(line);
                 }
@@ -62,7 +61,7 @@ namespace Server
             var buffer = new ByteStream(data);;
 
             // Prevent hacking
-            if (Core.Global.Command.GetPlayerAccess(index) < (byte)AccessType.Owner)
+            if (Core.Global.Command.GetPlayerAccess(index) < (byte)Core.AccessLevel.Owner)
                 return;
 
             // Save with the new script code and ensure the filename is Script.cs
@@ -90,7 +89,7 @@ namespace Server
                 });
         }
 
-        public static async Task LoadScriptAsync(int index)
+        public static async System.Threading.Tasks.Task LoadScriptAsync(int index)
         {
             // Load the script file
             var scriptPath = Path.Combine(Core.Path.Database, "Script.cs");
@@ -99,23 +98,23 @@ namespace Server
                 var lines = File.ReadLines(scriptPath, Encoding.UTF8).ToArray();
                 if (lines.Length > 0)
                 {
-                    Core.Type.Script.Code = lines;
+                    Core.Data.Script.Code = lines;
                 }
                 else
                 {
-                    Core.Type.Script.Code = Array.Empty<string>();
+                    Core.Data.Script.Code = Array.Empty<string>();
                 }
             }
             else
             {
-                Core.Type.Script.Code = Array.Empty<string>();
+                Core.Data.Script.Code = Array.Empty<string>();
             }
 
-            string code = (Core.Type.Script.Code != null && Core.Type.Script.Code.Length > 0) ? string.Join(Environment.NewLine, Core.Type.Script.Code) : string.Empty;
+            string code = (Core.Data.Script.Code != null && Core.Data.Script.Code.Length > 0) ? string.Join(Environment.NewLine, Core.Data.Script.Code) : string.Empty;
 
             if (string.IsNullOrWhiteSpace(code))
             {
-                NetworkSend.PlayerMsg(index, "No script code found to compile.", (int)ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "No script code found to compile.", (int)Core.Color.BrightRed);
                 Debug.WriteLine("No script code found to compile.");
                 return;
             }
@@ -134,13 +133,13 @@ namespace Server
                 if (script != null)
                 {
                     Instance = script;
-                    NetworkSend.PlayerMsg(index, "Script saved successfully!", (int)ColorType.Yellow);
+                    NetworkSend.PlayerMsg(index, "Script saved successfully!", (int)Core.Color.Yellow);
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                NetworkSend.PlayerMsg(index, $"Script compile error: {ex.Message}", (int)ColorType.BrightRed);
-                Debug.WriteLine($"Script compile error: {ex}");
+                NetworkSend.PlayerMsg(index, e.Message, (int)Core.Color.BrightRed);
+                Console.WriteLine(e.Message);
             }
         }
     }

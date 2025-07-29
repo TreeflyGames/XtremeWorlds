@@ -15,8 +15,8 @@ namespace Client
 
         public static void PacketRouter()
         {
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAes] = Packet_Aes;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAlertMsg] = Packet_AlertMsg;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SKeyPair] = Packet_KeyPair;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SLoginOK] = Packet_LoginOk;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerChars] = Packet_PlayerChars;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateJob] = Packet_UpdateJob;
@@ -26,29 +26,31 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerInvUpdate] = Packet_PlayerInvUpdate;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerWornEq] = Packet_PlayerWornEquipment;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerHP] = Player.Packet_PlayerHP;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerMP] = Player.Packet_PlayerMP;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerSP] = Player.Packet_PlayerSP;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerStats] = Player.Packet_PlayerStats;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerData] = Player.Packet_PlayerData;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerMove] = Player.Packet_PlayerMove;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCMove] = Packet_NPCMove;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNpcMove] = Packet_NpcMove;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerDir] = Player.Packet_PlayerDir;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCDir] = Packet_NPCDir;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerXYOffset] = Player.Packet_PlayerXYOffset;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNpcDir] = Packet_NpcDir;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerXY] = Player.Packet_PlayerXY;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAttack] = Packet_Attack;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCAttack] = Packet_NPCAttack;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNpcAttack] = Packet_NpcAttack;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SCheckForMap] = Map.Packet_CheckMap;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapData] = Map.MapData;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNPCData] = Map.Packet_MapNPCData;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNPCUpdate] = Map.Packet_MapNPCUpdate;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNpcData] = Map.Packet_MapNpcData;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNpcUpdate] = Map.Packet_MapNpcUpdate;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SGlobalMsg] = Packet_GlobalMsg;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAdminMsg] = Packet_AdminMsg;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerMsg] = Packet_PlayerMsg;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapMsg] = Packet_MapMsg;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSpawnItem] = Packet_SpawnItem;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateItem] = Item.Packet_UpdateItem;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSpawnNPC] = Packet_SpawnNPC;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCDead] = Packet_NPCDead;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateNPC] = Packet_UpdateNPC;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSpawnNpc] = Packet_SpawnNpc;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNpcDead] = Packet_NpcDead;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateNpc] = Packet_UpdateNpc;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SEditMap] = Map.Packet_EditMap;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateShop] = Shop.Packet_UpdateShop;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateSkill] = Packet_UpdateSkill;
@@ -62,7 +64,7 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SBlood] = Packet_Blood;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateAnimation] = Animation.Packet_UpdateAnimation;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAnimation] = Animation.Packet_Animation;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNPCVitals] = Packet_NPCVitals;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNpcVitals] = Packet_NpcVitals;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SCooldown] = Packet_Cooldown;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SClearSkillBuffer] = Packet_ClearSkillBuffer;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSayMsg] = Packet_SayMessage;
@@ -121,7 +123,7 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SScriptEditor] = Script.Packet_EditScript;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SItemEditor] = Packet_EditItem;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNPCEditor] = Packet_NPCEditor;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SNpcEditor] = Packet_NpcEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SShopEditor] = Packet_EditShop;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSkillEditor] = Packet_EditSkill;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SResourceEditor] = Packet_ResourceEditor;
@@ -132,6 +134,29 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateMoral] = Packet_UpdateMoral;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMoralEditor] = Packet_EditMoral;
 
+        }
+
+        /// <summary>
+        /// Parses an AES packet to extract the key and IV.
+        /// </summary>
+        /// <param name="data">The packet data to parse.</param>
+        /// <returns>An AesEncryption instance with the parsed key and IV, or null if parsing fails.</returns>
+        private static void Packet_Aes(ref byte[] data)
+        {
+            var buffer = new ByteStream(data);
+
+            // Read key length
+            byte keyLength = buffer.ReadByte();
+
+            // Read key
+            byte[] key = buffer.ReadBlock(keyLength).ToArray();
+
+            byte ivLength = buffer.ReadByte();
+
+            // Read IV
+            byte[] iv = buffer.ReadBlock(ivLength).ToArray();
+
+            General.Aes = new Reoria.Engine.Common.Security.Encryption.AesEncryption(key, iv);
         }
 
         private static void Packet_AlertMsg(ref byte[] data)
@@ -151,32 +176,32 @@ namespace Client
 
                 switch (menuReset)
                 {
-                    case (int)Core.Enum.MenuType.Login:
+                    case (int)Core.Menu.Login:
                         {
                             Gui.ShowWindow(Gui.GetWindowIndex("winLogin"));
                             break;
                         }
-                    case (int)Core.Enum.MenuType.Chars:
+                    case (int)Core.Menu.CharacterSelect:
                         {
                             Gui.ShowWindow(Gui.GetWindowIndex("winChars"));
                             break;
                         }
-                    case (int)Core.Enum.MenuType.Job:
+                    case (int)Core.Menu.JobSelection:
                         {
                             Gui.ShowWindow(Gui.GetWindowIndex("winJobs"));
                             break;
                         }
-                    case (int)Core.Enum.MenuType.NewChar:
+                    case (int)Core.Menu.NewCharacter:
                         {
                             Gui.ShowWindow(Gui.GetWindowIndex("winNewChar"));
                             break;
                         }
-                    case (int)Core.Enum.MenuType.Main:
+                    case (int)Core.Menu.MainMenu:
                         {
                             Gui.ShowWindow(Gui.GetWindowIndex("winLogin"));
                             break;
                         }
-                    case (int)Core.Enum.MenuType.Register:
+                    case (int)Core.Menu.Register:
                         {
                             Gui.ShowWindow(Gui.GetWindowIndex("winRegister"));
                             break;
@@ -192,14 +217,6 @@ namespace Client
             }
 
             GameLogic.DialogueAlert(dialogueIndex);
-            buffer.Dispose();
-        }
-
-        private static void Packet_KeyPair(ref byte[] data)
-        {
-            var buffer = new ByteStream(data);
-
-            GameState.EKeyPair.ImportKeyString(buffer.ReadString());
             buffer.Dispose();
         }
 
@@ -296,14 +313,15 @@ namespace Client
             buffer.WriteInt32(i);
 
             {
-                ref var withBlock = ref Core.Type.Job[i];
+                ref var withBlock = ref Data.Job[i];
                 withBlock.Name = buffer.ReadString();
                 withBlock.Desc = buffer.ReadString();
 
                 withBlock.MaleSprite = buffer.ReadInt32();
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
-                for (int q = 0; q < (int)Core.Enum.StatType.Count; q++)
+                int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+                for (int q = 0; q < statCount; q++)
                     withBlock.Stat[q] = buffer.ReadInt32();
 
                 for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
@@ -329,14 +347,15 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_JOBS; i++)
             {          
-                ref var withBlock = ref Core.Type.Job[i];
+                ref var withBlock = ref Data.Job[i];
                 withBlock.Name = buffer.ReadString();
                 withBlock.Desc = buffer.ReadString();
 
                 withBlock.MaleSprite = buffer.ReadInt32();
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
-                for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
+                int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+                for (x = 0; x < statCount; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
                 for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
@@ -417,57 +436,58 @@ namespace Client
             int n;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
+            int equipmentCount = Enum.GetValues(typeof(Equipment)).Length;
+            for (i = 0; i < equipmentCount; i++)
             {
                 n = buffer.ReadInt32();
-                SetPlayerEquipment(GameState.MyIndex, n, (Core.Enum.EquipmentType)i);
+                SetPlayerEquipment(GameState.MyIndex, n, (Equipment)i);
             }
 
             buffer.Dispose();
         }
 
-        private static void Packet_NPCMove(ref byte[] data)
+        private static void Packet_NpcMove(ref byte[] data)
         {
-            double MapNPCNum;
+            double MapNpcNum;
             int movement;
             int x;
             int y;
             int dir;
             var buffer = new ByteStream(data);
 
-            MapNPCNum = buffer.ReadInt32();
+            MapNpcNum = buffer.ReadInt32();
             x = buffer.ReadInt32();
             y = buffer.ReadInt32();
             dir = buffer.ReadInt32();
             movement = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.MyMapNPC[(int)MapNPCNum];
+                ref var withBlock = ref Data.MyMapNpc[(int)MapNpcNum];
                 withBlock.X = (byte)x;
                 withBlock.Y = (byte)y;
-                withBlock.Dir = dir;
+                withBlock.Dir = (byte)dir;
                 withBlock.XOffset = 0;
                 withBlock.YOffset = 0;
                 withBlock.Moving = (byte)movement;
 
                 switch (withBlock.Dir)
                 {
-                    case (int)Core.Enum.DirectionType.Up:
+                    case (int)Direction.Up:
                         {
                             withBlock.YOffset = GameState.PicY;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Down:
+                    case (int)Direction.Down:
                         {
                             withBlock.YOffset = GameState.PicY * -1;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Left:
+                    case (int)Direction.Left:
                         {
                             withBlock.XOffset = GameState.PicX;
                             break;
                         }
-                    case (int)Core.Enum.DirectionType.Right:
+                    case (int)Direction.Right:
                         {
                             withBlock.XOffset = GameState.PicX * -1;
                             break;
@@ -478,7 +498,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        private static void Packet_NPCDir(ref byte[] data)
+        private static void Packet_NpcDir(ref byte[] data)
         {
             int dir;
             int i;
@@ -488,7 +508,7 @@ namespace Client
             dir = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.MyMapNPC[i];
+                ref var withBlock = ref Data.MyMapNpc[i];
                 withBlock.Dir = dir;
                 withBlock.XOffset = 0;
                 withBlock.YOffset = 0;
@@ -506,22 +526,22 @@ namespace Client
             i = buffer.ReadInt32();
 
             // Set player to attacking
-            Core.Type.Player[i].Attacking = 1;
-            Core.Type.Player[i].AttackTimer = General.GetTickCount();
+            Core.Data.Player[i].Attacking = 1;
+            Core.Data.Player[i].AttackTimer = General.GetTickCount();
 
             buffer.Dispose();
         }
 
-        private static void Packet_NPCAttack(ref byte[] data)
+        private static void Packet_NpcAttack(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);
 
             i = buffer.ReadInt32();
 
-            // Set NPC to attacking
-            Core.Type.MyMapNPC[i].Attacking = 1;
-            Core.Type.MyMapNPC[i].AttackTimer = General.GetTickCount();
+            // Set Npc to attacking
+            Data.MyMapNpc[i].Attacking = 1;
+            Data.MyMapNpc[i].AttackTimer = General.GetTickCount();
 
             buffer.Dispose();
         }
@@ -535,7 +555,7 @@ namespace Client
 
             buffer.Dispose();
 
-            Text.AddText(msg, (int)Core.Enum.ColorType.Yellow, channel: (byte)Core.Enum.ChatChannel.Broadcast);
+            Text.AddText(msg, (int)Core.Color.Yellow, channel: (byte)ChatChannel.Broadcast);
         }
 
         private static void Packet_MapMsg(ref byte[] data)
@@ -547,7 +567,7 @@ namespace Client
 
             buffer.Dispose();
 
-            Text.AddText(msg, (int)Core.Enum.ColorType.White, channel: (byte)Core.Enum.ChatChannel.Map);
+            Text.AddText(msg, (int)Core.Color.White, channel: (byte)ChatChannel.Map);
 
         }
 
@@ -560,7 +580,7 @@ namespace Client
 
             buffer.Dispose();
 
-            Text.AddText(msg, (int)Core.Enum.ColorType.BrightCyan, channel: (byte)Core.Enum.ChatChannel.Broadcast);
+            Text.AddText(msg, (int)Core.Color.BrightCyan, channel: (byte)ChatChannel.Broadcast);
         }
 
         private static void Packet_PlayerMsg(ref byte[] data)
@@ -574,7 +594,7 @@ namespace Client
 
             buffer.Dispose();
 
-            Text.AddText(msg, color, channel: (byte)Core.Enum.ChatChannel.Player);
+            Text.AddText(msg, color, channel: (byte)ChatChannel.Private);
         }
 
         private static void Packet_SpawnItem(ref byte[] data)
@@ -585,7 +605,7 @@ namespace Client
             i = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.MyMapItem[i];
+                ref var withBlock = ref Data.MyMapItem[i];
                 withBlock.Num = buffer.ReadInt32();
                 withBlock.Value = buffer.ReadInt32();
                 withBlock.X = (byte)buffer.ReadInt32();
@@ -595,7 +615,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        private static void Packet_SpawnNPC(ref byte[] data)
+        private static void Packet_SpawnNpc(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);
@@ -603,13 +623,13 @@ namespace Client
             i = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.MyMapNPC[i];
+                ref var withBlock = ref Data.MyMapNpc[i];
                 withBlock.Num = buffer.ReadInt32();
                 withBlock.X = (byte)buffer.ReadInt32();
                 withBlock.Y = (byte)buffer.ReadInt32();
                 withBlock.Dir = buffer.ReadInt32();
 
-                for (i = 0; i < (int)Core.Enum.VitalType.Count; i++)
+                for (i = 0; i < Enum.GetValues(typeof(Core.Vital)).Length; i++)
                     withBlock.Vital[i] = buffer.ReadInt32();
                 // Client use only
                 withBlock.XOffset = 0;
@@ -620,18 +640,18 @@ namespace Client
             buffer.Dispose();
         }
 
-        private static void Packet_NPCDead(ref byte[] data)
+        private static void Packet_NpcDead(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);
 
             i = buffer.ReadInt32();
-            Map.ClearMapNPC(i);
+            Map.ClearMapNpc(i);
 
             buffer.Dispose();
         }
 
-        private static void Packet_UpdateNPC(ref byte[] data)
+        private static void Packet_UpdateNpc(ref byte[] data)
         {
             int i;
             int x;
@@ -639,35 +659,36 @@ namespace Client
 
             i = buffer.ReadInt32();
 
-            // Update the NPC
-            Core.Type.NPC[i].Animation = buffer.ReadInt32();
-            Core.Type.NPC[i].AttackSay = buffer.ReadString();
-            Core.Type.NPC[i].Behaviour = buffer.ReadByte();
+            // Update the Npc
+            Data.Npc[i].Animation = buffer.ReadInt32();
+            Data.Npc[i].AttackSay = buffer.ReadString();
+            Data.Npc[i].Behaviour = buffer.ReadByte();
 
             for (x = 0; x < Constant.MAX_DROP_ITEMS; x++)
             {
-                Core.Type.NPC[i].DropChance[x] = buffer.ReadInt32();
-                Core.Type.NPC[i].DropItem[x] = buffer.ReadInt32();
-                Core.Type.NPC[i].DropItemValue[x] = buffer.ReadInt32();
+                Data.Npc[i].DropChance[x] = buffer.ReadInt32();
+                Data.Npc[i].DropItem[x] = buffer.ReadInt32();
+                Data.Npc[i].DropItemValue[x] = buffer.ReadInt32();
             }
 
-            Core.Type.NPC[i].Exp = buffer.ReadInt32();
-            Core.Type.NPC[i].Faction = buffer.ReadByte();
-            Core.Type.NPC[i].HP = buffer.ReadInt32();
-            Core.Type.NPC[i].Name = buffer.ReadString();
-            Core.Type.NPC[i].Range = buffer.ReadByte();
-            Core.Type.NPC[i].SpawnTime = buffer.ReadByte();
-            Core.Type.NPC[i].SpawnSecs = buffer.ReadInt32();
-            Core.Type.NPC[i].Sprite = buffer.ReadInt32();
+            Data.Npc[i].Exp = buffer.ReadInt32();
+            Data.Npc[i].Faction = buffer.ReadByte();
+            Data.Npc[i].HP = buffer.ReadInt32();
+            Data.Npc[i].Name = buffer.ReadString();
+            Data.Npc[i].Range = buffer.ReadByte();
+            Data.Npc[i].SpawnTime = buffer.ReadByte();
+            Data.Npc[i].SpawnSecs = buffer.ReadInt32();
+            Data.Npc[i].Sprite = buffer.ReadInt32();
 
-            for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
-                Core.Type.NPC[i].Stat[x] = buffer.ReadByte();
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            for (x = 0; x < statCount; x++)
+                Data.Npc[i].Stat[x] = buffer.ReadByte();
 
             for (x = 0; x < Constant.MAX_NPC_SKILLS; x++)
-                Core.Type.NPC[i].Skill[x] = buffer.ReadByte();
+                Data.Npc[i].Skill[x] = buffer.ReadByte();
 
-            Core.Type.NPC[i].Level = buffer.ReadByte();
-            Core.Type.NPC[i].Damage = buffer.ReadInt32();
+            Data.Npc[i].Level = buffer.ReadByte();
+            Data.Npc[i].Damage = buffer.ReadInt32();
 
             buffer.Dispose();
         }
@@ -678,34 +699,34 @@ namespace Client
             var buffer = new ByteStream(data);
             skillNum = buffer.ReadInt32();
 
-            Core.Type.Skill[skillNum].AccessReq = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].AoE = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].CastAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].CastTime = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].CdTime = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].JobReq = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Dir = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Duration = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Icon = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Interval = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
-            Core.Type.Skill[skillNum].LevelReq = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Map = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].MpCost = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Name = buffer.ReadString();
-            Core.Type.Skill[skillNum].Range = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].SkillAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].StunDuration = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Type = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Vital = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].X = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Y = buffer.ReadInt32();
+            Data.Skill[skillNum].AccessReq = buffer.ReadInt32();
+            Data.Skill[skillNum].AoE = buffer.ReadInt32();
+            Data.Skill[skillNum].CastAnim = buffer.ReadInt32();
+            Data.Skill[skillNum].CastTime = buffer.ReadInt32();
+            Data.Skill[skillNum].CdTime = buffer.ReadInt32();
+            Data.Skill[skillNum].JobReq = buffer.ReadInt32();
+            Data.Skill[skillNum].Dir = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].Duration = buffer.ReadInt32();
+            Data.Skill[skillNum].Icon = buffer.ReadInt32();
+            Data.Skill[skillNum].Interval = buffer.ReadInt32();
+            Data.Skill[skillNum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Skill[skillNum].LevelReq = buffer.ReadInt32();
+            Data.Skill[skillNum].Map = buffer.ReadInt32();
+            Data.Skill[skillNum].MpCost = buffer.ReadInt32();
+            Data.Skill[skillNum].Name = buffer.ReadString();
+            Data.Skill[skillNum].Range = buffer.ReadInt32();
+            Data.Skill[skillNum].SkillAnim = buffer.ReadInt32();
+            Data.Skill[skillNum].StunDuration = buffer.ReadInt32();
+            Data.Skill[skillNum].Type = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].Vital = buffer.ReadInt32();
+            Data.Skill[skillNum].X = buffer.ReadInt32();
+            Data.Skill[skillNum].Y = buffer.ReadInt32();
 
-            Core.Type.Skill[skillNum].IsProjectile = buffer.ReadInt32();
-            Core.Type.Skill[skillNum].Projectile = buffer.ReadInt32();
+            Data.Skill[skillNum].IsProjectile = buffer.ReadInt32();
+            Data.Skill[skillNum].Projectile = buffer.ReadInt32();
 
-            Core.Type.Skill[skillNum].KnockBack = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillNum].KnockBackTiles = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].KnockBack = (byte)buffer.ReadInt32();
+            Data.Skill[skillNum].KnockBackTiles = (byte)buffer.ReadInt32();
 
             buffer.Dispose();
 
@@ -717,7 +738,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
-                Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadInt32();
+                Core.Data.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadInt32();
 
             buffer.Dispose();
         }
@@ -775,7 +796,7 @@ namespace Client
                 GameState.BloodIndex = 1;
 
             {
-                ref var withBlock = ref Core.Type.Blood[GameState.BloodIndex];
+                ref var withBlock = ref Data.Blood[GameState.BloodIndex];
                 withBlock.X = x;
                 withBlock.Y = y;
                 withBlock.Sprite = sprite;
@@ -784,14 +805,14 @@ namespace Client
 
             buffer.Dispose();
         }
-        private static void Packet_NPCVitals(ref byte[] data)
+        private static void Packet_NpcVitals(ref byte[] data)
         {
-            double MapNPCNum;
+            double MapNpcNum;
             var buffer = new ByteStream(data);
 
-            MapNPCNum = buffer.ReadInt32();
-            for (int i = 0; i < (int)Core.Enum.VitalType.Count; i++)
-                Core.Type.MyMapNPC[(int)MapNPCNum].Vital[i] = buffer.ReadInt32();
+            MapNpcNum = buffer.ReadInt32();
+            for (int i = 0; i < Enum.GetValues(typeof(Core.Vital)).Length; i++)
+                Data.MyMapNpc[(int)MapNpcNum].Vital[i] = buffer.ReadInt32();
 
             buffer.Dispose();
         }
@@ -802,7 +823,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             slot = buffer.ReadInt32();
-            Core.Type.Player[GameState.MyIndex].Skill[slot].CD = General.GetTickCount();
+            Core.Data.Player[GameState.MyIndex].Skill[slot].CD = General.GetTickCount();
 
             buffer.Dispose();
         }
@@ -837,41 +858,41 @@ namespace Client
             // Check access level
             switch (access)
             {
-                case (int)Core.Enum.AccessType.Player:
+                case (int)AccessLevel.Player:
                     {
-                        color = (byte)Core.Enum.ColorType.White;
+                        color = (byte)Core.Color.White;
                         break;
                     }
-                case (int)Core.Enum.AccessType.Moderator:
+                case (int)AccessLevel.Moderator:
                     {
-                        color = (byte)Core.Enum.ColorType.Cyan;
+                        color = (byte)Core.Color.Cyan;
                         break;
                     }
-                case (int)Core.Enum.AccessType.Mapper:
+                case (int)AccessLevel.Mapper:
                     {
-                        color = (byte)Core.Enum.ColorType.Green;
+                        color = (byte)Core.Color.Green;
                         break;
                     }
-                case (int)Core.Enum.AccessType.Developer:
+                case (int)AccessLevel.Developer:
                     {
-                        color = (byte)Core.Enum.ColorType.BrightBlue;
+                        color = (byte)Core.Color.BrightBlue;
                         break;
                     }
-                case (int)Core.Enum.AccessType.Owner:
+                case (int)AccessLevel.Owner:
                     {
-                        color = (byte)Core.Enum.ColorType.Yellow;
+                        color = (byte)Core.Color.Yellow;
                         break;
                     }
 
                 default:
                     {
-                        color = (byte)Core.Enum.ColorType.White;
+                        color = (byte)Core.Color.White;
                         break;
                     }
             }
 
             if (pk)
-                color = (byte)Core.Enum.ColorType.BrightRed;
+                color = (byte)Core.Color.BrightRed;
 
             // find channel
             channelType = 0;
@@ -879,12 +900,12 @@ namespace Client
             {
                 case "[Map]:":
                     {
-                        channelType = (byte)Core.Enum.ChatChannel.Map;
+                        channelType = (byte)ChatChannel.Map;
                         break;
                     }
                 case "[Global]:":
                     {
-                        channelType = (byte)Core.Enum.ChatChannel.Broadcast;
+                        channelType = (byte)ChatChannel.Broadcast;
                         break;
                     }
             }
@@ -906,15 +927,16 @@ namespace Client
 
         private static void Packet_MapWornEquipment(ref byte[] data)
         {
-            int playernum;
+            int playerNum;
             int n;
             var buffer = new ByteStream(data);
 
-            playernum = buffer.ReadInt32();
-            for (int i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
+            playerNum = buffer.ReadInt32();
+            int equipmentCount = Enum.GetValues(typeof(Equipment)).Length;
+            for (int i = 0; i < equipmentCount; i++)
             {
                 n = buffer.ReadInt32();
-                SetPlayerEquipment(playernum, n, (Core.Enum.EquipmentType)i);
+                SetPlayerEquipment(playerNum, n, (Equipment)i);
             }
 
             buffer.Dispose();
@@ -968,7 +990,7 @@ namespace Client
             emote = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.Player[index];
+                ref var withBlock = ref Core.Data.Player[index];
                 withBlock.Emote = emote;
                 withBlock.EmoteTimer = General.GetTickCount() + 5000;
             }
@@ -1018,9 +1040,9 @@ namespace Client
             GameState.InitItemEditor = true;
         }
 
-        private static void Packet_NPCEditor(ref byte[] data)
+        private static void Packet_NpcEditor(ref byte[] data)
         {
-            GameState.InitNPCEditor = true;
+            GameState.InitNpcEditor = true;
         }
 
         private static void Packet_ResourceEditor(ref byte[] data)
@@ -1067,25 +1089,25 @@ namespace Client
             {
                 case TimeOfDay.Dawn:
                     {
-                        Text.AddText("A chilling, refreshing, breeze has come with the morning.", (int)Core.Enum.ColorType.DarkGray);
+                        Text.AddText("A chilling, refreshing, breeze has come with the morning.", (int)Core.Color.DarkGray);
                         break;
                     }
 
                 case TimeOfDay.Day:
                     {
-                        Text.AddText("Day has dawned in this region.", (int)Core.Enum.ColorType.DarkGray);
+                        Text.AddText("Day has dawned in this region.", (int)Core.Color.DarkGray);
                         break;
                     }
 
                 case TimeOfDay.Dusk:
                     {
-                        Text.AddText("Dusk has begun darkening the skies...", (int)Core.Enum.ColorType.DarkGray);
+                        Text.AddText("Dusk has begun darkening the skies...", (int)Core.Color.DarkGray);
                         break;
                     }
 
                 default:
                     {
-                        Text.AddText("Night has fallen upon the weary travelers.", (int)Core.Enum.ColorType.DarkGray);
+                        Text.AddText("Night has fallen upon the weary travelers.", (int)Core.Color.DarkGray);
                         break;
                     }
             }
@@ -1100,8 +1122,8 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_HOTBAR; i++)
             {
-                Core.Type.Player[GameState.MyIndex].Hotbar[i].Slot = buffer.ReadInt32();
-                Core.Type.Player[GameState.MyIndex].Hotbar[i].SlotType = (byte)buffer.ReadInt32();
+                Core.Data.Player[GameState.MyIndex].Hotbar[i].Slot = buffer.ReadInt32();
+                Core.Data.Player[GameState.MyIndex].Hotbar[i].SlotType = (byte)buffer.ReadInt32();
             }
 
             buffer.Dispose();
@@ -1120,10 +1142,10 @@ namespace Client
             i = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.Moral[i];
+                ref var withBlock = ref Data.Moral[i];
                 withBlock.Name = buffer.ReadString();
                 withBlock.Color = buffer.ReadByte();
-                withBlock.NPCBlock = buffer.ReadBoolean();
+                withBlock.NpcBlock = buffer.ReadBoolean();
                 withBlock.PlayerBlock = buffer.ReadBoolean();
                 withBlock.DropItems = buffer.ReadBoolean();
                 withBlock.CanCast = buffer.ReadBoolean();

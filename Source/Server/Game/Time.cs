@@ -78,7 +78,7 @@ namespace Server
         }
 
         // Public method to synchronize time across multiple servers
-        public async Task SynchronizeTimeAsync(IEnumerable<Server> servers)
+        public async System.Threading.Tasks.Task SynchronizeTimeAsync(IEnumerable<Server> servers)
         {
             if (servers == null)
             {

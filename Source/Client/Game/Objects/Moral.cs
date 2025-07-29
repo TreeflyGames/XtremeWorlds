@@ -10,9 +10,9 @@ namespace Client
 
         public static void ClearMoral(int index)
         {
-            Core.Type.Moral[index] = default;
+            Data.Moral[index] = default;
 
-            Core.Type.Moral[index].Name = "";
+            Data.Moral[index].Name = "";
             GameState.Moral_Loaded[index] = 0;
         }
 
@@ -20,7 +20,7 @@ namespace Client
         {
             int i;
 
-            Core.Type.Moral = new Core.Type.MoralStruct[(Constant.MAX_MORALS)];
+            Data.Moral = new Core.Type.Moral[(Constant.MAX_MORALS)];
 
             for (i = 0; i < Constant.MAX_MORALS; i++)
                 ClearMoral(i);
@@ -28,7 +28,7 @@ namespace Client
 
         public static void StreamMoral(int moralNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(moralNum >= 0 & string.IsNullOrEmpty(Core.Type.Moral[moralNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Moral_Loaded[moralNum], 0, false))))
+            if (moralNum >= 0 & string.IsNullOrEmpty(Data.Moral[moralNum].Name) && GameState.Moral_Loaded[moralNum] == 0)
             {
                 GameState.Moral_Loaded[moralNum] = 1;
                 NetworkSend.SendRequestMoral(moralNum);

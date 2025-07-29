@@ -46,5 +46,7 @@ namespace Core
         public const int MAX_EVENTS = 500;
         public const byte MAX_GUILDS = 100;
         public const byte MAX_EVENT_CHOICES = 4;
-    }
+        public const int TILE_SIZE = 32;
+        public const int MAX_WEATHER_PARTICLES = 1000;
+	}
 }

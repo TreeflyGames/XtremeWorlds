@@ -5,17 +5,20 @@
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Autofac" Version="8.3.0" />
+    <PackageVersion Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Include="CS-Script" Version="4.9.7" />
     <PackageVersion Include="CS-Script.Core" Version="2.0.0" />
     <PackageVersion Include="DarkUI" Version="2.0.2" />
     <PackageVersion Include="ManagedBass" Version="3.1.1" />
     <PackageVersion Include="ManagedBass.Midi" Version="3.1.1" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.6" />
     <PackageVersion Include="Microsoft.NET.Runtime.MonoAOTCompiler.Task" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.VisualBasic" Version="10.3.0" />
     <PackageVersion Include="MonoGame.Content.Builder.Task" Version="3.8.4" />
     <PackageVersion Include="MonoGame.Extended" Version="4.1.0" />
     <PackageVersion Include="MonoGame.Framework.Android" Version="3.8.5-develop.1" />
@@ -34,5 +37,6 @@
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageVersion Include="System.Reflection.Extensions" Version="4.3.0" />
     <PackageVersion Include="System.Resources.Extensions" Version="8.0.0" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.7" />
   </ItemGroup>
 </Project>

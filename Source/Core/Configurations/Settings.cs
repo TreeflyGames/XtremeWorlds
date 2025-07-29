@@ -32,7 +32,7 @@ namespace Core
         public bool OpenAdminPanelOnLogin { get; set; } = true;
         public byte[] ChannelState { get; set; } = { 1, 1, 1, 1, 1, 1, 1 };
 
-        public string IP { get; set; } = "127.0.0.1";  // 51.222.200.12
+        public string IP { get; set; } = "127.0.0.1"; // 135.148.120.99
         public int Port { get; set; } = 7001;
 
         public string GameName { get; set; } = "XtremeWorlds";
@@ -49,6 +49,9 @@ namespace Core
         public int SaveInterval { get; set; } = 5;
 
         public int MaxSQLClients { get; set; } = 10;
+
+        public string Skin { get; set; } = "Crystalshire";
+
 
         // Methods to load and save settings
         public static void Load()

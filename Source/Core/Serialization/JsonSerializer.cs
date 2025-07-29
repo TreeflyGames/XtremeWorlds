@@ -95,7 +95,7 @@ namespace Core.Serialization
 
         // Asynchronous File Operations
 
-        public async Task<InputType> ReadAsync(string filename)
+        public async System.Threading.Tasks.Task<InputType> ReadAsync(string filename)
         {
             if (!File.Exists(filename))
                 return default;
@@ -114,7 +114,7 @@ namespace Core.Serialization
             }
         }
 
-        public async Task WriteAsync(string filename, InputType rawObject)
+        public async System.Threading.Tasks.Task WriteAsync(string filename, InputType rawObject)
         {
             try
             {

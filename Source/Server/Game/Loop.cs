@@ -1,15 +1,17 @@
 ﻿using Core;
+using Core.Globals;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw.Network;
+using MonoGame.Extended.ECS;
 using Npgsql.Replication.PgOutput.Messages;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
-using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Type;
 
@@ -19,11 +21,12 @@ namespace Server
     public class Loop
     {
 
-        public static async Task ServerAsync()
+        public static async System.Threading.Tasks.Task ServerAsync()
         {
             int tick;
             var tmr25 = default(int);
             var tmr500 = default(int);
+            var tmr250 = default(int);
             var tmr1000 = default(int);
             var tmr60000 = default(int);
             var lastUpdateSavePlayers = default(int);
@@ -38,7 +41,7 @@ namespace Server
                 if (General.IsServerDestroyed)
 
                     // Get all our online players.
-                    Debugger.Break(); var onlinePlayers = Core.Type.TempPlayer.Where(player => player.InGame).Select((player, index) => new { Index = Operators.AddObject(index, 1), player }).ToArray();
+                    Debugger.Break(); var onlinePlayers = Core.Data.TempPlayer.Where(player => player.InGame).Select((player, index) => new { Index = Operators.AddObject(index, 1), player }).ToArray();
 
                 await General.CheckShutDownCountDownAsync();
 
@@ -49,6 +52,34 @@ namespace Server
 
                     // Move the timer up 25ms.
                     tmr25 = General.GetTimeMs() + 25;
+                }
+                
+                if (tick > tmr250)
+                {
+                    for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
+                    {
+                        if (Core.Data.Player[index].Moving > 0 && Core.Data.Player[index].IsMoving)
+                        {
+                            Player.PlayerMove(index, Core.Data.Player[index].Dir, Core.Data.Player[index].Moving, false);
+                        }
+                    }
+                    
+                    // Move the timer up 250ms.
+                    tmr250 = General.GetTimeMs() + 250;
+                }
+
+                if (tick > tmr60000)
+                {
+                    try
+                    {                    
+                        Script.Instance?.ServerMinute();
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    tmr60000 = General.GetTimeMs() + 60000;
                 }
 
                 if (tick > tmr60000)
@@ -90,7 +121,7 @@ namespace Server
                         {
                             if (IsPlaying(i))
                             {
-                                Player.LeftGame(i);
+                                await Player.LeftGame(i);
                             }
                         }
                     }
@@ -124,7 +155,7 @@ namespace Server
                     Console.WriteLine(e.Message);
                 }
 
-                await Task.Delay(1);
+                await System.Threading.Tasks.Task.Delay(1);
             }
             while (true);
         }
@@ -140,7 +171,7 @@ namespace Server
                 var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i < loopTo; i++)
                 {
-                    Database.SaveCharacter(i, Core.Type.TempPlayer[i].Slot);
+                    Database.SaveCharacter(i, Core.Data.TempPlayer[i].Slot);
                     Database.SaveBank(i);
                 }
 
@@ -173,13 +204,54 @@ namespace Server
 
         private static void UpdateMapAI()
         {
-            try
+            // Clear the entity list before repopulating to avoid accumulating instances
+            Core.Globals.Entity.Instances.Clear();
+
+            var entities = Core.Globals.Entity.Instances;
+            var mapCount = Core.Constant.MAX_MAPS;
+
+            // Use entities from Core.Globals.Entity class
+            for (int mapNum = 0; mapNum < mapCount; mapNum++)
             {
-                Script.Instance?.UpdateMapAI();
+                // Add Npcs
+                for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i++)
+                {
+                    var npc = Core.Globals.Entity.FromNpc(i, Data.MapNpc[mapNum].Npc[i]);
+                    if (npc.Num >= 0)
+                    {
+                        npc.Map = mapNum;
+                        entities.Add(npc);
+                    }
+                }
+
+                // Add Players
+                for (int i = 0; i < NetworkConfig.Socket.HighIndex; i++)
+                {
+                    if (Core.Data.Player[i].Map == mapNum)
+                    {
+                        var player = Core.Globals.Entity.FromPlayer(i, Core.Data.Player[i]);
+                        if (player.Num >= 0)
+                        {
+                            player.Map = mapNum;
+                            entities.Add(player);
+                        }
+                    }
+                }
             }
-            catch(Exception e)
+            
+            Script.Instance?.UpdateMapAI();
+
+            foreach (Core.Globals.Entity entity in Core.Globals.Entity.Instances)
             {
-                Console.WriteLine(e.Message);
+                switch (entity.Type)
+                {
+                    case Core.Globals.Entity.EntityType.Npc:
+                        Data.MapNpc[entity.Map].Npc[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNpc(entity.Id, entity);
+                        break;
+                    case Core.Globals.Entity.EntityType.Player:
+                        Core.Data.Player[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPlayer(entity.Id, entity);
+                        break;
+                }
             }
         }
 

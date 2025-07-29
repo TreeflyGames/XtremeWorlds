@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Core;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Newtonsoft.Json;
@@ -9,7 +10,6 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
 using static Core.Type;
@@ -34,7 +34,7 @@ namespace Server
 
         public static void SavePet(int petNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Pet[petNum]).ToString();
+            string json = JsonConvert.SerializeObject(Data.Pet[petNum]).ToString();
 
             if (Database.RowExists(petNum, "pet"))
             {
@@ -46,13 +46,13 @@ namespace Server
             }
         }
 
-        public static async Task LoadPetsAsync()
+        public static async System.Threading.Tasks.Task LoadPetsAsync()
         {
-            var tasks = Enumerable.Range(0, Core.Constant.MAX_PETS).Select(i => Task.Run(() => LoadPetAsync(i)));
-            await Task.WhenAll(tasks);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_PETS).Select(i => System.Threading.Tasks.Task.Run(() => LoadPetAsync(i)));
+            await System.Threading.Tasks.Task.WhenAll(tasks);
         }
 
-        public static async Task LoadPetAsync(int petNum)
+        public static async System.Threading.Tasks.Task LoadPetAsync(int petNum)
         {
             JObject data;
             data = await Database.SelectRowAsync(petNum, "pet", "data");
@@ -63,16 +63,15 @@ namespace Server
                 return;
             }
 
-            var petData = JObject.FromObject(data).ToObject<PetStruct>();
-            Core.Type.Pet[petNum] = petData;
+            var petData = JObject.FromObject(data).ToObject<Core.Type.Pet>();
+            Data.Pet[petNum] = petData;
         }
 
         public static void ClearPet(int petNum)
         {
-            Core.Type.Pet[petNum].Name = "";
-
-            Core.Type.Pet[petNum].Stat = new byte[(byte)StatType.Count];
-            Core.Type.Pet[petNum].Skill = new int[Core.Constant.MAX_PET_SKILLS];
+            Data.Pet[petNum].Name = "";
+            Data.Pet[petNum].Stat = new byte[Enum.GetValues(typeof(Core.Stat)).Length];
+            Data.Pet[petNum].Skill = new int[Core.Constant.MAX_PET_SKILLS];
         }
 
         #endregion
@@ -86,7 +85,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_PETS;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.Pet[i].Name.Length > 0)
+                if (Data.Pet[i].Name.Length > 0)
                 {
                     SendUpdatePetTo(index, i);
                 }
@@ -106,7 +105,7 @@ namespace Server
 
             buffer.WriteInt32(petNum);
 
-            ref var withBlock = ref Core.Type.Pet[petNum];
+            ref var withBlock = ref Data.Pet[petNum];
             buffer.WriteInt32(withBlock.Num);
             buffer.WriteString(withBlock.Name);
             buffer.WriteInt32(withBlock.Sprite);
@@ -115,10 +114,11 @@ namespace Server
             buffer.WriteInt32(withBlock.MaxLevel);
             buffer.WriteInt32(withBlock.ExpGain);
             buffer.WriteByte(withBlock.Points);
-            buffer.WriteInt32(withBlock.StatType);
+            buffer.WriteByte(withBlock.StatType);
             buffer.WriteInt32(withBlock.LevelingType);
 
-            for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            for (int i = 0, loopTo = statCount; i < loopTo; i++)
                 buffer.WriteInt32(withBlock.Stat[i]);
 
             for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
@@ -141,7 +141,7 @@ namespace Server
             buffer.WriteInt32(petNum);
 
             {
-                ref var withBlock = ref Core.Type.Pet[petNum];
+                ref var withBlock = ref Data.Pet[petNum];
                 buffer.WriteInt32(withBlock.Num);
                 buffer.WriteString(withBlock.Name);
                 buffer.WriteInt32(withBlock.Sprite);
@@ -150,10 +150,11 @@ namespace Server
                 buffer.WriteInt32(withBlock.MaxLevel);
                 buffer.WriteInt32(withBlock.ExpGain);
                 buffer.WriteByte(withBlock.Points);
-                buffer.WriteInt32(withBlock.StatType);
+                buffer.WriteByte(withBlock.StatType);
                 buffer.WriteInt32(withBlock.LevelingType);
 
-                for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
+                int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+                for (int i = 0, loopTo = statCount; i < loopTo; i++)
                     buffer.WriteInt32(withBlock.Stat[i]);
 
                 for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
@@ -178,20 +179,20 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) Core.AccessLevel.Developer)
                 return;
 
             string user;
 
-            user = IsEditorLocked(index, (byte) EditorType.Pet);
+            user = IsEditorLocked(index, (byte) Core.EditorType.Pet);
 
             if (!string.IsNullOrEmpty(user))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) Core.Color.BrightRed);
                 return;
             }
 
-            Core.Type.TempPlayer[index].Editor = (byte) EditorType.Pet;
+            Core.Data.TempPlayer[index].Editor = (byte) Core.EditorType.Pet;
 
             Pet.SendPets(index);
 
@@ -205,12 +206,11 @@ namespace Server
         public static void Packet_UpdatePet(ref byte[] data)
         {
             int n;
-            int i;
             var buffer = new ByteStream(data);
             n = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.Pet[n];
+                ref var withBlock = ref Data.Pet[n];
                 withBlock.Num = buffer.ReadInt32();
                 withBlock.Name = buffer.ReadString();
                 withBlock.Sprite = buffer.ReadInt32();
@@ -222,10 +222,10 @@ namespace Server
                 withBlock.StatType = (byte)buffer.ReadInt32();
                 withBlock.LevelingType = (byte)buffer.ReadInt32();
 
-                for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
+                for (int i = 0; i < Enum.GetValues(typeof(Core.Stat)).Length; i++)
                     withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
-                for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
+                for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
                     withBlock.Skill[i] = buffer.ReadInt32();
 
                 withBlock.Evolvable = (byte)buffer.ReadInt32();
@@ -245,7 +245,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
+            if (GetPlayerAccess(index) < (byte) AccessLevel.Developer)
                 return;
 
             petNum = buffer.ReadInt32();
@@ -254,7 +254,7 @@ namespace Server
             if (petNum < 0 | petNum > Core.Constant.MAX_PETS)
                 return;
            
-            ref var withBlock = ref Core.Type.Pet[petNum];
+            ref var withBlock = ref Data.Pet[petNum];
             withBlock.Num = buffer.ReadInt32();
             withBlock.Name = buffer.ReadString();
             withBlock.Sprite = buffer.ReadInt32();
@@ -266,7 +266,7 @@ namespace Server
             withBlock.StatType = (byte)buffer.ReadInt32();
             withBlock.LevelingType = (byte)buffer.ReadInt32();
 
-            var loopTo = (byte)StatType.Count;
+            int loopTo = Enum.GetValues(typeof(Core.Stat)).Length;
             for (i = 0; i < loopTo; i++)
                 withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
