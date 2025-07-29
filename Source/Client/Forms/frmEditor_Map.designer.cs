@@ -1250,6 +1250,7 @@ namespace Client
             // lstMapNpc
             // 
             lstMapNpc.BackColor = Color.FromArgb(45, 45, 48);
+            lstMapNpc.ForeColor = SystemColors.Window;
             lstMapNpc.FormattingEnabled = true;
             lstMapNpc.Location = new Point(19, 111);
             lstMapNpc.Margin = new Padding(7, 6, 7, 6);

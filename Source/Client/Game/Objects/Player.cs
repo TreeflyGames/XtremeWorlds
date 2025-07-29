@@ -718,73 +718,52 @@ namespace Client
 
         public static void ProcessPlayerMovement(int index)
         {
-            // Check if player is walking or running, and if so process moving them over
-            switch (Core.Data.Player[index].Moving)
-            {
-                case (byte)MovementState.Walking:
-                    {
-                        GameState.MovementSpeed = GameState.ElapsedTime / 250.0d * 4 * GameState.SizeX;
-                        break;
-                    }
-                case (byte)MovementState.Running:
-                    {
-                        GameState.MovementSpeed = GameState.ElapsedTime / 250.0d * 4 * GameState.SizeX; 
-                        break;
-                    }
-
-                default:
-                    {
-                        return;
-                    }
-            }
-
-            GameState.MovementSpeed = Math.Round(GameState.MovementSpeed);
-
             // Update player offsets based on direction
             switch (GetPlayerDir(index))
             {
                 case (int)Direction.Up:
                 {
-                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset - 4);
+                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset - 1);
+
                         break;
                     }
                 case (int)Direction.Down:
                     {
-                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset + 4);
+                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset + 1);
                         break;
                     }
                 case (int)Direction.Left:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 4;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
                         break;
                     }
                 case (int)Direction.Right:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 4;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
                         break;
                     }
                 case (int)Direction.UpRight:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 4;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 4;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
                         break;
                     }
                 case (int)Direction.UpLeft:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 4;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 4;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
                         break;
                     }
                 case (int)Direction.DownRight:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 4;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 4;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
                         break;
                     }
                 case (int)Direction.DownLeft:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 4;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 4;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
+                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
                         break;
                     }
             }

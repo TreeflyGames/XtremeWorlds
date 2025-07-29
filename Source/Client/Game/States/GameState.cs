@@ -224,7 +224,6 @@ namespace Client
         public static int[] AnimEditorFrame = new int[2];
         public static int[] AnimEditorTimer = new int[2];
 
-        public static double MovementSpeed;
         public static double CurrentCameraX;
         public static double CurrentCameraY;
 
