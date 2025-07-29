@@ -37,7 +37,7 @@ namespace Core
         public static PlayerInv[] TradeTheirOffer = new PlayerInv[Constant.MAX_INV];
         public static Party[] Party = new Party[Constant.MAX_PARTY];
         public static Party MyParty;
-        public static Resource[] Resource = new Resource[Constant.MAX_RESOURCES];
+        public static Core.Type.Resource[] Resource = new Type.Resource[Constant.MAX_RESOURCES];
         public static CharList Char;
         public static Pet[] Pet = new Pet[Constant.MAX_PETS];
         public static ChatBubble[] ChatBubble = new ChatBubble[byte.MaxValue];
