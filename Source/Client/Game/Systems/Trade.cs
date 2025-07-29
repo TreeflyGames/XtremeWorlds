@@ -30,7 +30,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             requester = buffer.ReadInt32();
-            GameLogic.Dialogue("Trade Invite", string.Format(LocalesManager.Get("Request"), Core.Type.Player[requester].Name), "", (byte)Core.Enum.DialogueType.Trade, (byte)Core.Enum.DialogueStyle.YesNo);
+            GameLogic.Dialogue("Trade Invite", string.Format(LocalesManager.Get("Request"), Core.Data.Player[requester].Name), "", (byte)DialogueType.Trade, (byte)DialogueStyle.YesNo);
 
             buffer.Dispose();
         }
@@ -62,8 +62,8 @@ namespace Client
             {
                 for (int i = 0; i < Constant.MAX_INV; i++)
                 {
-                    Core.Type.TradeYourOffer[i].Num = buffer.ReadInt32();
-                    Core.Type.TradeYourOffer[i].Value = buffer.ReadInt32();
+                    Data.TradeYourOffer[i].Num = buffer.ReadInt32();
+                    Data.TradeYourOffer[i].Value = buffer.ReadInt32();
                 }
                 YourWorth = buffer.ReadInt32().ToString();
                 Gui.Windows[Gui.GetWindowIndex("winTrade")].Controls[(int)Gui.GetControlIndex("winTrade", "lblYourValue")].Text = YourWorth + "g";
@@ -72,8 +72,8 @@ namespace Client
             {
                 for (int i = 0; i < Constant.MAX_INV; i++)
                 {
-                    Core.Type.TradeTheirOffer[i].Num = buffer.ReadInt32();
-                    Core.Type.TradeTheirOffer[i].Value = buffer.ReadInt32();
+                    Data.TradeTheirOffer[i].Num = buffer.ReadInt32();
+                    Data.TradeTheirOffer[i].Value = buffer.ReadInt32();
                 }
                 TheirWorth = buffer.ReadInt32().ToString();
                 Gui.Windows[Gui.GetWindowIndex("winTrade")].Controls[(int)Gui.GetControlIndex("winTrade", "lblTheirValue")].Text = TheirWorth + "g";

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Reflection;
@@ -40,7 +41,28 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Config");
+                if (OperatingSystem.IsMacOS())
+                {
+                    var appData = System.IO.Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "XtremeWorlds"
+                    );
+                    Directory.CreateDirectory(appData); // Ensure it exists
+                    return System.IO.Path.Combine(appData, "Config");
+                }
+                else
+                {
+                    return System.IO.Path.Combine(Local, "Config");
+                }
+            }
+        }
+
+        /// <summary> Returns skins directory </summary>
+        public static string Skins
+        {
+            get
+            {
+                return System.IO.Path.Combine(Asset, "Skins");
             }
         }
 

@@ -8,94 +8,95 @@
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <GenerateManifests>false</GenerateManifests>
     <LangVersion>latest</LangVersion>
-    <TargetFramework>net9.0-android</TargetFramework>
-    <TargetPlatformVersion>35</TargetPlatformVersion>
-    <AndroidMinSdkVersion>24</AndroidMinSdkVersion> <!-- or even 21 -->
-    <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <AndroidFastDeployment>false</AndroidFastDeployment>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
- </PropertyGroup>
- <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-   <OutputPath>..\..\Build\Client\</OutputPath>
-   <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
-   <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-   <DefineConstants>CLIENT</DefineConstants>
-   <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
-   <PublishTrimmed>False</PublishTrimmed>
- </PropertyGroup>
- <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-   <OutputPath>..\..\Build\Client\</OutputPath>
-   <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
-   <DebugType>None</DebugType>
-   <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-   <DefineConstants>CLIENT</DefineConstants>
-   <AndroidEnableProfiledAot>True</AndroidEnableProfiledAot>
-   <PublishTrimmed>True</PublishTrimmed>
- </PropertyGroup>
-<ItemGroup>
-    <AndroidNativeLibrary Include="lib\**\*.so" />
+    <MonoGamePlatform>OpenGL</MonoGamePlatform>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseHardenedRuntime>true</UseHardenedRuntime>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <OutputPath>..\..\Build\Client\</OutputPath>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DefineConstants>CLIENT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>..\..\Build\Client\</OutputPath>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>None</DebugType>
+    <DefineConstants>CLIENT</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="libbass.dylib" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="libbassmidi.dylib" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
+	  <Content Include="Content\**\*.*">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+	  </Content>
+	  <Compile Remove="Content\Crystalshire.cs" />
+	  <Compile Remove="Content\UI.cs" />
+	  <Content Remove="Content\Crystalshire.cs" />
+	  <Content Remove="Content\UI.cs" />
   </ItemGroup>
-<ItemGroup>
-  <AndroidJavaSource Remove="Game\Android\**" />
-  <AndroidLibrary Remove="Game\Android\**" />
-  <AndroidNativeLibrary Remove="Game\Android\**" />
-  <Compile Remove="Game\Android\**" />
-  <EmbeddedResource Remove="Game\Android\**" />
-  <JavaSourceJar Remove="Game\Android\**" />
-  <None Remove="Game\Android\**" />
-  <ProguardConfiguration Remove="Game\Android\**" />
-  <TransformFile Remove="Game\Android\**" />
-</ItemGroup>
-<ItemGroup>
-    <AndroidAsset Include="Content\**\*.*">
-        <LogicalName>Content\%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
-    </AndroidAsset>
-</ItemGroup>
- <ItemGroup>
-   <PackageReference Include="ManagedBass" />
-   <PackageReference Include="ManagedBass.Midi" />
-   <PackageReference Include="Microsoft.NET.Runtime.MonoAOTCompiler.Task" />
-   <PackageReference Include="MonoGame.Content.Builder.Task" />
-   <PackageReference Include="MonoGame.Extended" />
-   <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
-   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
-   <PackageReference Include="MonoGame.Framework.Android" />
-   <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
-   <PackageReference Include="Serilog" />
-   <PackageReference Include="Serilog.Enrichers.Environment" />
-   <PackageReference Include="Serilog.Enrichers.Thread" />
-   <PackageReference Include="Serilog.Extensions.Logging" />
-   <PackageReference Include="Serilog.Settings.Configuration" />
-   <PackageReference Include="Serilog.Sinks.Console" />
-   <PackageReference Include="Serilog.Sinks.File" />
-   <PackageReference Include="System.Resources.Extensions" />
- </ItemGroup>
- <ItemGroup>
-   <None Include="..\..\LICENSE">
-     <Pack>True</Pack>
-     <PackagePath>\</PackagePath>
-   </None>
- </ItemGroup>
- <ItemGroup>
-   <ProjectReference Include="..\Core\Core.csproj" />
-   <ProjectReference Include="..\Network\Asfw.csproj" />
- </ItemGroup>
- <ItemGroup>
-   <Reference Include="Microsoft.Extensions.Configuration">
-     <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net9.0\Microsoft.Extensions.Configuration.dll</HintPath>
-   </Reference>
-   <Reference Include="Microsoft.Extensions.Logging.Configuration" />
- </ItemGroup>
- <ItemGroup>
-   <None Remove="appsettings.json" />
-   <AndroidAsset Include="appsettings.json" />
- </ItemGroup>
- <PropertyGroup>
-   <PackageLicenseFile>LICENSE</PackageLicenseFile>
-   <ApplicationIcon>icon.ico</ApplicationIcon>
-   <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-   <UserSecretsId>5e0352c8-3252-489f-98e0-182aab5d0588</UserSecretsId>
- </PropertyGroup>
- <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Network\Asfw.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="ManagedBass" />
+    <PackageReference Include="ManagedBass.Midi" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="Microsoft.VisualBasic" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" />
+    <PackageReference Include="MonoGame.Library.SDL" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Enrichers.Environment" />
+    <PackageReference Include="Serilog.Enrichers.Thread" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Settings.Configuration" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="System.Reflection.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Configuration">
+      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net8.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.UserSecrets">
+      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration.usersecrets\9.0.6\lib\net9.0\Microsoft.Extensions.Configuration.UserSecrets.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Content\Skins\Crystashire.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
+    <TargetFramework>net9.0-windows</TargetFramework>
+  </PropertyGroup>
+  <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
+    <MakeDir Directories="$(OutputPath)Content" />
+  </Target>
+  <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
 </Project>

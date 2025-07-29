@@ -52,15 +52,20 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CLogin);
-            buffer.WriteString(GameState.EKeyPair.EncryptString(name));
-            buffer.WriteString(GameState.EKeyPair.EncryptString(pass));
+
+            byte[] encryptedName = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(name));
+            byte[] encryptedPass = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(pass));
 
             // Get the current executing assembly
-            var @assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
             // Retrieve the version information
-            var version = assembly.GetName().Version;
-            buffer.WriteString(GameState.EKeyPair.EncryptString(version.ToString()));
+            var version = assembly?.GetName()?.Version;
+            byte[] encryptedVersion = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(version?.ToString()));
+
+            buffer.WriteBytes(encryptedName);
+            buffer.WriteBytes(encryptedPass);
+            buffer.WriteBytes(encryptedVersion);
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -71,15 +76,20 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRegister);
-            buffer.WriteString(GameState.EKeyPair.EncryptString(name));
-            buffer.WriteString(GameState.EKeyPair.EncryptString(pass));
+
+            byte[] encryptedName = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(name));
+            byte[] encryptedPass = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(pass));
 
             // Get the current executing assembly
-            var @assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
             // Retrieve the version information
-            var version = assembly.GetName().Version;
-            buffer.WriteString(GameState.EKeyPair.EncryptString(version.ToString()));
+            var version = assembly?.GetName()?.Version;
+            byte[] encryptedVersion = General.Aes.Encrypt(System.Text.Encoding.UTF8.GetBytes(version?.ToString()));
+
+            buffer.WriteBytes(encryptedName);
+            buffer.WriteBytes(encryptedPass);
+            buffer.WriteBytes(encryptedVersion);
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
@@ -101,7 +111,7 @@ namespace Client
                 }
                 else
                 {
-                    GameLogic.Dialogue("Invalid Connection", "Cannot connect to game server.", "Please try again.", (byte)Core.Enum.DialogueType.Alert);
+                    GameLogic.Dialogue("Invalid Connection", "Cannot connect to game server.", "Please try again.", (byte)DialogueType.Alert);
                 }
             }
         }
@@ -122,11 +132,22 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CPlayerMove);
-            buffer.WriteInt32(GetPlayerDir(GameState.MyIndex));
-            buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].Moving);
-            buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].X);
-            buffer.WriteInt32(Core.Type.Player[GameState.MyIndex].Y);
+            buffer.WriteByte(GetPlayerDir(GameState.MyIndex));
+            buffer.WriteByte(Core.Data.Player[GameState.MyIndex].Moving);
+            buffer.WriteInt32(Core.Data.Player[GameState.MyIndex].X);
+            buffer.WriteInt32(Core.Data.Player[GameState.MyIndex].Y);
 
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
+            buffer.Dispose();
+        }
+        
+        public static void SendStopPlayerMove()
+        {
+            var buffer = new ByteStream(4);
+
+            buffer.WriteInt32((int)Packets.ClientPackets.CStopPlayerMove);
+            buffer.WriteByte(GetPlayerDir(GameState.MyIndex));
+            
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
@@ -263,12 +284,12 @@ namespace Client
             buffer.Dispose();
         }
 
-        public static void SendRequestNPC(int NPCNum)
+        public static void SendRequestNpc(int NpcNum)
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((int)Packets.ClientPackets.CRequestNPC);
-            buffer.WriteDouble(NPCNum);
+            buffer.WriteInt32((int)Packets.ClientPackets.CRequestNpc);
+            buffer.WriteDouble(NpcNum);
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
@@ -437,12 +458,12 @@ namespace Client
             if (invNum < 0 | invNum > Constant.MAX_INV)
                 return;
 
-            if (Core.Type.Player[GameState.MyIndex].Inv[invNum].Num < 0 | Core.Type.Player[GameState.MyIndex].Inv[invNum].Num > Constant.MAX_ITEMS)
+            if (Core.Data.Player[GameState.MyIndex].Inv[invNum].Num < 0 | Core.Data.Player[GameState.MyIndex].Inv[invNum].Num > Constant.MAX_ITEMS)
                 return;
 
-            if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Type == (byte)Core.Enum.ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Stackable == 1)
+            if (Core.Data.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Type == (byte)ItemCategory.Currency | Core.Data.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Stackable == 1)
             {
-                if (amount < 0 | amount > Core.Type.Player[GameState.MyIndex].Inv[invNum].Value)
+                if (amount < 0 | amount > Core.Data.Player[GameState.MyIndex].Inv[invNum].Value)
                     return;
             }
 
@@ -502,20 +523,20 @@ namespace Client
                 return;
 
             // dont let them forget a skill which is in CD
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
+            if (Core.Data.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
             {
-                Text.AddText("Cannot forget a skill which is cooling down!", (int)Core.Enum.ColorType.Red);
+                Text.AddText("Cannot forget a skill which is cooling down!", (int)Core.Color.Red);
                 return;
             }
 
             // dont let them forget a skill which is buffered
             if (GameState.SkillBuffer == skillSlot)
             {
-                Text.AddText("Cannot forget a skill which you are casting!", (int)Core.Enum.ColorType.Red);
+                Text.AddText("Cannot forget a skill which you are casting!", (int)Core.Color.Red);
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
+            if (Core.Data.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
             {
                 buffer.WriteInt32((int)Packets.ClientPackets.CForgetSkill);
                 buffer.WriteInt32(skillSlot);
@@ -523,7 +544,7 @@ namespace Client
             }
             else
             {
-                Text.AddText("No skill found.", (int)Core.Enum.ColorType.Red);
+                Text.AddText("No skill found.", (int)Core.Color.Red);
             }
 
             buffer.Dispose();
@@ -541,7 +562,7 @@ namespace Client
 
         public static void SendRequestAdmin()
         {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
+            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Moderator)
                 return;
 
             var buffer = new ByteStream(4);
@@ -579,70 +600,71 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveResource);
 
             buffer.WriteInt32(ResourceNum);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].Animation);
-            buffer.WriteString(Core.Type.Resource[ResourceNum].EmptyMessage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ExhaustedImage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].Health);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ExpReward);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ItemReward);
-            buffer.WriteString(Core.Type.Resource[ResourceNum].Name);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ResourceImage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ResourceType);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].RespawnTime);
-            buffer.WriteString(Core.Type.Resource[ResourceNum].SuccessMessage);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].LvlRequired);
-            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ToolRequired);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Resource[ResourceNum].Walkthrough));
+            buffer.WriteInt32(Data.Resource[ResourceNum].Animation);
+            buffer.WriteString(Data.Resource[ResourceNum].EmptyMessage);
+            buffer.WriteInt32(Data.Resource[ResourceNum].ExhaustedImage);
+            buffer.WriteInt32(Data.Resource[ResourceNum].Health);
+            buffer.WriteInt32(Data.Resource[ResourceNum].ExpReward);
+            buffer.WriteInt32(Data.Resource[ResourceNum].ItemReward);
+            buffer.WriteString(Data.Resource[ResourceNum].Name);
+            buffer.WriteInt32(Data.Resource[ResourceNum].ResourceImage);
+            buffer.WriteInt32(Data.Resource[ResourceNum].ResourceType);
+            buffer.WriteInt32(Data.Resource[ResourceNum].RespawnTime);
+            buffer.WriteString(Data.Resource[ResourceNum].SuccessMessage);
+            buffer.WriteInt32(Data.Resource[ResourceNum].LvlRequired);
+            buffer.WriteInt32(Data.Resource[ResourceNum].ToolRequired);
+            buffer.WriteInt32(Conversions.ToInteger(Data.Resource[ResourceNum].Walkthrough));
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
-        public static void SendRequestEditNPC()
+        public static void SendRequestEditNpc()
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditNPC);
+            buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditNpc);
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
-        public static void SendSaveNPC(int NPCNum)
+        public static void SendSaveNpc(int NpcNum)
         {
             var buffer = new ByteStream(4);
             int i;
 
-            buffer.WriteInt32((int)Packets.ClientPackets.CSaveNPC);
-            buffer.WriteInt32(NPCNum);
+            buffer.WriteInt32((int)Packets.ClientPackets.CSaveNpc);
+            buffer.WriteInt32(NpcNum);
 
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Animation);
-            buffer.WriteString(Core.Type.NPC[(int)NPCNum].AttackSay);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Behaviour);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Animation);
+            buffer.WriteString(Data.Npc[(int)NpcNum].AttackSay);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].Behaviour);
 
             for (i = 0; i < Constant.MAX_DROP_ITEMS; i++)
             {
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropChance[i]);
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItem[i]);
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItemValue[i]);
+                buffer.WriteInt32(Data.Npc[(int)NpcNum].DropChance[i]);
+                buffer.WriteInt32(Data.Npc[(int)NpcNum].DropItem[i]);
+                buffer.WriteInt32(Data.Npc[(int)NpcNum].DropItemValue[i]);
             }
 
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Exp);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Faction);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].HP);
-            buffer.WriteString(Core.Type.NPC[(int)NPCNum].Name);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Range);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].SpawnTime);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].SpawnSecs);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Sprite);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Exp);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].Faction);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].HP);
+            buffer.WriteString(Data.Npc[(int)NpcNum].Name);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].Range);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].SpawnTime);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].SpawnSecs);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Sprite);
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Stat[i]);
+            var statCount = System.Enum.GetValues(typeof(Stat)).Length;
+            for (i = 0; i < statCount; i++)
+                buffer.WriteByte(Data.Npc[(int)NpcNum].Stat[i]);
 
             for (i = 0; i < Constant.MAX_NPC_SKILLS; i++)
-                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Skill[i]);
+                buffer.WriteByte(Data.Npc[(int)NpcNum].Skill[i]);
 
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Level);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Damage);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Level);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Damage);
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -664,34 +686,34 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveSkill);
             buffer.WriteInt32(skillNum);
 
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AccessReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AoE);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CdTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].JobReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Dir);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Duration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Icon);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Interval);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillNum].IsAoE));
-            buffer.WriteInt32(Core.Type.Skill[skillNum].LevelReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Map);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].MpCost);
-            buffer.WriteString(Core.Type.Skill[skillNum].Name);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Range);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].SkillAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].StunDuration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Type);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Vital);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].X);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Y);
+            buffer.WriteInt32(Data.Skill[skillNum].AccessReq);
+            buffer.WriteInt32(Data.Skill[skillNum].AoE);
+            buffer.WriteInt32(Data.Skill[skillNum].CastAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].CastTime);
+            buffer.WriteInt32(Data.Skill[skillNum].CdTime);
+            buffer.WriteInt32(Data.Skill[skillNum].JobReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Dir);
+            buffer.WriteInt32(Data.Skill[skillNum].Duration);
+            buffer.WriteInt32(Data.Skill[skillNum].Icon);
+            buffer.WriteInt32(Data.Skill[skillNum].Interval);
+            buffer.WriteInt32(Conversions.ToInteger(Data.Skill[skillNum].IsAoE));
+            buffer.WriteInt32(Data.Skill[skillNum].LevelReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Map);
+            buffer.WriteInt32(Data.Skill[skillNum].MpCost);
+            buffer.WriteString(Data.Skill[skillNum].Name);
+            buffer.WriteInt32(Data.Skill[skillNum].Range);
+            buffer.WriteInt32(Data.Skill[skillNum].SkillAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].StunDuration);
+            buffer.WriteInt32(Data.Skill[skillNum].Type);
+            buffer.WriteInt32(Data.Skill[skillNum].Vital);
+            buffer.WriteInt32(Data.Skill[skillNum].X);
+            buffer.WriteInt32(Data.Skill[skillNum].Y);
 
-            buffer.WriteInt32(Core.Type.Skill[skillNum].IsProjectile);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Projectile);
+            buffer.WriteInt32(Data.Skill[skillNum].IsProjectile);
+            buffer.WriteInt32(Data.Skill[skillNum].Projectile);
 
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBack);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBack);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBackTiles);
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
@@ -705,15 +727,15 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveShop);
             buffer.WriteInt32(shopNum);
 
-            buffer.WriteInt32(Core.Type.Shop[shopNum].BuyRate);
-            buffer.WriteString(Core.Type.Shop[shopNum].Name);
+            buffer.WriteInt32(Data.Shop[shopNum].BuyRate);
+            buffer.WriteString(Data.Shop[shopNum].Name);
 
             for (int i = 0; i < Constant.MAX_TRADES; i++)
             {
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].Item);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].ItemValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostItem);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].Item);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].ItemValue);
             }
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
@@ -737,20 +759,20 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveAnimation);
             buffer.WriteInt32(animationNum);
 
-            for (int i = 0, loopTo = Information.UBound(Core.Type.Animation[animationNum].Frames); i < loopTo; i++)
-                buffer.WriteInt32(Core.Type.Animation[animationNum].Frames[i]);
+            for (int i = 0, loopTo = Information.UBound(Data.Animation[animationNum].Frames); i < loopTo; i++)
+                buffer.WriteInt32(Data.Animation[animationNum].Frames[i]);
 
-            for (int i = 0, loopTo1 = Information.UBound(Core.Type.Animation[animationNum].LoopCount); i < loopTo1; i++)
-                buffer.WriteInt32(Core.Type.Animation[animationNum].LoopCount[i]);
+            for (int i = 0, loopTo1 = Information.UBound(Data.Animation[animationNum].LoopCount); i < loopTo1; i++)
+                buffer.WriteInt32(Data.Animation[animationNum].LoopCount[i]);
 
-            for (int i = 0, loopTo2 = Information.UBound(Core.Type.Animation[animationNum].LoopTime); i < loopTo2; i++)
-                buffer.WriteInt32(Core.Type.Animation[animationNum].LoopTime[i]);
+            for (int i = 0, loopTo2 = Information.UBound(Data.Animation[animationNum].LoopTime); i < loopTo2; i++)
+                buffer.WriteInt32(Data.Animation[animationNum].LoopTime[i]);
 
-            buffer.WriteString(Core.Type.Animation[animationNum].Name);
-            buffer.WriteString(Core.Type.Animation[animationNum].Sound);
+            buffer.WriteString(Data.Animation[animationNum].Name);
+            buffer.WriteString(Data.Animation[animationNum].Sound);
 
-            for (int i = 0, loopTo3 = Information.UBound(Core.Type.Animation[animationNum].Sprite); i < loopTo3; i++)
-                buffer.WriteInt32(Core.Type.Animation[animationNum].Sprite[i]);
+            for (int i = 0, loopTo3 = Information.UBound(Data.Animation[animationNum].Sprite); i < loopTo3; i++)
+                buffer.WriteInt32(Data.Animation[animationNum].Sprite[i]);
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -784,26 +806,27 @@ namespace Client
 
             buffer.WriteInt32(jobNum);
 
-            buffer.WriteString(Core.Type.Job[jobNum].Name);
-            buffer.WriteString(Core.Type.Job[jobNum].Desc);
+            buffer.WriteString(Data.Job[jobNum].Name);
+            buffer.WriteString(Data.Job[jobNum].Desc);
 
-            buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
-            buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
+            buffer.WriteInt32(Data.Job[jobNum].MaleSprite);
+            buffer.WriteInt32(Data.Job[jobNum].FemaleSprite);
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
+            int statCount = System.Enum.GetValues(typeof(Stat)).Length;
+            for (i = 0; i < statCount; i++)
+                buffer.WriteInt32(Data.Job[jobNum].Stat[i]);
 
             for (q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
             {
-                buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
-                buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);
+                buffer.WriteInt32(Data.Job[jobNum].StartItem[q]);
+                buffer.WriteInt32(Data.Job[jobNum].StartValue[q]);
             }
 
-            buffer.WriteInt32(Core.Type.Job[jobNum].StartMap);
-            buffer.WriteByte(Core.Type.Job[jobNum].StartX);
-            buffer.WriteByte(Core.Type.Job[jobNum].StartY);
+            buffer.WriteInt32(Data.Job[jobNum].StartMap);
+            buffer.WriteByte(Data.Job[jobNum].StartX);
+            buffer.WriteByte(Data.Job[jobNum].StartY);
 
-            buffer.WriteInt32(Core.Type.Job[jobNum].BaseExp);
+            buffer.WriteInt32(Data.Job[jobNum].BaseExp);
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -815,42 +838,43 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveItem);
             buffer.WriteInt32(itemNum);
-            buffer.WriteInt32(Core.Type.Item[itemNum].AccessReq);
+            buffer.WriteInt32(Core.Data.Item[itemNum].AccessReq);
 
-            for (int i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[i]);
+            int statCount = System.Enum.GetValues(typeof(Stat)).Length;
+            for (int i = 0; i < statCount; i++)
+                buffer.WriteInt32(Core.Data.Item[itemNum].Add_Stat[i]);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].Animation);
-            buffer.WriteInt32(Core.Type.Item[itemNum].BindType);
-            buffer.WriteInt32(Core.Type.Item[itemNum].JobReq);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Data1);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Data2);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Data3);
-            buffer.WriteInt32(Core.Type.Item[itemNum].LevelReq);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Mastery);
-            buffer.WriteString(Core.Type.Item[itemNum].Name);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Paperdoll);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Icon);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Price);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Rarity);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Speed);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Animation);
+            buffer.WriteInt32(Core.Data.Item[itemNum].BindType);
+            buffer.WriteInt32(Core.Data.Item[itemNum].JobReq);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Data1);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Data2);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Data3);
+            buffer.WriteInt32(Core.Data.Item[itemNum].LevelReq);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Mastery);
+            buffer.WriteString(Core.Data.Item[itemNum].Name);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Paperdoll);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Icon);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Price);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Rarity);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Speed);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].Stackable);
-            buffer.WriteString(Core.Type.Item[itemNum].Description);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Stackable);
+            buffer.WriteString(Core.Data.Item[itemNum].Description);
 
-            for (int i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[i]);
+            for (int i = 0; i < statCount; i++)
+                buffer.WriteInt32(Core.Data.Item[itemNum].Stat_Req[i]);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].Type);
-            buffer.WriteInt32(Core.Type.Item[itemNum].SubType);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Type);
+            buffer.WriteInt32(Core.Data.Item[itemNum].SubType);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].ItemLevel);
+            buffer.WriteInt32(Core.Data.Item[itemNum].ItemLevel);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].KnockBack);
-            buffer.WriteInt32(Core.Type.Item[itemNum].KnockBackTiles);
+            buffer.WriteInt32(Core.Data.Item[itemNum].KnockBack);
+            buffer.WriteInt32(Core.Data.Item[itemNum].KnockBackTiles);
 
-            buffer.WriteInt32(Core.Type.Item[itemNum].Projectile);
-            buffer.WriteInt32(Core.Type.Item[itemNum].Ammo);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Projectile);
+            buffer.WriteInt32(Core.Data.Item[itemNum].Ammo);
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
@@ -903,11 +927,11 @@ namespace Client
 
         public static void SendUseHotbarSlot(int slot)
         {
-            switch (Core.Type.Player[GameState.MyIndex].Hotbar[slot].SlotType)
+            switch (Core.Data.Player[GameState.MyIndex].Hotbar[slot].SlotType)
             {
-                case (byte)Core.Enum.PartType.Skill:
+                case (byte)DraggablePartType.Skill:
                     {
-                        Player.PlayerCastSkill(Player.FindSkill((int)Core.Type.Player[GameState.MyIndex].Hotbar[slot].Slot));
+                        Player.PlayerCastSkill(Player.FindSkill((int)Core.Data.Player[GameState.MyIndex].Hotbar[slot].Slot));
                         return;
                     }
             }
@@ -975,7 +999,7 @@ namespace Client
             buffer.WriteInt32(moralNum);
 
             {
-                ref var withBlock = ref Core.Type.Moral[moralNum];
+                ref var withBlock = ref Data.Moral[moralNum];
                 buffer.WriteString(withBlock.Name);
                 buffer.WriteByte(withBlock.Color);
                 buffer.WriteBoolean(withBlock.CanCast);
@@ -986,7 +1010,7 @@ namespace Client
                 buffer.WriteBoolean(withBlock.DropItems);
                 buffer.WriteBoolean(withBlock.LoseExp);
                 buffer.WriteBoolean(withBlock.PlayerBlock);
-                buffer.WriteBoolean(withBlock.NPCBlock);
+                buffer.WriteBoolean(withBlock.NpcBlock);
             }
 
             NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);

@@ -1,6 +1,5 @@
 ﻿using Core;
-using Mirage.Sharp.Asfw.IO.Encryption;
-using static Core.Enum;
+using System.Reflection.Metadata;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 
@@ -44,7 +43,7 @@ namespace Client
         public static long descItem;
         public static byte descLastType;
         public static long descLastItem;
-        public static Core.Type.TextStruct[] descText;
+        public static Core.Type.Text[] Description;
 
         // New char
         public static long NewCharSprite;
@@ -52,19 +51,19 @@ namespace Client
         public static long NewCnarGender;
 
         // chars
-        public static string[] CharName = new string[(Constant.MAX_CHARS)];
-        public static long[] CharSprite = new long[(Constant.MAX_CHARS)];
-        public static long[] CharAccess = new long[(Constant.MAX_CHARS)];
-        public static long[] CharJob = new long[(Constant.MAX_CHARS)];
+        public static string[] CharName = new string[(Core.Constant.MAX_CHARS)];
+        public static long[] CharSprite = new long[(Core.Constant.MAX_CHARS)];
+        public static long[] CharAccess = new long[(Core.Constant.MAX_CHARS)];
+        public static long[] CharJob = new long[(Core.Constant.MAX_CHARS)];
         public static byte CharNum;
 
         // elastic bars
-        public static long[] BarWidth_NPCHP = new long[(Constant.MAX_MAP_NPCS)];
-        public static long[] BarWidth_PlayerHP = new long[Constant.MAX_PLAYERS];
-        public static long[] BarWidth_PlayerSP = new long[Constant.MAX_PLAYERS];
-        public static long[] BarWidth_NPCHP_Max = new long[(Constant.MAX_MAP_NPCS)];
-        public static long[] BarWidth_PlayerHP_Max = new long[Constant.MAX_PLAYERS];
-        public static long[] BarWidth_PlayerSP_Max = new long[Constant.MAX_PLAYERS];
+        public static long[] BarWidth_NpcHP = new long[(Core.Constant.MAX_MAP_NPCS)];
+        public static long[] BarWidth_PlayerHP = new long[Core.Constant.MAX_PLAYERS];
+        public static long[] BarWidth_PlayerSP = new long[Core.Constant.MAX_PLAYERS];
+        public static long[] BarWidth_NpcHP_Max = new long[(Core.Constant.MAX_MAP_NPCS)];
+        public static long[] BarWidth_PlayerHP_Max = new long[Core.Constant.MAX_PLAYERS];
+        public static long[] BarWidth_PlayerSP_Max = new long[Core.Constant.MAX_PLAYERS];
         public static long BarWidth_GuiHP;
         public static long BarWidth_GuiSP;
         public static long BarWidth_GuiEXP;
@@ -90,9 +89,9 @@ namespace Client
         // Chat bubble
         public static int ChatBubbleindex;
 
-        public static string chatShowLine;
+        public static string ChatShowLine;
 
-        public static string[] MapNames = new string[Constant.MAX_MAPS];
+        public static string[] MapNames = new string[Core.Constant.MAX_MAPS];
 
         // chat
         public static bool inSmallChat;
@@ -174,8 +173,8 @@ namespace Client
         public static bool AdminPanel;
 
         // Spawn
-        public static int SpawnNPCNum;
-        public static int SpawnNPCDir;
+        public static int SpawnNpcNum;
+        public static int SpawnNpcDir;
 
         // Items
         public static int ItemEditorNum;
@@ -189,8 +188,8 @@ namespace Client
         public static int MapEditorHealAmount;
         public static int MapEditorSlideDir;
 
-        public static Core.Type.RectStruct Camera;
-        public static Core.Type.RectStruct TileView;
+        public static Core.Type.Rect Camera;
+        public static Core.Type.Rect TileView;
 
         // Pinging
         public static int PingStart;
@@ -211,18 +210,16 @@ namespace Client
         public static bool ShowAnimLayers;
         public static int ShowAnimTimer;
 
-        public static KeyPair EKeyPair = new KeyPair();
-
         // Stream Content
         public static int[] Item_Loaded = new int[Core.Constant.MAX_ITEMS];
-        public static int[] NPC_Loaded = new int[Core.Constant.MAX_NPCS];
+        public static int[] Npc_Loaded = new int[Core.Constant.MAX_NPCS];
         public static int[] Resource_Loaded = new int[Core.Constant.MAX_RESOURCES];
         public static int[] Animation_Loaded = new int[Core.Constant.MAX_RESOURCES];
         public static int[] Skill_Loaded = new int[Core.Constant.MAX_SKILLS];
         public static int[] Shop_Loaded = new int[Core.Constant.MAX_SHOPS];
         public static int[] Pet_Loaded = new int[Core.Constant.MAX_PETS];
-        public static int[] Moral_Loaded = new int[(Constant.MAX_MORALS)];
-        public static int[] Projectile_Loaded = new int[(Constant.MAX_PROJECTILES)];
+        public static int[] Moral_Loaded = new int[(Core.Constant.MAX_MORALS)];
+        public static int[] Projectile_Loaded = new int[(Core.Constant.MAX_PROJECTILES)];
 
         public static int[] AnimEditorFrame = new int[2];
         public static int[] AnimEditorTimer = new int[2];
@@ -327,10 +324,6 @@ namespace Client
         public static int TileHistoryHighIndex;
         public static bool HideLayers;
 
-        // Speed moving vars
-        public const byte WalkSpeed = 4;
-        public const byte RunSpeed = 8;
-
         // Tile size constants
         public const int PicX = 32;
         public const int PicY = 32;
@@ -377,8 +370,7 @@ namespace Client
         public static int ResourceIndex;
         public static bool ResourcesInit;
 
-        public const int MaxWeatherParticles = 100;
-        public static Core.Type.WeatherParticleStruct[] WeatherParticle = new Core.Type.WeatherParticleStruct[101];
+        public static Core.Type.WeatherParticle[] WeatherParticle = new Core.Type.WeatherParticle[Core.Constant.MAX_WEATHER_PARTICLES];
 
         public static int FogOffsetX;
         public static int FogOffsetY;
@@ -397,7 +389,7 @@ namespace Client
         public static int InShop; // is the player in a shop?
         public static byte ShopAction; // stores the current shop action
 
-        public static int MapTab;
+        public static int MapEditorTab;
         public static int CurLayer;
         public static int CurAutotileType;
         public static int CurTileset;
@@ -408,7 +400,7 @@ namespace Client
         public static bool InitPetEditor;
         public static bool InitItemEditor;
         public static bool InitResourceEditor;
-        public static bool InitNPCEditor;
+        public static bool InitNpcEditor;
         public static bool InitSkillEditor;
         public static bool InitShopEditor;
         public static bool InitAnimationEditor;
@@ -420,15 +412,15 @@ namespace Client
         public static bool InitScriptEditor;
 
         // Editor edited items array
-        public static bool[] Item_Changed = new bool[Constant.MAX_ITEMS];
-        public static bool[] NPC_Changed = new bool[Constant.MAX_NPCS];
-        public static bool[] Resource_Changed = new bool[Constant.MAX_RESOURCES];
-        public static bool[] Animation_Changed = new bool[Constant.MAX_ANIMATIONS];
-        public static bool[] Skill_Changed = new bool[Constant.MAX_SKILLS];
-        public static bool[] Shop_Changed = new bool[Constant.MAX_SHOPS];
-        public static bool[] Pet_Changed = new bool[Constant.MAX_PETS];
-        public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS)];
-        public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS)];
+        public static bool[] Item_Changed = new bool[Core.Constant.MAX_ITEMS];
+        public static bool[] Npc_Changed = new bool[Core.Constant.MAX_NPCS];
+        public static bool[] Resource_Changed = new bool[Core.Constant.MAX_RESOURCES];
+        public static bool[] Animation_Changed = new bool[Core.Constant.MAX_ANIMATIONS];
+        public static bool[] Skill_Changed = new bool[Core.Constant.MAX_SKILLS];
+        public static bool[] Shop_Changed = new bool[Core.Constant.MAX_SHOPS];
+        public static bool[] Pet_Changed = new bool[Core.Constant.MAX_PETS];
+        public static bool[] Job_Changed = new bool[(Core.Constant.MAX_JOBS)];
+        public static bool[] Moral_Changed = new bool[(Core.Constant.MAX_MORALS)];
         public static bool[] ProjectileChanged = new bool[Core.Constant.MAX_PROJECTILES];
     }
 }

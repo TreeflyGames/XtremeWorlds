@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,13 +17,14 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static Core.Enum;
+using System.Xml;
+using System.Xml.Linq;
 using static Core.Global.Command;
 using static Core.Type;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Net.WebRequestMethods;
+using File=System.IO.File;
 using Path = System.IO.Path;
-
 namespace Server
 {
 
@@ -30,7 +32,7 @@ namespace Server
     {
         private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(SettingsManager.Instance.MaxSQLClients, SettingsManager.Instance.MaxSQLClients);
 
-        public static async Task CreateDatabaseAsync(string databaseName)
+        public static async System.Threading.Tasks.Task CreateDatabaseAsync(string databaseName)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -67,7 +69,7 @@ namespace Server
             }
         }
 
-        public static async Task<bool> RowExistsByColumnAsync(string columnName, long value, string tableName)
+        public static async System.Threading.Tasks.Task<bool> RowExistsByColumnAsync(string columnName, long value, string tableName)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -93,7 +95,7 @@ namespace Server
             }
         }
 
-        public static async Task UpdateRowAsync(long id, string data, string table, string columnName)
+        public static async System.Threading.Tasks.Task UpdateRowAsync(long id, string data, string table, string columnName)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -136,7 +138,7 @@ namespace Server
             }
         }
 
-        public static async Task UpdateRowByColumnAsync(string columnName, long value, string targetColumn, string newValue, string tableName)
+        public static async System.Threading.Tasks.Task UpdateRowByColumnAsync(string columnName, long value, string targetColumn, string newValue, string tableName)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -164,7 +166,7 @@ namespace Server
             }
         }
 
-        public static async Task CreateTablesAsync()
+        public static async System.Threading.Tasks.Task CreateTablesAsync()
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -178,7 +180,7 @@ namespace Server
                 string[] tableNames = new[] { "job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile", "moral" };
 
                 var tasks = tableNames.Select(tableName => CreateTableAsync(tableName, dataTable));
-                await Task.WhenAll(tasks);
+                await System.Threading.Tasks.Task.WhenAll(tasks);
 
                 await CreateTableAsync("account", playerTable);
             }
@@ -188,7 +190,7 @@ namespace Server
             }
         }
 
-        public static async Task CreateTableAsync(string tableName, string layout)
+        public static async System.Threading.Tasks.Task CreateTableAsync(string tableName, string layout)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -209,7 +211,7 @@ namespace Server
             }
         }
 
-        public static async Task<List<long>> GetDataAsync(string tableName)
+        public static async System.Threading.Tasks.Task<List<long>> GetDataAsync(string tableName)
         {
             var ids = new List<long>();
 
@@ -243,7 +245,7 @@ namespace Server
             return ids;
         }
 
-        public static async Task<bool> RowExistsAsync(long id, string table)
+        public static async System.Threading.Tasks.Task<bool> RowExistsAsync(long id, string table)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -278,7 +280,7 @@ namespace Server
             }
         }
 
-        public static async Task InsertRowAsync(long id, string data, string tableName)
+        public static async System.Threading.Tasks.Task InsertRowAsync(long id, string data, string tableName)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -304,7 +306,7 @@ namespace Server
             }
         }
 
-        public static async Task InsertRowAsync(long id, string data, string tableName, string columnName)
+        public static async System.Threading.Tasks.Task InsertRowAsync(long id, string data, string tableName, string columnName)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -330,7 +332,7 @@ namespace Server
             }
         }
 
-        public static async Task InsertRowByColumnAsync(long id, string data, string tableName, string dataColumn, string idColumn)
+        public static async System.Threading.Tasks.Task InsertRowByColumnAsync(long id, string data, string tableName, string dataColumn, string idColumn)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -363,7 +365,7 @@ namespace Server
             }
         }
 
-        public static async Task<JObject> SelectRowAsync(long id, string tableName, string columnName)
+        public static async System.Threading.Tasks.Task<JObject> SelectRowAsync(long id, string tableName, string columnName)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -400,7 +402,7 @@ namespace Server
             }
         }
 
-        public static async Task<JObject> SelectRowByColumnAsync(string columnName, long value, string tableName, string dataColumn)
+        public static async System.Threading.Tasks.Task<JObject> SelectRowByColumnAsync(string columnName, long value, string tableName, string dataColumn)
         {
             await connectionSemaphore.WaitAsync();
             try
@@ -752,18 +754,19 @@ namespace Server
 
         public static void ClearJob(int jobNum)
         {
-            Core.Type.Job[jobNum].Stat = new int[(int)StatType.Count];
-            Core.Type.Job[jobNum].StartItem = new int[Core.Constant.MAX_START_ITEMS];
-            Core.Type.Job[jobNum].StartValue = new int[Core.Constant.MAX_START_ITEMS];
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            Data.Job[jobNum].Stat = new int[statCount];
+            Data.Job[jobNum].StartItem = new int[Core.Constant.MAX_START_ITEMS];
+            Data.Job[jobNum].StartValue = new int[Core.Constant.MAX_START_ITEMS];
 
-            Core.Type.Job[jobNum].Name = "";
-            Core.Type.Job[jobNum].Desc = "";
-            Core.Type.Job[jobNum].StartMap = 1;
-            Core.Type.Job[jobNum].MaleSprite = 0;
-            Core.Type.Job[jobNum].FemaleSprite = 0;
+            Data.Job[jobNum].Name = "";
+            Data.Job[jobNum].Desc = "";
+            Data.Job[jobNum].StartMap = 1;
+            Data.Job[jobNum].MaleSprite = 0;
+            Data.Job[jobNum].FemaleSprite = 0;
         }
 
-        public static async Task LoadJobAsync(int jobNum)
+        public static async System.Threading.Tasks.Task LoadJobAsync(int jobNum)
         {
             JObject data;
 
@@ -775,19 +778,19 @@ namespace Server
                 return;
             }
 
-            var jobData = JObject.FromObject(data).ToObject<JobStruct>();
-            Core.Type.Job[jobNum] = jobData;
+            var jobData = JObject.FromObject(data).ToObject<Job>();
+            Data.Job[jobNum] = jobData;
         }
 
-        public static async Task LoadJobsAsync()
+        public static async System.Threading.Tasks.Task LoadJobsAsync()
         {
-            var tasks = Enumerable.Range(0, Core.Constant.MAX_JOBS).Select(i => Task.Run(() => LoadJobAsync(i)));
-            await Task.WhenAll(tasks);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_JOBS).Select(i => System.Threading.Tasks.Task.Run(() => LoadJobAsync(i)));
+            await System.Threading.Tasks.Task.WhenAll(tasks);
         }
 
         public static void SaveJob(int jobNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Job[jobNum]).ToString();
+            string json = JsonConvert.SerializeObject(Data.Job[jobNum]).ToString();
 
             if (RowExists(jobNum, "job"))
             {
@@ -804,38 +807,38 @@ namespace Server
             int x;
             int y;
 
-            Core.Type.Map[mapNum].Tileset = 1;
-            Core.Type.Map[mapNum].Name = "";
-            Core.Type.Map[mapNum].MaxX = Core.Constant.MAX_MAPX;
-            Core.Type.Map[mapNum].MaxY = Core.Constant.MAX_MAPY;
-            Core.Type.Map[mapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
-            Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
+            Data.Map[mapNum].Tileset = 1;
+            Data.Map[mapNum].Name = "";
+            Data.Map[mapNum].MaxX = Core.Constant.MAX_MAPX;
+            Data.Map[mapNum].MaxY = Core.Constant.MAX_MAPY;
+            Data.Map[mapNum].Npc = new int[Core.Constant.MAX_MAP_NPCS];
+            Data.Map[mapNum].Tile = new Tile[(Data.Map[mapNum].MaxX), (Data.Map[mapNum].MaxY)];
 
-            var loopTo = Core.Type.Map[mapNum].MaxX;
+            var loopTo = Data.Map[mapNum].MaxX;
             for (x = 0; x < loopTo; x++)
             {
-                var loopTo1 = Core.Type.Map[mapNum].MaxY;
+                var loopTo1 = Data.Map[mapNum].MaxY;
                 for (y = 0; y < loopTo1; y++)
-                    Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
+                    Data.Map[mapNum].Tile[x, y].Layer = new Core.Type.Layer[Enum.GetValues(typeof(MapLayer)).Length];
             }
 
             var loopTo2 = Core.Constant.MAX_MAP_NPCS;
             for (x = 0; x < loopTo2; x++)
             {
-                Core.Type.Map[mapNum].NPC[x] = -1;
+                Data.Map[mapNum].Npc[x] = -1;
             }
 
-            Core.Type.Map[mapNum].EventCount = 0;
-            Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[1];
+            Data.Map[mapNum].EventCount = 0;
+            Data.Map[mapNum].Event = new Core.Type.Event[1];
 
             // Reset the values for if a player is on the map or not
-            Core.Type.Map[mapNum].Name = "";
-            Core.Type.Map[mapNum].Music = "";
+            Data.Map[mapNum].Name = "";
+            Data.Map[mapNum].Music = "";
         }
 
         public static void SaveMap(int mapNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Map[mapNum]).ToString();
+            string json = JsonConvert.SerializeObject(Data.Map[mapNum]).ToString();
 
             if (RowExists(mapNum, "map"))
             {
@@ -847,31 +850,31 @@ namespace Server
             }
         }
 
-        public static async Task LoadMapsAsync()
+        public static async System.Threading.Tasks.Task LoadMapsAsync()
         {
-            var tasks = Enumerable.Range(0, Core.Constant.MAX_MAPS).Select(i => Task.Run(() => LoadMapAsync(i)));
-            await Task.WhenAll(tasks);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_MAPS).Select(i => System.Threading.Tasks.Task.Run(() => LoadMapAsync(i)));
+            await System.Threading.Tasks.Task.WhenAll(tasks);
         }
 
-        public static async Task LoadNPCsAsync()
+        public static async System.Threading.Tasks.Task LoadNpcsAsync()
         {
-            var tasks = Enumerable.Range(0, Core.Constant.MAX_NPCS).Select(i => Task.Run(() => LoadNPCAsync(i)));
-            await Task.WhenAll(tasks);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_NPCS).Select(i => System.Threading.Tasks.Task.Run(() => LoadNpcAsync(i)));
+            await System.Threading.Tasks.Task.WhenAll(tasks);
         }
 
-        public static async Task LoadShopsAsync()
+        public static async System.Threading.Tasks.Task LoadShopsAsync()
         {
-            var tasks = Enumerable.Range(0, Core.Constant.MAX_SHOPS).Select(i => Task.Run(() => LoadShopAsync(i)));
-            await Task.WhenAll(tasks);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_SHOPS).Select(i => System.Threading.Tasks.Task.Run(() => LoadShopAsync(i)));
+            await System.Threading.Tasks.Task.WhenAll(tasks);
         }
 
-        public static async Task LoadSkillsAsync()
+        public static async System.Threading.Tasks.Task LoadSkillsAsync()
         {
-            var tasks = Enumerable.Range(0, Core.Constant.MAX_SKILLS).Select(i => Task.Run(() => LoadSkillAsync(i)));
-            await Task.WhenAll(tasks);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_SKILLS).Select(i => System.Threading.Tasks.Task.Run(() => LoadSkillAsync(i)));
+            await System.Threading.Tasks.Task.WhenAll(tasks);
         }
 
-        public static async Task LoadMapAsync(int mapNum)
+        public static async System.Threading.Tasks.Task LoadMapAsync(int mapNum)
         {
             // Get the base directory of the application
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -879,34 +882,37 @@ namespace Server
             // Construct the path to the "maps" directory
             string mapsDir = Path.Combine(baseDir, "maps");
             Directory.CreateDirectory(mapsDir);
+            
+            string xwMapsDir = Path.Combine(mapsDir, "xw");
+            Directory.CreateDirectory(xwMapsDir);
+            
+            string csMapsDir = Path.Combine(mapsDir, "cs");
+            Directory.CreateDirectory(csMapsDir);
+            
+            string sdMapDir = Path.Combine(mapsDir, "sd");
+            Directory.CreateDirectory(sdMapDir);
 
-            //if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
-            //{
-            //var csMap = LoadCSMap(mapNum);
-            //Core.Type.Map[mapNum] = MapFromCSMap(csMap);
-            //    return;
-            //}
+            if (System.IO.File.Exists(xwMapsDir + @"\map" + mapNum + ".dat"))
+            {
+                var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum + ".dat");
+                Data.Map[mapNum] = MapFromXWMap(xwMap);
+                return;
+            }
+            
+            if (File.Exists(csMapsDir + @"\map" + mapNum + ".ini"))
+            {
+                var csMap = LoadCSMap(csMapsDir + @"\map" + mapNum + ".ini");
+                Data.Map[mapNum] = MapFromCSMap(csMap);
+                return;
+            }
 
-                if (System.IO.File.Exists(mapsDir + @"\map" + mapNum + ".dat"))
-                {
-                    try
-                    {
-                        var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
-                        Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
-                        return;
-                    }
-                    catch { Exception e; }
-                    {
-                        Console.WriteLine(mapNum + " failed to load map!");
-                    }
-                }
-
-            //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
-            //{
-                // Dim sdMap As SDMapStruct = loadsdmap(Type.MapsDir & "\sd\map" & mapNum.ToString() & ".dat")
-                // Type.Map(mapNum) = MapFromSDMap(sdMap)
-            //    return;
-            //}
+            var mapPath = Path.Combine(sdMapDir, mapNum + ".map");
+            if (File.Exists(mapPath))
+            {
+                SDMap sdMap = LoadSDMap(mapPath);
+                Data.Map[mapNum] = MapFromSDMap(sdMap);
+                return;
+            }
 
             JObject data;
 
@@ -918,60 +924,54 @@ namespace Server
                 return;
             }
 
-            var mapData = JObject.FromObject(data).ToObject<MapStruct>();
-            Core.Type.Map[mapNum] = mapData;
+            var mapData = JObject.FromObject(data).ToObject<Map>();
+            Data.Map[mapNum] = mapData;
 
             Resource.CacheResources(mapNum);
         }
 
-        public static CSMapStruct LoadCSMap(long mapNum)
+        public static CSMap  LoadCSMap(string fileName)
         {
-            string filename;
             long i;
             long x;
             long y;
-            var csMap = new CSMapStruct();
-
-            // Load map data
-            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + mapNum + ".ini";
+            var csMap = new CSMap();
 
             // General
             {
                 var withBlock = csMap.MapData;
-                withBlock.Name = GetVar(filename, "General", "Name");
-                withBlock.Music = GetVar(filename, "General", "Music");
-                withBlock.Moral = (byte)Conversion.Val(GetVar(filename, "General", "Moral"));
-                withBlock.Up = (int)Conversion.Val(GetVar(filename, "General", "Up"));
-                withBlock.Down = (int)Conversion.Val(GetVar(filename, "General", "Down"));
-                withBlock.Left = (int)Conversion.Val(GetVar(filename, "General", "Left"));
-                withBlock.Right = (int)Conversion.Val(GetVar(filename, "General", "Right"));
-                withBlock.BootMap = (int)Conversion.Val(GetVar(filename, "General", "BootMap"));
-                withBlock.BootX = (byte)Conversion.Val(GetVar(filename, "General", "BootX"));
-                withBlock.BootY = (byte)Conversion.Val(GetVar(filename, "General", "BootY"));
-                withBlock.MaxX = (byte)Conversion.Val(GetVar(filename, "General", "MaxX"));
-                withBlock.MaxY = (byte)Conversion.Val(GetVar(filename, "General", "MaxY"));
+                withBlock.Name = GetVar(fileName, "General", "Name");
+                withBlock.Music = GetVar(fileName, "General", "Music");
+                withBlock.Moral = (byte)Conversion.Val(GetVar(fileName, "General", "Moral"));
+                withBlock.Up = (int)Conversion.Val(GetVar(fileName, "General", "Up"));
+                withBlock.Down = (int)Conversion.Val(GetVar(fileName, "General", "Down"));
+                withBlock.Left = (int)Conversion.Val(GetVar(fileName, "General", "Left"));
+                withBlock.Right = (int)Conversion.Val(GetVar(fileName, "General", "Right"));
+                withBlock.BootMap = (int)Conversion.Val(GetVar(fileName, "General", "BootMap"));
+                withBlock.BootX = (byte)Conversion.Val(GetVar(fileName, "General", "BootX"));
+                withBlock.BootY = (byte)Conversion.Val(GetVar(fileName, "General", "BootY"));
+                withBlock.MaxX = (byte)Conversion.Val(GetVar(fileName, "General", "MaxX"));
+                withBlock.MaxY = (byte)Conversion.Val(GetVar(fileName, "General", "MaxY"));
 
-                withBlock.Weather = (int)Conversion.Val(GetVar(filename, "General", "Weather"));
-                withBlock.WeatherIntensity = (int)Conversion.Val(GetVar(filename, "General", "WeatherIntensity"));
+                withBlock.Weather = (int)Conversion.Val(GetVar(fileName, "General", "Weather"));
+                withBlock.WeatherIntensity = (int)Conversion.Val(GetVar(fileName, "General", "WeatherIntensity"));
 
-                withBlock.Fog = (int)Conversion.Val(GetVar(filename, "General", "Fog"));
-                withBlock.FogSpeed = (int)Conversion.Val(GetVar(filename, "General", "FogSpeed"));
-                withBlock.FogOpacity = (int)Conversion.Val(GetVar(filename, "General", "FogOpacity"));
+                withBlock.Fog = (int)Conversion.Val(GetVar(fileName, "General", "Fog"));
+                withBlock.FogSpeed = (int)Conversion.Val(GetVar(fileName, "General", "FogSpeed"));
+                withBlock.FogOpacity = (int)Conversion.Val(GetVar(fileName, "General", "FogOpacity"));
 
-                withBlock.Red = (int)Conversion.Val(GetVar(filename, "General", "Red"));
-                withBlock.Green = (int)Conversion.Val(GetVar(filename, "General", "Green"));
-                withBlock.Blue = (int)Conversion.Val(GetVar(filename, "General", "Blue"));
-                withBlock.Alpha = (int)Conversion.Val(GetVar(filename, "General", "Alpha"));
+                withBlock.Red = (int)Conversion.Val(GetVar(fileName, "General", "Red"));
+                withBlock.Green = (int)Conversion.Val(GetVar(fileName, "General", "Green"));
+                withBlock.Blue = (int)Conversion.Val(GetVar(fileName, "General", "Blue"));
+                withBlock.Alpha = (int)Conversion.Val(GetVar(fileName, "General", "Alpha"));
 
-                withBlock.BossNPC = (int)Conversion.Val(GetVar(filename, "General", "BossNPC"));
+                withBlock.BossNpc = (int)Conversion.Val(GetVar(fileName, "General", "BossNpc"));
             }
 
             // Redim the map
-            csMap.Tile = new CSTileStruct[csMap.MapData.MaxX, csMap.MapData.MaxY];
-
-            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + mapNum + ".dat";
-
-            using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+            csMap.Tile = new CSTile[csMap.MapData.MaxX, csMap.MapData.MaxY];
+            
+            using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             using (var binaryReader = new BinaryReader(fileStream))
             {
                 // Assuming Core.Constant.MAX_X and Core.Constant.MAX_Y are the dimensions of your map
@@ -982,8 +982,8 @@ namespace Server
                 {
                     for (y = 0L; y < MAX_Y; y++)
                     {
-                        csMap.Tile[x, y].Autotile = new byte[(int)LayerType.Count];
-                        csMap.Tile[x, y].Layer = new CSTileDataStruct[(int)LayerType.Count];
+                        csMap.Tile[x, y].Autotile = new byte[Enum.GetValues(typeof(MapLayer)).Length];
+                        csMap.Tile[x, y].Layer = new CSTileType[Enum.GetValues(typeof(MapLayer)).Length];
 
                         var withBlock1 = csMap.Tile[x, y];
                         withBlock1.Type = binaryReader.ReadByte();
@@ -993,11 +993,11 @@ namespace Server
                         withBlock1.Data4 = binaryReader.ReadInt32();
                         withBlock1.Data5 = binaryReader.ReadInt32();
 
-                        for (i = 0L; i < (int)LayerType.Count; i++)
+                        for (i = 0L; i < Enum.GetValues(typeof(MapLayer)).Length; i++)
                             withBlock1.Autotile[i] = binaryReader.ReadByte();
                             withBlock1.DirBlock = binaryReader.ReadByte();
 
-                        for (i = 0L; i < (int)LayerType.Count; i++)
+                        for (i = 0L; i < Enum.GetValues(typeof(MapLayer)).Length; i++)
                         {
                             withBlock1.Layer[i].TileSet = binaryReader.ReadInt32();
                             withBlock1.Layer[i].x = binaryReader.ReadInt32();
@@ -1012,17 +1012,17 @@ namespace Server
 
         public static void ClearMapItem(int index, int mapNum)
         {
-            Core.Type.MapItem[mapNum, index].PlayerName = "";
-            Core.Type.MapItem[mapNum, index].Num = - 1;
+            Data.MapItem[mapNum, index].PlayerName = "";
+            Data.MapItem[mapNum, index].Num = -1;
         }
 
-        public static XWMapStruct LoadXWMap(string fileName)
+        public static XWMap LoadXWMap(string fileName)
         {
             var encoding = new ASCIIEncoding();
-            var xwMap = new XWMapStruct
+            var xwMap = new XWMap
             {
-                Tile = new XWTileStruct[16, 12],
-                NPC = new long[Core.Constant.MAX_MAP_NPCS]
+                Tile = new XWTile[16, 12],
+                Npc = new long[Core.Constant.MAX_MAP_NPCS]
             };
 
             using (var fs = new FileStream(fileName, FileMode.Open))
@@ -1077,11 +1077,11 @@ namespace Server
                             xwMap.Tile[x, y].Mask = reader.ReadInt16(); // 44
                             xwMap.Tile[x, y].MaskAnim = reader.ReadInt16(); // 46
                             xwMap.Tile[x, y].Fringe = reader.ReadInt16(); // 48
-                            xwMap.Tile[x, y].Type = (XWTileType)(TileType)reader.ReadByte(); // 50
+                            xwMap.Tile[x, y].Type = (XWTileType)reader.ReadByte(); // 50
                             xwMap.Tile[x, y].Data1 = reader.ReadInt16(); // 51
                             xwMap.Tile[x, y].Data2 = reader.ReadInt16(); // 53
                             xwMap.Tile[x, y].Data3 = reader.ReadInt16(); // 55
-                            xwMap.Tile[x, y].Type2 = (XWTileType)(TileType)reader.ReadByte(); // 57
+                            xwMap.Tile[x, y].Type2 = (XWTileType)reader.ReadByte(); // 57
                             xwMap.Tile[x, y].Data1_2 = reader.ReadInt16(); // 59
                             xwMap.Tile[x, y].Data2_2 = reader.ReadInt16(); // 61
                             xwMap.Tile[x, y].Data3_2 = reader.ReadInt16(); // 63
@@ -1094,18 +1094,18 @@ namespace Server
                     }
 
                     for (int i = 0; i <= 14; i++)
-                        xwMap.NPC[i] = reader.ReadInt32();
+                        xwMap.Npc[i] = reader.ReadInt32();
                 }
             }
 
             return xwMap;
         }
 
-        private static TileStruct ConvertXWTileToTile(XWTileStruct xwTile)
+        private static Tile ConvertXWTileToTile(XWTile xwTile)
         {
-            var tile = new TileStruct
+            var tile = new Tile
             {
-                Layer = new TileDataStruct[System.Enum.GetValues(typeof(LayerType)).Length]
+                Layer = new Layer[System.Enum.GetValues(typeof(MapLayer)).Length]
             };
 
             // Constants for the new tileset
@@ -1113,38 +1113,38 @@ namespace Server
             const int RowsPerTileset = 16;
 
             // Process each layer
-            for (int i = (int)LayerType.Ground; i < (int)LayerType.Count; i++)
+            for (int i = (int)MapLayer.Ground; i < Enum.GetValues(typeof(MapLayer)).Length; i++)
             {
                 int tileNumber = 0;
 
                 // Select the appropriate tile number for each layer
-                switch ((LayerType)i)
+                switch ((MapLayer)i)
                 {
-                    case LayerType.Ground:
+                    case MapLayer.Ground:
                         tileNumber = xwTile.Ground;
                         break;
-                    case LayerType.Mask:
+                    case MapLayer.Mask:
                         tileNumber = xwTile.Mask;
                         break;
-                    case LayerType.MaskAnim:
+                    case MapLayer.MaskAnimation:
                         tileNumber = xwTile.MaskAnim;
                         break;
-                    case LayerType.Cover:
+                    case MapLayer.Cover:
                         tileNumber = xwTile.Mask2;
                         break;
-                    case LayerType.CoverAnim:
+                    case MapLayer.CoverAnimation:
                         tileNumber = xwTile.Mask2Anim;
                         break;
-                    case LayerType.Fringe:
+                    case MapLayer.Fringe:
                         tileNumber = xwTile.Fringe;
                         break;
-                    case LayerType.FringeAnim:
+                    case MapLayer.FringeAnimation:
                         tileNumber = xwTile.FringeAnim;
                         break;
-                    case LayerType.Roof:
+                    case MapLayer.Roof:
                         tileNumber = xwTile.Roof;
                         break;
-                    case LayerType.RoofAnim:
+                    case MapLayer.RoofAnimation:
                         tileNumber = xwTile.Fringe2Anim;
                         break;
                 }
@@ -1165,63 +1165,43 @@ namespace Server
             tile.Data1_2 = xwTile.Data1_2;
             tile.Data2_2 = xwTile.Data2_2;
             tile.Data3_2 = xwTile.Data3_2;
-            tile.Type = (TileType)xwTile.Type;
-            tile.Type2 = (TileType)xwTile.Type2;
-
-            SetXWTileType(ref tile.Type);
-            SetXWTileType(ref tile.Type2);
+            tile.Type = ToTileType(xwTile.Type);
+            tile.Type2 = ToTileType(xwTile.Type2);
 
             return tile;
-        }
-
-        public static void SetXWTileType(ref TileType tileType)
+        } 
+        
+        public static TileType ToTileType(XWTileType xwTileType)
         {
-            switch (tileType)
+            string name = Enum.GetName(typeof(XWTileType), xwTileType);
+            return name switch
             {
-                case TileType _ when tileType == (TileType)XWTileType.Warp:
-                    tileType = TileType.Warp;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Damage:
-                    tileType = TileType.Trap;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Heal:
-                    tileType = TileType.Heal;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Shop:
-                    tileType = TileType.Shop;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.No_Xing:
-                    tileType = TileType.NoXing;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Key:
-                    tileType = TileType.Key;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Key_Open:
-                    tileType = TileType.KeyOpen;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Door:
-                    tileType = TileType.Door;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Walkthru:
-                    tileType = TileType.WalkThrough;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Arena:
-                    tileType = TileType.Arena;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Roof:
-                    tileType = TileType.Roof;
-                    break;
-                case TileType _ when tileType == (TileType)XWTileType.Direction_Block:
-                    break;
-            }
+                "None" => TileType.None,
+                "Block" => TileType.Blocked,
+                "Warp" => TileType.Warp,
+                "Item" => TileType.Item,
+                "NpcAvoid" => TileType.NpcAvoid,
+                "NpcSpawn" => TileType.NpcSpawn,
+                "Shop" => TileType.Shop,
+                "Heal" => TileType.Heal,
+                "Damage" => TileType.Trap,
+                "NoCrossing" => TileType.NoCrossing,
+                "Key" => TileType.Key,
+                "KeyOpen" => TileType.KeyOpen,
+                "Door" => TileType.Door,
+                "WalkThrough" => TileType.WalkThrough,
+                "Arena" => TileType.Arena,
+                "Roof" => TileType.Roof,
+                _ => TileType.None // Default for unmapped types (e.g., Sign, DirectionBlock)
+            };
         }
 
-        public static MapStruct MapFromXWMap(XWMapStruct xwMap)
+        public static Map MapFromXWMap(XWMap xwMap)
         {
-            var map = new MapStruct();
+            var map = new Map();
 
-            map.Tile = new TileStruct[16, 12];
-            map.NPC = new int[Core.Constant.MAX_MAP_NPCS];
+            map.Tile = new Tile[16, 12];
+            map.Npc = new int[Core.Constant.MAX_MAP_NPCS];
             map.Name = xwMap.Name;
             map.Music = "Music" + xwMap.Music.ToString() + ".mid";
             map.Revision = (int)xwMap.Revision;
@@ -1245,15 +1225,15 @@ namespace Server
                     map.Tile[x, y] = ConvertXWTileToTile(xwMap.Tile[x, y]);
             }
 
-            // NPC array conversion (Long to Integer), if necessary
-            //if (xwMap.NPC is not null)
+            // Npc array conversion (Long to Integer), if necessary
+            //if (xwMap.Npc is not null)
             //{
-            //    map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
+            //    map.Npc = Array.ConvertAll(xwMap.Npc, i => (int)i);
             //}
 
             for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i ++)
             {
-                map.NPC[i] = -1;
+                map.Npc[i] = -1;
             }
 
             map.Weather = xwMap.Weather;
@@ -1263,10 +1243,175 @@ namespace Server
 
             return map;
         }
-
-        public static MapStruct MapFromCSMap(CSMapStruct csMap)
+        
+        public static SDMap LoadSDMap(string fileName)
         {
-            var mwMap = new MapStruct
+            // Load XML content
+            string xmlContent = File.ReadAllText(fileName);
+            XDocument doc;
+            try
+            {
+                doc = XDocument.Parse(xmlContent);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidDataException($"Invalid XML format in {fileName}.", ex);
+            }
+
+            SDMap sdMap = new SDMap();
+            if (doc == null || doc.Root == null)
+            {
+                throw new InvalidDataException("XML document is empty or has no root element.");
+            }
+
+            var root = doc.Root;
+
+            // Helper to get element by name and throw if missing
+            string GetElementValue(string name)
+            {
+                var el = root.Element(name);
+                if (el == null)
+                    return "0";
+                return el.Value.Trim();
+            }
+
+            sdMap.Revision = int.Parse(GetElementValue("Revision"));
+            //sdMap.Tileset = int.Parse(GetElementValue("Tileset"));
+            sdMap.Name = GetElementValue("Name");
+            sdMap.Music = Path.GetFileName(GetElementValue("Music"));
+
+            // Parse connections
+            var connectionsNode = root.Element("Border");
+            if (connectionsNode == null)
+                throw new InvalidDataException("Missing 'Connections' element in XML document.");
+
+            var connections = connectionsNode.Elements().ToList();
+            if (connections.Count >= 4)
+            {
+                if (connectionsNode == null)
+                    throw new InvalidDataException("Missing 'Border' element in XML document.");
+
+                var connectionInts = connectionsNode.Elements("int").ToList();
+                if (connectionInts.Count >= 4)
+                {
+                    sdMap.Up = int.Parse(connectionInts[0]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Up' in Border."));
+                    sdMap.Down = int.Parse(connectionInts[1]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Down' in Border."));
+                    sdMap.Left = int.Parse(connectionInts[2]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Left' in Border."));
+                    sdMap.Right = int.Parse(connectionInts[3]?.Value?.Trim() ?? throw new InvalidDataException("Missing 'Right' in Border."));
+                }
+                else
+                {
+                    throw new InvalidDataException("Invalid Border data: not enough <int> elements.");
+                }
+            }
+            else
+            {
+                throw new InvalidDataException("Invalid connections data.");
+            }
+
+            // Parse dimensions
+            sdMap.MaxX = int.Parse(GetElementValue("MaxX"));
+            sdMap.MaxY = int.Parse(GetElementValue("MaxY"));
+
+            // Parse warp data (support multiple <WarpData> nodes)
+            var warpDataParent = root.Element("WarpData");
+            if (warpDataParent != null)
+            {
+                var warpDataList = warpDataParent.Elements("WarpData").ToList();
+                if (warpDataList?.Count > 0)
+                {
+                    // If there are multiple <WarpData> nodes, pick the first one for backward compatibility
+                    var warpNode = warpDataList[0];
+                    var posElement = warpNode.Element("Position");
+                    var destElement = warpNode.Element("WarpDest");
+
+                    // Extract Position data
+                    var posX = int.Parse(posElement?.Element("X")?.Value?.Trim() ?? throw new InvalidDataException("Missing Position X in warp data."));
+                    var posY = int.Parse(posElement?.Element("Y")?.Value?.Trim() ?? throw new InvalidDataException("Missing Position Y in warp data."));
+
+                    // Extract WarpDest data
+                    var destX = int.Parse(destElement?.Element("X")?.Value?.Trim() ?? throw new InvalidDataException("Missing WarpDest X in warp data."));
+                    var destY = int.Parse(destElement?.Element("Y")?.Value?.Trim() ?? throw new InvalidDataException("Missing WarpDest Y in warp data."));
+
+                    // Extract MapID data
+                    var mapID = int.Parse(warpNode.Element("MapID")?.Value?.Trim() ?? throw new InvalidDataException("Missing MapID in warp data."));
+
+                    sdMap.Warp = new SDWarpData
+                    {
+                        Pos = new SDWarpPos
+                        {
+                            X = posX,
+                            Y = posY
+                        },
+                        WarpDes = new SDWarpDes
+                        {
+                            X = destX,
+                            Y = destY
+                        },
+                        MapID = mapID
+                    };
+                }
+            }
+
+            // Parse layer data
+            var mapGridNode = root.Element("MapGrid");
+            var layersNode = mapGridNode.Element("Layers");
+            if (layersNode == null)
+            {
+                throw new InvalidDataException("Invalid layer data: 'Layers' node missing.");
+            }
+
+            var mapLayers = new List<Core.Type.SDMapLayer>();
+
+            // There may be multiple <MapLayer> nodes
+            foreach (var mapLayersNode in layersNode.Elements("MapLayer"))
+            {
+                // Extract Layer Name
+                var layerNameElement = mapLayersNode.Element("Name");
+                string layerName = layerNameElement != null ? layerNameElement.Value.Trim() : "";
+
+                // Extract ArrayOfMapTile
+                var tilesElement = mapLayersNode.Element("Tiles");
+                var arrayOfMapTileElement = tilesElement != null ? tilesElement.Element("ArrayOfMapTile") : null;
+
+                var tiles = new List<SDMapTile>();
+
+                if (arrayOfMapTileElement != null)
+                {
+                    // Each child is a MapTile element
+                    foreach (var tileElement in arrayOfMapTileElement.Elements())
+                    {
+                        int tileIndex = 0;
+                        if (int.TryParse(tileElement.Value.Trim(), out tileIndex))
+                        {
+                            tiles.Add(new SDMapTile { TileIndex = tileIndex });
+                        }
+                    }
+                }
+
+                // Add this layer to the list
+                mapLayers.Add(new Core.Type.SDMapLayer
+                {
+                    Name = layerName,
+                    Tiles = new SDTile
+                    {
+                        ArrayOfMapTile = tiles
+                    }
+                });
+            }
+
+            // Create layer structure
+            sdMap.MapLayer = new SDLayer
+            {
+                MapLayer = mapLayers
+            };
+
+            return sdMap;
+        }
+
+        public static Map MapFromCSMap(CSMap csMap)
+        {
+            var mwMap = new Map
             {
                 Name = csMap.MapData.Name,
                 MaxX = csMap.MapData.MaxX,
@@ -1289,21 +1434,23 @@ namespace Server
                 MapTintB = (byte)csMap.MapData.Blue,
                 FogOpacity = (byte)csMap.MapData.FogOpacity,
                 FogSpeed = (byte)csMap.MapData.FogSpeed,
-                Tile = new TileStruct[csMap.MapData.MaxX, csMap.MapData.MaxY],
-                NPC = new int[Core.Constant.MAX_MAP_NPCS]
+                Tile = new Tile[csMap.MapData.MaxX, csMap.MapData.MaxY],
+                Npc = new int[Core.Constant.MAX_MAP_NPCS]
             };
+
+            var layerCount = Enum.GetValues(typeof(MapLayer)).Length;
 
             for (int y = 0; y < mwMap.MaxX; y++)
             {
                 for (int x = 0; x < mwMap.MaxY; x++)
                 {
-                    mwMap.Tile[x, y].Layer = new TileDataStruct[(int)LayerType.Count];
+                    mwMap.Tile[x, y].Layer = new Core.Type.Layer[layerCount];
                     mwMap.Tile[x, y].Data1 = csMap.Tile[x, y].Data1;
                     mwMap.Tile[x, y].Data2 = csMap.Tile[x, y].Data2;
                     mwMap.Tile[x, y].Data3 = csMap.Tile[x, y].Data3;
                     mwMap.Tile[x, y].DirBlock = csMap.Tile[x, y].DirBlock;
 
-                    for (int i = (int)LayerType.Ground; i < (int)LayerType.Count; i++)
+                    for (int i = (int)MapLayer.Ground; i < layerCount; i++)
                     {
                         mwMap.Tile[x, y].Layer[i].X = csMap.Tile[x, y].Layer[i].x;
                         mwMap.Tile[x, y].Layer[i].Y = csMap.Tile[x, y].Layer[i].y;
@@ -1315,15 +1462,15 @@ namespace Server
 
             for (int i = 0; i < 30; i++)
             {
-                mwMap.NPC[i] = csMap.MapData.NPC[i];
+                mwMap.Npc[i] = csMap.MapData.Npc[i];
             }
 
             return mwMap;
         }
 
-        private static MapStruct MapFromSDMap(SDMapStruct sdMap)
+        private static Map MapFromSDMap(SDMap sdMap)
         {
-            var mwMap = default(MapStruct);
+            var mwMap = new Map();
 
             mwMap.Name = sdMap.Name;
             mwMap.Music = sdMap.Music;
@@ -1338,63 +1485,115 @@ namespace Server
             mwMap.MaxX = (byte)sdMap.MaxX;
             mwMap.MaxY = (byte)sdMap.MaxY;
 
+            int layerCount = sdMap.MapLayer.MapLayer.Count;
+            int mapLayerEnumCount = Enum.GetValues(typeof(MapLayer)).Length;
+            mwMap.Tile = new Tile[mwMap.MaxX, mwMap.MaxY];
+
+            // Initialize all tiles and their layers
+            for (int y = 0; y < mwMap.MaxY; y++)
+            {
+                for (int x = 0; x < mwMap.MaxX; x++)
+                {
+                    mwMap.Tile[x, y].Layer = new Layer[mapLayerEnumCount];
+                }
+            }
+
+            // Fill in tile data for each layer
+            for (int i = 0; i < layerCount; i++)
+            {
+                var layer = sdMap.MapLayer.MapLayer[i];
+                var tiles = layer.Tiles.ArrayOfMapTile;
+                int tileCounter = 0;
+                for (int y = 0; y < mwMap.MaxY; y++)
+                {
+                    for (int x = 0; x < mwMap.MaxX; x++)
+                    {
+                        if (tileCounter < tiles.Count)
+                        {
+                            int tileIndex = tiles[tileCounter].TileIndex;
+                            int targetLayer = i;
+
+                            // Move the layer up for animation layers
+                            switch (i)
+                            {
+                                case (int)Core.SDMapLayer.Mask2:
+                                    targetLayer = (int)Core.MapLayer.Cover;
+                                    break;
+                                case (int)Core.SDMapLayer.Fringe:
+                                    targetLayer = (int)Core.MapLayer.Fringe;
+                                    break;
+                                case (int)Core.SDMapLayer.Fringe2:
+                                    targetLayer = (int)Core.MapLayer.Roof;
+                                    break;
+                            }
+                            mwMap.Tile[x, y].Layer[targetLayer].X = tileIndex % 12;
+                            mwMap.Tile[x, y].Layer[targetLayer].Y = (tileIndex - mwMap.Tile[x, y].Layer[targetLayer].X) / 12;
+                            mwMap.Tile[x, y].Layer[targetLayer].Tileset = 1;
+                        }
+                        tileCounter++;
+                    }
+                }
+            }
+
             return mwMap;
         }
 
         #endregion
 
-        #region NPCs
+        #region Npcs
 
-        public static void SaveNPC(int NPCNum)
+        public static void SaveNpc(int NpcNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.NPC[(int)NPCNum]).ToString();
+            string json = JsonConvert.SerializeObject(Data.Npc[(int)NpcNum]).ToString();
 
-            if (RowExists(NPCNum, "npc"))
+            if (RowExists(NpcNum, "npc"))
             {
-                UpdateRow(NPCNum, json, "npc", "data");
+                UpdateRow(NpcNum, json, "npc", "data");
             }
             else
             {
-                InsertRow(NPCNum, json, "npc");
+                InsertRow(NpcNum, json, "npc");
             }
         }
 
-        public static async Task LoadNPCAsync(int NPCNum)
+        public static async System.Threading.Tasks.Task LoadNpcAsync(int NpcNum)
         {
             JObject data;
 
-            data = await SelectRowAsync(NPCNum, "npc", "data");
+            data = await SelectRowAsync(NpcNum, "npc", "data");
 
             if (data is null)
             {
-                ClearNPC(NPCNum);
+                ClearNpc(NpcNum);
                 return;
             }
 
-            var npcData = JObject.FromObject(data).ToObject<Core.Type.NPCStruct>();
-            Core.Type.NPC[(int)NPCNum] = npcData;
+            var npcData = JObject.FromObject(data).ToObject<Core.Type.Npc>();
+            Data.Npc[(int)NpcNum] = npcData;
         }
 
-        public static void ClearMapNPC(int index, int mapNum)
+        public static void ClearMapNpc(int index, int mapNum)
         {
-            Core.Type.MapNPC[mapNum].NPC[index].Vital = new int[(int)VitalType.Count];
-            Core.Type.MapNPC[mapNum].NPC[index].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
-            Core.Type.MapNPC[mapNum].NPC[index].Num = -1;
-            Core.Type.MapNPC[mapNum].NPC[index].SkillBuffer = -1;
+            var count = Enum.GetValues(typeof(Vital)).Length;
+            Data.MapNpc[mapNum].Npc[index].Vital = new int[count];
+            Data.MapNpc[mapNum].Npc[index].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
+            Data.MapNpc[mapNum].Npc[index].Num = -1;
+            Data.MapNpc[mapNum].Npc[index].SkillBuffer = -1;
         }
 
-        public static void ClearNPC(int index)
+        public static void ClearNpc(int index)
         {
-            Core.Type.NPC[index].Name = "";
-            Core.Type.NPC[index].AttackSay = "";
-            Core.Type.NPC[index].Stat = new byte[(byte)StatType.Count];
+            Data.Npc[index].Name = "";
+            Data.Npc[index].AttackSay = "";
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            Data.Npc[index].Stat = new byte[statCount];
 
             for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
-                Core.Type.NPC[index].DropChance = new int[Core.Constant.MAX_DROP_ITEMS];
-                Core.Type.NPC[index].DropItem = new int[Core.Constant.MAX_DROP_ITEMS];
-                Core.Type.NPC[index].DropItemValue = new int[Core.Constant.MAX_DROP_ITEMS];
-                Core.Type.NPC[index].Skill = new byte[Core.Constant.MAX_NPC_SKILLS];
+                Data.Npc[index].DropChance = new int[Core.Constant.MAX_DROP_ITEMS];
+                Data.Npc[index].DropItem = new int[Core.Constant.MAX_DROP_ITEMS];
+                Data.Npc[index].DropItemValue = new int[Core.Constant.MAX_DROP_ITEMS];
+                Data.Npc[index].Skill = new byte[Core.Constant.MAX_NPC_SKILLS];
             }
         }
 
@@ -1404,7 +1603,7 @@ namespace Server
 
         public static void SaveShop(int shopNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Shop[shopNum]).ToString();
+            string json = JsonConvert.SerializeObject(Data.Shop[shopNum]).ToString();
 
             if (RowExists(shopNum, "shop"))
             {
@@ -1426,7 +1625,7 @@ namespace Server
 
         }
 
-        public static async Task LoadShopAsync(int shopNum)
+        public static async System.Threading.Tasks.Task LoadShopAsync(int shopNum)
         {
             JObject data;
 
@@ -1438,20 +1637,20 @@ namespace Server
                 return;
             }
 
-            var shopData = JObject.FromObject(data).ToObject<ShopStruct>();
-            Core.Type.Shop[shopNum] = shopData;
+            var shopData = JObject.FromObject(data).ToObject<Shop>();
+            Data.Shop[shopNum] = shopData;
         }
 
         public static void ClearShop(int index)
         {
-            Core.Type.Shop[index] = default;
-            Core.Type.Shop[index].Name = "";
+            Data.Shop[index] = default;
+            Data.Shop[index].Name = "";
 
-            Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Core.Constant.MAX_TRADES];
+            Data.Shop[index].TradeItem = new Core.Type.TradeItem[Core.Constant.MAX_TRADES];
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                Core.Type.Shop[index].TradeItem[i].Item = -1;
-                Core.Type.Shop[index].TradeItem[i].CostItem = -1;
+                Data.Shop[index].TradeItem[i].Item = -1;
+                Data.Shop[index].TradeItem[i].CostItem = -1;
             }
         }
 
@@ -1461,7 +1660,7 @@ namespace Server
 
         public static void SaveSkill(int skillNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Skill[skillNum]).ToString();
+            string json = JsonConvert.SerializeObject(Data.Skill[skillNum]).ToString();
 
             if (RowExists(skillNum, "skill"))
             {
@@ -1473,7 +1672,7 @@ namespace Server
             }
         }
 
-        public static async Task LoadSkillAsync(int skillNum)
+        public static async System.Threading.Tasks.Task LoadSkillAsync(int skillNum)
         {
             JObject data;
 
@@ -1485,45 +1684,45 @@ namespace Server
                 return;
             }
 
-            var skillData = JObject.FromObject(data).ToObject<SkillStruct>();
-            Core.Type.Skill[skillNum] = skillData;
+            var skillData = JObject.FromObject(data).ToObject<Skill>();
+            Data.Skill[skillNum] = skillData;
         }
 
         public static void ClearSkill(int index)
         {
-            Core.Type.Skill[index].Name = "";
-            Core.Type.Skill[index].LevelReq = 0;
+            Data.Skill[index].Name = "";
+            Data.Skill[index].LevelReq = 0;
         }
 
         #endregion
 
         #region Players
 
-        public static async Task SaveAllPlayersOnlineAsync()
+        public static async System.Threading.Tasks.Task SaveAllPlayersOnlineAsync()
         {
             for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= loopTo; i++)
             {
                 if (!NetworkConfig.IsPlaying(i))
                     continue;
 
-                await SaveCharacterAsync(i, Core.Type.TempPlayer[i].Slot);
+                await SaveCharacterAsync(i, Core.Data.TempPlayer[i].Slot);
                 await SaveBankAsync(i);
             }
         }
 
-        public static async Task SaveCharacterAsync(int index, int slot)
+        public static async System.Threading.Tasks.Task SaveCharacterAsync(int index, int slot)
         {
-            await Task.Run(() => SaveCharacter(index, slot));
+            await System.Threading.Tasks.Task.Run(() => SaveCharacter(index, slot));
         }
 
-        public static async Task SaveBankAsync(int index)
+        public static async System.Threading.Tasks.Task SaveBankAsync(int index)
         {
-            await Task.Run(() => SaveBank(index));
+            await System.Threading.Tasks.Task.Run(() => SaveBank(index));
         }
 
-        public static async Task SaveAccountAsync(int index)
+        public static async System.Threading.Tasks.Task SaveAccountAsync(int index)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Account[index]).ToString();
+            string json = JsonConvert.SerializeObject(Core.Data.Account[index]).ToString();
             string username = GetAccountLogin(index);
             long id = GetStringHash(username);
 
@@ -1542,7 +1741,7 @@ namespace Server
             SetPlayerLogin(index, username);
             SetPlayerPassword(index, password);
 
-            string json = JsonConvert.SerializeObject(Core.Type.Account[index]).ToString();
+            string json = JsonConvert.SerializeObject(Core.Data.Account[index]).ToString();
 
             long id = GetStringHash(username);
 
@@ -1559,8 +1758,8 @@ namespace Server
                 return false;
             }
 
-            var accountData = JObject.FromObject(data).ToObject<AccountStruct>();
-            Core.Type.Account[index] = accountData;
+            var accountData = JObject.FromObject(data).ToObject<Account>();
+            Core.Data.Account[index] = accountData;
             return true;
         }
 
@@ -1575,20 +1774,20 @@ namespace Server
             ClearAccount(index);
             ClearBank(index);
 
-            Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
-            Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
-            Core.Type.TempPlayer[index].TradeOffer = new PlayerInvStruct[Core.Constant.MAX_INV];
+            Core.Data.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
+            Core.Data.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
+            Core.Data.TempPlayer[index].TradeOffer = new PlayerInv[Core.Constant.MAX_INV];
 
-            Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
-            Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
-            Core.Type.TempPlayer[index].Editor = -1;
-            Core.Type.TempPlayer[index].SkillBuffer = -1;
-            Core.Type.TempPlayer[index].InShop = -1;
-            Core.Type.TempPlayer[index].InTrade = -1;
-            Core.Type.TempPlayer[index].InParty = -1;
+            Core.Data.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
+            Core.Data.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
+            Core.Data.TempPlayer[index].Editor = -1;
+            Core.Data.TempPlayer[index].SkillBuffer = -1;
+            Core.Data.TempPlayer[index].InShop = -1;
+            Core.Data.TempPlayer[index].InTrade = -1;
+            Core.Data.TempPlayer[index].InParty = -1;
 
-            for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
-                Core.Type.TempPlayer[index].EventProcessing[i].EventId = -1;
+            for (int i = 0, loopTo = Core.Data.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
+                Core.Data.TempPlayer[index].EventProcessing[i].EventId = -1;
 
             ClearCharacter(index);
         }
@@ -1607,13 +1806,13 @@ namespace Server
                 return;
             }
 
-            var bankData = JObject.FromObject(data).ToObject<BankStruct>();
-            Bank[index] = bankData;
+            var bankData = JObject.FromObject(data).ToObject<Bank>();
+            Data.Bank[index] = bankData;
         }
 
         public static void SaveBank(int index)
         {
-            string json = JsonConvert.SerializeObject(Bank[index]);
+            string json = JsonConvert.SerializeObject(Data.Bank[index]);
             string username = GetAccountLogin(index);
             long id = GetStringHash(username);
 
@@ -1629,88 +1828,87 @@ namespace Server
 
         public static void ClearBank(int index)
         {
-            Bank[index].Item = new PlayerInvStruct[Core.Constant.MAX_BANK + 1];
+            Data.Bank[index].Item = new PlayerInv[Core.Constant.MAX_BANK + 1];
             for (int i = 0; i < Core.Constant.MAX_BANK; i++)
             {
-                Bank[index].Item[i].Num = -1;
-                Bank[index].Item[i].Value = 0;
+                Data.Bank[index].Item[i].Num = -1;
+                Data.Bank[index].Item[i].Value = 0;
             }
         }
 
-        #endregion
-
-        #region Characters
         public static void ClearCharacter(int index)
         {
-            Core.Type.Player[index].Name = "";
-            Core.Type.Player[index].Job = 0;
-            Core.Type.Player[index].Dir = 0;
-            Core.Type.Player[index].Access = (byte)AccessType.Player;
+            Core.Data.Player[index].Name = "";
+            Core.Data.Player[index].Job = 0;
+            Core.Data.Player[index].Dir = 0;
+            Core.Data.Player[index].Access = (byte)AccessLevel.Player;
 
-            Core.Type.Player[index].Equipment = new int[(byte)EquipmentType.Count];
-            for (int i = 0, loopTo = (byte)EquipmentType.Count; i < loopTo; i++)
-                Core.Type.Player[index].Equipment[i] = -1;
+            Core.Data.Player[index].Equipment = new int[Enum.GetValues(typeof(Equipment)).Length];
+            for (int i = 0, loopTo = Enum.GetValues(typeof(Equipment)).Length; i < loopTo; i++)
+                Core.Data.Player[index].Equipment[i] = -1;
 
-            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[Core.Constant.MAX_INV];
+            Core.Data.Player[index].Inv = new PlayerInv[Core.Constant.MAX_INV];
             for (int i = 0, loopTo1 = Core.Constant.MAX_INV; i < loopTo1; i++)
             {
-                Core.Type.Player[index].Inv[i].Num = -1;
-                Core.Type.Player[index].Inv[i].Value = 0;
+                Core.Data.Player[index].Inv[i].Num = -1;
+                Core.Data.Player[index].Inv[i].Value = 0;
             }
 
-            Core.Type.Player[index].Exp = 0;
-            Core.Type.Player[index].Level = 0;
-            Core.Type.Player[index].Map = 0;
-            Core.Type.Player[index].Name = "";
-            Core.Type.Player[index].PK = false;
-            Core.Type.Player[index].Points = 0;
-            Core.Type.Player[index].Sex = 0;
+            Core.Data.Player[index].Exp = 0;
+            Core.Data.Player[index].Level = 0;
+            Core.Data.Player[index].Map = 0;
+            Core.Data.Player[index].Name = "";
+            Core.Data.Player[index].PK = false;
+            Core.Data.Player[index].Points = 0;
+            Core.Data.Player[index].Sex = 0;
 
-            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[Core.Constant.MAX_PLAYER_SKILLS];
+            Core.Data.Player[index].Skill = new Core.Type.PlayerSkill[Core.Constant.MAX_PLAYER_SKILLS];
             for (int i = 0, loopTo2 = Core.Constant.MAX_PLAYER_SKILLS; i < loopTo2; i++)
             {
-                Core.Type.Player[index].Skill[i].Num = -1;
-                Core.Type.Player[index].Skill[i].CD = 0;
+                Core.Data.Player[index].Skill[i].Num = -1;
+                Core.Data.Player[index].Skill[i].CD = 0;
             }
 
-            Core.Type.Player[index].Sprite = 0;
+            Core.Data.Player[index].Sprite = 0;
 
-            Core.Type.Player[index].Stat = new byte[(byte)StatType.Count];
-            for (int i = 0, loopTo3 = (byte)StatType.Count; i < loopTo3; i++)
-                Core.Type.Player[index].Stat[i] = 0;
+            Core.Data.Player[index].Stat = new byte[Enum.GetValues(typeof(Stat)).Length];
+            for (int i = 0, loopTo3 = Enum.GetValues(typeof(Stat)).Length; i < loopTo3; i++)
+                Core.Data.Player[index].Stat[i] = 0;
 
-            Core.Type.Player[index].Vital = new int[(byte) VitalType.Count];
-            for (int i = 0, loopTo4 = (byte) VitalType.Count; i < loopTo4; i++)
-                Core.Type.Player[index].Vital[i] = 0;
+            var count = Enum.GetValues(typeof(Vital)).Length;
+            Core.Data.Player[index].Vital = new int[count];
+            for (int i = 0, loopTo4 = count; i < loopTo4; i++)
+                Core.Data.Player[index].Vital[i] = 0;
 
-            Core.Type.Player[index].X = 0;
-            Core.Type.Player[index].Y = 0;
+            Core.Data.Player[index].X = 0;
+            Core.Data.Player[index].Y = 0;
 
-            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[Core.Constant.MAX_HOTBAR];
+            Core.Data.Player[index].Hotbar = new Core.Type.Hotbar[Core.Constant.MAX_HOTBAR];
             for (int i = 0, loopTo5 = Core.Constant.MAX_HOTBAR; i < loopTo5; i++)
             {
-                Core.Type.Player[index].Hotbar[i].Slot = -1;
-                Core.Type.Player[index].Hotbar[i].SlotType = 0;
+                Core.Data.Player[index].Hotbar[i].Slot = -1;
+                Core.Data.Player[index].Hotbar[i].SlotType = 0;
             }
 
-            Core.Type.Player[index].Switches = new byte[Core.Constant.MAX_SWITCHES];
+            Core.Data.Player[index].Switches = new byte[Core.Constant.MAX_SWITCHES];
             for (int i = 0, loopTo6 = Core.Constant.MAX_SWITCHES; i < loopTo6; i++)
-                Core.Type.Player[index].Switches[i] = 0;
+                Core.Data.Player[index].Switches[i] = 0;
 
-            Core.Type.Player[index].Variables = new int[Core.Constant.NAX_VARIABLES];
+            Core.Data.Player[index].Variables = new int[Core.Constant.NAX_VARIABLES];
             for (int i = 0, loopTo7 = Core.Constant.NAX_VARIABLES; i < loopTo7; i++)
-                Core.Type.Player[index].Variables[i] = 0;
+                Core.Data.Player[index].Variables[i] = 0;
 
-            Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(byte)ResourceType.Count];
-            for (int i = 0, loopTo8 = (byte)ResourceType.Count; i < loopTo8; i++)
+            var resoruceCount = Enum.GetValues(typeof(Core.ResourceSkill)).Length;
+            Core.Data.Player[index].GatherSkills = new Core.Type.ResourceType[resoruceCount];
+            for (int i = 0, loopTo8 = resoruceCount; i < loopTo8; i++)
             {
-                Core.Type.Player[index].GatherSkills[i].SkillLevel = 0;
-                Core.Type.Player[index].GatherSkills[i].SkillCurExp = 0;
+                Core.Data.Player[index].GatherSkills[i].SkillLevel = 0;
+                Core.Data.Player[index].GatherSkills[i].SkillCurExp = 0;
                 SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i));
             }
 
-            for (int i = 0, loopTo9 = (byte)EquipmentType.Count; i < loopTo9; i++)
-                Core.Type.Player[index].Equipment[i] = -1;
+            for (int i = 0, loopTo9 = Enum.GetValues(typeof(Equipment)).Length; i < loopTo9; i++)
+                Core.Data.Player[index].Equipment[i] = -1;
         }
 
         public static bool LoadCharacter(int index, int charNum)
@@ -1723,21 +1921,21 @@ namespace Server
                 return false;
             }
 
-            var characterData = JObject.FromObject(data).ToObject<PlayerStruct>();
+            var characterData = data.ToObject<Core.Type.Player>();
 
             if (characterData.Name == "")
             {
                 return false;
             }
 
-            Core.Type.Player[index] = characterData;
-            Core.Type.TempPlayer[index].Slot = (byte)charNum;
+            Core.Data.Player[index] = characterData;
+            Core.Data.TempPlayer[index].Slot = (byte)charNum;
             return true;
         }
 
         public static void SaveCharacter(int index, int slot)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Player[index]).ToString();
+            string json = JsonConvert.SerializeObject(Core.Data.Player[index]).ToString();
             long id = GetStringHash(GetAccountLogin(index));
 
             if (slot < 1 | slot > Core.Constant.MAX_CHARS)
@@ -1758,48 +1956,48 @@ namespace Server
             int n;
             int i;
 
-            if (Strings.Len(Core.Type.Player[index].Name) == 0)
+            if (Strings.Len(Core.Data.Player[index].Name) == 0)
             {
-                Core.Type.Player[index].Name = name;
-                Core.Type.Player[index].Sex = Sex;
-                Core.Type.Player[index].Job = jobNum;
-                Core.Type.Player[index].Sprite = sprite;
-                Core.Type.Player[index].Level = 1;
+                Core.Data.Player[index].Name = name;
+                Core.Data.Player[index].Sex = Sex;
+                Core.Data.Player[index].Job = jobNum;
+                Core.Data.Player[index].Sprite = sprite;
+                Core.Data.Player[index].Level = 1;
 
-                var loopTo = (byte)StatType.Count;
-                for (n = 0; n < loopTo; n++)
-                    Core.Type.Player[index].Stat[n] = (byte)Core.Type.Job[jobNum].Stat[n];
+                var statCount = Enum.GetValues(typeof(Stat)).Length;
+                for (n = 0; n < statCount; n++)
+                    Core.Data.Player[index].Stat[n] = (byte)Data.Job[jobNum].Stat[n];
 
-                Core.Type.Player[index].Dir = (byte) DirectionType.Down;
-                Core.Type.Player[index].Map = Core.Type.Job[jobNum].StartMap;
+                Core.Data.Player[index].Dir = (byte)Direction.Down;
+                Core.Data.Player[index].Map = Data.Job[jobNum].StartMap;
 
-                if (Core.Type.Player[index].Map == 0)
-                    Core.Type.Player[index].Map = 1;
+                if (Core.Data.Player[index].Map == 0)
+                    Core.Data.Player[index].Map = 1;
 
-                Core.Type.Player[index].X = Core.Type.Job[jobNum].StartX;
-                Core.Type.Player[index].Y = Core.Type.Job[jobNum].StartY;
-                Core.Type.Player[index].Dir = (byte) DirectionType.Down;
+                Core.Data.Player[index].X = Data.Job[jobNum].StartX;
+                Core.Data.Player[index].Y = Data.Job[jobNum].StartY;
+                Core.Data.Player[index].Dir = (byte)Direction.Down;
 
-                var loopTo1 = VitalType.Count;
-                for (i = 0; i < (int)loopTo1; i++)
-                    SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
+                var vitalCount = Enum.GetValues(typeof(Core.Vital)).Length;
+                for (i = 0; i < vitalCount; i++)
+                    SetPlayerVital(index, (Vital)i, GetPlayerMaxVital(index, (Vital)i));
 
                 // set starter equipment
                 for (n = 0; n < Core.Constant.MAX_START_ITEMS; n++)
                 {
-                    if (Core.Type.Job[jobNum].StartItem[n] > 0)
+                    if (Data.Job[jobNum].StartItem[n] > 0)
                     {
-                        Core.Type.Player[index].Inv[n].Num = Core.Type.Job[jobNum].StartItem[n];
-                        Core.Type.Player[index].Inv[n].Value = Core.Type.Job[jobNum].StartValue[n];
+                        Core.Data.Player[index].Inv[n].Num = Data.Job[jobNum].StartItem[n];
+                        Core.Data.Player[index].Inv[n].Value = Data.Job[jobNum].StartValue[n];
                     }
                 }
 
                 // set skills
-                var loopTo2 = ResourceType.Count;
-                for (i = 0; i < (int)loopTo2; i++)
+                var resourceCount = Enum.GetValues(typeof(ResourceSkill)).Length;
+                for (i = 0; i < resourceCount; i++)
                 {
-                    Core.Type.Player[index].GatherSkills[i].SkillLevel = 0;
-                    Core.Type.Player[index].GatherSkills[i].SkillCurExp = 0;
+                    Core.Data.Player[index].GatherSkills[i].SkillLevel = 0;
+                    Core.Data.Player[index].GatherSkills[i].SkillCurExp = 0;
                     SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i));
                 }
 
@@ -1840,13 +2038,13 @@ namespace Server
 
             }
 
-            Core.Type.Account[BanPlayerindex].Banned = true;
+            Core.Data.Account[BanPlayerindex].Banned = true;
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
             NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + SettingsManager.Instance.GameName + " by " + "the Server" + "!");
             Core.Log.Add("The Server" + " has banned " + GetPlayerName(BanPlayerindex) + ".", Constant.ADMIN_LOG);
-            NetworkSend.AlertMsg(BanPlayerindex, (int)DialogueMsg.Banned);
+            NetworkSend.AlertMsg(BanPlayerindex, (int)SystemMessage.Banned);
         }
 
         public static bool IsBanned(int index, string IP)
@@ -1889,7 +2087,7 @@ namespace Server
 
             sr.Close();
 
-            if (Core.Type.Account[index].Banned)
+            if (Core.Data.Account[index].Banned)
             {
                 IsBannedRet = true;
             }
@@ -1921,13 +2119,13 @@ namespace Server
 
             }
 
-            Core.Type.Account[BanPlayerindex].Banned = true;
+            Core.Data.Account[BanPlayerindex].Banned = true;
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
             NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + SettingsManager.Instance.GameName + " by " + GetPlayerName(BannedByindex) + "!");
             Core.Log.Add(GetPlayerName(BannedByindex) + " has banned " + GetPlayerName(BanPlayerindex) + ".", Constant.ADMIN_LOG);
-            NetworkSend.AlertMsg(BanPlayerindex, (int)DialogueMsg.Banned);
+            NetworkSend.AlertMsg(BanPlayerindex, (int)SystemMessage.Banned);
         }
 
         #endregion
@@ -1939,75 +2137,76 @@ namespace Server
             int q;
             var buffer = new ByteStream(4);
 
-            buffer.WriteString(Core.Type.Job[jobNum].Name);
-            buffer.WriteString(Core.Type.Job[jobNum].Desc);
+            buffer.WriteString(Data.Job[jobNum].Name);
+            buffer.WriteString(Data.Job[jobNum].Desc);
 
-            buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
-            buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
+            buffer.WriteInt32(Data.Job[jobNum].MaleSprite);
+            buffer.WriteInt32(Data.Job[jobNum].FemaleSprite);
 
-            for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
-                buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
+            int statCount = Enum.GetValues(typeof(Core.Stat)).Length;
+            for (int i = 0, loopTo = statCount; i < loopTo; i++)
+                buffer.WriteInt32(Data.Job[jobNum].Stat[i]);
 
             for (q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
             {
-                buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
-                buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);
+                buffer.WriteInt32(Data.Job[jobNum].StartItem[q]);
+                buffer.WriteInt32(Data.Job[jobNum].StartValue[q]);
             }
 
-            buffer.WriteInt32(Core.Type.Job[jobNum].StartMap);
-            buffer.WriteByte(Core.Type.Job[jobNum].StartX);
-            buffer.WriteByte(Core.Type.Job[jobNum].StartY);
-            buffer.WriteInt32(Core.Type.Job[jobNum].BaseExp);
+            buffer.WriteInt32(Data.Job[jobNum].StartMap);
+            buffer.WriteByte(Data.Job[jobNum].StartX);
+            buffer.WriteByte(Data.Job[jobNum].StartY);
+            buffer.WriteInt32(Data.Job[jobNum].BaseExp);
 
             return buffer.ToArray();
         }
 
-        public static byte[] NPCsData()
+        public static byte[] NpcsData()
         {
             var buffer = new ByteStream(4);
 
             for (int i = 0, loopTo = Core.Constant.MAX_NPCS; i < loopTo; i++)
             {
-                if (!(Strings.Len(Core.Type.NPC[i].Name) > 0))
+                if (!(Strings.Len(Data.Npc[i].Name) > 0))
                     continue;
-                buffer.WriteBlock(NPCData(i));
+                buffer.WriteBlock(NpcData(i));
             }
             return buffer.ToArray();
         }
 
-        public static byte[] NPCData(int NPCNum)
+        public static byte[] NpcData(int NpcNum)
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32(NPCNum);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Animation);
-            buffer.WriteString(Core.Type.NPC[(int)NPCNum].AttackSay);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Behaviour);
+            buffer.WriteInt32(NpcNum);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Animation);
+            buffer.WriteString(Data.Npc[(int)NpcNum].AttackSay);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].Behaviour);
 
             for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropChance[i]);
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItem[i]);
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItemValue[i]);
+                buffer.WriteInt32(Data.Npc[(int)NpcNum].DropChance[i]);
+                buffer.WriteInt32(Data.Npc[(int)NpcNum].DropItem[i]);
+                buffer.WriteInt32(Data.Npc[(int)NpcNum].DropItemValue[i]);
             }
 
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Exp);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Faction);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].HP);
-            buffer.WriteString(Core.Type.NPC[(int)NPCNum].Name);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Range);
-            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].SpawnTime);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].SpawnSecs);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Sprite);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Exp);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].Faction);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].HP);
+            buffer.WriteString(Data.Npc[(int)NpcNum].Name);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].Range);
+            buffer.WriteByte(Data.Npc[(int)NpcNum].SpawnTime);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].SpawnSecs);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Sprite);
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
-                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Stat[i]);
+            for (int i = 0, loopTo1 = System.Enum.GetValues(typeof(Stat)).Length; i < loopTo1; i++)
+                buffer.WriteByte(Data.Npc[(int)NpcNum].Stat[i]);
 
             for (int i = 0, loopTo2 = Core.Constant.MAX_NPC_SKILLS; i < loopTo2; i++)
-                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Skill[i]);
+                buffer.WriteByte(Data.Npc[(int)NpcNum].Skill[i]);
 
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Level);
-            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Damage);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Level);
+            buffer.WriteInt32(Data.Npc[(int)NpcNum].Damage);
             return buffer.ToArray();
         }
 
@@ -2017,7 +2216,7 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_SHOPS; i < loopTo; i++)
             {
-                if (!(Strings.Len(Core.Type.Shop[i].Name) > 0))
+                if (!(Strings.Len(Data.Shop[i].Name) > 0))
                     continue;
                 buffer.WriteBlock(ShopData(i));
             }
@@ -2029,15 +2228,15 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32(shopNum);
-            buffer.WriteInt32(Core.Type.Shop[shopNum].BuyRate);
-            buffer.WriteString(Core.Type.Shop[shopNum].Name);
+            buffer.WriteInt32(Data.Shop[shopNum].BuyRate);
+            buffer.WriteString(Data.Shop[shopNum].Name);
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].Item);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].ItemValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostItem);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].CostValue);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].Item);
+                buffer.WriteInt32(Data.Shop[shopNum].TradeItem[i].ItemValue);
             }
             return buffer.ToArray();
         }
@@ -2048,7 +2247,7 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_SKILLS; i < loopTo; i++)
             {
-                if (!(Strings.Len(Core.Type.Skill[i].Name) > 0))
+                if (!(Strings.Len(Data.Skill[i].Name) > 0))
                     continue;
                 buffer.WriteBlock(SkillData(i));
             }
@@ -2060,32 +2259,32 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32(skillNum);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AccessReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].AoE);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CastTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].CdTime);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].JobReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Dir);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Duration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Icon);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Interval);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillNum].IsAoE));
-            buffer.WriteInt32(Core.Type.Skill[skillNum].LevelReq);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Map);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].MpCost);
-            buffer.WriteString(Core.Type.Skill[skillNum].Name);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Range);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].SkillAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].StunDuration);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Type);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Vital);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].X);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Y);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].IsProjectile);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].Projectile);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBack);
-            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
+            buffer.WriteInt32(Data.Skill[skillNum].AccessReq);
+            buffer.WriteInt32(Data.Skill[skillNum].AoE);
+            buffer.WriteInt32(Data.Skill[skillNum].CastAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].CastTime);
+            buffer.WriteInt32(Data.Skill[skillNum].CdTime);
+            buffer.WriteInt32(Data.Skill[skillNum].JobReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Dir);
+            buffer.WriteInt32(Data.Skill[skillNum].Duration);
+            buffer.WriteInt32(Data.Skill[skillNum].Icon);
+            buffer.WriteInt32(Data.Skill[skillNum].Interval);
+            buffer.WriteInt32(Conversions.ToInteger(Data.Skill[skillNum].IsAoE));
+            buffer.WriteInt32(Data.Skill[skillNum].LevelReq);
+            buffer.WriteInt32(Data.Skill[skillNum].Map);
+            buffer.WriteInt32(Data.Skill[skillNum].MpCost);
+            buffer.WriteString(Data.Skill[skillNum].Name);
+            buffer.WriteInt32(Data.Skill[skillNum].Range);
+            buffer.WriteInt32(Data.Skill[skillNum].SkillAnim);
+            buffer.WriteInt32(Data.Skill[skillNum].StunDuration);
+            buffer.WriteInt32(Data.Skill[skillNum].Type);
+            buffer.WriteInt32(Data.Skill[skillNum].Vital);
+            buffer.WriteInt32(Data.Skill[skillNum].X);
+            buffer.WriteInt32(Data.Skill[skillNum].Y);
+            buffer.WriteInt32(Data.Skill[skillNum].IsProjectile);
+            buffer.WriteInt32(Data.Skill[skillNum].Projectile);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBack);
+            buffer.WriteInt32(Data.Skill[skillNum].KnockBackTiles);
             return buffer.ToArray();
         }
 

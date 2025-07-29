@@ -1,8 +1,13 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Core;
+﻿using Core;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw.Network;
+using Reoria.Engine.Common.Security.Encryption;
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.Arm;
+using System.Threading.Tasks;
 using static Core.Global.Command;
 using static Core.Packets;
 
@@ -53,10 +58,8 @@ namespace Server
             // Establish some Rulez
             Socket = new NetworkServer((int)Packets.ClientPackets.Count, 8192, Core.Constant.MAX_PLAYERS)
             {
-                BufferLimit = 2048000, // <- this is 2mb MAX data storage
+                BufferLimit = 5048000, // <- this is 2mb MAX data storage
                 MinimumIndex = 0, // <- this prevents the network from giving us 0 as an index
-                PacketAcceptLimit = 1000, // Dunno what is a reasonable cap right now so why not? :P
-                PacketDisconnectCount = 1000 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
             };
             // END THE ESTABLISHMENT! WOOH ANARCHY! ~SpiceyWolf
 
@@ -70,23 +73,23 @@ namespace Server
 
         public static bool IsLoggedIn(int index)
         {
-            return Core.Type.Account[index].Login.Length > 0;
+            return Core.Data.Account[index].Login.Length > 0;
         }
 
         public static bool IsPlaying(int index)
         {
-            return Core.Type.TempPlayer[index].InGame;
+            return Core.Data.TempPlayer[index].InGame;
         }
 
         public static bool IsMultiLogin(int index, string login)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
                 if (i != index)
                 {
-                    if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
+                    if (login != "" && Core.Data.Account[i].Login.ToLower() != "")
                     {
-                        if (Core.Type.Account[i].Login.ToLower() != login)
+                        if (Core.Data.Account[i].Login.ToLower() != login)
                         {
                             if (Socket.ClientIP(i) == Socket.ClientIP(index))
                             {
@@ -100,26 +103,36 @@ namespace Server
             return false;
         }
 
-        public static bool IsMultiAccount(int index, string login)
+        public static async System.Threading.Tasks.Task LoadAccount(int index, string login, byte slot)
         {
-            for (int i = 0, loopTo = Socket.HighIndex; i < loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
-                if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
+                if (login != "" && Core.Data.Account[i].Login.ToLower() != "")
                 {
-                    if (Core.Type.Account[i].Login.ToLower() == login)
+                    if (Core.Data.Account[i].Login.ToLower() == login)
                     {
                         if (index != i)
                         {
-                            Core.Type.Player[index] = Core.Type.Player[i];
-                            Core.Type.TempPlayer[index].Slot = Core.Type.TempPlayer[i].Slot;
-                            Core.Type.Bank[index] = Core.Type.Bank[i];
-                            return true;
-                        }                       
+                            await Player.LeftGame(i);
+                            break;
+                        }
                     }
                 }
             }
 
-            return false;
+            Database.LoadCharacter(index, slot);
+            Database.LoadBank(index);
+
+            // Check if character data has been created
+            if (Strings.Len(Core.Data.Player[index].Name) > 0)
+            {
+                // we have a char!                        
+                Player.HandleUseChar(index);
+            }
+            else
+            {
+                NetworkSend.AlertMsg(index, (byte)SystemMessage.DatabaseError, (byte)Menu.CharacterSelect);
+            }
         }
 
         public static void SendDataToAll(ReadOnlySpan<byte> data, int head)
@@ -183,14 +196,17 @@ namespace Server
 
         public static void Socket_ConnectionReceived(int index)
         {
-            Console.WriteLine("Connection received on index[" + index + "] - IP[" + Socket.ClientIP(index) + "]");
-            NetworkSend.SendKeyPair(index);
+            Console.WriteLine("Connection received on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
+            General.Aes.TryAdd(index, new AesEncryption());
+            NetworkSend.AesKeyIV(index);
+
         }
 
         public static void Socket_ConnectionLost(int index)
         {
             Console.WriteLine("Connection lost on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
             Player.LeftGame(index);
+            General.Aes.Remove(index);
         }
 
         public static void Socket_CrashReport(int index, string err)

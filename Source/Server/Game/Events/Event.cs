@@ -1,3 +1,4 @@
+using Core;
 using Core.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
@@ -10,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
 using static Core.Type;
@@ -22,7 +22,7 @@ namespace Server
     {
         #region Globals
 
-        public static GlobalEventsStruct[] TempEventMap = new GlobalEventsStruct[Core.Constant.MAX_MAPS + 1];
+        public static GlobalEvents[] TempEventMap = new GlobalEvents[Core.Constant.MAX_MAPS + 1];
         public static string[] Switches = new string[Core.Constant.MAX_SWITCHES];
         public static string[] Variables = new string[Core.Constant.NAX_VARIABLES];
         private static readonly ConcurrentBag<ScheduledEvent> ScheduledEvents = new ConcurrentBag<ScheduledEvent>();
@@ -87,12 +87,12 @@ namespace Server
             }
         }
 
-        public static async Task LoadSwitchesAsync()
+        public static async System.Threading.Tasks.Task LoadSwitchesAsync()
         {
             var json = new JsonSerializer<string[]>();
             try
             {
-                Switches = await Task.Run(() => json.Read(System.IO.Path.Combine(Path.Database, "Switches.json")));
+                Switches = await System.Threading.Tasks.Task.Run(() => json.Read(System.IO.Path.Combine(Path.Database, "Switches.json")));
                 if (Switches == null || Switches.Length != Core.Constant.MAX_SWITCHES)
                 {
                     General.Logger.LogWarning("Switches.json not found or invalid. Creating new switches.");
@@ -106,12 +106,12 @@ namespace Server
             }
         }
 
-        public static async Task LoadVariablesAsync()
+        public static async System.Threading.Tasks.Task LoadVariablesAsync()
         {
             var json = new JsonSerializer<string[]>();
             try
             {
-                Variables = await Task.Run(() => json.Read(System.IO.Path.Combine(Path.Database, "Variables.json")));
+                Variables = await System.Threading.Tasks.Task.Run(() => json.Read(System.IO.Path.Combine(Path.Database, "Variables.json")));
                 if (Variables == null || Variables.Length != Core.Constant.NAX_VARIABLES)
                 {
                     General.Logger.LogWarning("Variables.json not found or invalid. Creating new variables.");
@@ -132,11 +132,11 @@ namespace Server
         // Helper methods for CanEventMove
         private static bool IsTileWalkable(int mapNum, int x, int y)
         {
-            if (x < 0 || x > Core.Type.Map[mapNum].MaxX || y < 0 || y > Core.Type.Map[mapNum].MaxY) return false;
-            var tile = Core.Type.Map[mapNum].Tile[x, y];
+            if (x < 0 || x > Data.Map[mapNum].MaxX || y < 0 || y > Data.Map[mapNum].MaxY) return false;
+            var tile = Data.Map[mapNum].Tile[x, y];
             return tile.Type != TileType.Blocked && tile.Type2 != TileType.Blocked &&
-                   (tile.Type == TileType.Item || tile.Type == TileType.NPCSpawn ||
-                    tile.Type2 == TileType.Item || tile.Type2 == TileType.NPCSpawn);
+                   (tile.Type == TileType.Item || tile.Type == TileType.NpcSpawn ||
+                    tile.Type2 == TileType.Item || tile.Type2 == TileType.NpcSpawn);
         }
 
         private static bool IsPlayerBlocking(int index, int mapNum, int x, int y, int eventId)
@@ -145,7 +145,7 @@ namespace Server
             {
                 if (NetworkConfig.IsPlaying(i) && GetPlayerMap(i) == mapNum && GetPlayerX(i) == x && GetPlayerY(i) == y)
                 {
-                    if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageId].Trigger == 1)
+                    if (Data.Map[mapNum].Event[eventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[eventId].PageId].Trigger == 1)
                     {
                         StartEventProcessing(index, eventId, mapNum);
                     }
@@ -157,10 +157,10 @@ namespace Server
 
         private static void StartEventProcessing(int index, int eventId, int mapNum)
         {
-            var pageId = Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageId;
-            if (Core.Type.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount <= 0) return;
+            var pageId = Core.Data.TempPlayer[index].EventMap.EventPages[eventId].PageId;
+            if (Data.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount <= 0) return;
 
-            var processing = Core.Type.TempPlayer[index].EventProcessing[eventId];
+            var processing = Core.Data.TempPlayer[index].EventProcessing[eventId];
             processing.Active = 0;
             processing.ActionTimer = General.GetTimeMs();
             processing.CurList = 0;
@@ -168,21 +168,21 @@ namespace Server
             processing.EventId = eventId;
             processing.PageId = pageId;
             processing.WaitingForResponse = 0;
-            processing.ListLeftOff = new int[Core.Type.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount];
+            processing.ListLeftOff = new int[Data.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount];
         }
 
-        private static bool IsNPCBlocking(int mapNum, int x, int y)
+        private static bool IsNpcBlocking(int mapNum, int x, int y)
         {
             for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i++)
             {
-                if (Core.Type.MapNPC[mapNum].NPC[i].X == x && Core.Type.MapNPC[mapNum].NPC[i].Y == y)
+                if (Data.MapNpc[mapNum].Npc[i].X == x && Data.MapNpc[mapNum].Npc[i].Y == y)
                     return true;
             }
             return false;
         }
 
         private static bool IsDirectionBlocked(int mapNum, int x, int y, byte dir) =>
-            IsDirBlocked(ref Core.Type.Map[mapNum].Tile[x, y].DirBlock, dir);
+            IsDirBlocked(ref Data.Map[mapNum].Tile[x, y].DirBlock, dir);
 
         public static bool CanEventMove(int index, int mapNum, int x, int y, int eventId, int walkThrough, byte dir, bool globalEvent = false)
         {
@@ -191,24 +191,24 @@ namespace Server
             int targetX = x, targetY = y;
             switch (dir)
             {
-                case (byte)DirectionType.Up: targetY--; break;
-                case (byte)DirectionType.Down: targetY++; break;
-                case (byte)DirectionType.Left: targetX--; break;
-                case (byte)DirectionType.Right: targetX++; break;
+                case (byte)Direction.Up: targetY--; break;
+                case (byte)Direction.Down: targetY++; break;
+                case (byte)Direction.Left: targetX--; break;
+                case (byte)Direction.Right: targetX++; break;
                 default: return false;
             }
 
-            if (targetX < 0 || targetX > Core.Type.Map[mapNum].MaxX || targetY < 0 || targetY > Core.Type.Map[mapNum].MaxY) return false;
+            if (targetX < 0 || targetX > Data.Map[mapNum].MaxX || targetY < 0 || targetY > Data.Map[mapNum].MaxY) return false;
             if (walkThrough == 1) return true;
 
             return IsTileWalkable(mapNum, targetX, targetY) &&
                    !IsPlayerBlocking(index, mapNum, targetX, targetY, eventId) &&
-                   !IsNPCBlocking(mapNum, targetX, targetY) &&
+                   !IsNpcBlocking(mapNum, targetX, targetY) &&
                    !IsDirectionBlocked(mapNum, x, y, dir);
         }
 
         private static bool IsValidMapAndDirection(int mapNum, byte dir) =>
-            mapNum >= 0 && mapNum <= Core.Constant.MAX_MAPS && dir >= (byte)DirectionType.Up && dir <= (byte)DirectionType.Left;
+            mapNum >= 0 && mapNum <= Core.Constant.MAX_MAPS && dir >= (byte)Direction.Up && dir <= (byte)Direction.DownRight;
 
         public static void EventDir(int playerIndex, int mapNum, int eventId, int dir, bool globalEvent = false)
         {
@@ -221,22 +221,22 @@ namespace Server
             {
                 if (globalEvent)
                 {
-                    if (Core.Type.Map[mapNum].Event[eventId].Pages[0].DirFix == 0)
+                    if (Data.Map[mapNum].Event[eventId].Pages[0].DirFix == 0)
                         TempEventMap[mapNum].Event[eventId].Dir = dir;
                 }
-                else if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].PageId].DirFix == 0)
-                    Core.Type.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].Dir = dir;
+                else if (Data.Map[mapNum].Event[eventId].Pages[Core.Data.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].PageId].DirFix == 0)
+                    Core.Data.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].Dir = dir;
             }
 
-            SendEventDirection(mapNum, eventId, dir, globalEvent ? TempEventMap[mapNum].Event[eventId].Dir : Core.Type.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].Dir);
+            SendEventDirection(mapNum, eventId, dir, globalEvent ? TempEventMap[mapNum].Event[eventId].Dir : Core.Data.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].Dir);
         }
 
         private static int GetEventIndex(int playerIndex, int eventId, bool globalEvent)
         {
             if (globalEvent) return eventId;
-            if (Core.Type.TempPlayer[playerIndex].EventMap.CurrentEvents <= 0) return -1;
+            if (Core.Data.TempPlayer[playerIndex].EventMap.CurrentEvents <= 0) return -1;
 
-            for (int i = 0; i < Core.Type.TempPlayer[playerIndex].EventMap.CurrentEvents; i++)
+            for (int i = 0; i < Core.Data.TempPlayer[playerIndex].EventMap.CurrentEvents; i++)
             {
                 if (eventId == i)
                     return i;
@@ -266,31 +266,31 @@ namespace Server
                 if (globalEvent)
                 {
                     var eventData = TempEventMap[mapNum].Event[eventIndex];
-                    if (Core.Type.Map[mapNum].Event[eventId].Pages[0].DirFix == 0)
+                    if (Data.Map[mapNum].Event[eventId].Pages[0].DirFix == 0)
                         eventData.Dir = dir;
 
                     switch (dir)
                     {
-                        case (byte)DirectionType.Up: eventData.Y--; break;
-                        case (byte)DirectionType.Down: eventData.Y++; break;
-                        case (byte)DirectionType.Left: eventData.X--; break;
-                        case (byte)DirectionType.Right: eventData.X++; break;
+                        case (byte)Direction.Up: eventData.Y--; break;
+                        case (byte)Direction.Down: eventData.Y++; break;
+                        case (byte)Direction.Left: eventData.X--; break;
+                        case (byte)Direction.Right: eventData.X++; break;
                     }
 
                     SendEventMove(mapNum, eventId, eventData.X, eventData.Y, dir, eventData.Dir, movementSpeed, 0);
                 }
                 else
                 {
-                    var eventData = Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex];
-                    if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex].PageId].DirFix == 0)
+                    var eventData = Core.Data.TempPlayer[index].EventMap.EventPages[eventIndex];
+                    if (Data.Map[mapNum].Event[eventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[eventIndex].PageId].DirFix == 0)
                         eventData.Dir = dir;
 
                     switch (dir)
                     {
-                        case (byte)DirectionType.Up: eventData.Y--; break;
-                        case (byte)DirectionType.Down: eventData.Y++; break;
-                        case (byte)DirectionType.Left: eventData.X--; break;
-                        case (byte)DirectionType.Right: eventData.X++; break;
+                        case (byte)Direction.Up: eventData.Y--; break;
+                        case (byte)Direction.Down: eventData.Y++; break;
+                        case (byte)Direction.Left: eventData.X--; break;
+                        case (byte)Direction.Right: eventData.X++; break;
                     }
 
                     SendEventMove(mapNum, eventId, eventData.X, eventData.Y, dir, eventData.Dir, movementSpeed, index);
@@ -318,11 +318,11 @@ namespace Server
         public static bool IsOneBlockAway(int x1, int y1, int x2, int y2) =>
             (x1 == x2 && (y1 == y2 - 1 || y1 == y2 + 1)) || (y1 == y2 && (x1 == x2 - 1 || x1 == x2 + 1));
 
-        public static int GetNPCDir(int x, int y, int x1, int y1)
+        public static int GetNpcDir(int x, int y, int x1, int y1)
         {
-            int direction = (int)DirectionType.Right, maxDistance = 0;
-            UpdateDirectionAndDistance(x - x1, (int)DirectionType.Right, (int)DirectionType.Left, ref direction, ref maxDistance);
-            UpdateDirectionAndDistance(y - y1, (int)DirectionType.Down, (int)DirectionType.Up, ref direction, ref maxDistance);
+            int direction = (int)Direction.Right, maxDistance = 0;
+            UpdateDirectionAndDistance(x - x1, (int)Direction.Right, (int)Direction.Left, ref direction, ref maxDistance);
+            UpdateDirectionAndDistance(y - y1, (int)Direction.Down, (int)Direction.Up, ref direction, ref maxDistance);
             return direction;
         }
 
@@ -353,14 +353,14 @@ namespace Server
         private static bool IsValidPlayerEvent(int playerId, int mapNum, int eventId) =>
             playerId >= 0 && playerId < Core.Constant.MAX_PLAYERS &&
             mapNum >= 0 && mapNum <= Core.Constant.MAX_MAPS &&
-            eventId >= 0 && eventId <= Core.Type.TempPlayer[playerId].EventMap.CurrentEvents;
+            eventId >= 0 && eventId <= Core.Data.TempPlayer[playerId].EventMap.CurrentEvents;
 
         private static (int px, int py, int ex, int ey, int walkThrough) GetPlayerAndEventPositions(int playerId, int mapNum, int eventId)
         {
             int px = GetPlayerX(playerId), py = GetPlayerY(playerId);
-            var eventPage = Core.Type.TempPlayer[playerId].EventMap.EventPages[eventId];
+            var eventPage = Core.Data.TempPlayer[playerId].EventMap.EventPages[eventId];
             return (px, py, eventPage.X, eventPage.Y,
-                Core.Type.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough);
+                Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough);
         }
 
         private static int RandomMoveTowardsPlayer(int playerId, int mapNum, int eventId, int ex, int ey, int px, int py, int walkThrough)
@@ -380,10 +380,10 @@ namespace Server
         private static bool ShouldMoveTowards(int ex, int ey, int px, int py, int dir) =>
             dir switch
             {
-                (int)DirectionType.Up => ey > py,
-                (int)DirectionType.Down => ey < py,
-                (int)DirectionType.Left => ex > px,
-                (int)DirectionType.Right => ex < px,
+                (int)Direction.Up => ey > py,
+                (int)Direction.Down => ey < py,
+                (int)Direction.Left => ex > px,
+                (int)Direction.Right => ex < px,
                 _ => false
             };
 
@@ -407,7 +407,7 @@ namespace Server
                     return GetDirectionFromStep(ex, ey, current.Item1, current.Item2);
                 }
 
-                foreach (var (dx, dy, dir) in new[] { (0, -1, (int)DirectionType.Up), (0, 1, (int)DirectionType.Down), (-1, 0, (int)DirectionType.Left), (1, 0, (int)DirectionType.Right) })
+                foreach (var (dx, dy, dir) in new[] { (0, -1, (int)Direction.Up), (0, 1, (int)Direction.Down), (-1, 0, (int)Direction.Left), (1, 0, (int)Direction.Right) })
                 {
                     int nx = x + dx, ny = y + dy;
                     if (IsValidMove(playerId, mapNum, eventId, nx, ny, walkThrough, visited))
@@ -422,11 +422,11 @@ namespace Server
         }
 
         private static bool IsValidMove(int playerId, int mapNum, int eventId, int x, int y, int walkThrough, HashSet<(int, int)> visited) =>
-            x >= 0 && x <= Core.Type.Map[mapNum].MaxX && y >= 0 && y <= Core.Type.Map[mapNum].MaxY &&
+            x >= 0 && x <= Data.Map[mapNum].MaxX && y >= 0 && y <= Data.Map[mapNum].MaxY &&
             !visited.Contains((x, y)) && CanEventMove(playerId, mapNum, x, y, eventId, walkThrough, 0, false);
 
         private static int GetDirectionFromStep(int ex, int ey, int nx, int ny) =>
-            nx > ex ? (int)DirectionType.Right : nx < ex ? (int)DirectionType.Left : ny > ey ? (int)DirectionType.Down : (int)DirectionType.Up;
+            nx > ex ? (int)Direction.Right : nx < ex ? (int)Direction.Left : ny > ey ? (int)Direction.Down : (int)Direction.Up;
 
         // New A* Pathfinding
         private static int AStarMoveTowardsPlayer(int playerId, int mapNum, int eventId, int ex, int ey, int px, int py, int walkThrough)
@@ -448,7 +448,7 @@ namespace Server
                     return GetDirectionFromStep(ex, ey, current.Item1, current.Item2);
                 }
 
-                foreach (var (dx, dy, dir) in new[] { (0, -1, (int)DirectionType.Up), (0, 1, (int)DirectionType.Down), (-1, 0, (int)DirectionType.Left), (1, 0, (int)DirectionType.Right) })
+                foreach (var (dx, dy, dir) in new[] { (0, -1, (int)Direction.Up), (0, 1, (int)Direction.Down), (-1, 0, (int)Direction.Left), (1, 0, (int)Direction.Right) })
                 {
                     int nx = x + dx, ny = y + dy;
                     if (!IsWithinMapBounds(mapNum, nx, ny) || !CanEventMove(playerId, mapNum, x, y, eventId, walkThrough, (byte)dir, false)) continue;
@@ -467,7 +467,7 @@ namespace Server
         }
 
         private static bool IsWithinMapBounds(int mapNum, int x, int y) =>
-            x >= 0 && x <= Core.Type.Map[mapNum].MaxX && y >= 0 && y <= Core.Type.Map[mapNum].MaxY;
+            x >= 0 && x <= Data.Map[mapNum].MaxX && y >= 0 && y <= Data.Map[mapNum].MaxY;
 
         private static int Heuristic(int x1, int y1, int x2, int y2) => Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
 
@@ -490,27 +490,27 @@ namespace Server
         private static bool ShouldMoveAway(int ex, int ey, int px, int py, int dir) =>
             dir switch
             {
-                (int)DirectionType.Up => ey < py,
-                (int)DirectionType.Down => ey > py,
-                (int)DirectionType.Left => ex < px,
-                (int)DirectionType.Right => ex > px,
+                (int)Direction.Up => ey < py,
+                (int)Direction.Down => ey > py,
+                (int)Direction.Left => ex < px,
+                (int)Direction.Right => ex > px,
                 _ => false
             };
 
         public static int GetDirToPlayer(int playerId, int mapNum, int eventId)
         {
-            if (!IsValidPlayerEvent(playerId, mapNum, eventId)) return (int)DirectionType.Right;
+            if (!IsValidPlayerEvent(playerId, mapNum, eventId)) return (int)Direction.Right;
             var (px, py, ex, ey, _) = GetPlayerAndEventPositions(playerId, mapNum, eventId);
-            return GetNPCDir(ex, ey, px, py);
+            return GetNpcDir(ex, ey, px, py);
         }
 
         public static int GetDirAwayFromPlayer(int playerId, int mapNum, int eventId)
         {
-            if (!IsValidPlayerEvent(playerId, mapNum, eventId)) return (int)DirectionType.Right;
+            if (!IsValidPlayerEvent(playerId, mapNum, eventId)) return (int)Direction.Right;
             var (px, py, ex, ey, _) = GetPlayerAndEventPositions(playerId, mapNum, eventId);
-            int direction = (int)DirectionType.Right, maxDistance = 0;
-            UpdateDirectionAndDistance(px - ex, (int)DirectionType.Left, (int)DirectionType.Right, ref direction, ref maxDistance);
-            UpdateDirectionAndDistance(py - ey, (int)DirectionType.Up, (int)DirectionType.Down, ref direction, ref maxDistance);
+            int direction = (int)Direction.Right, maxDistance = 0;
+            UpdateDirectionAndDistance(px - ex, (int)Direction.Left, (int)Direction.Right, ref direction, ref maxDistance);
+            UpdateDirectionAndDistance(py - ey, (int)Direction.Up, (int)Direction.Down, ref direction, ref maxDistance);
             return direction;
         }
 
@@ -530,7 +530,7 @@ namespace Server
         }
 
         private static int GetDirectionToTarget(int x, int y, int tx, int ty) =>
-            tx > x ? (int)DirectionType.Right : tx < x ? (int)DirectionType.Left : ty > y ? (int)DirectionType.Down : (int)DirectionType.Up;
+            tx > x ? (int)Direction.Right : tx < x ? (int)Direction.Left : ty > y ? (int)Direction.Down : (int)Direction.Up;
 
         public static void FollowPlayer(int index, int mapNum, int eventId, int targetPlayerId, int speed, bool globalEvent = false)
         {
@@ -555,22 +555,22 @@ namespace Server
 
         private static void ProcessEventReply(int index, int eventId, int PageId, int reply)
         {
-            for (int i = 0; i < Core.Type.TempPlayer[index].EventProcessingCount; i++)
+            for (int i = 0; i < Core.Data.TempPlayer[index].EventProcessingCount; i++)
             {
-                var proc = Core.Type.TempPlayer[index].EventProcessing[i];
+                var proc = Core.Data.TempPlayer[index].EventProcessing[i];
                 if (proc.EventId != eventId || proc.PageId != PageId || proc.WaitingForResponse != 1) continue;
 
-                var cmd = Core.Type.Map[GetPlayerMap(index)].Event[eventId].Pages[PageId].CommandList[proc.CurList].Commands[proc.CurSlot - 1];
-                if (reply == 0 && cmd.Index == (byte)EventType.ShowText)
+                var cmd = Data.Map[GetPlayerMap(index)].Event[eventId].Pages[PageId].CommandList[proc.CurList].Commands[proc.CurSlot - 1];
+                if (reply == 0 && cmd.Index == (byte)Core.EventCommand.ShowText)
                     proc.WaitingForResponse = 0;
-                else if (reply > 0 && cmd.Index == (byte)EventType.ShowChoices)
+                else if (reply > 0 && cmd.Index == (byte)Core.EventCommand.ShowChoices)
                     UpdateEventProcessing(index, i, reply, cmd);
             }
         }
 
-        private static void UpdateEventProcessing(int index, int procIndex, int reply, Core.Type.EventCommandStruct cmd)
+        private static void UpdateEventProcessing(int index, int procIndex, int reply, Core.Type.EventCommand cmd)
         {
-            var proc = Core.Type.TempPlayer[index].EventProcessing[procIndex];
+            var proc = Core.Data.TempPlayer[index].EventProcessing[procIndex];
             proc.ListLeftOff[proc.CurList] = proc.CurSlot - 1;
             proc.CurList = reply switch
             {
@@ -669,9 +669,9 @@ namespace Server
             var buffer = new ByteStream(4096); // Increased size for larger event data
             int mapNum = GetPlayerMap(index);
             buffer.WriteInt32((int)ServerPackets.SMapEventData);
-            buffer.WriteInt32(Core.Type.Map[mapNum].EventCount);
+            buffer.WriteInt32(Data.Map[mapNum].EventCount);
 
-            if (Core.Type.Map[mapNum].EventCount > 0)
+            if (Data.Map[mapNum].EventCount > 0)
             {
                 SerializeMapEvents(buffer, mapNum);
             }
@@ -683,9 +683,9 @@ namespace Server
 
         private static void SerializeMapEvents(ByteStream buffer, int mapNum)
         {
-            for (int i = 0; i < Core.Type.Map[mapNum].EventCount; i++)
+            for (int i = 0; i < Data.Map[mapNum].EventCount; i++)
             {
-                var ev = Core.Type.Map[mapNum].Event[i];
+                var ev = Data.Map[mapNum].Event[i];
                 buffer.WriteString(ev.Name);
                 buffer.WriteByte(ev.Globals);
                 buffer.WriteInt32(ev.X);
@@ -701,7 +701,7 @@ namespace Server
         {
             for (int x = 0; x < pageCount; x++)
             {
-                var page = Core.Type.Map[mapNum].Event[eventIndex].Pages[x];
+                var page = Data.Map[mapNum].Event[eventIndex].Pages[x];
                 SerializePageConditions(buffer, page);
                 SerializePageGraphics(buffer, page);
                 SerializePageMovement(buffer, page);
@@ -709,7 +709,7 @@ namespace Server
             }
         }
 
-        private static void SerializePageConditions(ByteStream buffer, EventPageStruct page)
+        private static void SerializePageConditions(ByteStream buffer, EventPage page)
         {
             buffer.WriteInt32(page.ChkVariable);
             buffer.WriteInt32(page.VariableIndex);
@@ -726,7 +726,7 @@ namespace Server
             buffer.WriteInt32(page.SelfSwitchCompare);
         }
 
-        private static void SerializePageGraphics(ByteStream buffer, EventPageStruct page)
+        private static void SerializePageGraphics(ByteStream buffer, EventPage page)
         {
             buffer.WriteByte(page.GraphicType);
             buffer.WriteInt32(page.Graphic);
@@ -736,7 +736,7 @@ namespace Server
             buffer.WriteInt32(page.GraphicY2);
         }
 
-        private static void SerializePageMovement(ByteStream buffer, EventPageStruct page)
+        private static void SerializePageMovement(ByteStream buffer, EventPage page)
         {
             buffer.WriteByte(page.MoveType);
             buffer.WriteByte(page.MoveSpeed);
@@ -767,12 +767,12 @@ namespace Server
             buffer.WriteByte(page.Position);
         }
 
-        private static void SerializePageCommands(ByteStream buffer, int mapNum, int eventIndex, int pageIndex, EventPageStruct page)
+        private static void SerializePageCommands(ByteStream buffer, int mapNum, int eventIndex, int pageIndex, EventPage page)
         {
             if (page.CommandListCount <= 0) return;
             for (int y = 0; y < page.CommandListCount; y++)
             {
-                var cmdList = Core.Type.Map[mapNum].Event[eventIndex].Pages[pageIndex].CommandList[y];
+                var cmdList = Data.Map[mapNum].Event[eventIndex].Pages[pageIndex].CommandList[y];
                 buffer.WriteInt32(cmdList.CommandCount);
                 buffer.WriteInt32(cmdList.ParentList);
                 if (cmdList.CommandCount > 0)
@@ -786,7 +786,7 @@ namespace Server
             }
         }
 
-        private static void SerializeCommand(ByteStream buffer, Core.Type.EventCommandStruct cmd)
+        private static void SerializeCommand(ByteStream buffer, Core.Type.EventCommand cmd)
         {
             buffer.WriteInt32(cmd.Index);
             buffer.WriteString(cmd.Text1);
@@ -868,9 +868,9 @@ namespace Server
         public static void TriggerOnPlayerAction(int index, string actionType, int value)
         {
             int mapNum = GetPlayerMap(index);
-            for (int i = 0; i < Core.Type.Map[mapNum].EventCount; i++)
+            for (int i = 0; i < Data.Map[mapNum].EventCount; i++)
             {
-                var page = Core.Type.Map[mapNum].Event[i].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId];
+                var page = Data.Map[mapNum].Event[i].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId];
                 if (page.ChkVariable == 1 && page.VariableIndex == GetActionVariableIndex(actionType) && page.VariableCompare == value)
                     EventLogic.TriggerEvent(index, i, 0, GetPlayerX(index), GetPlayerY(index));
             }

@@ -1,6 +1,4 @@
-﻿using Mirage.Sharp.Asfw.IO.Encryption;
-
-namespace Server
+﻿namespace Server
 {
 
     public class Global
@@ -8,7 +6,5 @@ namespace Server
         public static bool DebugTxt;
         public static int ErrorCount;
         public static int UniqueIdCounter;
-
-        public static KeyPair EKeyPair = new KeyPair();
     }
 }

@@ -15,7 +15,7 @@ namespace Client
         #region Drawing
         public static void DrawAnimation(int index, int layer)
         {
-            int sprite = Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer];
+            int sprite = Data.Animation[AnimInstance[index].Animation].Sprite[layer];
             if (sprite < 1 | sprite > GameState.NumAnimations)
                 return;
 
@@ -27,7 +27,7 @@ namespace Client
             // Get dimensions and column count from controls and graphic info
             int totalWidth = gfxInfo.Width;
             int totalHeight = gfxInfo.Height;
-            int columns = Core.Type.Animation[AnimInstance[index].Animation].Frames[layer];
+            int columns = Data.Animation[AnimInstance[index].Animation].Frames[layer];
             var frameWidth = default(int);
 
             // Calculate frame dimensions
@@ -96,27 +96,27 @@ namespace Client
 
             switch (AnimInstance[index].LockType)
             {
-                case (byte)Core.Enum.TargetType.Player:
+                case (byte)TargetType.Player:
                     {
                         if (IsPlaying(lockindex) && GetPlayerMap(lockindex) == GetPlayerMap(GameState.MyIndex))
                         {
-                            x = (int)Math.Round(GetPlayerX(lockindex) * GameState.PicX + 16 - width / 2d + Core.Type.Player[lockindex].XOffset);
-                            y = (int)Math.Round(GetPlayerY(lockindex) * GameState.PicY + 16 - height / 2d + Core.Type.Player[lockindex].YOffset);
+                            x = (int)Math.Round(GetPlayerX(lockindex) * GameState.PicX + 16 - width / 2d + Core.Data.Player[lockindex].XOffset);
+                            y = (int)Math.Round(GetPlayerY(lockindex) * GameState.PicY + 16 - height / 2d + Core.Data.Player[lockindex].YOffset);
                         }
 
                         break;
                     }
-                case (byte)Core.Enum.TargetType.NPC:
+                case (byte)TargetType.Npc:
                     {
-                        if (Core.Type.MyMapNPC[lockindex].Num >= 0 && Core.Type.MyMapNPC[lockindex].Vital[(int)Core.Enum.VitalType.HP] > 0)
+                        if (Data.MyMapNpc[lockindex].Num >= 0 && Data.MyMapNpc[lockindex].Vital[(int)Core.Vital.Health] > 0)
                         {
-                            x = (int)Math.Round(Core.Type.MyMapNPC[lockindex].X * GameState.PicX + 16 - width / 2d + Core.Type.MyMapNPC[lockindex].XOffset);
-                            y = (int)Math.Round(Core.Type.MyMapNPC[lockindex].Y * GameState.PicY + 16 - height / 2d + Core.Type.MyMapNPC[lockindex].YOffset);
+                            x = (int)Math.Round(Data.MyMapNpc[lockindex].X * GameState.PicX + 16 - width / 2d + Data.MyMapNpc[lockindex].XOffset);
+                            y = (int)Math.Round(Data.MyMapNpc[lockindex].Y * GameState.PicY + 16 - height / 2d + Data.MyMapNpc[lockindex].YOffset);
                         }
 
                         break;
                     }
-                case (byte)Core.Enum.TargetType.Pet:
+                case (byte)TargetType.Pet:
                     {
                         break;
                     }
@@ -137,13 +137,13 @@ namespace Client
 
             StreamAnimation(AnimInstance[index].Animation);
 
-            if (Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] < 1 || Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] > GameState.NumAnimations)
+            if (Data.Animation[AnimInstance[index].Animation].Sprite[layer] < 1 || Data.Animation[AnimInstance[index].Animation].Sprite[layer] > GameState.NumAnimations)
                 return;
 
             // Get dimensions and column count from controls and graphic info
-            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] .ToString())).Width;
-            int totalHeight = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Height;
-            int columns = Core.Type.Animation[AnimInstance[index].Animation].Frames[layer];
+            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Data.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Width;
+            int totalHeight = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Data.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Height;
+            int columns = Data.Animation[AnimInstance[index].Animation].Frames[layer];
 
             // Calculate frame dimensions
             int frameWidth = (int)Math.Round(totalWidth / (double)columns);
@@ -176,7 +176,7 @@ namespace Client
             {
                 if (AnimInstance[index].Used[layer])
                 {
-                    looptime = Core.Type.Animation[AnimInstance[index].Animation].LoopTime[layer];
+                    looptime = Data.Animation[AnimInstance[index].Animation].LoopTime[layer];
 
                     // if zero'd then set so we don't have extra loop and/or frame
                     if (AnimInstance[index].FrameIndex[layer] == 0)
@@ -192,14 +192,14 @@ namespace Client
                         if (AnimInstance[index].FrameIndex[layer] >= frameCount)
                         {
                             AnimInstance[index].LoopIndex[layer] = AnimInstance[index].LoopIndex[layer] + 1;
-                            if (AnimInstance[index].LoopIndex[layer] > Core.Type.Animation[AnimInstance[index].Animation].LoopCount[layer])
+                            if (AnimInstance[index].LoopIndex[layer] > Data.Animation[AnimInstance[index].Animation].LoopCount[layer])
                             {
                                 AnimInstance[index].Used[layer] = false;
                             }
                             else
                             {
                                 AnimInstance[index].FrameIndex[layer] = 1;
-                                sound = Core.Type.Animation[AnimInstance[index].Animation].Sound;
+                                sound = Data.Animation[AnimInstance[index].Animation].Sound;
                                 if (!string.IsNullOrEmpty(sound))
                                     Sound.PlaySound(sound, AnimInstance[index].X, AnimInstance[index].Y);
                             }
@@ -214,7 +214,7 @@ namespace Client
             }
 
             // if neither layer is used, clear
-            if (Conversions.ToInteger(AnimInstance[index].Used[0]) == 0 & Conversions.ToInteger(AnimInstance[index].Used[1]) == 0)
+            if ((AnimInstance[index].Used[0] == false & AnimInstance[index].Used[1] == false))
             {
                 ClearAnimInstance(index);
             }
@@ -235,7 +235,7 @@ namespace Client
             // Get dimensions and column count from controls and graphic info
             int totalWidth = gfxInfo.Width;
             int totalHeight = gfxInfo.Height;
-            int columns = Core.Type.Animation[data].Frames[layer];
+            int columns = Data.Animation[data].Frames[layer];
             int frameWidth = 0;
             int rows = 0;
 
@@ -254,7 +254,7 @@ namespace Client
             int frameCount = rows * columns;
 
             Animation.CreateAnimation(data, x, y);
-            return Core.Type.Animation[data].LoopTime[layer] * frameCount * Core.Type.Animation[data].LoopCount[layer];
+            return Data.Animation[data].LoopTime[layer] * frameCount * Data.Animation[data].LoopCount[layer];
         }
 
         public static void CreateAnimation(int animationNum, byte x, byte y)
@@ -274,7 +274,7 @@ namespace Client
                 withBlock.Used[0] = true;
                 withBlock.Used[1] = true;
 
-                sound = Core.Type.Animation[withBlock.Animation].Sound;
+                sound = Data.Animation[withBlock.Animation].Sound;
                 if (!string.IsNullOrEmpty(sound))
                     Sound.PlaySound(sound, withBlock.X, withBlock.Y);
             }
@@ -285,7 +285,7 @@ namespace Client
         #region Globals
 
         public static byte AnimationIndex;
-        public static Core.Type.AnimInstanceStruct[] AnimInstance;
+        public static Core.Type.AnimInstance[] AnimInstance;
 
         #endregion
 
@@ -293,29 +293,29 @@ namespace Client
 
         public static void ClearAnimation(int index)
         {
-            Core.Type.Animation[index] = default;
-            Core.Type.Animation[index] = new Core.Type.AnimationStruct();
+            Data.Animation[index] = default;
+            Data.Animation[index] = new Core.Type.Animation();
 
             for (int X = 0; X <= 1; X++)
-                Core.Type.Animation[index].Sprite = new int[X + 1];
+                Data.Animation[index].Sprite = new int[X + 1];
 
             for (int X = 0; X <= 1; X++)
-                Core.Type.Animation[index].Frames = new int[X + 1];
+                Data.Animation[index].Frames = new int[X + 1];
 
             for (int x = 0; x <= 1; x++)
-                Core.Type.Animation[index].Frames[x] = 5;
+                Data.Animation[index].Frames[x] = 5;
 
             for (int X = 0; X <= 1; X++)
-                Core.Type.Animation[index].LoopCount = new int[X + 1];
+                Data.Animation[index].LoopCount = new int[X + 1];
 
             for (int X = 0; X <= 1; X++)
-                Core.Type.Animation[index].LoopTime = new int[X + 1];
+                Data.Animation[index].LoopTime = new int[X + 1];
 
-            Core.Type.Animation[index].Name = "";
-            Core.Type.Animation[index].LoopCount[0] = 1;
-            Core.Type.Animation[index].LoopCount[1] = 1;
-            Core.Type.Animation[index].LoopTime[0] = 1;
-            Core.Type.Animation[index].LoopTime[1] = 1;
+            Data.Animation[index].Name = "";
+            Data.Animation[index].LoopCount[0] = 1;
+            Data.Animation[index].LoopCount[1] = 1;
+            Data.Animation[index].LoopTime[0] = 1;
+            Data.Animation[index].LoopTime[1] = 1;
             GameState.Animation_Loaded[index] = 0;
         }
 
@@ -323,7 +323,7 @@ namespace Client
         {
             int i;
 
-            Core.Type.Animation = new Core.Type.AnimationStruct[Core.Constant.MAX_ANIMATIONS];
+            Data.Animation = new Core.Type.Animation[Core.Constant.MAX_ANIMATIONS];
 
             for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 ClearAnimation(i);
@@ -333,7 +333,7 @@ namespace Client
         {
             int i;
 
-            AnimInstance = new Core.Type.AnimInstanceStruct[(byte.MaxValue)];
+            AnimInstance = new Core.Type.AnimInstance[(byte.MaxValue)];
 
             for (i = 0; i < byte.MaxValue; i++)
             {
@@ -375,7 +375,7 @@ namespace Client
 
         public static void StreamAnimation(int animationNum)
         {
-            if (animationNum >= 0 && string.IsNullOrEmpty(Core.Type.Animation[animationNum].Name) && GameState.Animation_Loaded[animationNum] == 0)
+            if (animationNum >= 0 && string.IsNullOrEmpty(Data.Animation[animationNum].Name) && GameState.Animation_Loaded[animationNum] == 0)
             {
                 GameState.Animation_Loaded[animationNum] = 1;
                 SendRequestAnimation(animationNum);
@@ -394,24 +394,24 @@ namespace Client
 
             n = buffer.ReadInt32();
             // Update the Animation
-            var loopTo = Information.UBound(Core.Type.Animation[n].Frames);
+            var loopTo = Information.UBound(Data.Animation[n].Frames);
             for (i = 0; i < loopTo; i++)
-                Core.Type.Animation[n].Frames[i] = buffer.ReadInt32();
+                Data.Animation[n].Frames[i] = buffer.ReadInt32();
 
-            var loopTo1 = Information.UBound(Core.Type.Animation[n].LoopCount);
+            var loopTo1 = Information.UBound(Data.Animation[n].LoopCount);
             for (i = 0; i < loopTo1; i++)
-                Core.Type.Animation[n].LoopCount[i] = buffer.ReadInt32();
+                Data.Animation[n].LoopCount[i] = buffer.ReadInt32();
 
-            var loopTo2 = Information.UBound(Core.Type.Animation[n].LoopTime);
+            var loopTo2 = Information.UBound(Data.Animation[n].LoopTime);
             for (i = 0; i < loopTo2; i++)
-                Core.Type.Animation[n].LoopTime[i] = buffer.ReadInt32();
+                Data.Animation[n].LoopTime[i] = buffer.ReadInt32();
 
-            Core.Type.Animation[n].Name = buffer.ReadString();
-            Core.Type.Animation[n].Sound = buffer.ReadString();
+            Data.Animation[n].Name = buffer.ReadString();
+            Data.Animation[n].Sound = buffer.ReadString();
 
-            var loopTo3 = Information.UBound(Core.Type.Animation[n].Sprite);
+            var loopTo3 = Information.UBound(Data.Animation[n].Sprite);
             for (i = 0; i < loopTo3; i++)
-                Core.Type.Animation[n].Sprite[i] = buffer.ReadInt32();
+                Data.Animation[n].Sprite[i] = buffer.ReadInt32();
             buffer.Dispose();
         }
 

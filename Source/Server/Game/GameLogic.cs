@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using static Core.Enum;
 using static Core.Global.Command;
 
 namespace Server
@@ -28,28 +27,28 @@ namespace Server
             return GetTotalMapPlayersRet;
         }
 
-        public static int GetNPCMaxVital(double NPCNum, Core.Enum.VitalType Vital)
+        public static int GetNpcMaxVital(double NpcNum, Core.Vital Vital)
         {
-            int GetNPCMaxVitalRet = default;
+            int GetNpcMaxVitalRet = default;
             // Prevent subscript out of range
-            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
-                return GetNPCMaxVitalRet;
+            if (NpcNum < 0 | NpcNum > Core.Constant.MAX_NPCS)
+                return GetNpcMaxVitalRet;
 
             switch (Vital)
             {
-                case VitalType.HP:
+                case Core.Vital.Health:
                     {
-                        GetNPCMaxVitalRet = Core.Type.NPC[(int)NPCNum].HP;
+                        GetNpcMaxVitalRet = Core.Data.Npc[(int)NpcNum].HP;
                         break;
                     }
-                case VitalType.SP:
+                case Core.Vital.Stamina:
                     {
-                        GetNPCMaxVitalRet = (int)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Intelligence] * 2;
+                        GetNpcMaxVitalRet = (int)Core.Data.Npc[(int)NpcNum].Stat[(byte)Core.Stat.Intelligence] * 2;
                         break;
                     }
             }
 
-            return GetNPCMaxVitalRet;
+            return GetNpcMaxVitalRet;
 
         }
 
