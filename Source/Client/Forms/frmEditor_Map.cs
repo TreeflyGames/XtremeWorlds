@@ -648,7 +648,7 @@ namespace Client
         {
             if (lstMapNpc.SelectedIndex > 0)
             {
-                lstMapNpc.Items[lstMapNpc.SelectedIndex] = lstMapNpc.SelectedIndex + 1 + ": " + Data.Npc[cmbNpcList.SelectedIndex].Name;
+                lstMapNpc.Items[lstMapNpc.SelectedIndex] = lstMapNpc.SelectedIndex + ": " + Data.Npc[cmbNpcList.SelectedIndex].Name;
                 Data.MyMap.Npc[lstMapNpc.SelectedIndex] = cmbNpcList.SelectedIndex;
             }
         }
