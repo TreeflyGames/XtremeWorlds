@@ -47,9 +47,6 @@ namespace Server
                 return;
             }
 
-            if (MapNpcNum < 0 || MapNpcNum >= Information.UBound(Data.Map[mapNum].Npc))
-                return;
-
             NpcNum = Data.Map[mapNum].Npc[(int)MapNpcNum];
 
             if (NpcNum >= 0)
