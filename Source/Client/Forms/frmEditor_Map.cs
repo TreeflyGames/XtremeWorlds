@@ -1985,6 +1985,9 @@ namespace Client
                     {
                         ref var tile = ref Data.MyMap.Tile[x, y];
 
+                        if (tile.Layer[i].Tileset == 0)
+                            continue;
+
                         tile.Layer[i].Tileset++;
 
                         Autotile.CacheRenderState(x, y, i);
