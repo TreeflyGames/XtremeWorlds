@@ -1031,12 +1031,11 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                    ref var withBlock = ref Data.MyMapNpc[i];
-                    withBlock.Num = buffer.ReadInt32();
-                    withBlock.X = (byte)buffer.ReadInt32();
-                    withBlock.Y = (byte)buffer.ReadInt32();
-                    withBlock.Dir = buffer.ReadInt32();
-                    withBlock.Vital[(int)Core.Vital.Health] = buffer.ReadInt32();
+                ref var withBlock = ref Data.MyMapNpc[i];
+                withBlock.Num = buffer.ReadInt32();
+                withBlock.X = (byte)buffer.ReadInt32();
+                withBlock.Y = (byte)buffer.ReadInt32();
+                withBlock.Dir = buffer.ReadInt32();
             } 
 
             buffer.Dispose();
@@ -1054,8 +1053,6 @@ namespace Client
             withBlock.X = (byte)buffer.ReadInt32();
             withBlock.Y = (byte)buffer.ReadInt32();
             withBlock.Dir = buffer.ReadInt32();
-            withBlock.Vital[(int)Core.Vital.Health] = buffer.ReadInt32();
-            withBlock.Vital[(int)Core.Vital.Stamina] = buffer.ReadInt32();
 
             buffer.Dispose();  
         }

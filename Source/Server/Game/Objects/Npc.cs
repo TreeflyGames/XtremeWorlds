@@ -44,109 +44,112 @@ namespace Server
 
             NpcNum = Data.Map[mapNum].Npc[(int)MapNpcNum];
 
-            if (NpcNum >= 0)
+            if (MapNpcNum == 0 || NpcNum < 0 || NpcNum > Core.Constant.MAX_NPCS)
             {
-                if (!(Data.Npc[(int)NpcNum].SpawnTime == (byte)Clock.Instance.TimeOfDay) & Data.Npc[(int)NpcNum].SpawnTime != 0)
+                return;
+            }
+
+            if (!(Data.Npc[(int)NpcNum].SpawnTime == (byte)Clock.Instance.TimeOfDay) & Data.Npc[(int)NpcNum].SpawnTime != 0)
+            {
+                Database.ClearMapNpc((int)MapNpcNum, mapNum);
+                SendMapNpcsToMap(mapNum);
+                return;
+            }
+
+            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Num = NpcNum;
+            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Target = 0;
+            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].TargetType = 0; // clear
+
+            var loopTo = System.Enum.GetValues(typeof(Core.Vital)).Length;
+            for (i = 0; i < (int)loopTo; i++)
+                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Vital[i] = GameLogic.GetNpcMaxVital(NpcNum, (Core.Vital)i);
+
+            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = (int)Conversion.Int(VBMath.Rnd() * 4f);
+
+            // Check if theres a spawn tile for the specific npc
+            var loopTo1 = (int)Data.Map[mapNum].MaxX;
+            for (x = 0; x < (int)loopTo1; x++)
+            {
+                var loopTo2 = (int)Data.Map[mapNum].MaxY;
+                for (y = 0; y < (int)loopTo2; y++)
                 {
-                    Database.ClearMapNpc((int)MapNpcNum, mapNum);
-                    SendMapNpcsToMap(mapNum);
-                    return;
-                }
-
-                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Num = NpcNum;
-                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Target = 0;
-                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].TargetType = 0; // clear
-
-                var loopTo = System.Enum.GetValues(typeof(Core.Vital)).Length;
-                for (i = 0; i < (int)loopTo; i++)
-                    Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Vital[i] = GameLogic.GetNpcMaxVital(NpcNum, (Core.Vital)i);
-
-                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = (int)Conversion.Int(VBMath.Rnd() * 4f);
-
-                // Check if theres a spawn tile for the specific npc
-                var loopTo1 = (int)Data.Map[mapNum].MaxX;
-                for (x = 0; x < (int)loopTo1; x++)
-                {
-                    var loopTo2 = (int)Data.Map[mapNum].MaxY;
-                    for (y = 0; y < (int)loopTo2; y++)
+                    if (Data.Map[mapNum].Tile[x, y].Type == TileType.NpcSpawn)
                     {
-                        if (Data.Map[mapNum].Tile[x, y].Type == TileType.NpcSpawn)
+                        if (Data.Map[mapNum].Tile[x, y].Data1 == MapNpcNum)
                         {
-                            if (Data.Map[mapNum].Tile[x, y].Data1 == MapNpcNum)
-                            {
-                                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
-                                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
-                                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = Data.Map[mapNum].Tile[x, y].Data2;
-                                spawned = true;
-                                break;
-                            }
+                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
+                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
+                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = Data.Map[mapNum].Tile[x, y].Data2;
+                            spawned = true;
+                            break;
                         }
                     }
                 }
+            }
 
-                if (!spawned)
+            if (!spawned)
+            {
+                // Well try 100 times to randomly place the sprite
+                while (i < 1000)
                 {
-                    // Well try 100 times to randomly place the sprite
-                    while (i < 1000)
+                    x = (int)Math.Round(General.GetRandom.NextDouble(0d, Data.Map[mapNum].MaxX - 1));
+                    y = (int)Math.Round(General.GetRandom.NextDouble(0d, Data.Map[mapNum].MaxY - 1));
+
+                    if (x > Data.Map[mapNum].MaxX)
+                        x = Data.Map[mapNum].MaxX - 1;
+
+                    if (y > Data.Map[mapNum].MaxY)
+                        y = Data.Map[mapNum].MaxY - 1;
+
+                    // Check if the tile is walkable
+                    if (NpcTileIsOpen(mapNum, x, y))
                     {
-                        x = (int)Math.Round(General.GetRandom.NextDouble(0d, Data.Map[mapNum].MaxX - 1));
-                        y = (int)Math.Round(General.GetRandom.NextDouble(0d, Data.Map[mapNum].MaxY - 1));
+                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
+                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
+                        spawned = true;
+                        break;
+                    }
+                    i += 1;
+                }
+            }
 
-                        if (x > Data.Map[mapNum].MaxX)
-                            x = Data.Map[mapNum].MaxX - 1;
-                        if (y > Data.Map[mapNum].MaxY)
-                            y = Data.Map[mapNum].MaxY - 1;
-
-                        // Check if the tile is walkable
+            // Didn't spawn, so now we'll just try to find a free tile
+            if (!spawned)
+            {
+                var loopTo3 = (int)Data.Map[mapNum].MaxX;
+                for (x = 0; x < (int)loopTo3; x++)
+                {
+                    var loopTo4 = (int)Data.Map[mapNum].MaxY;
+                    for (y = 0; y < (int)loopTo4; y++)
+                    {
                         if (NpcTileIsOpen(mapNum, x, y))
                         {
                             Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
                             Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
                             spawned = true;
-                            break;
-                        }
-                        i += 1;
-                    }
-                }
-
-                // Didn't spawn, so now we'll just try to find a free tile
-                if (!spawned)
-                {
-                    var loopTo3 = (int)Data.Map[mapNum].MaxX;
-                    for (x = 0; x < (int)loopTo3; x++)
-                    {
-                        var loopTo4 = (int)Data.Map[mapNum].MaxY;
-                        for (y = 0; y < (int)loopTo4; y++)
-                        {
-                            if (NpcTileIsOpen(mapNum, x, y))
-                            {
-                                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
-                                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
-                                spawned = true;
-                            }
                         }
                     }
                 }
-
-                // If we suceeded in spawning then send it to everyone
-                if (spawned)
-                {
-                    buffer.WriteInt32((int)ServerPackets.SSpawnNpc);
-                    buffer.WriteInt32((int)MapNpcNum);
-                    buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Num);
-                    buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X);
-                    buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y);
-                    buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir);
-
-                    var loopTo5 = (int)System.Enum.GetValues(typeof(Core.Vital)).Length;
-                    for (i = 0; i < loopTo5; i++)
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Vital[i]);
-
-                    NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
-                }
-
-                SendMapNpcVitals(mapNum, (byte)MapNpcNum);
             }
+
+            // If we suceeded in spawning then send it to everyone
+            if (spawned)
+            {
+                buffer.WriteInt32((int)ServerPackets.SSpawnNpc);
+                buffer.WriteInt32((int)MapNpcNum);
+                buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Num);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir);
+
+                var loopTo5 = (int)System.Enum.GetValues(typeof(Core.Vital)).Length;
+                for (i = 0; i < loopTo5; i++)
+                    buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Vital[i]);
+
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
+            }
+
+            SendMapNpcVitals(mapNum, (byte)MapNpcNum);
 
             buffer.Dispose();
         }
@@ -523,8 +526,6 @@ namespace Server
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].X);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Y);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Dir);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(byte) Vital.Health]);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(byte) Vital.Stamina]);
             }
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
