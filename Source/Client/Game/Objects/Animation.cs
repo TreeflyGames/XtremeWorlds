@@ -116,10 +116,6 @@ namespace Client
 
                         break;
                     }
-                case (byte)TargetType.Pet:
-                    {
-                        break;
-                    }
             }
 
             return new Point(x, y);

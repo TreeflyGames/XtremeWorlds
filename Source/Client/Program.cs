@@ -1929,13 +1929,6 @@ static void LoadFonts()
                         break;
                     }
 
-                    case (byte)TargetType.Pet:
-                    {
-                        x = 0;
-                        y = 0;
-                        break;
-                    }
-
                     default:
                     {
                         x = 0;
@@ -2678,9 +2671,6 @@ static void LoadFonts()
                                     Data.MyMapNpc[GameState.MyTarget].YOffset);
                                 break;
 
-                            case (int)TargetType.Pet:
-                                break;
-
                         }
                     }
 
@@ -2823,10 +2813,7 @@ static void LoadFonts()
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                if (Data.MyMapNpc[i].Num >= 0)
-                {
-                    Text.DrawNpcName(i);
-                }
+                Text.DrawNpcName(i);
             }
 
             Map.DrawFog();

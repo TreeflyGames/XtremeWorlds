@@ -225,7 +225,6 @@ namespace Core
         Player,
         Npc,
         Event,
-        Pet,
         Self
     }
 

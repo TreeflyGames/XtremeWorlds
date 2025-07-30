@@ -460,38 +460,36 @@ namespace Client
             dir = buffer.ReadInt32();
             movement = buffer.ReadInt32();
 
-            {
-                ref var withBlock = ref Data.MyMapNpc[(int)MapNpcNum];
-                withBlock.X = (byte)x;
-                withBlock.Y = (byte)y;
-                withBlock.Dir = (byte)dir;
-                withBlock.XOffset = 0;
-                withBlock.YOffset = 0;
-                withBlock.Moving = (byte)movement;
+            ref var withBlock = ref Data.MyMapNpc[(int)MapNpcNum];
+            withBlock.X = (byte)x;
+            withBlock.Y = (byte)y;
+            withBlock.Dir = (byte)dir;
+            withBlock.XOffset = 0;
+            withBlock.YOffset = 0;
+            withBlock.Moving = (byte)movement;
 
-                switch (withBlock.Dir)
-                {
-                    case (int)Direction.Up:
-                        {
-                            withBlock.YOffset = GameState.PicY;
-                            break;
-                        }
-                    case (int)Direction.Down:
-                        {
-                            withBlock.YOffset = GameState.PicY * -1;
-                            break;
-                        }
-                    case (int)Direction.Left:
-                        {
-                            withBlock.XOffset = GameState.PicX;
-                            break;
-                        }
-                    case (int)Direction.Right:
-                        {
-                            withBlock.XOffset = GameState.PicX * -1;
-                            break;
-                        }
-                }
+            switch (withBlock.Dir)
+            {
+                case (int)Direction.Up:
+                    {
+                        withBlock.YOffset = GameState.PicY;
+                        break;
+                    }
+                case (int)Direction.Down:
+                    {
+                        withBlock.YOffset = GameState.PicY * -1;
+                        break;
+                    }
+                case (int)Direction.Left:
+                    {
+                        withBlock.XOffset = GameState.PicX;
+                        break;
+                    }
+                case (int)Direction.Right:
+                    {
+                        withBlock.XOffset = GameState.PicX * -1;
+                        break;
+                    }
             }
 
             buffer.Dispose();
@@ -621,21 +619,20 @@ namespace Client
 
             i = buffer.ReadInt32();
 
-            {
-                ref var withBlock = ref Data.MyMapNpc[i];
-                withBlock.Num = buffer.ReadInt32();
-                withBlock.X = (byte)buffer.ReadInt32();
-                withBlock.Y = (byte)buffer.ReadInt32();
-                withBlock.Dir = buffer.ReadInt32();
+            ref var withBlock = ref Data.MyMapNpc[i];
+            withBlock.Num = buffer.ReadInt32();
+            withBlock.X = (byte)buffer.ReadInt32();
+            withBlock.Y = (byte)buffer.ReadInt32();
+            withBlock.Dir = buffer.ReadInt32();
 
-                for (i = 0; i < Enum.GetValues(typeof(Core.Vital)).Length; i++)
-                    withBlock.Vital[i] = buffer.ReadInt32();
-                // Client use only
-                withBlock.XOffset = 0;
-                withBlock.YOffset = 0;
-                withBlock.Moving = 0;
-            }
+            for (i = 0; i < Enum.GetValues(typeof(Core.Vital)).Length; i++)
+                withBlock.Vital[i] = buffer.ReadInt32();
 
+            // Client use only
+            withBlock.XOffset = 0;
+            withBlock.YOffset = 0;
+            withBlock.Moving = 0;
+            
             buffer.Dispose();
         }
 

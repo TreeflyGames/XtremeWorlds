@@ -42,11 +42,6 @@ namespace Server
             if (Data.Map[mapNum].NoRespawn)
                 return;
 
-            if (Data.Map[mapNum].Npc == null)
-            {
-                return;
-            }
-
             NpcNum = Data.Map[mapNum].Npc[(int)MapNpcNum];
 
             if (NpcNum >= 0)
@@ -410,6 +405,7 @@ namespace Server
 
             if (Data.MapNpc[mapNum].Npc[(int)MapNpcNum].SkillBuffer >= 0)
                 CanNpcMoveRet = false;
+
             return CanNpcMoveRet;
 
         }
