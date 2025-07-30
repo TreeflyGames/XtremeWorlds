@@ -312,7 +312,6 @@ namespace Client
             Database.ClearSkills();
             Animation.ClearAnimations();
             Projectile.ClearProjectile();
-            Pet.ClearPets();
             Database.ClearJobs();
             Moral.ClearMorals();
             Bank.ClearBanks();

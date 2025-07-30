@@ -191,18 +191,6 @@ namespace Client
 
             NetworkSend.SendRequestEditNpc();
         }
-
-        private void btnPetEditor_Click(object sender, EventArgs e)
-        {
-            if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)
-            {
-                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
-                return;
-            }
-
-            Pet.SendRequestEditPet();
-        }
-
         private void btnProjectiles_Click(object sender, EventArgs e)
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.AccessLevel.Developer)

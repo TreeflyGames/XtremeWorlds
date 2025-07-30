@@ -96,20 +96,7 @@ namespace Client
                     General.SetWindowFocus(General.Client.Window.Handle);
 
                     GameState.InitMapEditor = false;
-                }
-
-                if (GameState.InitPetEditor)
-                {
-                    var withBlock3 = frmEditor_Pet.Instance;
-                    GameState.MyEditorType = (int)Core.EditorType.Pet;
-                    GameState.EditorIndex = 1;
-                    withBlock3.Owner = (Form)Control.FromHandle(General.Client.Window?.Handle ?? IntPtr.Zero);
-                    withBlock3.Show();
-                    withBlock3.lstIndex.SelectedIndex = 0;
-                    Editors.PetEditorInit();
-
-                    GameState.InitPetEditor = false;
-                }
+                }    
 
                 if (GameState.InitAnimationEditor)
                 {
@@ -253,7 +240,6 @@ namespace Client
                     frmEditor_Map.Instance.Dispose();
                     frmEditor_Event.Instance.Dispose();
                     frmEditor_Npc.Instance.Dispose();
-                    frmEditor_Pet.Instance.Dispose();
                     frmEditor_Projectile.Instance.Dispose();
                     frmEditor_Resource.Instance.Dispose();
                     frmEditor_Shop.Instance.Dispose();

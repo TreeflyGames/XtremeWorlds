@@ -436,17 +436,6 @@ namespace Client
             btnMoralEditor.Text = "Moral Editor";
             btnMoralEditor.Click += btnMoralEditor_Click;
             // 
-            // btnPetEditor
-            // 
-            btnPetEditor.Location = new Point(152, 22);
-            btnPetEditor.Margin = new Padding(4, 3, 4, 3);
-            btnPetEditor.Name = "btnPetEditor";
-            btnPetEditor.Padding = new Padding(5);
-            btnPetEditor.Size = new Size(131, 29);
-            btnPetEditor.TabIndex = 68;
-            btnPetEditor.Text = "Pet Editor";
-            btnPetEditor.Click += btnPetEditor_Click;
-            // 
             // btnJobEditor
             // 
             btnJobEditor.Location = new Point(8, 57);
