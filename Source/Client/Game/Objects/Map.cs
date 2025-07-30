@@ -729,7 +729,7 @@ namespace Client
                 Data.MyMap.WeatherIntensity = buffer.ReadInt32();
                 Data.MyMap.FogOpacity = (byte)buffer.ReadInt32();
                 Data.MyMap.FogSpeed = (byte)buffer.ReadInt32();
-                Data.MyMap.MapTint = Conversions.ToBoolean(buffer.ReadInt32());
+                Data.MyMap.MapTint = buffer.ReadBoolean();
                 Data.MyMap.MapTintR = (byte)buffer.ReadInt32();
                 Data.MyMap.MapTintG = (byte)buffer.ReadInt32();
                 Data.MyMap.MapTintB = (byte)buffer.ReadInt32();
@@ -737,8 +737,8 @@ namespace Client
                 Data.MyMap.Panorama = buffer.ReadByte();
                 Data.MyMap.Parallax = buffer.ReadByte();
                 Data.MyMap.Brightness = buffer.ReadByte();
-                Data.MyMap.NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
-                Data.MyMap.Indoors = Conversions.ToBoolean(buffer.ReadInt32());
+                Data.MyMap.NoRespawn = buffer.ReadBoolean();
+                Data.MyMap.Indoors = buffer.ReadBoolean();
                 Data.MyMap.Shop = buffer.ReadInt32();
 
                 Data.MyMap.Tile = new Core.Type.Tile[Data.MyMap.MaxX, Data.MyMap.MaxY];
@@ -1120,7 +1120,7 @@ namespace Client
             buffer.WriteInt32(Data.MyMap.WeatherIntensity);
             buffer.WriteInt32(Data.MyMap.FogOpacity);
             buffer.WriteInt32(Data.MyMap.FogSpeed);
-            buffer.WriteInt32(Conversions.ToInteger(Data.MyMap.MapTint));
+            buffer.WriteBoolean(Data.MyMap.MapTint);
             buffer.WriteInt32(Data.MyMap.MapTintR);
             buffer.WriteInt32(Data.MyMap.MapTintG);
             buffer.WriteInt32(Data.MyMap.MapTintB);
@@ -1128,8 +1128,8 @@ namespace Client
             buffer.WriteByte(Data.MyMap.Panorama);
             buffer.WriteByte(Data.MyMap.Parallax);
             buffer.WriteByte(Data.MyMap.Brightness);
-            buffer.WriteInt32(Conversions.ToInteger(Data.MyMap.NoRespawn));
-            buffer.WriteInt32(Conversions.ToInteger(Data.MyMap.Indoors));
+            buffer.WriteBoolean(Data.MyMap.NoRespawn);
+            buffer.WriteBoolean(Data.MyMap.Indoors);
             buffer.WriteInt32(Data.MyMap.Shop);
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
@@ -1171,8 +1171,6 @@ namespace Client
                 {
                     {
                         ref var withBlock = ref Data.MyMap.Event[i];
-                        if (withBlock.Name is null)
-                            withBlock.Name = "";
                         buffer.WriteString(withBlock.Name);
                         buffer.WriteByte(withBlock.Globals);
                         buffer.WriteInt32(withBlock.X);
