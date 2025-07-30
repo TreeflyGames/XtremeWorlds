@@ -740,8 +740,6 @@ namespace Server
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].X);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Y);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Dir);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(byte) Vital.Health]);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Vital[(byte) Vital.Stamina]);
             }
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -763,8 +761,6 @@ namespace Server
             buffer.WriteInt32(withBlock.X);
             buffer.WriteInt32(withBlock.Y);
             buffer.WriteInt32(withBlock.Dir);
-            buffer.WriteInt32(withBlock.Vital[(byte) Vital.Health]);
-            buffer.WriteInt32(withBlock.Vital[(byte) Vital.Stamina]);
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
