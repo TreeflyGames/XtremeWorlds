@@ -587,7 +587,7 @@ namespace Server
                 buffer.WriteInt32(Data.Map[mapNum].WeatherIntensity);
                 buffer.WriteInt32(Data.Map[mapNum].FogOpacity);
                 buffer.WriteInt32(Data.Map[mapNum].FogSpeed);
-                buffer.WriteInt32(Conversions.ToInteger(Data.Map[mapNum].MapTint));
+                buffer.WriteBoolean(Data.Map[mapNum].MapTint);
                 buffer.WriteInt32(Data.Map[mapNum].MapTintR);
                 buffer.WriteInt32(Data.Map[mapNum].MapTintG);
                 buffer.WriteInt32(Data.Map[mapNum].MapTintB);
@@ -595,8 +595,8 @@ namespace Server
                 buffer.WriteByte(Data.Map[mapNum].Panorama);
                 buffer.WriteByte(Data.Map[mapNum].Parallax);
                 buffer.WriteByte(Data.Map[mapNum].Brightness);
-                buffer.WriteInt32(Conversions.ToInteger(Data.Map[mapNum].NoRespawn));
-                buffer.WriteInt32(Conversions.ToInteger(Data.Map[mapNum].Indoors));
+                buffer.WriteBoolean(Data.Map[mapNum].NoRespawn);
+                buffer.WriteBoolean(Data.Map[mapNum].Indoors);
                 buffer.WriteInt32(Data.Map[mapNum].Shop);
 
                 for (int i = 0, loopTo = Core.Constant.MAX_MAP_NPCS; i < loopTo; i++)

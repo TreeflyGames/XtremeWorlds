@@ -1046,7 +1046,7 @@ namespace Server
             Data.Map[mapNum].WeatherIntensity = buffer.ReadInt32();
             Data.Map[mapNum].FogOpacity = (byte)buffer.ReadInt32();
             Data.Map[mapNum].FogSpeed = (byte)buffer.ReadInt32();
-            Data.Map[mapNum].MapTint = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Map[mapNum].MapTint = buffer.ReadBoolean();
             Data.Map[mapNum].MapTintR = (byte)buffer.ReadInt32();
             Data.Map[mapNum].MapTintG = (byte)buffer.ReadInt32();
             Data.Map[mapNum].MapTintB = (byte)buffer.ReadInt32();
@@ -1054,8 +1054,8 @@ namespace Server
             Data.Map[mapNum].Panorama = buffer.ReadByte();
             Data.Map[mapNum].Parallax = buffer.ReadByte();
             Data.Map[mapNum].Brightness = buffer.ReadByte();
-            Data.Map[mapNum].NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
-            Data.Map[mapNum].Indoors = Conversions.ToBoolean(buffer.ReadInt32());
+            Data.Map[mapNum].NoRespawn = buffer.ReadBoolean();
+            Data.Map[mapNum].Indoors = buffer.ReadBoolean();
             Data.Map[mapNum].Shop = buffer.ReadInt32();
 
             Data.Map[mapNum].Tile = new Core.Type.Tile[(Data.Map[mapNum].MaxX), (Data.Map[mapNum].MaxY)];
