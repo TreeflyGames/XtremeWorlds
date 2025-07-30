@@ -18,7 +18,6 @@ using static Server.Moral;
 using static Server.NetworkSend;
 using static Server.Npc;
 using static Server.Party;
-using static Server.Pet;
 using static Server.Player;
 using static Server.Projectile;
 using static Server.Resource;

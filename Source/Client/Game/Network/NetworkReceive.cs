@@ -130,7 +130,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAnimationEditor] = Packet_AnimationEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SProjectileEditor] = HandleProjectileEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SJobEditor] = Packet_JobEditor;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPetEditor] = Packet_PetEditor;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateMoral] = Packet_UpdateMoral;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMoralEditor] = Packet_EditMoral;
 
@@ -1049,12 +1048,6 @@ namespace Client
         {
             GameState.InitResourceEditor = true;
         }
-
-        public static void Packet_PetEditor(ref byte[] data)
-        {
-            GameState.InitPetEditor = true;
-        }
-
         public static void HandleProjectileEditor(ref byte[] data)
         {
             GameState.InitProjectileEditor = true;
