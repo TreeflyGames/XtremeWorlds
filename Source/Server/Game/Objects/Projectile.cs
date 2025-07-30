@@ -243,16 +243,14 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SMapProjectile);
 
-            {
-                var withBlock = Data.MapProjectile[mapNum, ProjectileNum];
-                buffer.WriteInt32(ProjectileNum);
-                buffer.WriteInt32(withBlock.ProjectileNum);
-                buffer.WriteInt32(withBlock.Owner);
-                buffer.WriteInt32(withBlock.OwnerType);
-                buffer.WriteInt32(withBlock.Dir);
-                buffer.WriteInt32(withBlock.X);
-                buffer.WriteInt32(withBlock.Y);
-            }
+            var withBlock = Data.MapProjectile[mapNum, ProjectileNum];
+            buffer.WriteInt32(ProjectileNum);
+            buffer.WriteInt32(withBlock.ProjectileNum);
+            buffer.WriteInt32(withBlock.Owner);
+            buffer.WriteInt32(withBlock.OwnerType);
+            buffer.WriteInt32(withBlock.Dir);
+            buffer.WriteInt32(withBlock.X);
+            buffer.WriteInt32(withBlock.Y);          
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
