@@ -397,7 +397,6 @@ namespace Client
         // Editors
         public static bool InitEditor;
         public static bool InitMapEditor;
-        public static bool InitPetEditor;
         public static bool InitItemEditor;
         public static bool InitResourceEditor;
         public static bool InitNpcEditor;

@@ -726,19 +726,6 @@ namespace Client
                             break;
                         }
 
-                    case "/editpet":
-                        {
-
-                            if (GetPlayerAccess(GameState.MyIndex) < (int)AccessLevel.Developer)
-                            {
-                                Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Color.BrightRed);
-                                goto Continue1;
-                            }
-
-                            Pet.SendRequestEditPet();
-                            break;
-                        }
-
                     case "/edititem":
                         {
 

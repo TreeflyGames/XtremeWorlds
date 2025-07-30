@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Core;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using static Core.Global.Command;
 
