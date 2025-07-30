@@ -166,6 +166,8 @@ namespace Core.Globals
                 Target = npc.Target,
                 TargetType = npc.TargetType,
                 Vital = npc.Vital,
+                X = npc.X,
+                Y = npc.Y,
                 Dir = (byte)npc.Dir,
                 AttackTimer = npc.AttackTimer,
                 SpawnWait = npc.SpawnWait,

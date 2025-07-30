@@ -218,7 +218,6 @@ namespace Server
             SetPlayerDir(index, Dir);
             Moved = false;
             mapNum = GetPlayerMap(index);
-            Data.Player[index].IsMoving = true;
 
             switch ((Direction)Dir)
             {
@@ -561,6 +560,8 @@ namespace Server
 
             if (Moved)
             {
+                Data.Player[index].IsMoving = true;
+
                 try
                 {
                     Script.Instance?.PlayerMove(index);
