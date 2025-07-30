@@ -733,24 +733,7 @@ public class Script
                         }                        
                     }
 
-                    // Regenerate HP/MP
-                    if (entity.Vital[(byte)Vital.Health] > 0)
-                    {
-                        // Placeholder for HP regen
-                        if (entity.Vital[(byte)Vital.Health] > GameLogic.GetNpcMaxVital(x, Vital.Health))
-                        {
-                            entity.Vital[(byte)Vital.Health] = GameLogic.GetNpcMaxVital(x, Vital.Health);
-                        }
-                    }
-
-                    if (entity.Vital[(byte)Vital.Stamina] > 0)
-                    {
-                        // Placeholder for SP regen
-                        if (entity.Vital[(byte)Vital.Stamina] > GameLogic.GetNpcMaxVital(x, Vital.Stamina))
-                        {
-                            entity.Vital[(byte)Vital.Stamina] = GameLogic.GetNpcMaxVital(x, Vital.Stamina);
-                        }
-                    }
+                    // Placeholder for Regen logic
 
                     // Check if the npc is dead or not
                     if (entity.Vital[(byte)Vital.Health] < 0 && entity.SpawnWait > 0)

@@ -40,9 +40,9 @@ namespace Core.Globals
                 return -1; // Handle null cases
 
             // Get all entities of the same type, sorted by Id
-            var entities = Instances
-                .Where(e => e.Type == entity.Type)
-                .OrderBy(e => e.Id)
+            var entities = Instances = Instances
+                .OrderBy(e => e.Map)
+                .ThenBy(e => e.Id)
                 .ToList();
 
             // Find the index of the input entity in the sorted list
