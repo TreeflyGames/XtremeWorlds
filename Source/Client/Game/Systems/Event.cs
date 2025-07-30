@@ -610,30 +610,23 @@ namespace Client
                 {
                     case (int)Direction.Up:
                         {
-                            Data.MapEvents[id].YOffset = (int)Math.Round(Data.MapEvents[id].YOffset - GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeY));
-                            if (Data.MapEvents[id].YOffset < 0)
-                                Data.MapEvents[id].YOffset = 0;
+                            Data.MapEvents[id].YOffset =- 1;
                             break;
                         }
                     case (int)Direction.Down:
                         {
-                            Data.MapEvents[id].YOffset = (int)Math.Round(Data.MapEvents[id].YOffset + GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeY));
-                            if (Data.MapEvents[id].YOffset > 0)
-                                Data.MapEvents[id].YOffset = 0;
+                            Data.MapEvents[id].YOffset += 1;
                             break;
                         }
                     case (int)Direction.Left:
                         {
-                            Data.MapEvents[id].XOffset = (int)Math.Round(Data.MapEvents[id].XOffset - GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeX));
-                            if (Data.MapEvents[id].XOffset < 0)
-                                Data.MapEvents[id].XOffset = 0;
+                            Data.MapEvents[id].XOffset =- -1;
                             break;
                         }
                     case (int)Direction.Right:
                         {
-                            Data.MapEvents[id].XOffset = (int)Math.Round(Data.MapEvents[id].XOffset + GameState.ElapsedTime / 1000d * (Data.MapEvents[id].MovementSpeed * GameState.SizeX));
-                            if (Data.MapEvents[id].XOffset > 0)
-                                Data.MapEvents[id].XOffset = 0;
+                            Data.MapEvents[id].XOffset =+ 1;
+
                             break;
                         }
                 }

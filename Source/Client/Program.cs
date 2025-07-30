@@ -1913,13 +1913,6 @@ namespace Client
                         break;
                     }
 
-                    case (byte)TargetType.Pet:
-                    {
-                        x = 0;
-                        y = 0;
-                        break;
-                    }
-
                     default:
                     {
                         x = 0;
@@ -2662,9 +2655,6 @@ namespace Client
                                     Data.MyMapNpc[GameState.MyTarget].YOffset);
                                 break;
 
-                            case (int)TargetType.Pet:
-                                break;
-
                         }
                     }
 
@@ -2807,10 +2797,7 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                if (Data.MyMapNpc[i].Num >= 0)
-                {
-                    Text.DrawNpcName(i);
-                }
+                Text.DrawNpcName(i);
             }
 
             Map.DrawFog();

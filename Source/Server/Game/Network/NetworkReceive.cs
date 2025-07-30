@@ -2230,6 +2230,7 @@ namespace Server
             if (GetPlayerAccess(index) >= (byte) AccessLevel.Mapper)
             {
                 Core.Data.Player[index].IsMoving = false;
+
                 // Set the information
                 SetPlayerX(index, x);
                 SetPlayerY(index, y);
