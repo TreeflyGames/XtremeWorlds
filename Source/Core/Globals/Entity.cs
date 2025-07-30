@@ -21,7 +21,6 @@ namespace Core.Globals
         {
             Player,
             Npc,
-            Pet
         }
 
         public static int Count(Entity entity)
@@ -100,13 +99,6 @@ namespace Core.Globals
         public int[] Skill { get; set; }
         public byte Faction { get; set; }
         public int Num { get; set; }
-        public int MaxLevel { get; set; }
-        public int ExpGain { get; set; }
-        public byte StatType { get; set; }
-        public byte LevelingType { get; set; }
-        public byte Evolvable { get; set; }
-        public int EvolveLevel { get; set; }
-        public int EvolveNum { get; set; }
         public int SkillBuffer { get; set; }
         public int SkillBufferTimer { get; set; }
         public int SpawnWait { get; set; }
@@ -187,29 +179,7 @@ namespace Core.Globals
             };
             return entity;
         }
-
-        public static Entity FromPet(int id, Type.Pet pet)
-        {
-            var entity = new Entity(EntityType.Pet, id, pet)
-            {
-                Num = pet.Num,
-                Name = pet.Name,
-                Sprite = pet.Sprite,
-                Range = (byte)pet.Range,
-                Level = pet.Level,
-                MaxLevel = pet.MaxLevel,
-                ExpGain = pet.ExpGain,
-                Points = pet.Points,
-                Stat = pet.Stat,
-                LevelingType = pet.LevelingType,
-                Skill = pet.Skill,
-                Evolvable = pet.Evolvable,
-                EvolveLevel = pet.EvolveLevel,
-                EvolveNum = pet.EvolveNum
-            };
-            return entity;
-        }
-
+    
         /// <summary>
         /// Converts a Npc Entity to a MapNpc for npc-specific data.
         /// </summary>
@@ -290,34 +260,5 @@ namespace Core.Globals
                 GuildId = entity.GuildId
             };
         }
-
-
-        /// <summary>
-        /// Converts a Pet Entity to a Pet for pet-specific data.
-        /// </summary>
-        /// <param name="id">The entity ID.</param>
-        /// <param name="entity">The Pet Entity to convert.</param>
-        /// <returns>A Pet with mapped properties.</returns>
-        public static Pet ToPet(int id, Entity entity)
-        {
-            return new Pet
-            {
-                Num = id,
-                Name = entity.Name ?? string.Empty,
-                Sprite = entity.Sprite,
-                Range = entity.Range,
-                Level = (byte)entity.Level,
-                MaxLevel = entity.MaxLevel,
-                ExpGain = entity.ExpGain,
-                Points = (byte)entity.Points,
-                LevelingType = (byte)entity.LevelingType,
-                Stat = entity.Stat != null ? (byte[])entity.Stat.Clone() : new byte[0],
-                Skill = entity.Skill != null ? (int[])entity.Skill.Clone() : new int[0],
-                Evolvable = (byte)entity.Evolvable,
-                EvolveLevel = entity.EvolveLevel,
-                EvolveNum = entity.EvolveNum
-            };
-        }
-
     }
 }

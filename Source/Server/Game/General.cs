@@ -403,7 +403,6 @@ namespace Server
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading switches..."); await Event.LoadSwitchesAsync(); Logger.LogInformation("Switches loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading variables..."); await Event.LoadVariablesAsync(); Logger.LogInformation("Variables loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading projectiles..."); await Projectile.LoadProjectilesAsync(); Logger.LogInformation("Projectiles loaded."); }),
-                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading pets..."); await Pet.LoadPetsAsync(); Logger.LogInformation("Pets loaded."); }),
                 LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading script..."); await Script.LoadScriptAsync(0); Logger.LogInformation("Script compiled and loaded."); })
             };
 

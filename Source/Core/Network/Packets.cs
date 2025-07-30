@@ -91,8 +91,6 @@ namespace Core
             CDeclineParty,
             CLeaveParty,
             CPartyChatMsg,
-            CRequestPets,
-            CRequestPet,
 
             // *************************
             // ***   EDITOR PACKETS  ***
@@ -113,8 +111,6 @@ namespace Core
             CSaveItem,
             CRequestEditNpc,
             CSaveNpc,
-            CRequestEditPet,
-            CSavePet,
             CRequestEditProjectile,
             CSaveProjectile,
             CRequestEditResource,
@@ -244,7 +240,6 @@ namespace Core
             SPartyUpdate,
             SUpdatePet,
             SPartyVitals,
-            SPetEditor,
             SMoralEditor,
 
             STime,
