@@ -190,9 +190,9 @@ namespace Core.Localization
                                             /sprite, /mapreport, /kick, 
                                             /ban, /respawn, /welcome,
                                             /editmap, /edititem, /editresource,
-                                            /editskill, /editpet, /editshop
-                                            /editprojectile, /editnpc, /editjob
-                                            /editjob, /editscript, /acp"),
+                                            /editskill, /editshop /editprojectile,
+                                            /editnpc, /editjob /editjob,
+                                            /editscript, /acp"),
                     new LocaleItem("Welcome", "Usage : /welcome [message]"),
                     new LocaleItem("Access", "Usage : /access [player] [access]"),
                     new LocaleItem("Sprite", "Usage : /sprite [index]"),
