@@ -178,6 +178,7 @@ namespace Core.Globals
                 Skill = npc.SkillCD != null ? (int[])npc.SkillCD.Clone() : null,
                 XOffset = npc.XOffset,
                 YOffset = npc.YOffset,
+                Attacking = npc.Attacking,
             };
             return entity;
         }
