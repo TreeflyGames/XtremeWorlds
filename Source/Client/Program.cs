@@ -1398,7 +1398,7 @@ static void LoadFonts()
             RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height);
         }
 
-        public static void DrawNpc(double MapNpcNum)
+        public static void DrawNpc(int MapNpcNum)
         {
             byte anim;
             int x;
@@ -1494,7 +1494,7 @@ static void LoadFonts()
                                 4d));
 
             // Calculate X and Y coordinates for rendering
-            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X * GameState.SizeX -
+            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X -
                                 (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width /
                                  4d -
                                  32d) / 2d);
@@ -1502,7 +1502,7 @@ static void LoadFonts()
             if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d > 32d)
             {
                 // Larger sprites need an offset for height adjustment
-                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.SizeY -
+                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y -
                                     (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString()))
                                             .Height /
                                         4d - 32d));
@@ -2378,14 +2378,14 @@ static void LoadFonts()
                             (int)Math.Round((double)spritetop * height), width, height);
 
                         // Calculate the X
-                        x = (int)Math.Round(Data.MapEvents[id].X * GameState.SizeX -
+                        x = (int)Math.Round(Data.MapEvents[id].X -
                                             (width - 32d) / 2d);
 
                         // Is the player's height more than 32..?
                         if (gfxInfo.Height * 4 > 32)
                         {
                             // Create a 32 pixel offset for larger sprites
-                            y = (int)Math.Round(Data.MapEvents[id].Y * GameState.SizeY - (height - 32d));
+                            y = (int)Math.Round(Data.MapEvents[id].Y - (height - 32d));
                         }
                         else
                         {
@@ -2551,7 +2551,7 @@ static void LoadFonts()
                     // Npcs
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Data.MyMapNpc[i].Y == y)
+                        if (Math.Floor((decimal)Data.MyMapNpc[i].Y / 32) == y)
                         {
                             DrawNpc(i);
                         }
@@ -2578,7 +2578,7 @@ static void LoadFonts()
                             {
                                 if (Data.MapEvents[i].Position == 1)
                                 {
-                                    if (y == Data.MapEvents[i].Y)
+                                    if (Math.Floor((decimal)Data.MapEvents[i].Y / 32) == y)
                                     {
                                         DrawEvent(i);
                                     }
@@ -2602,7 +2602,7 @@ static void LoadFonts()
                                         {
                                             // Draw the target icon for the player
                                             DrawTarget(
-                                                Core.Data.Player[GameState.MyTarget].X * 32 - 16,
+                                                Core.Data.Player[GameState.MyTarget].X - 16,
                                                 Core.Data.Player[GameState.MyTarget].Y);
                                         }
                                     }
@@ -2612,7 +2612,7 @@ static void LoadFonts()
 
                             case (int)TargetType.Npc:
                                 DrawTarget(
-                                    Data.MyMapNpc[GameState.MyTarget].X * 32 - 16,
+                                    Data.MyMapNpc[GameState.MyTarget].X - 16,
                                     Data.MyMapNpc[GameState.MyTarget].Y);
                                 break;
 
