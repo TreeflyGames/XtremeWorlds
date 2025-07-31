@@ -122,8 +122,8 @@ namespace Server
 
                             string Name = parts[1];
                             int Pindex = GameLogic.FindPlayer(Name);
-                            int Access;
-                            int.TryParse(parts[2], out Access);
+                            byte Access;
+                            byte.TryParse(parts[2], out Access);
 
                             if (Pindex == -1)
                             {

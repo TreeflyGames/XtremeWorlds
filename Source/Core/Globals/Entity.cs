@@ -63,8 +63,8 @@ namespace Core.Globals
         public object[] Inv { get; set; } 
         public object[] PlayerSkill { get; set; } 
         public int Map { get; set; } 
-        public byte X { get; set; } 
-        public byte Y { get; set; } 
+        public int X { get; set; } 
+        public int Y { get; set; } 
         public byte Dir { get; set; } 
         public int Sprite { get; set; }
         public int Exp { get; set; }

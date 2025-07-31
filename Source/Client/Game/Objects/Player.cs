@@ -1141,7 +1141,7 @@ namespace Client
             SetPlayerPoints(i, buffer.ReadInt32());
             SetPlayerSprite(i, buffer.ReadInt32());
             SetPlayerMap(i, buffer.ReadInt32());
-            SetPlayerAccess(i, buffer.ReadInt32());
+            SetPlayerAccess(i, buffer.ReadByte());
             SetPlayerPK(i, buffer.ReadBoolean());
             Core.Data.Player[i].Moving = 0;
 

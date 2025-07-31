@@ -1980,7 +1980,7 @@ namespace Server
                                                 break;
                                             }
                                         case (byte)Core.EventCommand.SetAccessLevel:
-                                            SetPlayerAccess(i, command.Data1);
+                                            SetPlayerAccess(i, (byte)command.Data1);
                                             NetworkSend.SendPlayerData(i);
                                             break;
 

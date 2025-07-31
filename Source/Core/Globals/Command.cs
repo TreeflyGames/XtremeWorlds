@@ -193,9 +193,9 @@ namespace Core.Global
             return GetPlayerStatRet;
         }
 
-        public static int GetPlayerAccess(int index)
+        public static byte GetPlayerAccess(int index)
         {
-            int GetPlayerAccessRet = default;
+            byte GetPlayerAccessRet = default;
             GetPlayerAccessRet = Data.Player[index].Access;
             return GetPlayerAccessRet;
         }
@@ -399,9 +399,9 @@ namespace Core.Global
         {
             Data.Player[index].Inv[invslot].Value = itemValue;
         }
-        public static void SetPlayerAccess(int index, int access)
+        public static void SetPlayerAccess(int index, byte access)
         {
-            Data.Player[index].Access = (byte)access;
+            Data.Player[index].Access = access;
         }
 
         public static void SetPlayerPK(int index, bool pk)
@@ -411,12 +411,12 @@ namespace Core.Global
 
         public static void SetPlayerX(int index, int x)
         {
-            Data.Player[index].X = (byte)x;
+            Data.Player[index].X = x;
         }
 
         public static void SetPlayerY(int index, int y)
         {
-            Data.Player[index].Y = (byte)y;
+            Data.Player[index].Y = y;
         }
 
         public static void SetPlayerSprite(int index, int sprite)

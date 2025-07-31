@@ -1629,7 +1629,7 @@ namespace Server
                         NetworkSend.GlobalMsg(GetPlayerName(n) + " has been blessed with administrative access.");
                     }
 
-                    SetPlayerAccess(n, i);
+                    SetPlayerAccess(n, (byte)i);
                     NetworkSend.SendPlayerData(n);
                     Log.Add(GetPlayerName(index) + " has modified " + GetPlayerName(n) + "'s access.", Constant.ADMIN_LOG);
                 }

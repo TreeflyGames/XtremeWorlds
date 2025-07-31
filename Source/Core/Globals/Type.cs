@@ -267,8 +267,8 @@ namespace Core
             public PlayerInv[] Inv;
             public PlayerSkill[] Skill;
             public int Map;
-            public byte X;
-            public byte Y;
+            public int X;
+            public int Y;
             public byte Dir;
             public Hotbar[] Hotbar;
             public byte[] Switches;
@@ -395,8 +395,8 @@ namespace Core
             public int Target;
             public byte TargetType;
             public int[] Vital;
-            public byte X;
-            public byte Y;
+            public int X;
+            public int Y;
             public int Dir;
             public int AttackTimer;
             public int SpawnWait;
