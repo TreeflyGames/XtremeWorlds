@@ -73,8 +73,6 @@ namespace Core.Globals
         public byte[] Switches { get; set; } 
         public int[] Variables { get; set; } 
         public object Pet { get; set; } 
-        public int XOffset { get; set; } 
-        public int YOffset { get; set; } 
         public byte Moving { get; set; } 
         public byte Attacking { get; set; } 
         public int AttackTimer { get; set; } 
@@ -142,8 +140,6 @@ namespace Core.Globals
                 Hotbar = player.Hotbar != null ? Array.ConvertAll(player.Hotbar, x => (object)x) : null,
                 Switches = player.Switches,
                 Variables = player.Variables,
-                XOffset = player.XOffset,
-                YOffset = player.YOffset,
                 Moving = player.Moving,
                 Attacking = player.Attacking,
                 AttackTimer = player.AttackTimer,
@@ -176,8 +172,6 @@ namespace Core.Globals
                 SkillBuffer = npc.SkillBuffer,
                 SkillBufferTimer = npc.SkillBufferTimer,
                 Skill = npc.SkillCD != null ? (int[])npc.SkillCD.Clone() : null,
-                XOffset = npc.XOffset,
-                YOffset = npc.YOffset,
                 Attacking = npc.Attacking,
             };
             return entity;
@@ -208,9 +202,7 @@ namespace Core.Globals
                 SkillBufferTimer = entity.SkillBufferTimer,
                 SkillCD = entity.Skill != null ? (int[])entity.Skill.Clone() : new int[0],
                 StopRegen = entity.StopRegen,
-                StopRegenTimer = 0,
-                XOffset = entity.XOffset,
-                YOffset = entity.YOffset,
+                StopRegenTimer = 0, 
                 Moving = entity.Moving,
                 Attacking = entity.Attacking,
                 Steps = entity.Steps
@@ -249,8 +241,6 @@ namespace Core.Globals
                 Switches = entity.Switches != null ? (byte[])entity.Switches.Clone() : new byte[0],
                 Variables = entity.Variables != null ? (int[])entity.Variables.Clone() : new int[0],
                 GatherSkills = entity.GatherSkills,
-                XOffset = entity.XOffset,
-                YOffset = entity.YOffset,
                 Moving = entity.Moving,
                 Attacking = entity.Attacking,
                 AttackTimer = entity.AttackTimer,

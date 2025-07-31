@@ -26,7 +26,7 @@ namespace Server
             int tick;
             var tmr25 = default(int);
             var tmr500 = default(int);
-            var tmr250 = default(int);
+            var tmrWalk = default(int);
             var tmr1000 = default(int);
             var tmr60000 = default(int);
             var lastUpdateSavePlayers = default(int);
@@ -54,7 +54,7 @@ namespace Server
                     tmr25 = General.GetTimeMs() + 25;
                 }
                 
-                if (tick > tmr250)
+                if (tick > tmrWalk)
                 {
                     for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
                     {
@@ -63,9 +63,9 @@ namespace Server
                             Player.PlayerMove(index, Core.Data.Player[index].Dir, Core.Data.Player[index].Moving, false);
                         }
                     }
-                    
+
                     // Move the timer up 250ms.
-                    tmr250 = General.GetTimeMs() + 250;
+                    tmrWalk = General.GetTimeMs() + 30;
                 }
 
                 if (tick > tmr60000)
@@ -197,7 +197,7 @@ namespace Server
             var entities = Core.Globals.Entity.Instances;
             var mapCount = Core.Constant.MAX_MAPS;
 
-            // Use entities from Core.Globals.Entity class
+            // Use entities from Entity class
             for (int mapNum = 0; mapNum < mapCount; mapNum++)
             {
                 // Add Npcs
@@ -217,7 +217,7 @@ namespace Server
                     if (Core.Data.Player[i].Map == mapNum)
                     {
                         var player = Core.Globals.Entity.FromPlayer(i, Core.Data.Player[i]);
-                        if (player.Num >= 0)
+                        if (IsPlaying(i))
                         {
                             player.Map = mapNum;
                             entities.Add(player);
@@ -225,19 +225,21 @@ namespace Server
                     }
                 }
             }
-            
+
             Script.Instance?.UpdateMapAI();
 
-            foreach (Core.Globals.Entity entity in Core.Globals.Entity.Instances)
+            // Use entities from Entity class
+            for (int mapNum = 0; mapNum < mapCount; mapNum++)
             {
-                switch (entity.Type)
+                // Add Npcs
+                for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i++)
                 {
-                    case Core.Globals.Entity.EntityType.Npc:
-                        Data.MapNpc[entity.Map].Npc[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToNpc(entity.Id, entity);
-                        break;
-                    case Core.Globals.Entity.EntityType.Player:
-                        Core.Data.Player[Core.Globals.Entity.Index(entity)] = Core.Globals.Entity.ToPlayer(entity.Id, entity);
-                        break;
+                    var npc = Core.Globals.Entity.FromNpc(i, Data.MapNpc[mapNum].Npc[i]);
+                    if (npc.Num >= 0)
+                    {
+                        npc.Map = mapNum;
+                        entities.Add(npc);
+                    }
                 }
             }
         }

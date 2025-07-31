@@ -82,9 +82,7 @@ namespace Client
                 Core.Data.Player[index].Vital[(int)vital] = 0;
 
             Core.Data.Player[index].X = 0;
-            Core.Data.Player[index].XOffset = 0;
             Core.Data.Player[index].Y = 0;
-            Core.Data.Player[index].YOffset = 0;
 
             Core.Data.Player[index].Hotbar = new Core.Type.Hotbar[Constant.MAX_HOTBAR];
             Core.Data.Player[index].GatherSkills = new Core.Type.ResourceType[Enum.GetValues(typeof(Core.ResourceSkill)).Length];
@@ -108,16 +106,83 @@ namespace Client
                     Core.Data.Player[GameState.MyIndex].Moving = (byte)MovementState.Running;
                 }
 
-                NetworkSend.SendPlayerMove();
-
-                if (Core.Data.Player[GameState.MyIndex].XOffset == 0 & Core.Data.Player[GameState.MyIndex].YOffset == 0)
+                switch (Data.Player[GameState.MyIndex].Dir)
                 {
-                    if (Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == TileType.Warp | Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type2 == TileType.Warp)
-                    {
-                        GameState.GettingMap = true;
-                    }
+                    case (byte)Direction.Up:
+                        {
+                            if (GameState.DirUp && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
+                    case (byte)Direction.Down:
+                        {
+                            if (GameState.DirDown && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
+                    case (byte)Direction.Left:
+                        {
+                            if (GameState.DirLeft && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
+                    case (byte)Direction.Right:
+                        {
+                            if (GameState.DirRight && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
+                    case (byte)Direction.UpRight:
+                        {
+                            if (GameState.DirUp && GameState.DirRight && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
+                    case (byte)Direction.UpLeft:
+                        {
+                            if (GameState.DirUp && GameState.DirLeft && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
+                    case (byte)Direction.DownRight:
+                        {
+                            if (GameState.DirDown && GameState.DirRight && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
+                    case (byte)Direction.DownLeft:
+                        {
+                            if (GameState.DirDown && GameState.DirLeft && Data.Player[GameState.MyIndex].IsMoving)
+                            {
+                                NetworkSend.SendPlayerMove();
+                            }
+                            break;
+                        }
                 }
 
+                if (!Data.Player[GameState.MyIndex].IsMoving)
+                {
+                    NetworkSend.SendPlayerMove();
+                }
+
+                if (Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == TileType.Warp | Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type2 == TileType.Warp)
+                {
+                    GameState.GettingMap = true;
+                }
             }
         }
 
@@ -150,13 +215,13 @@ namespace Client
             CanMoveRet = true;
 
 
-            if (Conversions.ToInteger(Event.HoldPlayer) == 1)
+            if (Event.HoldPlayer)
             {
                 CanMoveRet = false;
                 return CanMoveRet;
             }
 
-            if (Conversions.ToInteger(GameState.GettingMap) == 1)
+            if (GameState.GettingMap)
             {
                 CanMoveRet = false;
                 return CanMoveRet;
@@ -723,47 +788,47 @@ namespace Client
             {
                 case (int)Direction.Up:
                 {
-                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset - 1);
+                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y - 1);
 
                         break;
                     }
                 case (int)Direction.Down:
                     {
-                        Core.Data.Player[index].YOffset = (int)(Core.Data.Player[index].YOffset + 1);
+                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y + 1);
                         break;
                     }
                 case (int)Direction.Left:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
+                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X - 1);
                         break;
                     }
                 case (int)Direction.Right:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
+                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X + 1);
                         break;
                     }
                 case (int)Direction.UpRight:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
+                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X + 1);
+                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y - 1);
                         break;
                     }
                 case (int)Direction.UpLeft:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
+                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X - 1);
+                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y - 1);
                         break;
                     }
                 case (int)Direction.DownRight:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
+                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X + 1);
+                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y + 1);
                         break;
                     }
                 case (int)Direction.DownLeft:
                     {
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset - 1;
-                        Core.Data.Player[index].XOffset = (int)Core.Data.Player[index].XOffset + 1;
+                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X - 1);
+                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y + 1);
                         break;
                     }
             }
@@ -1163,58 +1228,8 @@ namespace Client
             SetPlayerX(i, x);
             SetPlayerY(i, y);
             SetPlayerDir(i, dir);
-            Core.Data.Player[i].XOffset = 0;
-            Core.Data.Player[i].YOffset = 0;
             Core.Data.Player[i].Moving = n;
 
-            switch (GetPlayerDir(i))
-            {
-                case (int)Direction.Up:
-                    {
-                        Core.Data.Player[i].YOffset = GameState.PicY;
-                        break;
-                    }
-                case (int)Direction.Down:
-                    {
-                        Core.Data.Player[i].YOffset = GameState.PicY * -1;
-                        break;
-                    }
-                case (int)Direction.Left:
-                    {
-                        Core.Data.Player[i].XOffset = GameState.PicX;
-                        break;
-                    }
-                case (int)Direction.Right:
-                    {
-                        Core.Data.Player[i].XOffset = GameState.PicX * -1;
-                        break;
-                    }
-                case (int)Direction.UpRight:
-                    {
-                        Core.Data.Player[i].YOffset = GameState.PicY;
-                        Core.Data.Player[i].XOffset = GameState.PicX * -1;
-                        break;
-
-                    }
-                case (int)Direction.UpLeft:
-                    {
-                        Core.Data.Player[i].YOffset = GameState.PicY;
-                        Core.Data.Player[i].XOffset = GameState.PicX;
-                        break;
-                    }
-                case (int)Direction.DownRight:
-                    {
-                        Core.Data.Player[i].YOffset = GameState.PicY * -1;
-                        Core.Data.Player[i].XOffset = GameState.PicX * -1;
-                        break;
-                    }
-                case (int)Direction.DownLeft:
-                    {
-                        Core.Data.Player[i].YOffset = GameState.PicY * -1;
-                        Core.Data.Player[i].XOffset = GameState.PicX;
-                        break;
-                    }
-            }
             
             buffer.Dispose();
         }
@@ -1232,8 +1247,6 @@ namespace Client
 
             // Stop the player from moving
             Core.Data.Player[i].Moving = 0;
-            Core.Data.Player[i].XOffset = 0;
-            Core.Data.Player[i].YOffset = 0;
 
             buffer.Dispose();
         }
@@ -1250,8 +1263,6 @@ namespace Client
             SetPlayerDir(i, dir);
 
             ref var withBlock = ref Core.Data.Player[i];
-            withBlock.XOffset = 0;
-            withBlock.YOffset = 0;
             withBlock.Moving = 0;
 
             buffer.Dispose();
@@ -1269,8 +1280,6 @@ namespace Client
             SetPlayerDir(i, dir);
 
             ref var withBlock = ref Core.Data.Player[i];
-            withBlock.XOffset = buffer.ReadInt32();
-            withBlock.YOffset = buffer.ReadInt32();
             withBlock.Moving = buffer.ReadByte();
 
             buffer.Dispose();
@@ -1330,8 +1339,6 @@ namespace Client
 
             // Make sure they aren't walking
             Core.Data.Player[index].Moving = 0;
-            Core.Data.Player[index].XOffset = 0;
-            Core.Data.Player[index].YOffset = 0;
 
             buffer.Dispose();
         }

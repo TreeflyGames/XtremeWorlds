@@ -23,23 +23,23 @@ namespace Client
                 {
                     case (int)Direction.Up:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)(Core.Data.MyMapNpc[(int)MapNpcNum].YOffset - 1);
+                            Core.Data.MyMapNpc[(int)MapNpcNum].Y = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].Y - 1);
 
                             break;
                         }
                     case (int)Direction.Down:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)(Core.Data.MyMapNpc[(int)MapNpcNum].YOffset + 1);
+                            Core.Data.MyMapNpc[(int)MapNpcNum].Y = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].Y + 1);
                             break;
                         }
                     case (int)Direction.Left:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Core.Data.MyMapNpc[(int)MapNpcNum].XOffset - 1;
+                            Core.Data.MyMapNpc[(int)MapNpcNum].X = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].X - 1);
                             break;
                         }
                     case (int)Direction.Right:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].XOffset = (int)Core.Data.MyMapNpc[(int)MapNpcNum].XOffset + 1;
+                            Core.Data.MyMapNpc[(int)MapNpcNum].X = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].X + 1);
                             break;
                         }
                 }
@@ -2502,12 +2502,9 @@ namespace Client
             float targetCameraX;
             float targetCameraY;
 
-            int offsetX = Core.Data.Player[GameState.MyIndex].XOffset;
-            int offsetY = Core.Data.Player[GameState.MyIndex].YOffset;
-
             // Calculate the target camera position based on the player's position  
-            targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2) + offsetX;
-            targetCameraY = GetPlayerY(GameState.MyIndex) * GameState.PicY - (GameState.ResolutionHeight / 2) + offsetY;
+            targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2);
+            targetCameraY = GetPlayerY(GameState.MyIndex) * GameState.PicY - (GameState.ResolutionHeight / 2);
 
             // Directly set the camera position to match the player's position for better sync  
             GameState.Camera.Left = (long)Math.Round(targetCameraX);

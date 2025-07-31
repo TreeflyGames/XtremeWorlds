@@ -371,16 +371,16 @@ namespace Client
                         break;
                     }
             }
-            textX = GameLogic.ConvertMapX(Data.MyMapNpc[(int)MapNpcNum].X * GameState.PicX) + Data.MyMapNpc[(int)MapNpcNum].XOffset + GameState.PicX / 2 - 6;
+            textX = GameLogic.ConvertMapX(Data.MyMapNpc[(int)MapNpcNum].X * GameState.PicX) + GameState.PicX / 2 - 6;
             textX -= (int)(GetTextWidth(Core.Data.Npc[(int)NpcNum].Name) / 6d);
 
             if (Core.Data.Npc[(int)NpcNum].Sprite < 1 | Core.Data.Npc[(int)NpcNum].Sprite > GameState.NumCharacters)
             {
-                textY = GameLogic.ConvertMapY(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY) + Data.MyMapNpc[(int)MapNpcNum].YOffset - 16;
+                textY = GameLogic.ConvertMapY(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY) - 16;
             }
             else
             {
-                textY = (int)Math.Round(GameLogic.ConvertMapY(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY) + Data.MyMapNpc[(int)MapNpcNum].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Data.Npc[(int)NpcNum].Sprite.ToString())).Height / 4d + 16d);
+                textY = (int)GameLogic.ConvertMapY((int)(Data.MyMapNpc[(int)MapNpcNum].Y - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Data.Npc[(int)NpcNum].Sprite.ToString())).Height / 4d + 16d));
             }
 
             // Draw name
@@ -680,17 +680,17 @@ namespace Client
             name = Core.Data.Player[index].Name;
 
             // calc pos
-            textX = GameLogic.ConvertMapX(GetPlayerX(index) * GameState.PicX) + Core.Data.Player[index].XOffset + GameState.PicX / 2 - 6;
+            textX = GameLogic.ConvertMapX(GetPlayerX(index) * GameState.PicX) + GameState.PicX / 2 - 6;
             textX = (int)Math.Round(textX - GetTextWidth(name) / 6d);
 
             if (GetPlayerSprite(index) <= 0 | GetPlayerSprite(index) > GameState.NumCharacters)
             {
-                textY = GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) + Core.Data.Player[GameState.MyIndex].YOffset - 16;
+                textY = GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) - 16;
             }
             else
             {
                 // Determine location for text
-                textY = (int)Math.Round(GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) + Core.Data.Player[index].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, GetPlayerSprite(index).ToString())).Height / 4d + 16d);
+                textY = (int)Math.Round(GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, GetPlayerSprite(index).ToString())).Height / 4d + 16d);
             }
 
             // Draw name
