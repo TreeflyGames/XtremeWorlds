@@ -369,8 +369,8 @@ namespace Server
                             break;
                         }
 
-                        SetPlayerX(index, GetPlayerX(index) - 1);
-                        SetPlayerY(index, GetPlayerY(index) - 1);
+                        SetPlayerX(index, GetPlayerRawX(index) - 1);
+                        SetPlayerY(index, GetPlayerRawY(index) - 1);
                         Moved = true;
 
                         for (int i = 0, loopTo5 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo5; i++)
@@ -389,8 +389,8 @@ namespace Server
                             break;
                         }
 
-                        SetPlayerX(index, GetPlayerX(index) + 1);
-                        SetPlayerY(index, GetPlayerY(index) + 1);
+                        SetPlayerX(index, GetPlayerRawX(index) + 1);
+                        SetPlayerY(index, GetPlayerRawY(index) + 1);
                         Moved = true;
 
                         for (int i = 0, loopTo6 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo6; i++)

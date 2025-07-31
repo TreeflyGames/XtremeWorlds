@@ -680,17 +680,17 @@ namespace Client
             name = Core.Data.Player[index].Name;
 
             // calc pos
-            textX = GameLogic.ConvertMapX(GetPlayerX(index)) + GameState.SizeX / 2 - 6;
+            textX = GameLogic.ConvertMapX(GetPlayerRawX(index)) + 8;
             textX = (int)Math.Round(textX - GetTextWidth(name) / 6d);
 
             if (GetPlayerSprite(index) <= 0 | GetPlayerSprite(index) > GameState.NumCharacters)
             {
-                textY = GameLogic.ConvertMapY(GetPlayerY(index) * GameState.SizeY) - 16;
+                textY = GameLogic.ConvertMapY(GetPlayerRawY(index)) - 16;
             }
             else
             {
                 // Determine location for text
-                textY = (int)Math.Round(GameLogic.ConvertMapY(GetPlayerY(index) * GameState.SizeY) - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, GetPlayerSprite(index).ToString())).Height / 4d + 16d);
+                textY = (int)Math.Round((decimal)GameLogic.ConvertMapY((int)(GetPlayerRawY(index) - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, GetPlayerSprite(index).ToString())).Height / 4d + 16d)));
             }
 
             // Draw name

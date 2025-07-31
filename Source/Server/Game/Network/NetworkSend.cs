@@ -828,7 +828,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerPoints(index));
             buffer.WriteInt32(GetPlayerSprite(index));
             buffer.WriteInt32(GetPlayerMap(index));
-            buffer.WriteInt32(GetPlayerAccess(index));
+            buffer.WriteByte(GetPlayerAccess(index));
             buffer.WriteBoolean(GetPlayerPK(index));
 
             var statCount = Enum.GetValues(typeof(Stat)).Length;

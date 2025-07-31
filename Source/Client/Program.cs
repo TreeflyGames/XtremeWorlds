@@ -2129,12 +2129,12 @@ namespace Client
             if (gfxInfo.Height > 32)
             {
                 // Create a 32 pixel offset for larger sprites
-                y = (int)Math.Round(GetPlayerY(index) - (gfxInfo.Height / 4d - 32d));
+                y = (int)Math.Round(GetPlayerRawY(index) - (gfxInfo.Height / 4d - 32d));
             }
             else
             {
                 // Proceed as normal
-                y = GetPlayerY(index) * GameState.SizeY + Core.Data.Player[index].Y;
+                y = GetPlayerRawY(index);
             }
 
             rect = new Rectangle((int)Math.Round(anim * (gfxInfo.Width / 4d)),
@@ -2546,7 +2546,7 @@ namespace Client
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
-                            if (Core.Data.Player[i].Y == y)
+                            if (GetPlayerY(i) == y)
                             {
                                 DrawPlayer(i);
                             }
