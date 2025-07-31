@@ -1278,7 +1278,8 @@ namespace Client
 
             if (sprite < 1 | sprite > GameState.NumEmotes)
                 return;
-            if (Conversions.ToInteger(GameState.ShowAnimLayers) == 1)
+
+            if (GameState.ShowAnimLayers)
             {
                 anim = 1;
             }
@@ -1314,8 +1315,8 @@ namespace Client
             rec.Height = 32;
 
             string argpath = System.IO.Path.Combine(Core.Path.Misc, "Direction");
-            RenderTexture(ref argpath, GameLogic.ConvertMapX(x),
-                GameLogic.ConvertMapY(y),
+            RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.SizeX),
+                GameLogic.ConvertMapY(y * GameState.SizeY),
                 rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height);
 
             // render dir blobs
@@ -1344,8 +1345,8 @@ namespace Client
                 rec.Height = 8;
 
                 string argpath1 = System.IO.Path.Combine(Core.Path.Misc, "Direction");
-                RenderTexture(ref argpath1, GameLogic.ConvertMapX(x) + GameState.DirArrowX[i],
-                    GameLogic.ConvertMapY(y) + GameState.DirArrowY[i], rec.X, rec.Y, rec.Width,
+                RenderTexture(ref argpath1, GameLogic.ConvertMapX(x * GameState.SizeX) + GameState.DirArrowX[i],
+                    GameLogic.ConvertMapY(y * GameState.SizeY) + GameState.DirArrowY[i], rec.X, rec.Y, rec.Width,
                     rec.Height,
                     rec.Width, rec.Height);
             }
