@@ -464,33 +464,7 @@ namespace Client
             withBlock.X = (byte)x;
             withBlock.Y = (byte)y;
             withBlock.Dir = (byte)dir;
-            withBlock.XOffset = 0;
-            withBlock.YOffset = 0;
             withBlock.Moving = (byte)movement;
-
-            switch (withBlock.Dir)
-            {
-                case (int)Direction.Up:
-                    {
-                        withBlock.YOffset = GameState.PicY;
-                        break;
-                    }
-                case (int)Direction.Down:
-                    {
-                        withBlock.YOffset = GameState.PicY * -1;
-                        break;
-                    }
-                case (int)Direction.Left:
-                    {
-                        withBlock.XOffset = GameState.PicX;
-                        break;
-                    }
-                case (int)Direction.Right:
-                    {
-                        withBlock.XOffset = GameState.PicX * -1;
-                        break;
-                    }
-            }
 
             buffer.Dispose();
         }
@@ -507,8 +481,6 @@ namespace Client
             {
                 ref var withBlock = ref Data.MyMapNpc[i];
                 withBlock.Dir = dir;
-                withBlock.XOffset = 0;
-                withBlock.YOffset = 0;
                 withBlock.Moving = 0;
             }
 
@@ -629,8 +601,6 @@ namespace Client
                 withBlock.Vital[i] = buffer.ReadInt32();
 
             // Client use only
-            withBlock.XOffset = 0;
-            withBlock.YOffset = 0;
             withBlock.Moving = 0;
             
             buffer.Dispose();

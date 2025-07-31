@@ -1,10 +1,11 @@
-﻿using System.Data.Common;
-using Core;
+﻿using Core;
 using Core.Localization;
 using Microsoft.Toolkit.HighPerformance;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using System;
+using System.Data.Common;
 using static Core.Global.Command;
 using Color = Core.Color;
 
@@ -14,34 +15,31 @@ namespace Client
     public class GameLogic
     {
         public static void ProcessNpcMovement(double MapNpcNum)
-        {
+        {        
             // Check if Npc is walking, and if so process moving them over
             if (Data.MyMapNpc[(int)MapNpcNum].Moving == (byte)MovementState.Walking)
             {
-
                 switch (Data.MyMapNpc[(int)MapNpcNum].Dir)
                 {
                     case (int)Direction.Up:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeY));
+                            Core.Data.MyMapNpc[(int)MapNpcNum].Y = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].Y - 1);
+
                             break;
                         }
-
                     case (int)Direction.Down:
-                    {
-                        Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeY));
+                        {
+                            Core.Data.MyMapNpc[(int)MapNpcNum].Y = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].Y + 1);
                             break;
                         }
-
                     case (int)Direction.Left:
                         {
-                            Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeX));
+                            Core.Data.MyMapNpc[(int)MapNpcNum].X = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].X - 1);
                             break;
                         }
-
                     case (int)Direction.Right:
-                    {
-                        Data.MyMapNpc[(int)MapNpcNum].YOffset = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].YOffset - GameState.ElapsedTime / 250d * (4 * GameState.SizeX));
+                        {
+                            Core.Data.MyMapNpc[(int)MapNpcNum].X = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].X + 1);
                             break;
                         }
                 }
@@ -1146,6 +1144,15 @@ namespace Client
             GameState.diaData5 = Data5;
             GameState.diaStyle = style;
 
+            try
+            {
+                General.SetWindowFocus(General.Client.Window.Handle);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             // make the Gui.Windows visible
             Gui.ShowWindow(Gui.GetWindowIndex("winDialogue"), true);
         }
@@ -1317,6 +1324,96 @@ namespace Client
 
                     case (long)DialogueType.FillAttributes:
                         {
+                            TileType type = TileType.None;
+                            var loopTo6 = (int)Data.MyMap.MaxX;
+                            for (x = 0; x < loopTo6; x++)
+                            {
+                                var loopTo7 = (int)Data.MyMap.MaxY;
+                                for (y = 0; y < loopTo7; y++)
+                                {
+                                    // blocked tile
+                                    if (frmEditor_Map.Instance.optBlocked.Checked == true)
+                                    {
+                                        type = TileType.Blocked;
+                                    }
+
+                                    // warp tile
+                                    if (frmEditor_Map.Instance.optWarp.Checked == true)
+                                    {
+                                        type = TileType.Warp;
+                                    }
+
+                                    // item spawn
+                                    if (frmEditor_Map.Instance.optItem.Checked == true)
+                                    {
+                                        type = TileType.Item;
+                                    }
+
+                                    // Npc avoid
+                                    if (frmEditor_Map.Instance.optNpcAvoid.Checked == true)
+                                    {
+                                        type = TileType.NpcAvoid;
+                                    }
+
+                                    // resource
+                                    if (frmEditor_Map.Instance.optResource.Checked == true)
+                                    {
+                                        type = TileType.Resource;
+                                    }
+
+                                    // Npc spawn
+                                    if (frmEditor_Map.Instance.optNpcSpawn.Checked == true)
+                                    {
+                                        type = TileType.NpcSpawn;
+                                    }
+
+                                    // shop
+                                    if (frmEditor_Map.Instance.optShop.Checked == true)
+                                    {
+                                        type = TileType.Shop;
+                                    }
+
+                                    // bank
+                                    if (frmEditor_Map.Instance.optBank.Checked == true)
+                                    {
+                                        type = TileType.Bank;
+                                    }
+
+                                    // heal
+                                    if (frmEditor_Map.Instance.optHeal.Checked == true)
+                                    {
+                                        type = TileType.Heal;
+                                    }
+
+                                    // trap
+                                    if (frmEditor_Map.Instance.optTrap.Checked == true)
+                                    {
+                                        type = TileType.Trap;
+                                    }
+
+                                    // Animation
+                                    if (frmEditor_Map.Instance.optAnimation.Checked == true)
+                                    {
+                                        type = TileType.Animation;
+                                    }
+
+                                    // No Xing
+                                    if (frmEditor_Map.Instance.optNoCrossing.Checked == true)
+                                    {
+                                        type = TileType.NoCrossing;
+                                    }
+
+                                    if (frmEditor_Map.Instance.cmbAttribute.SelectedIndex == 1)
+                                    {
+                                        Data.MyMap.Tile[x, y].Type = type;
+                                    }
+                                    else
+                                    {
+                                        Data.MyMap.Tile[x, y].Type2 = type;
+                                    }
+                                }
+                            }
+
                             break;
                         }
 
@@ -2405,12 +2502,9 @@ namespace Client
             float targetCameraX;
             float targetCameraY;
 
-            int offsetX = Core.Data.Player[GameState.MyIndex].XOffset;
-            int offsetY = Core.Data.Player[GameState.MyIndex].YOffset;
-
             // Calculate the target camera position based on the player's position  
-            targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2) + offsetX;
-            targetCameraY = GetPlayerY(GameState.MyIndex) * GameState.PicY - (GameState.ResolutionHeight / 2) + offsetY;
+            targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2);
+            targetCameraY = GetPlayerY(GameState.MyIndex) * GameState.PicY - (GameState.ResolutionHeight / 2);
 
             // Directly set the camera position to match the player's position for better sync  
             GameState.Camera.Left = (long)Math.Round(targetCameraX);

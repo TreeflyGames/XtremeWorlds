@@ -100,8 +100,8 @@ namespace Client
                     {
                         if (IsPlaying(lockindex) && GetPlayerMap(lockindex) == GetPlayerMap(GameState.MyIndex))
                         {
-                            x = (int)Math.Round(GetPlayerX(lockindex) * GameState.PicX + 16 - width / 2d + Core.Data.Player[lockindex].XOffset);
-                            y = (int)Math.Round(GetPlayerY(lockindex) * GameState.PicY + 16 - height / 2d + Core.Data.Player[lockindex].YOffset);
+                            x = (int)Math.Round(GetPlayerX(lockindex) * GameState.PicX + 16 - width / 2d);
+                            y = (int)Math.Round(GetPlayerY(lockindex) * GameState.PicY + 16 - height / 2d);
                         }
 
                         break;
@@ -110,8 +110,8 @@ namespace Client
                     {
                         if (Data.MyMapNpc[lockindex].Num >= 0 && Data.MyMapNpc[lockindex].Vital[(int)Core.Vital.Health] > 0)
                         {
-                            x = (int)Math.Round(Data.MyMapNpc[lockindex].X * GameState.PicX + 16 - width / 2d + Data.MyMapNpc[lockindex].XOffset);
-                            y = (int)Math.Round(Data.MyMapNpc[lockindex].Y * GameState.PicY + 16 - height / 2d + Data.MyMapNpc[lockindex].YOffset);
+                            x = (int)Math.Round(Data.MyMapNpc[lockindex].X * GameState.PicX + 16 - width / 2d);
+                            y = (int)Math.Round(Data.MyMapNpc[lockindex].Y * GameState.PicY + 16 - height / 2d);
                         }
 
                         break;

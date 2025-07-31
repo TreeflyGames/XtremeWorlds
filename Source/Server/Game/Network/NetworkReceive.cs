@@ -594,45 +594,12 @@ namespace Server
             // Set movement offset directly to 32 or -32 based on direction
             int offset = Core.Constant.TILE_SIZE;
 
-            switch (Dir)
-            {
-                case (int)Direction.Up:
-                    Core.Data.Player[index].YOffset -= offset;
-                    break;
-                case (int)Direction.Down:
-                    Core.Data.Player[index].YOffset += offset;
-                    break;
-                case (int)Direction.Left:
-                    Core.Data.Player[index].XOffset -= offset;
-                    break;
-                case (int)Direction.Right:
-                    Core.Data.Player[index].XOffset += offset;
-                    break;
-                case (int)Direction.UpRight:
-                    Core.Data.Player[index].XOffset += offset;
-                    Core.Data.Player[index].YOffset -= offset;
-                    break;
-                case (int)Direction.UpLeft:
-                    Core.Data.Player[index].XOffset -= offset;
-                    Core.Data.Player[index].YOffset -= offset;
-                    break;
-                case (int)Direction.DownRight:
-                    Core.Data.Player[index].XOffset += offset;
-                    Core.Data.Player[index].YOffset += offset;
-                    break;
-                case (int)Direction.DownLeft:
-                    Core.Data.Player[index].XOffset -= offset;
-                    Core.Data.Player[index].YOffset += offset;
-                    break;
-            }
-
             buffer = new ByteStream(4);
             buffer.WriteInt32((int)ServerPackets.SPlayerXYOffset);
+            buffer.WriteInt32(index);
             buffer.WriteByte(GetPlayerDir(index));
-            buffer.WriteInt32(Core.Data.Player[index].XOffset);
-            buffer.WriteInt32(Core.Data.Player[index].YOffset);
             buffer.WriteByte(Core.Data.Player[index].Moving);
-            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
+            NetworkConfig.SendDataToMap( GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -646,10 +613,6 @@ namespace Server
 
             Core.Data.Player[index].IsMoving = false;
             Core.Data.Player[index].Moving = 0;
-
-            // Reset offsets
-            Core.Data.Player[index].XOffset = 0;
-            Core.Data.Player[index].YOffset = 0;
 
             buffer.Dispose();
         }

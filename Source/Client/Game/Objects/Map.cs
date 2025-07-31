@@ -618,12 +618,12 @@ namespace Client
             withBlock.Target = 0;
             withBlock.TargetType = 0;
             withBlock.Vital = new int[System.Enum.GetValues(typeof(Core.Vital)).Length];
-            withBlock.Vital[(int)Core.Vital.Health] = 0;
-            withBlock.Vital[(int)Core.Vital.Stamina] = 0;
+            for (int i = 0; i < System.Enum.GetValues(typeof(Core.Vital)).Length; i++)
+            {
+                withBlock.Vital[i] = 0;
+            }
             withBlock.X = 0;
-            withBlock.XOffset = 0;
             withBlock.Y = 0;
-            withBlock.YOffset = 0;
         }
 
         public static void ClearMapNpcs()

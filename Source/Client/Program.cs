@@ -1478,8 +1478,7 @@ namespace Client
                                 4d));
 
             // Calculate X and Y coordinates for rendering
-            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X * GameState.PicX +
-                                Data.MyMapNpc[(int)MapNpcNum].XOffset -
+            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X * GameState.PicX -
                                 (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width /
                                  4d -
                                  32d) / 2d);
@@ -1487,8 +1486,7 @@ namespace Client
             if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d > 32d)
             {
                 // Larger sprites need an offset for height adjustment
-                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY +
-                                    Data.MyMapNpc[(int)MapNpcNum].YOffset -
+                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY -
                                     (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString()))
                                             .Height /
                                         4d - 32d));
@@ -1496,7 +1494,7 @@ namespace Client
             else
             {
                 // Normal sprite height
-                y = Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY + Data.MyMapNpc[(int)MapNpcNum].YOffset;
+                y = Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY;
             }
 
             // Draw shadow and Npc sprite
@@ -1617,9 +1615,8 @@ namespace Client
                         Data.MyMapNpc[(int)i].Vital[(int)Vital.Health] < Data.Npc[(int)NpcNum].HP)
                     {
                         // lock to Npc
-                        tmpX = (long)Math.Round(Data.MyMapNpc[(int)i].X * GameState.PicX +
-                            Data.MyMapNpc[(int)i].XOffset + 16 - Width / 2d);
-                        tmpY = Data.MyMapNpc[(int)i].Y * GameState.PicY + Data.MyMapNpc[(int)i].YOffset + 35;
+                        tmpX = (long)Math.Round(Data.MyMapNpc[(int)i].X * GameState.PicX + 16 - Width / 2d);
+                        tmpY = Data.MyMapNpc[(int)i].Y * GameState.PicY + 35;
 
                         // calculate the width to fill
                         if (Width > 0L)
@@ -1653,9 +1650,9 @@ namespace Client
                         GetPlayerVital((int)i, Vital.Health) < GetPlayerMaxVital((int)i, Vital.Health))
                     {
                         // lock to Player
-                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Data.Player[(int)i].XOffset +
+                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX +
                             16 - Width / 2d);
-                        tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Data.Player[(int)i].YOffset + 35;
+                        tmpY = GetPlayerY((int)i) * GameState.PicY + 35;
 
                         // calculate the width to fill
                         if (Width > 0L)
@@ -1683,9 +1680,9 @@ namespace Client
                         GetPlayerVital((int)i, Vital.Stamina) < GetPlayerMaxVital((int)i, Vital.Stamina))
                     {
                         // lock to Player
-                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Data.Player[(int)i].XOffset +
+                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX +
                             16 - Width / 2d);
-                        tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Data.Player[(int)i].YOffset + 35 + Height;
+                        tmpY = GetPlayerY((int)i) * GameState.PicY + 35 + Height;
 
                         // calculate the width to fill
                         if (Width > 0L)
@@ -1718,9 +1715,9 @@ namespace Client
                                 0)
                             {
                                 // lock to player
-                                tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX +
-                                    Core.Data.Player[(int)i].XOffset + 16 - Width / 2d);
-                                tmpY = GetPlayerY((int)i) * GameState.PicY + Core.Data.Player[(int)i].YOffset + 35 +
+                                tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + 16 - Width / 2d);
+
+                                tmpY = GetPlayerY((int)i) * GameState.PicY + 35 +
                                        Height;
 
                                 // calculate the width to fill
@@ -1893,10 +1890,8 @@ namespace Client
                             return;
 
                         // it's on our map - get co-ords
-                        x = GameLogic.ConvertMapX(Core.Data.Player[withBlock.Target].X * 32 +
-                                                  Core.Data.Player[withBlock.Target].XOffset) + 16;
-                        y = GameLogic.ConvertMapY(Core.Data.Player[withBlock.Target].Y * 32 +
-                                                  Core.Data.Player[withBlock.Target].YOffset) - 32;
+                        x = GameLogic.ConvertMapX(Core.Data.Player[withBlock.Target].X * 32) + 16;
+                        y = GameLogic.ConvertMapY(Core.Data.Player[withBlock.Target].Y * 32) - 32;
                         break;
                     }
                     case (byte)TargetType.Event:
@@ -2129,20 +2124,20 @@ namespace Client
             }
 
             // Calculate the X
-            x = (int)Math.Round(Core.Data.Player[index].X * GameState.PicX + Core.Data.Player[index].XOffset -
+            x = (int)Math.Round(Core.Data.Player[index].X * GameState.PicX -
                                 (gfxInfo.Width / 4d - 32d) / 2d);
 
             // Is the player's height more than 32..?
             if (gfxInfo.Height > 32)
             {
                 // Create a 32 pixel offset for larger sprites
-                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY + Core.Data.Player[index].YOffset -
+                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY -
                                     (gfxInfo.Height / 4d - 32d));
             }
             else
             {
                 // Proceed as normal
-                y = GetPlayerY(index) * GameState.PicY + Core.Data.Player[index].YOffset;
+                y = GetPlayerY(index) * GameState.PicY + Core.Data.Player[index].Y;
             }
 
             rect = new Rectangle((int)Math.Round(anim * (gfxInfo.Width / 4d)),
@@ -2637,10 +2632,8 @@ namespace Client
                                         {
                                             // Draw the target icon for the player
                                             DrawTarget(
-                                                Core.Data.Player[GameState.MyTarget].X * 32 - 16 +
-                                                Core.Data.Player[GameState.MyTarget].XOffset,
-                                                Core.Data.Player[GameState.MyTarget].Y * 32 +
-                                                Core.Data.Player[GameState.MyTarget].YOffset);
+                                                Core.Data.Player[GameState.MyTarget].X * 32 - 16,
+                                                Core.Data.Player[GameState.MyTarget].Y * 32);
                                         }
                                     }
                                 }
@@ -2649,10 +2642,8 @@ namespace Client
 
                             case (int)TargetType.Npc:
                                 DrawTarget(
-                                    Data.MyMapNpc[GameState.MyTarget].X * 32 - 16 +
-                                    Data.MyMapNpc[GameState.MyTarget].XOffset,
-                                    Data.MyMapNpc[GameState.MyTarget].Y * 32 +
-                                    Data.MyMapNpc[GameState.MyTarget].YOffset);
+                                    Data.MyMapNpc[GameState.MyTarget].X * 32 - 16,
+                                    Data.MyMapNpc[GameState.MyTarget].Y * 32);
                                 break;
 
                         }
@@ -2676,7 +2667,7 @@ namespace Client
                                     else
                                     {
                                         DrawHover(Core.Data.Player[i].X * 32 - 16,
-                                            Core.Data.Player[i].Y * 32 + Core.Data.Player[i].YOffset);
+                                            Core.Data.Player[i].Y * 32 + Core.Data.Player[i].Y);
                                     }
                                 }
 

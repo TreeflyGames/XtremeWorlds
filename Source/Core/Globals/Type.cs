@@ -274,8 +274,6 @@ namespace Core
             public byte[] Switches;
             public int[] Variables;
             public ResourceType[] GatherSkills;
-            public int XOffset;
-            public int YOffset;
             public byte Moving;
             public bool IsMoving;
             public byte Attacking;
@@ -409,8 +407,6 @@ namespace Core
             public int[] SkillCD;
             public byte StopRegen;
             public int StopRegenTimer;
-            public int XOffset;
-            public int YOffset;
             public byte Moving;
             public byte Attacking;
             public int Steps;

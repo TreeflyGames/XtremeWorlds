@@ -166,7 +166,7 @@ namespace Client
                         }
                     }
 
-                    // Process Npc movements (actually move them)
+                    // Process npc movements
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
                         if (Data.MyMap.Npc[i] >= 0)
