@@ -2179,6 +2179,9 @@ namespace Server
             if (x < 0 || x > Data.Map[GetPlayerMap(index)].MaxX || y < 0 || y > Data.Map[GetPlayerMap(index)].MaxY)
                 return;
 
+            x *= 32;
+            y *= 32;
+
             if (GetPlayerAccess(index) >= (byte) AccessLevel.Mapper)
             {
                 Core.Data.Player[index].IsMoving = false;

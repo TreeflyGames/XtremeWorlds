@@ -334,7 +334,7 @@ namespace Client
 
         }
 
-        public static void DrawNpcName(double MapNpcNum)
+        public static void DrawNpcName(int MapNpcNum)
         {
             int textX;
             int textY;
