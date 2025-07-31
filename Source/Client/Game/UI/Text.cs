@@ -252,8 +252,8 @@ namespace Client
                     {
                         {
                             ref var withBlock = ref Data.MyMap.Tile[x, y];
-                            tX = (int)Math.Round(GameLogic.ConvertMapX(x) - 4 + GameState.SizeX * 0.5d);
-                            tY = (int)Math.Round(GameLogic.ConvertMapY(y) - 7 + GameState.SizeY * 0.5d);
+                            tX = (int)Math.Round(GameLogic.ConvertMapX(x * GameState.SizeX) - 4 + GameState.SizeX * 0.5d);
+                            tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.SizeY) - 7 + GameState.SizeY * 0.5d);
 
                             if (GameState.EditorAttribute == 1)
                             {
