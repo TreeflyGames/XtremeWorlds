@@ -290,37 +290,37 @@ namespace Client
                 return;
             }
             rec.Bottom = gfxInfo.Height;
-            rec.Left = Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Dir * GameState.PicX;
-            rec.Right = rec.Left + GameState.PicX;
+            rec.Left = Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Dir * GameState.SizeX;
+            rec.Right = rec.Left + GameState.SizeX;
 
             // Find the offset
             switch (Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Dir)
             {
                 case (byte)Direction.Up:
                     {
-                        yOffset = (int)Math.Round((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed * GameState.PicY);
+                        yOffset = (int)Math.Round((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed * GameState.SizeY);
                         break;
                     }
                 case (byte)Direction.Down:
                     {
-                        yOffset = (int)Math.Round(-((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed) * GameState.PicY);
+                        yOffset = (int)Math.Round(-((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed) * GameState.SizeY);
                         break;
                     }
                 case (byte)Direction.Left:
                     {
-                        xOffset = (int)Math.Round((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed * GameState.PicX);
+                        xOffset = (int)Math.Round((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed);
                         break;
                     }
                 case (byte)Direction.Right:
                     {
-                        xOffset = (int)Math.Round(-((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed) * GameState.PicX);
+                        xOffset = (int)Math.Round(-((Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].TravelTime - General.GetTickCount()) / (double)Data.Projectile[Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum].Speed));
                         break;
                     }
             }
 
             // Convert coordinates
-            x = GameLogic.ConvertMapX(x * GameState.PicX);
-            y = GameLogic.ConvertMapY(y * GameState.PicY);
+            x = GameLogic.ConvertMapX(x);
+            y = GameLogic.ConvertMapY(y);
 
             // Render texture
             string argpath = System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString());

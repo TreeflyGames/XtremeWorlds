@@ -259,7 +259,7 @@ namespace Core
             public byte Level;
             public int Exp;
             public byte Access;
-            public bool PK;
+            public bool Pk;
             public int[] Vital;
             public byte[] Stat;
             public byte Points;
@@ -620,9 +620,7 @@ namespace Core
             public int IgnoreIfCannotMove;
             public int MoveTimer;
             public int[] SelfSwitches;
-            public int MoveRouteComplete;
-            public int XOffset;
-            public int YOffset;
+            public int MoveRouteComplete; 
             public int Moving;
             public int ShowDir;
             public int WalkAnim;

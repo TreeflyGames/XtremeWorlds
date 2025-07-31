@@ -369,7 +369,7 @@ namespace Server
                             withBlock.RepeatMoveRoute = newPage.RepeatMoveRoute;
                             withBlock.IgnoreIfCannotMove = newPage.IgnoreMoveRoute;
                             withBlock.MoveFreq = newPage.MoveFreq;
-                            withBlock.MoveSpeed = newPage.MoveSpeed;  // Already handled above.
+                            withBlock.MoveSpeed = newPage.MoveSpeed;
                             withBlock.WalkThrough = newPage.WalkThrough;
                             withBlock.ShowName = newPage.ShowName;
                             withBlock.WalkingAnim = newPage.WalkAnim;
@@ -1843,7 +1843,7 @@ namespace Server
                                             break;
 
                                         case (byte)Core.EventCommand.SetPlayerKillable:
-                                            Core.Data.Player[i].PK = (command.Data1 == 0 ? false : true);
+                                            Core.Data.Player[i].Pk = (command.Data1 == 0 ? false : true);
                                             NetworkSend.SendPlayerData((int)i);
                                             break;
 
@@ -2887,7 +2887,7 @@ namespace Server
                     withBlock1.RepeatMoveRoute = eventPage.RepeatMoveRoute;
                     withBlock1.IgnoreIfCannotMove = eventPage.IgnoreMoveRoute;
                     withBlock1.MoveFreq = eventPage.MoveFreq;
-                    withBlock1.MoveSpeed = eventPage.MoveSpeed; // Handled above.
+                    withBlock1.MoveSpeed = eventPage.MoveSpeed;
                     withBlock1.WalkingAnim = eventPage.WalkAnim;
                     withBlock1.WalkThrough = eventPage.WalkThrough;
                     withBlock1.ShowName = eventPage.ShowName;

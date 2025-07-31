@@ -525,9 +525,9 @@ static void LoadFonts()
 
             // Convert adjusted coordinates to game world coordinates
             GameState.CurX = (int)Math.Round(GameState.TileView.Left +
-                                             Math.Floor((mouseX + GameState.Camera.Left) / GameState.PicX));
+                                             Math.Floor((mouseX + GameState.Camera.Left) / GameState.SizeX));
             GameState.CurY = (int)Math.Round(GameState.TileView.Top +
-                                             Math.Floor((mouseY + GameState.Camera.Top) / GameState.PicY));
+                                             Math.Floor((mouseY + GameState.Camera.Top) / GameState.SizeY));
 
             // Store raw mouse coordinates for interface interactions
             GameState.CurMouseX = mouseX;
@@ -1304,7 +1304,7 @@ static void LoadFonts()
             }
 
             rec.Y = 0;
-            rec.Height = GameState.PicX;
+            rec.Height = GameState.SizeX;
             rec.X = (int)Math.Round(anim *
                                     (GetGfxInfo(System.IO.Path.Combine(Core.Path.Emotes, sprite.ToString())).Width /
                                      2d));
@@ -1312,7 +1312,7 @@ static void LoadFonts()
                                         2d);
 
             x = GameLogic.ConvertMapX(x2);
-            y = GameLogic.ConvertMapY(y2) - (GameState.PicY + 16);
+            y = GameLogic.ConvertMapY(y2) - (GameState.SizeY + 16);
 
             string argpath = System.IO.Path.Combine(Core.Path.Emotes, sprite.ToString());
             RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height);
@@ -1330,8 +1330,8 @@ static void LoadFonts()
             rec.Height = 32;
 
             string argpath = System.IO.Path.Combine(Core.Path.Misc, "Direction");
-            RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX),
-                GameLogic.ConvertMapY(y * GameState.PicY),
+            RenderTexture(ref argpath, GameLogic.ConvertMapX(x),
+                GameLogic.ConvertMapY(y),
                 rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height);
 
             // render dir blobs
@@ -1360,8 +1360,8 @@ static void LoadFonts()
                 rec.Height = 8;
 
                 string argpath1 = System.IO.Path.Combine(Core.Path.Misc, "Direction");
-                RenderTexture(ref argpath1, GameLogic.ConvertMapX(x * GameState.PicX) + GameState.DirArrowX[i],
-                    GameLogic.ConvertMapY(y * GameState.PicY) + GameState.DirArrowY[i], rec.X, rec.Y, rec.Width,
+                RenderTexture(ref argpath1, GameLogic.ConvertMapX(x) + GameState.DirArrowX[i],
+                    GameLogic.ConvertMapY(y) + GameState.DirArrowY[i], rec.X, rec.Y, rec.Width,
                     rec.Height,
                     rec.Width, rec.Height);
             }
@@ -1494,7 +1494,7 @@ static void LoadFonts()
                                 4d));
 
             // Calculate X and Y coordinates for rendering
-            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X * GameState.PicX -
+            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X * GameState.SizeX -
                                 (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width /
                                  4d -
                                  32d) / 2d);
@@ -1502,7 +1502,7 @@ static void LoadFonts()
             if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d > 32d)
             {
                 // Larger sprites need an offset for height adjustment
-                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY -
+                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y * GameState.SizeY -
                                     (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString()))
                                             .Height /
                                         4d - 32d));
@@ -1510,7 +1510,7 @@ static void LoadFonts()
             else
             {
                 // Normal sprite height
-                y = Data.MyMapNpc[(int)MapNpcNum].Y * GameState.PicY;
+                y = Data.MyMapNpc[(int)MapNpcNum].Y * GameState.SizeY;
             }
 
             // Draw shadow and Npc sprite
@@ -1545,12 +1545,12 @@ static void LoadFonts()
                     return;
             }
 
-            srcrec = new Rectangle(0, 0, GameState.PicX, GameState.PicY);
-            destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.PicX),
-                GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.PicY), GameState.PicX, GameState.PicY);
+            srcrec = new Rectangle(0, 0, GameState.SizeX, GameState.SizeY);
+            destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X),
+                GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y), GameState.SizeX, GameState.SizeY);
 
-            x = GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.PicX);
-            y = GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.PicY);
+            x = GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X);
+            y = GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y);
 
             string argpath = System.IO.Path.Combine(Core.Path.Items, picNum.ToString());
             RenderTexture(ref argpath, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width,
@@ -1590,12 +1590,12 @@ static void LoadFonts()
                 if (withBlock.Timer + 20000 < General.GetTickCount())
                     return;
 
-                x = GameLogic.ConvertMapX(Data.Blood[index].X * GameState.PicX);
-                y = GameLogic.ConvertMapY(Data.Blood[index].Y * GameState.PicY);
+                x = GameLogic.ConvertMapX(Data.Blood[index].X);
+                y = GameLogic.ConvertMapY(Data.Blood[index].Y);
 
-                srcrec = new Rectangle((withBlock.Sprite - 1) * GameState.PicX, 0, GameState.PicX, GameState.PicY);
-                destrec = new Rectangle(GameLogic.ConvertMapX(withBlock.X * GameState.PicX),
-                    GameLogic.ConvertMapY(withBlock.Y * GameState.PicY), GameState.PicX, GameState.PicY);
+                srcrec = new Rectangle((withBlock.Sprite - 1) * GameState.SizeX, 0, GameState.SizeX, GameState.SizeY);
+                destrec = new Rectangle(GameLogic.ConvertMapX(withBlock.X),
+                    GameLogic.ConvertMapY(withBlock.Y), GameState.SizeX, GameState.SizeY);
 
                 string argpath = System.IO.Path.Combine(Core.Path.Misc, "Blood");
                 RenderTexture(ref argpath, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height);
@@ -1631,8 +1631,8 @@ static void LoadFonts()
                         Data.MyMapNpc[(int)i].Vital[(int)Vital.Health] < Data.Npc[(int)NpcNum].HP)
                     {
                         // lock to Npc
-                        tmpX = (long)Math.Round(Data.MyMapNpc[(int)i].X * GameState.PicX + 16 - Width / 2d);
-                        tmpY = Data.MyMapNpc[(int)i].Y * GameState.PicY + 35;
+                        tmpX = (long)Math.Round(Data.MyMapNpc[(int)i].X * GameState.SizeX + 16 - Width / 2d);
+                        tmpY = Data.MyMapNpc[(int)i].Y * GameState.SizeY + 35;
 
                         // calculate the width to fill
                         if (Width > 0L)
@@ -1666,9 +1666,9 @@ static void LoadFonts()
                         GetPlayerVital((int)i, Vital.Health) < GetPlayerMaxVital((int)i, Vital.Health))
                     {
                         // lock to Player
-                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX +
+                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.SizeX +
                             16 - Width / 2d);
-                        tmpY = GetPlayerY((int)i) * GameState.PicY + 35;
+                        tmpY = GetPlayerY((int)i) * GameState.SizeY + 35;
 
                         // calculate the width to fill
                         if (Width > 0L)
@@ -1696,9 +1696,9 @@ static void LoadFonts()
                         GetPlayerVital((int)i, Vital.Stamina) < GetPlayerMaxVital((int)i, Vital.Stamina))
                     {
                         // lock to Player
-                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX +
+                        tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.SizeX +
                             16 - Width / 2d);
-                        tmpY = GetPlayerY((int)i) * GameState.PicY + 35 + Height;
+                        tmpY = GetPlayerY((int)i) * GameState.SizeY + 35 + Height;
 
                         // calculate the width to fill
                         if (Width > 0L)
@@ -1731,9 +1731,9 @@ static void LoadFonts()
                                 0)
                             {
                                 // lock to player
-                                tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + 16 - Width / 2d);
+                                tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.SizeX + 16 - Width / 2d);
 
-                                tmpY = GetPlayerY((int)i) * GameState.PicY + 35 +
+                                tmpY = GetPlayerY((int)i) * GameState.SizeY + 35 +
                                        Height;
 
                                 // calculate the width to fill
@@ -1770,9 +1770,8 @@ static void LoadFonts()
             SpriteBatch.Begin();
 
             // Define rectangle parameters.
-            var position = new Vector2(GameLogic.ConvertMapX(GameState.CurX * GameState.PicX),
-                GameLogic.ConvertMapY(GameState.CurY * GameState.PicY));
-            var size = new Vector2(GameState.PicX, GameState.PicX);
+            var position = new Vector2(GameLogic.ConvertMapX(GameState.CurX), GameLogic.ConvertMapY(GameState.CurY));
+            var size = new Vector2(GameState.SizeX, GameState.SizeX);
             var fillColor = Color.Transparent; // No fill
             var outlineColor = Color.Cyan; // Cyan outline
             int outlineThickness = 1; // Thickness of outline
@@ -1795,10 +1794,10 @@ static void LoadFonts()
                     if (GameLogic.IsValidMapPoint((int)Math.Round(x), (int)Math.Round(y)))
                     {
                         // Calculate the tile position and size
-                        int posX = GameLogic.ConvertMapX((int)Math.Round((x - 1d) * GameState.PicX));
-                        int posY = GameLogic.ConvertMapY((int)Math.Round((y - 1d) * GameState.PicY));
-                        int rectWidth = GameState.PicX;
-                        int rectHeight = GameState.PicY;
+                        int posX = GameLogic.ConvertMapX((int)Math.Round((x - 1d)));
+                        int posY = GameLogic.ConvertMapY((int)Math.Round((y - 1d) * GameState.SizeY));
+                        int rectWidth = GameState.SizeX;
+                        int rectHeight = GameState.SizeY;
 
                         // Draw the transparent rectangle as the tile background
                         SpriteBatch.Draw(TransparentTexture, new Rectangle(posX, posY, rectWidth, rectHeight),
@@ -1906,21 +1905,21 @@ static void LoadFonts()
                             return;
 
                         // it's on our map - get co-ords
-                        x = GameLogic.ConvertMapX(Core.Data.Player[withBlock.Target].X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Core.Data.Player[withBlock.Target].Y * 32) - 32;
+                        x = GameLogic.ConvertMapX(Core.Data.Player[withBlock.Target].X ) + 16;
+                        y = GameLogic.ConvertMapY(Core.Data.Player[withBlock.Target].Y) - 32;
                         break;
                     }
                     case (byte)TargetType.Event:
                     {
-                        x = GameLogic.ConvertMapX(Data.MyMap.Event[withBlock.Target].X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Data.MyMap.Event[withBlock.Target].Y * 32) - 16;
+                        x = GameLogic.ConvertMapX(Data.MyMap.Event[withBlock.Target].X ) + 16;
+                        y = GameLogic.ConvertMapY(Data.MyMap.Event[withBlock.Target].Y) - 16;
                         break;
                     }
 
                     case (byte)TargetType.Npc:
                     {
-                        x = GameLogic.ConvertMapX(Data.MyMapNpc[withBlock.Target].X * 32) + 16;
-                        y = GameLogic.ConvertMapY(Data.MyMapNpc[withBlock.Target].Y * 32) - 32;
+                        x = GameLogic.ConvertMapX(Data.MyMapNpc[withBlock.Target].X ) + 16;
+                        y = GameLogic.ConvertMapY(Data.MyMapNpc[withBlock.Target].Y) - 32;
                         break;
                     }
 
@@ -2140,20 +2139,18 @@ static void LoadFonts()
             }
 
             // Calculate the X
-            x = (int)Math.Round(Core.Data.Player[index].X * GameState.PicX -
-                                (gfxInfo.Width / 4d - 32d) / 2d);
+            x = (int)Math.Round(Core.Data.Player[index].X - (gfxInfo.Width / 4d - 32d) / 2d);
 
             // Is the player's height more than 32..?
             if (gfxInfo.Height > 32)
             {
                 // Create a 32 pixel offset for larger sprites
-                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY -
-                                    (gfxInfo.Height / 4d - 32d));
+                y = (int)Math.Round(GetPlayerY(index) - (gfxInfo.Height / 4d - 32d));
             }
             else
             {
                 // Proceed as normal
-                y = GetPlayerY(index) * GameState.PicY + Core.Data.Player[index].Y;
+                y = GetPlayerY(index) * GameState.SizeY + Core.Data.Player[index].Y;
             }
 
             rect = new Rectangle((int)Math.Round(anim * (gfxInfo.Width / 4d)),
@@ -2201,13 +2198,13 @@ static void LoadFonts()
 
             for (int i = 0, loopTo = Data.MyMap.EventCount; i < loopTo; i++)
             {
-                int x = GameLogic.ConvertMapX(Data.MyMap.Event[i].X * GameState.PicX);
-                int y = GameLogic.ConvertMapY(Data.MyMap.Event[i].Y * GameState.PicY);
+                int x = GameLogic.ConvertMapX(Data.MyMap.Event[i].X);
+                int y = GameLogic.ConvertMapY(Data.MyMap.Event[i].Y);
 
                 // Skip event if there are no pages
                 if (Data.MyMap.Event[i].PageCount <= 0)
                 {
-                    DrawOutlineRectangle(x, y, GameState.PicX, GameState.PicY, Color.Blue, 0.6f);
+                    DrawOutlineRectangle(x, y, GameState.SizeX, GameState.SizeY, Color.Blue, 0.6f);
                     continue;
                 }
 
@@ -2216,8 +2213,8 @@ static void LoadFonts()
                 {
                     case 0: // Text Event
                     {
-                        int tX = x + GameState.PicX / 2 - 4;
-                        int tY = y + GameState.PicY / 2 - 7;
+                        int tX = x + GameState.SizeX / 2 - 4;
+                        int tY = y + GameState.SizeY / 2 - 7;
                         Text.RenderText("E", tX, tY, Color.Green, Color.Black);
                         break;
                     }
@@ -2237,7 +2234,7 @@ static void LoadFonts()
                     default:
                     {
                         // Draw fallback outline rectangle if graphic type is unknown
-                        DrawOutlineRectangle(x, y, GameState.PicX, GameState.PicY, Color.Blue, 0.6f);
+                        DrawOutlineRectangle(x, y, GameState.SizeX, GameState.SizeY, Color.Blue, 0.6f);
                         break;
                     }
                 }
@@ -2293,7 +2290,7 @@ static void LoadFonts()
 
                 // Adjust position if the tile is larger than 32x32
                 if (srcRect.Height > 32)
-                    y -= GameState.PicY;
+                    y -= GameState.SizeY;
 
                 // Define destination rectangle
                 var destRect = new Rectangle(x, y, srcRect.Width, srcRect.Height);
@@ -2306,7 +2303,7 @@ static void LoadFonts()
             else
             {
                 // Draw fallback outline if the tileset graphic is invalid
-                DrawOutlineRectangle(x, y, GameState.PicX, GameState.PicY, Color.Blue, 0.6f);
+                DrawOutlineRectangle(x, y, GameState.SizeX, GameState.SizeY, Color.Blue, 0.6f);
             }
         }
 
@@ -2338,45 +2335,9 @@ static void LoadFonts()
                         if (Data.MapEvents[id].Graphic <= 0 |
                             Data.MapEvents[id].Graphic > GameState.NumCharacters)
                             return;
-
-                        // Reset frame
-                        if (Data.MapEvents[id].Steps == 3)
-                        {
-                            anim = 0;
-                        }
-                        else if (Data.MapEvents[id].Steps == 1)
-                        {
-                            anim = 2;
-                        }
-
-                        switch (Data.MapEvents[id].Dir)
-                        {
-                            case (int)Direction.Up:
-                            {
-                                if (Data.MapEvents[id].YOffset > 8)
-                                    anim = Data.MapEvents[id].Steps;
-                                break;
-                            }
-                            case (int)Direction.Down:
-                            {
-                                if (Data.MapEvents[id].YOffset < -8)
-                                    anim = Data.MapEvents[id].Steps;
-                                break;
-                            }
-                            case (int)Direction.Left:
-                            {
-                                if (Data.MapEvents[id].XOffset > 8)
-                                    anim = Data.MapEvents[id].Steps;
-                                break;
-                            }
-                            case (int)Direction.Right:
-                            {
-                                if (Data.MapEvents[id].XOffset < -8)
-                                    anim = Data.MapEvents[id].Steps;
-                                break;
-                            }
-                        }
-
+                        
+                         anim = Data.MapEvents[id].Steps;
+                        
                         // Set the left
                         switch (Data.MapEvents[id].ShowDir)
                         {
@@ -2402,14 +2363,9 @@ static void LoadFonts()
                             }
                         }
 
-                        if (Data.MapEvents[id].WalkAnim == 1)
-                            anim = 0;
-
-                        if (Data.MapEvents[id].Moving == 0)
-                            anim = Data.MapEvents[id].GraphicX;
-
                         var gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters,
                             Data.MapEvents[id].Graphic.ToString()));
+
                         if (gfxInfo == null)
                         {
                             // Handle the case where gfxInfo is null
@@ -2422,21 +2378,19 @@ static void LoadFonts()
                             (int)Math.Round((double)spritetop * height), width, height);
 
                         // Calculate the X
-                        x = (int)Math.Round(Data.MapEvents[id].X * GameState.PicX +
-                                            Data.MapEvents[id].XOffset -
+                        x = (int)Math.Round(Data.MapEvents[id].X * GameState.SizeX -
                                             (width - 32d) / 2d);
 
                         // Is the player's height more than 32..?
                         if (gfxInfo.Height * 4 > 32)
                         {
                             // Create a 32 pixel offset for larger sprites
-                            y = (int)Math.Round(Data.MapEvents[id].Y * GameState.PicY +
-                                Data.MapEvents[id].YOffset - (height - 32d));
+                            y = (int)Math.Round(Data.MapEvents[id].Y * GameState.SizeY - (height - 32d));
                         }
                         else
                         {
                             // Proceed as normal
-                            y = Data.MapEvents[id].Y * GameState.PicY + Data.MapEvents[id].YOffset;
+                            y = Data.MapEvents[id].Y * GameState.SizeY;
                         }
 
                         // render the actual sprite
@@ -2474,8 +2428,8 @@ static void LoadFonts()
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets,
                                 Data.MapEvents[id].Graphic.ToString());
                             RenderTexture(ref argpath,
-                                GameLogic.ConvertMapX(Data.MapEvents[id].X * GameState.PicX),
-                                GameLogic.ConvertMapY(Data.MapEvents[id].Y * GameState.PicY) - GameState.PicY,
+                                GameLogic.ConvertMapX(Data.MapEvents[id].X),
+                                GameLogic.ConvertMapY(Data.MapEvents[id].Y) - GameState.SizeY,
                                 sRect.Left, sRect.Top, sRect.Width, sRect.Height);
                         }
                         else
@@ -2483,8 +2437,8 @@ static void LoadFonts()
                             string argpath1 = System.IO.Path.Combine(Core.Path.Tilesets,
                                 Data.MapEvents[id].Graphic.ToString());
                             RenderTexture(ref argpath1,
-                                GameLogic.ConvertMapX(Data.MapEvents[id].X * GameState.PicX),
-                                GameLogic.ConvertMapY(Data.MapEvents[id].Y * GameState.PicY), sRect.Left,
+                                GameLogic.ConvertMapX(Data.MapEvents[id].X),
+                                GameLogic.ConvertMapY(Data.MapEvents[id].Y), sRect.Left,
                                 sRect.Top,
                                 sRect.Width, sRect.Height);
                         }
@@ -2649,7 +2603,7 @@ static void LoadFonts()
                                             // Draw the target icon for the player
                                             DrawTarget(
                                                 Core.Data.Player[GameState.MyTarget].X * 32 - 16,
-                                                Core.Data.Player[GameState.MyTarget].Y * 32);
+                                                Core.Data.Player[GameState.MyTarget].Y);
                                         }
                                     }
                                 }
@@ -2659,7 +2613,7 @@ static void LoadFonts()
                             case (int)TargetType.Npc:
                                 DrawTarget(
                                     Data.MyMapNpc[GameState.MyTarget].X * 32 - 16,
-                                    Data.MyMapNpc[GameState.MyTarget].Y * 32);
+                                    Data.MyMapNpc[GameState.MyTarget].Y);
                                 break;
 
                         }

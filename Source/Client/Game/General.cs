@@ -456,10 +456,10 @@ namespace Client
             {
                 if (GetPlayerEquipment(GameState.MyIndex, (Equipment)i) >= 0)
                 {
-                    tempRec.Top = StartY + GameState.EqTop + GameState.PicY * (i / GameState.EqColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.EqLeft + (GameState.EqOffsetX + GameState.PicX) * (i % GameState.EqColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    tempRec.Top = StartY + GameState.EqTop + GameState.SizeY * (i / GameState.EqColumns);
+                    tempRec.Bottom = tempRec.Top + GameState.SizeY;
+                    tempRec.Left = StartX + GameState.EqLeft + (GameState.EqOffsetX + GameState.SizeX) * (i % GameState.EqColumns);
+                    tempRec.Right = tempRec.Left + GameState.SizeX;
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -485,10 +485,10 @@ namespace Client
             {
                 if (GetPlayerInv(GameState.MyIndex, (int)i) >= 0)
                 {
-                    tempRec.Top = StartY + GameState.InvTop + (GameState.InvOffsetY + GameState.PicY) * (i / GameState.InvColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.InvLeft + (GameState.InvOffsetX + GameState.PicX) * (i % GameState.InvColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    tempRec.Top = StartY + GameState.InvTop + (GameState.InvOffsetY) * (i / GameState.InvColumns);
+                    tempRec.Bottom = tempRec.Top;
+                    tempRec.Left = StartX + GameState.InvLeft + (GameState.InvOffsetX) * (i % GameState.InvColumns);
+                    tempRec.Right = tempRec.Left;
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -514,10 +514,10 @@ namespace Client
             {
                 if (Core.Data.Player[GameState.MyIndex].Skill[(int)i].Num >= 0)
                 {
-                    tempRec.Top = StartY + GameState.SkillTop + (GameState.SkillOffsetY + GameState.PicY) * (i / GameState.SkillColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.SkillLeft + (GameState.SkillOffsetX + GameState.PicX) * (i % GameState.SkillColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    tempRec.Top = StartY + GameState.SkillTop + (GameState.SkillOffsetY + GameState.SizeY) * (i / GameState.SkillColumns);
+                    tempRec.Bottom = tempRec.Top + GameState.SizeY;
+                    tempRec.Left = StartX + GameState.SkillLeft + (GameState.SkillOffsetX + GameState.SizeX) * (i % GameState.SkillColumns);
+                    tempRec.Right = tempRec.Left + GameState.SizeX;
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -542,10 +542,10 @@ namespace Client
             {
                 if (GetBank(GameState.MyIndex, (byte)i) >= 0)
                 {
-                    tempRec.Top = StartY + GameState.BankTop + (GameState.BankOffsetY + GameState.PicY) * (i / GameState.BankColumns);
-                    tempRec.Bottom = tempRec.Top + GameState.PicY;
-                    tempRec.Left = StartX + GameState.BankLeft + (GameState.BankOffsetX + GameState.PicX) * (i % GameState.BankColumns);
-                    tempRec.Right = tempRec.Left + GameState.PicX;
+                    tempRec.Top = StartY + GameState.BankTop + (GameState.BankOffsetY + GameState.SizeY) * (i / GameState.BankColumns);
+                    tempRec.Bottom = tempRec.Top + GameState.SizeY;
+                    tempRec.Left = StartX + GameState.BankLeft + (GameState.BankOffsetX + GameState.SizeX) * (i % GameState.BankColumns);
+                    tempRec.Right = tempRec.Left + GameState.SizeX;
 
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -571,10 +571,10 @@ namespace Client
 
             for (i = 0L; i < Constant.MAX_TRADES; i++)
             {
-                tempRec.Top = StartY + GameState.ShopTop + (GameState.ShopOffsetY + GameState.PicY) * (i / GameState.ShopColumns);
-                tempRec.Bottom = tempRec.Top + GameState.PicY;
-                tempRec.Left = StartX + GameState.ShopLeft + (GameState.ShopOffsetX + GameState.PicX) * (i % GameState.ShopColumns);
-                tempRec.Right = tempRec.Left + GameState.PicX;
+                tempRec.Top = StartY + GameState.ShopTop + (GameState.ShopOffsetY + GameState.SizeY) * (i / GameState.ShopColumns);
+                tempRec.Bottom = tempRec.Top + GameState.SizeY;
+                tempRec.Left = StartX + GameState.ShopLeft + (GameState.ShopOffsetX + GameState.SizeX) * (i % GameState.ShopColumns);
+                tempRec.Right = tempRec.Left + GameState.SizeX;
 
                 if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                 {
@@ -597,10 +597,10 @@ namespace Client
 
             for (i = 0L; i < Constant.MAX_INV; i++)
             {
-                tempRec.Top = StartY + GameState.TradeTop + (GameState.TradeOffsetY + GameState.PicY) * (i / GameState.TradeColumns);
-                tempRec.Bottom = tempRec.Top + GameState.PicY;
-                tempRec.Left = StartX + GameState.TradeLeft + (GameState.TradeOffsetX + GameState.PicX) * (i % GameState.TradeColumns);
-                tempRec.Right = tempRec.Left + GameState.PicX;
+                tempRec.Top = StartY + GameState.TradeTop + (GameState.TradeOffsetY + GameState.SizeY) * (i / GameState.TradeColumns);
+                tempRec.Bottom = tempRec.Top + GameState.SizeY;
+                tempRec.Left = StartX + GameState.TradeLeft + (GameState.TradeOffsetX + GameState.SizeX) * (i % GameState.TradeColumns);
+                tempRec.Right = tempRec.Left + GameState.SizeX;
 
                 if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                 {

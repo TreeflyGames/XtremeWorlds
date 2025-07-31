@@ -161,10 +161,10 @@ namespace Client
                     g.DrawImage(srcImage, offsetX, offsetY, destWidth, destHeight);
 
                     // Draw selection rectangle
-                    int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.PicX * scale) + offsetX;
-                    int scaledY = (int)Math.Round(GameState.EditorTileSelStart.Y * GameState.PicY * scale) + offsetY;
-                    int scaledWidth = (int)Math.Round(GameState.EditorTileWidth * GameState.PicX * scale);
-                    int scaledHeight = (int)Math.Round(GameState.EditorTileHeight * GameState.PicY * scale);
+                    int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.SizeX * scale) + offsetX;
+                    int scaledY = (int)Math.Round(GameState.EditorTileSelStart.Y * GameState.SizeY * scale) + offsetY;
+                    int scaledWidth = (int)Math.Round(GameState.EditorTileWidth * GameState.SizeX * scale);
+                    int scaledHeight = (int)Math.Round(GameState.EditorTileHeight * GameState.SizeY * scale);
 
                     using (var pen = new System.Drawing.Pen(System.Drawing.Color.Red, Math.Max(1, (int)Math.Round(1f * scale))))
                     {
@@ -180,10 +180,10 @@ namespace Client
         public static void DrawSelectionRectangle(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, float scale)
         {
             // Scale the selection rectangle based on the scale factor
-            int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.PicX * scale);
-            int scaledY = (int)Math.Round(GameState.EditorTileSelStart.Y * GameState.PicY * scale);
-            int scaledWidth = (int)Math.Round(GameState.EditorTileWidth * GameState.PicX * scale);
-            int scaledHeight = (int)Math.Round(GameState.EditorTileHeight * GameState.PicY * scale);
+            int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.SizeX * scale);
+            int scaledY = (int)Math.Round(GameState.EditorTileSelStart.Y * GameState.SizeY * scale);
+            int scaledWidth = (int)Math.Round(GameState.EditorTileWidth * GameState.SizeX * scale);
+            int scaledHeight = (int)Math.Round(GameState.EditorTileHeight * GameState.SizeY * scale);
 
             // Define the scaled selection rectangle
             var selectionRect = new Rectangle(scaledX, scaledY, scaledWidth, scaledHeight);
@@ -1024,8 +1024,8 @@ namespace Client
                     }
                 }
 
-                GameState.EditorTileX = (int)((long)Math.Round(X) / GameState.PicX);
-                GameState.EditorTileY = (int)((long)Math.Round(Y) / GameState.PicY);
+                GameState.EditorTileX = (int)((long)Math.Round(X) / GameState.SizeX);
+                GameState.EditorTileY = (int)((long)Math.Round(Y) / GameState.SizeY);
 
                 GameState.EditorTileSelStart = new Point(GameState.EditorTileX, GameState.EditorTileY);
                 GameState.EditorTileSelEnd = new Point(GameState.EditorTileX + GameState.EditorTileWidth, GameState.EditorTileY + GameState.EditorTileHeight);
@@ -1037,20 +1037,20 @@ namespace Client
             if (Button == (int)MouseButtons.Left) // Left Mouse Button
             {
                 // convert the pixel number to tile number
-                X = (long)Math.Round(X) / GameState.PicX + 1L;
-                Y = (long)Math.Round(Y) / GameState.PicY + 1L;
+                X = (long)Math.Round(X) / GameState.SizeX + 1L;
+                Y = (long)Math.Round(Y) / GameState.SizeY + 1L;
 
                 // check it's not out of bounds
                 if (X < 0f)
                     X = 0f;
 
-                if ((double)X > Instance.picBackSelect.Width / (double)GameState.PicX)
-                    X = (float)(Instance.picBackSelect.Width / (double)GameState.PicX);
+                if ((double)X > Instance.picBackSelect.Width / (double)GameState.SizeX)
+                    X = (float)(Instance.picBackSelect.Width / (double)GameState.SizeX);
                 if (Y < 0f)
                     Y = 0f;
 
-                if ((double)Y > Instance.picBackSelect.Height / (double)GameState.PicY)
-                    Y = (float)(Instance.picBackSelect.Height / (double)GameState.PicY);
+                if ((double)Y > Instance.picBackSelect.Height / (double)GameState.SizeY)
+                    Y = (float)(Instance.picBackSelect.Height / (double)GameState.SizeY);
 
                 // find out what to set the width + height of map editor to
                 if (X > GameState.EditorTileX) // drag right
@@ -1350,8 +1350,8 @@ namespace Client
                 else if (GameState.MapEditorTab == (int)MapEditorTab.Directions)
                 {
                     // Convert adjusted coordinates to game world coordinates
-                    x = (int)Math.Round(GameState.TileView.Left + Math.Floor((GameState.CurMouseX + GameState.Camera.Left) % GameState.PicX));
-                    y = (int)Math.Round(GameState.TileView.Top + Math.Floor((GameState.CurMouseY + GameState.Camera.Top) % GameState.PicY));
+                    x = (int)Math.Round(GameState.TileView.Left + Math.Floor((GameState.CurMouseX + GameState.Camera.Left) % GameState.SizeX));
+                    y = (int)Math.Round(GameState.TileView.Top + Math.Floor((GameState.CurMouseY + GameState.Camera.Top) % GameState.SizeY));
 
                     // see if it hits an arrow
                     for (i = 0; i < 4; i++)
@@ -1679,7 +1679,7 @@ namespace Client
             {
                 ref var withBlock = ref Data.MyMap.Tile[GameState.CurX, GameState.CurY];
                 GameState.CurTileset = withBlock.Layer[CurLayer].Tileset;
-                MapEditorChooseTile((int)MouseButtons.Left, withBlock.Layer[CurLayer].X * GameState.PicX, withBlock.Layer[CurLayer].Y * GameState.PicY);
+                MapEditorChooseTile((int)MouseButtons.Left, withBlock.Layer[CurLayer].X * GameState.SizeX, withBlock.Layer[CurLayer].Y * GameState.SizeY);
                 GameState.EyeDropper = !GameState.EyeDropper;
             }
         }

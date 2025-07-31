@@ -274,7 +274,7 @@ namespace Client
                                 g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
 
                                 // Draw a rectangle (using RectangleF)
-                                var graphicRectF = new RectangleF(Event.GraphicSelX * GameState.PicX, Event.GraphicSelY * GameState.PicY, Event.GraphicSelX2 * GameState.PicX, Event.GraphicSelY2 * GameState.PicY);
+                                var graphicRectF = new RectangleF(Event.GraphicSelX, Event.GraphicSelY, Event.GraphicSelX2, Event.GraphicSelY2);
                                 g.DrawRectangle(Pens.Red, graphicRectF);
 
                                 // Set the BackgroundImage properties of the forms
@@ -341,7 +341,7 @@ namespace Client
                                 g.DrawImage(sourceBitmap, destRectF, sourceRectF, GraphicsUnit.Pixel);
 
                                 // For DrawRectangle, ensure the rectangle is of type Rectangle
-                                var rectF = new RectangleF(Event.GraphicSelX * GameState.PicX, Event.GraphicSelY * GameState.PicY, Event.GraphicSelX2 * GameState.PicX, Event.GraphicSelY2 * GameState.PicY);
+                                var rectF = new RectangleF(Event.GraphicSelX, Event.GraphicSelY, Event.GraphicSelX2, Event.GraphicSelY2);
                                 g.DrawRectangle(Pens.Red, rectF);
 
                                 g.Dispose();
@@ -412,9 +412,9 @@ namespace Client
                                     sRect.Right = sRect.Left + 32d;
 
                                     dRect.Top = 0d;
-                                    dRect.Bottom = GameState.PicY;
+                                    dRect.Bottom = GameState.SizeX;
                                     dRect.Left = 0d;
-                                    dRect.Right = GameState.PicX;
+                                    dRect.Right = GameState.SizeX;
                                 }
                                 else
                                 {
@@ -1317,8 +1317,8 @@ namespace Client
             X = e.Location.X;
             Y = e.Location.Y;
 
-            int selW = (int)Math.Round(Math.Ceiling((decimal)(X / GameState.PicX)) - Event.GraphicSelX);
-            int selH = (int)Math.Round(Math.Ceiling((decimal)(Y / GameState.PicY)) - Event.GraphicSelY);
+            int selW = (int)Math.Round(Math.Ceiling((decimal)(X)) - Event.GraphicSelX);
+            int selH = (int)Math.Round(Math.Ceiling((decimal)(Y)) - Event.GraphicSelY);
 
             if (cmbGraphic.SelectedIndex == 2)
             {
@@ -1335,8 +1335,8 @@ namespace Client
                 }
                 else
                 {
-                    Event.GraphicSelX = (int)Math.Round(Math.Ceiling((decimal)(X / GameState.PicX)));
-                    Event.GraphicSelY = (int)Math.Round(Math.Ceiling((decimal)(Y / GameState.PicY)));
+                    Event.GraphicSelX = (int)Math.Round(Math.Ceiling((decimal)(X)));
+                    Event.GraphicSelY = (int)Math.Round(Math.Ceiling((decimal)(Y)));
                     Event.GraphicSelX2 = 1;
                     Event.GraphicSelY2 = 1;
                 }
