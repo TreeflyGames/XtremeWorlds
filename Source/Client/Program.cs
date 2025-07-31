@@ -2217,15 +2217,15 @@ static void LoadFonts()
                 {
                     case 0: // Text Event
                     {
-                        int tX = x + GameState.SizeX / 2 - 4;
-                        int tY = y + GameState.SizeY / 2 - 7;
+                        int tX = x * GameState.SizeX;
+                        int tY = y * GameState.SizeY;
                         Text.RenderText("E", tX, tY, Color.Green, Color.Black);
                         break;
                     }
 
                     case 1: // Character Graphic
                     {
-                        RenderCharacterGraphic(Core.Data.MyMap.Event[i], x, y);
+                        RenderCharacterGraphic(Core.Data.MyMap.Event[i], x * GameState.SizeX, y * GameState.SizeY);
                         break;
                     }
 

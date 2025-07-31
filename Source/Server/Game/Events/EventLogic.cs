@@ -513,7 +513,7 @@ namespace Server
                                         var nextMove = withBlock.MoveRoute[withBlock.MoveRouteStep];
 
 
-                                        bool sendupdate = false;
+                                        bool sendUpdate = false;
                                         switch (nextMove.Index)
                                         {
                                             case 1: // Move Up
@@ -750,20 +750,20 @@ namespace Server
 
                                             case 34: // Turn On Walking Animation
                                                 withBlock.WalkingAnim = 1;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 35: // Turn Off Walking Animation
                                                 withBlock.WalkingAnim = 0;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
 
                                             case 36: // Turn On Direction Fix
                                                 withBlock.FixedDir = 1;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 37: // Turn Off Direction Fix
                                                 withBlock.FixedDir = 0;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
 
                                             case 38: // Turn On Through
@@ -774,15 +774,15 @@ namespace Server
                                                 break;
                                             case 40: //Turn on Fix Position
                                                 withBlock.Position = 1;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 41://Turn off Fix Position
                                                 withBlock.Position = 0;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 42://Turn on Below Player
                                                 withBlock.Position = 2;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
 
                                             case 43: // Change Graphic
@@ -806,13 +806,13 @@ namespace Server
                                                             _ => withBlock.Dir
                                                         };
                                                     }
-                                                    sendupdate = true;
+                                                    sendUpdate = true;
                                                     break;
                                                 }
                                         }
 
 
-                                        if (sendupdate)
+                                        if (sendUpdate)
                                         {
                                             using (var buffer = new ByteStream(4))
                                             {
@@ -925,7 +925,7 @@ namespace Server
                             {
                                 ref var withBlock = ref Core.Data.TempPlayer[i].EventMap.EventPages[x];
                                 bool IsGlobal = false;
-                                bool sendupdate = false;
+                                bool sendUpdate = false;
                                 int EventId = x;
                                 int WalkThrough = withBlock.WalkThrough;
                                 bool doNotProcessMoveRoute = false;
@@ -1220,15 +1220,15 @@ namespace Server
                                             case 32: withBlock.MoveFreq = 3; break;
                                             case 33: withBlock.MoveFreq = 4; break;
 
-                                            case 34: withBlock.WalkingAnim = 1; sendupdate = true; break; // Turn On Walking Animation
-                                            case 35: withBlock.WalkingAnim = 0; sendupdate = true; break; // Turn Off Walking Animation
-                                            case 36: withBlock.FixedDir = 1; sendupdate = true; break; // Turn On Direction Fix
-                                            case 37: withBlock.FixedDir = 0; sendupdate = true; break; // Turn Off Direction Fix
+                                            case 34: withBlock.WalkingAnim = 1; sendUpdate = true; break; // Turn On Walking Animation
+                                            case 35: withBlock.WalkingAnim = 0; sendUpdate = true; break; // Turn Off Walking Animation
+                                            case 36: withBlock.FixedDir = 1; sendUpdate = true; break; // Turn On Direction Fix
+                                            case 37: withBlock.FixedDir = 0; sendUpdate = true; break; // Turn Off Direction Fix
                                             case 38: withBlock.WalkThrough = 1; break; // Turn On Through
                                             case 39: withBlock.WalkThrough = 0; break; // Turn Off Through
-                                            case 40: withBlock.Position = 1; sendupdate = true; break; // Turn On Fixed
-                                            case 41: withBlock.Position = 0; sendupdate = true; break; // Turn Off Fixed
-                                            case 42: withBlock.Position = 2; sendupdate = true; break; //Turn on Below player
+                                            case 40: withBlock.Position = 1; sendUpdate = true; break; // Turn On Fixed
+                                            case 41: withBlock.Position = 0; sendUpdate = true; break; // Turn Off Fixed
+                                            case 42: withBlock.Position = 2; sendUpdate = true; break; //Turn on Below player
 
                                             case 43: // Change Graphic
                                                 {
@@ -1251,14 +1251,14 @@ namespace Server
                                                             _ => withBlock.Dir
                                                         };
                                                     }
-                                                    sendupdate = true;
+                                                    sendUpdate = true;
                                                     break;
                                                 }
 
                                         }
 
                                         // Send update if necessary.
-                                        if (sendupdate && Core.Data.TempPlayer[i].EventMap.EventPages[EventId].EventId >= 0)
+                                        if (sendUpdate && Core.Data.TempPlayer[i].EventMap.EventPages[EventId].EventId >= 0)
                                         {
                                             using (var buffer = new ByteStream(4))
                                             {

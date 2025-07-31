@@ -3312,7 +3312,6 @@ namespace Client
             withBlock.WalkThrough = buffer.ReadInt32();
             withBlock.ShowName = buffer.ReadInt32();
             
-
             buffer.Dispose();
 
         }
