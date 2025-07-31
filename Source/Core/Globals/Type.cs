@@ -397,7 +397,7 @@ namespace Core
             public int[] Vital;
             public int X;
             public int Y;
-            public int Dir;
+            public byte Dir;
             public int AttackTimer;
             public int SpawnWait;
             public int StunDuration;

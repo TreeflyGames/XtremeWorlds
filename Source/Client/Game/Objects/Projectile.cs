@@ -99,8 +99,8 @@ namespace Client
                 ref var withBlock = ref Core.Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, i];
                 withBlock.ProjectileNum = buffer.ReadInt32();
                 withBlock.Owner = buffer.ReadInt32();
-                withBlock.OwnerType = (byte)buffer.ReadInt32();
-                withBlock.Dir = (byte)buffer.ReadInt32();
+                withBlock.OwnerType = buffer.ReadByte();
+                withBlock.Dir = buffer.ReadByte();
                 withBlock.X = buffer.ReadInt32();
                 withBlock.Y = buffer.ReadInt32();
                 withBlock.Range = 0;

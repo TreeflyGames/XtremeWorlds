@@ -1413,13 +1413,16 @@ static void LoadFonts()
                 Data.MyMapNpc[(int)MapNpcNum].Num > Core.Constant.MAX_NPCS)
                 return;
 
+            x = (int)Math.Floor((double)Data.MyMapNpc[(int)MapNpcNum].X / 32);
+            y = (int)Math.Floor((double)Data.MyMapNpc[(int)MapNpcNum].Y / 32);
+
             // Ensure Npc is within the tile view range
-            if (Data.MyMapNpc[(int)MapNpcNum].X < GameState.TileView.Left |
-                Data.MyMapNpc[(int)MapNpcNum].X > GameState.TileView.Right)
+            if (x < GameState.TileView.Left |
+                x> GameState.TileView.Right)
                 return;
 
-            if (Data.MyMapNpc[(int)MapNpcNum].Y < GameState.TileView.Top |
-                Data.MyMapNpc[(int)MapNpcNum].Y > GameState.TileView.Bottom)
+            if (y < GameState.TileView.Top |
+                y > GameState.TileView.Bottom)
                 return;
 
             // Stream Npc if not yet loaded

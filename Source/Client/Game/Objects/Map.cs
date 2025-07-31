@@ -971,7 +971,7 @@ namespace Client
                 Data.MyMapNpc[i].Num = buffer.ReadInt32();
                 Data.MyMapNpc[i].X = (byte)buffer.ReadInt32();
                 Data.MyMapNpc[i].Y = (byte)buffer.ReadInt32();
-                Data.MyMapNpc[i].Dir = buffer.ReadInt32();
+                Data.MyMapNpc[i].Dir = buffer.ReadByte();
                 for (int n = 0; n < vitalCount; n++)
                     Data.MyMapNpc[i].Vital[n] = buffer.ReadInt32();
             }
@@ -1035,7 +1035,7 @@ namespace Client
                 withBlock.Num = buffer.ReadInt32();
                 withBlock.X = (byte)buffer.ReadInt32();
                 withBlock.Y = (byte)buffer.ReadInt32();
-                withBlock.Dir = buffer.ReadInt32();
+                withBlock.Dir = buffer.ReadByte();
             } 
 
             buffer.Dispose();
@@ -1043,16 +1043,16 @@ namespace Client
 
         public static void Packet_MapNpcUpdate(ref byte[] data)
         {
-            int NpcNum;
+            int npcNum;
             var buffer = new ByteStream(data);
 
-            NpcNum = buffer.ReadInt32();
+            npcNum = buffer.ReadInt32();
 
-            ref var withBlock = ref Data.MyMapNpc[NpcNum];
+            ref var withBlock = ref Data.MyMapNpc[npcNum];
             withBlock.Num = buffer.ReadInt32();
-            withBlock.X = (byte)buffer.ReadInt32();
-            withBlock.Y = (byte)buffer.ReadInt32();
-            withBlock.Dir = buffer.ReadInt32();
+            withBlock.X = buffer.ReadInt32();
+            withBlock.Y = buffer.ReadInt32();
+            withBlock.Dir = buffer.ReadByte();
 
             buffer.Dispose();  
         }

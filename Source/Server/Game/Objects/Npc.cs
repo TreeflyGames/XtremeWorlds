@@ -30,10 +30,10 @@ namespace Server
 
         }
 
-        public static void SpawnNpc(int MapNpcNum, int mapNum)
+        public static void SpawnNpc(int mapNpcNum, int mapNum)
         {
             var buffer = new ByteStream(4);
-            int NpcNum;
+            int npcNum;
             int x;
             int y;
             int i = 0;
@@ -42,29 +42,29 @@ namespace Server
             if (Data.Map[mapNum].NoRespawn)
                 return;
 
-            NpcNum = Data.Map[mapNum].Npc[(int)MapNpcNum];
+            npcNum = Data.Map[mapNum].Npc[mapNpcNum];
 
-            if (MapNpcNum == 0 || NpcNum < 0 || NpcNum > Core.Constant.MAX_NPCS)
+            if (mapNpcNum == 0 || npcNum < 0 || npcNum > Core.Constant.MAX_NPCS)
             {
                 return;
             }
 
-            if (!(Data.Npc[(int)NpcNum].SpawnTime == (byte)Clock.Instance.TimeOfDay) & Data.Npc[(int)NpcNum].SpawnTime != 0)
+            if (!(Data.Npc[(int)npcNum].SpawnTime == (byte)Clock.Instance.TimeOfDay) & Data.Npc[(int)npcNum].SpawnTime != 0)
             {
-                Database.ClearMapNpc((int)MapNpcNum, mapNum);
+                Database.ClearMapNpc(mapNpcNum, mapNum);
                 SendMapNpcsToMap(mapNum);
                 return;
             }
 
-            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Num = NpcNum;
-            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Target = 0;
-            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].TargetType = 0; // clear
+            Data.MapNpc[mapNum].Npc[mapNpcNum].Num = npcNum;
+            Data.MapNpc[mapNum].Npc[mapNpcNum].Target = 0;
+            Data.MapNpc[mapNum].Npc[mapNpcNum].TargetType = 0; // clear
 
             var loopTo = System.Enum.GetValues(typeof(Core.Vital)).Length;
             for (i = 0; i < (int)loopTo; i++)
-                Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Vital[i] = GameLogic.GetNpcMaxVital(NpcNum, (Core.Vital)i);
+                Data.MapNpc[mapNum].Npc[mapNpcNum].Vital[i] = GameLogic.GetNpcMaxVital(npcNum, (Core.Vital)i);
 
-            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = (int)Conversion.Int(VBMath.Rnd() * 4f);
+            Data.MapNpc[mapNum].Npc[mapNpcNum].Dir = (byte)(VBMath.Rnd() * 4f);
 
             // Check if theres a spawn tile for the specific npc
             var loopTo1 = (int)Data.Map[mapNum].MaxX;
@@ -75,11 +75,10 @@ namespace Server
                 {
                     if (Data.Map[mapNum].Tile[x, y].Type == TileType.NpcSpawn)
                     {
-                        if (Data.Map[mapNum].Tile[x, y].Data1 == MapNpcNum)
+                        if (Data.Map[mapNum].Tile[x, y].Data1 == mapNpcNum)
                         {
-                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
-                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
-                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = Data.Map[mapNum].Tile[x, y].Data2;
+                            Data.MapNpc[mapNum].Npc[mapNpcNum].X = x * 32;
+                            Data.MapNpc[mapNum].Npc[mapNpcNum].Dir = (byte)Data.Map[mapNum].Tile[x, y].Data2;
                             spawned = true;
                             break;
                         }
@@ -104,8 +103,8 @@ namespace Server
                     // Check if the tile is walkable
                     if (NpcTileIsOpen(mapNum, x, y))
                     {
-                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
-                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
+                        Data.MapNpc[mapNum].Npc[mapNpcNum].X = x * 32;
+                        Data.MapNpc[mapNum].Npc[mapNpcNum].Y = y * 32;
                         spawned = true;
                         break;
                     }
@@ -124,8 +123,8 @@ namespace Server
                     {
                         if (NpcTileIsOpen(mapNum, x, y))
                         {
-                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)x;
-                            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)y;
+                            Data.MapNpc[mapNum].Npc[mapNpcNum].X = x * 32;
+                            Data.MapNpc[mapNum].Npc[mapNpcNum].Y = y * 32;
                             spawned = true;
                         }
                     }
@@ -136,20 +135,20 @@ namespace Server
             if (spawned)
             {
                 buffer.WriteInt32((int)ServerPackets.SSpawnNpc);
-                buffer.WriteInt32((int)MapNpcNum);
-                buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Num);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir);
+                buffer.WriteInt32(mapNpcNum);
+                buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[mapNpcNum].Num);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[mapNpcNum].X);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[mapNpcNum].Y);
+                buffer.WriteByte(Data.MapNpc[mapNum].Npc[mapNpcNum].Dir);
 
                 var loopTo5 = (int)System.Enum.GetValues(typeof(Core.Vital)).Length;
                 for (i = 0; i < loopTo5; i++)
-                    buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Vital[i]);
+                    buffer.WriteInt32(Data.MapNpc[mapNum].Npc[mapNpcNum].Vital[i]);
 
                 NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             }
 
-            SendMapNpcVitals(mapNum, (byte)MapNpcNum);
+            SendMapNpcVitals(mapNum, (byte)mapNpcNum);
 
             buffer.Dispose();
         }
@@ -198,26 +197,33 @@ namespace Server
             int n2;
             int x;
             int y;
+            int tileX;
+            int tileY;
+            int npcX;
+            int npcY;
 
             // Check for subscript out of range
-            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNpcNum < 0 | MapNpcNum >= Core.Constant.MAX_MAP_NPCS | Dir < (byte) Direction.Up | Dir > (byte) Direction.DownRight)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | MapNpcNum < 0 | MapNpcNum >= Core.Constant.MAX_MAP_NPCS | Dir < (byte)Direction.Up | Dir > (byte)Direction.DownRight)
             {
                 return CanNpcMoveRet;
             }
 
-            x = Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X;
-            y = Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y;
+            x = Data.MapNpc[mapNum].Npc[MapNpcNum].X;
+            y = Data.MapNpc[mapNum].Npc[MapNpcNum].Y;
+            tileX = (int)Math.Floor((double)x / 32);
+            tileY = (int)Math.Floor((double)y / 32);
+
             CanNpcMoveRet = true;
 
             switch (Dir)
             {
-                case (byte) Direction.Up:
+                case (byte)Direction.Up:
                     {
                         // Check to make sure not outside of boundaries
-                        if (y > 0)
+                        if (tileY > 0)
                         {
-                            n = (int)Data.Map[mapNum].Tile[x, y - 1].Type;
-                            n2 = (int)Data.Map[mapNum].Tile[x, y - 1].Type2;
+                            n = (int)Data.Map[mapNum].Tile[tileX, tileY - 1].Type;
+                            n2 = (int)Data.Map[mapNum].Tile[tileX, tileY - 1].Type2;
 
                             // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NpcSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NpcSpawn)
@@ -232,7 +238,7 @@ namespace Server
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
-                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X & GetPlayerY(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y - 1)
+                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == tileX & GetPlayerY(i) == tileY - 1)
                                     {
                                         CanNpcMoveRet = false;
                                         return CanNpcMoveRet;
@@ -244,7 +250,9 @@ namespace Server
                             var loopTo1 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo1; i++)
                             {
-                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & Data.MapNpc[mapNum].Npc[i].X == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X & Data.MapNpc[mapNum].Npc[i].Y == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y - 1)
+                                npcX = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].X / 32);
+                                npcY = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].Y / 32);
+                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & npcX == tileX & npcY == tileY - 1)
                                 {
                                     CanNpcMoveRet = false;
                                     return CanNpcMoveRet;
@@ -259,28 +267,25 @@ namespace Server
                         break;
                     }
 
-                case (byte) Direction.Down:
+                case (byte)Direction.Down:
                     {
-                        // Check to make sure not outside of boundaries
-                        if (y < Data.Map[mapNum].MaxY - 1)
+                        if (tileY < Data.Map[mapNum].MaxY - 1)
                         {
-                            n = (int)Data.Map[mapNum].Tile[x, y + 1].Type;
-                            n2 = (int)Data.Map[mapNum].Tile[x, y + 1].Type2;
+                            n = (int)Data.Map[mapNum].Tile[tileX, tileY + 1].Type;
+                            n2 = (int)Data.Map[mapNum].Tile[tileX, tileY + 1].Type2;
 
-                            // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NpcSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NpcSpawn)
                             {
                                 CanNpcMoveRet = false;
                                 return CanNpcMoveRet;
                             }
 
-                            // Check to make sure that there is not a player in the way
                             var loopTo2 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i < loopTo2; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
-                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X & GetPlayerY(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y + 1)
+                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == tileX & GetPlayerY(i) == tileY + 1)
                                     {
                                         CanNpcMoveRet = false;
                                         return CanNpcMoveRet;
@@ -288,11 +293,12 @@ namespace Server
                                 }
                             }
 
-                            // Check to make sure that there is not another npc in the way
                             var loopTo3 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo3; i++)
                             {
-                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & Data.MapNpc[mapNum].Npc[i].X == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X & Data.MapNpc[mapNum].Npc[i].Y == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y + 1)
+                                npcX = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].X / 32);
+                                npcY = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].Y / 32);
+                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & npcX == tileX & npcY == tileY + 1)
                                 {
                                     CanNpcMoveRet = false;
                                     return CanNpcMoveRet;
@@ -309,26 +315,23 @@ namespace Server
 
                 case (byte)Direction.Left:
                     {
-                        // Check to make sure not outside of boundaries
-                        if (x > 0)
+                        if (tileX > 0)
                         {
-                            n = (int)Data.Map[mapNum].Tile[x - 1, y].Type;
-                            n2 = (int)Data.Map[mapNum].Tile[x - 1, y].Type2;
+                            n = (int)Data.Map[mapNum].Tile[tileX - 1, tileY].Type;
+                            n2 = (int)Data.Map[mapNum].Tile[tileX - 1, tileY].Type2;
 
-                            // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NpcSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NpcSpawn)
                             {
                                 CanNpcMoveRet = false;
                                 return CanNpcMoveRet;
                             }
 
-                            // Check to make sure that there is not a player in the way
                             var loopTo4 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i < loopTo4; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
-                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X - 1 & GetPlayerY(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y)
+                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == tileX - 1 & GetPlayerY(i) == tileY)
                                     {
                                         CanNpcMoveRet = false;
                                         return CanNpcMoveRet;
@@ -336,11 +339,12 @@ namespace Server
                                 }
                             }
 
-                            // Check to make sure that there is not another npc in the way
                             var loopTo5 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo5; i++)
                             {
-                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & Data.MapNpc[mapNum].Npc[i].X == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X - 1 & Data.MapNpc[mapNum].Npc[i].Y == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y)
+                                npcX = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].X / 32);
+                                npcY = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].Y / 32);
+                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & npcX == tileX - 1 & npcY == tileY)
                                 {
                                     CanNpcMoveRet = false;
                                     return CanNpcMoveRet;
@@ -357,26 +361,23 @@ namespace Server
 
                 case (byte)Direction.Right:
                     {
-                        // Check to make sure not outside of boundaries
-                        if (x < Data.Map[mapNum].MaxX - 1)
+                        if (tileX < Data.Map[mapNum].MaxX - 1)
                         {
-                            n = (int)Data.Map[mapNum].Tile[x + 1, y].Type;
-                            n2 = (int)Data.Map[mapNum].Tile[x + 1, y].Type2;
+                            n = (int)Data.Map[mapNum].Tile[tileX + 1, tileY].Type;
+                            n2 = (int)Data.Map[mapNum].Tile[tileX + 1, tileY].Type2;
 
-                            // Check to make sure that the tile is walkable
                             if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NpcSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NpcSpawn)
                             {
                                 CanNpcMoveRet = false;
                                 return CanNpcMoveRet;
                             }
 
-                            // Check to make sure that there is not a player in the way
                             var loopTo6 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i < loopTo6; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
-                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X + 1 & GetPlayerY(i) == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y)
+                                    if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == tileX + 1 & GetPlayerY(i) == tileY)
                                     {
                                         CanNpcMoveRet = false;
                                         return CanNpcMoveRet;
@@ -384,11 +385,12 @@ namespace Server
                                 }
                             }
 
-                            // Check to make sure that there is not another npc in the way
                             var loopTo7 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo7; i++)
                             {
-                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & Data.MapNpc[mapNum].Npc[i].X == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X + 1 & Data.MapNpc[mapNum].Npc[i].Y == Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y)
+                                npcX = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].X / 32);
+                                npcY = (int)Math.Floor((double)Data.MapNpc[mapNum].Npc[i].Y / 32);
+                                if (i != MapNpcNum & Data.MapNpc[mapNum].Npc[i].Num >= 0 & npcX == tileX + 1 & npcY == tileY)
                                 {
                                     CanNpcMoveRet = false;
                                     return CanNpcMoveRet;
@@ -402,17 +404,15 @@ namespace Server
 
                         break;
                     }
-
             }
 
-            if (Data.MapNpc[mapNum].Npc[(int)MapNpcNum].SkillBuffer >= 0)
+            if (Data.MapNpc[mapNum].Npc[MapNpcNum].SkillBuffer >= 0)
                 CanNpcMoveRet = false;
 
             return CanNpcMoveRet;
-
         }
 
-        public static void NpcMove(int mapNum, int MapNpcNum, int Dir, int Movement)
+        public static void NpcMove(int mapNum, int MapNpcNum, byte Dir, int Movement)
         {
             var buffer = new ByteStream(4);
 
@@ -422,19 +422,19 @@ namespace Server
                 return;
             }
 
-            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = Dir;
+            Data.MapNpc[mapNum].Npc[MapNpcNum].Dir = Dir;
 
             switch (Dir)
             {
                 case  (byte) Direction.Up:
                     {
-                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y - 1);
+                        Data.MapNpc[mapNum].Npc[MapNpcNum].Y -= 1;
 
-                        buffer.WriteInt32((int) ServerPackets.SNpcMove);
-                        buffer.WriteInt32((int)MapNpcNum);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir);
+                        buffer.WriteInt32((int)ServerPackets.SNpcMove);
+                        buffer.WriteInt32(MapNpcNum);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].X);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].Y);
+                        buffer.WriteByte(Data.MapNpc[mapNum].Npc[MapNpcNum].Dir);
                         buffer.WriteInt32(Movement);
 
                         NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
@@ -442,13 +442,13 @@ namespace Server
                     }
                 case (byte) Direction.Down:
                     {
-                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y = (byte)(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y + 1);
+                        Data.MapNpc[mapNum].Npc[MapNpcNum].Y += 1;
 
                         buffer.WriteInt32((int) ServerPackets.SNpcMove);
-                        buffer.WriteInt32((int)MapNpcNum);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir);
+                        buffer.WriteInt32(MapNpcNum);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].X);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].Y);
+                        buffer.WriteByte(Data.MapNpc[mapNum].Npc[MapNpcNum].Dir);
                         buffer.WriteInt32(Movement);
 
                         NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
@@ -456,13 +456,13 @@ namespace Server
                     }
                 case (byte) Direction.Left:
                     {
-                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X - 1);
+                        Data.MapNpc[mapNum].Npc[MapNpcNum].X -= 1;
 
                         buffer.WriteInt32((int) ServerPackets.SNpcMove);
-                        buffer.WriteInt32((int)MapNpcNum);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir);
+                        buffer.WriteInt32(MapNpcNum);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].X);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].Y);
+                        buffer.WriteByte(Data.MapNpc[mapNum].Npc[MapNpcNum].Dir);
                         buffer.WriteInt32(Movement);
 
                         NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
@@ -470,13 +470,13 @@ namespace Server
                     }
                 case (byte) Direction.Right:
                     {
-                        Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X = (byte)(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X + 1);
+                        Data.MapNpc[mapNum].Npc[MapNpcNum].X += 1;
 
                         buffer.WriteInt32((int) ServerPackets.SNpcMove);
-                        buffer.WriteInt32((int)MapNpcNum);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].X);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Y);
-                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir);
+                        buffer.WriteInt32(MapNpcNum);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].X);
+                        buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].Y);
+                        buffer.WriteByte(Data.MapNpc[mapNum].Npc[MapNpcNum].Dir);
                         buffer.WriteInt32(Movement);
 
                         NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
@@ -487,7 +487,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void NpcDir(int mapNum, int MapNpcNum, int Dir)
+        public static void NpcDir(int mapNum, int MapNpcNum, byte Dir)
         {
             var buffer = new ByteStream(4);
 
@@ -497,11 +497,11 @@ namespace Server
                 return;
             }
 
-            Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Dir = Dir;
+            Data.MapNpc[mapNum].Npc[MapNpcNum].Dir = Dir;
 
             buffer.WriteInt32((int) ServerPackets.SNpcDir);
-            buffer.WriteInt32((int)MapNpcNum);
-            buffer.WriteInt32(Dir);
+            buffer.WriteInt32(MapNpcNum);
+            buffer.WriteByte(Dir);
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
@@ -525,7 +525,7 @@ namespace Server
                 buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[i].Num);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].X);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Y);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Dir);
+                buffer.WriteByte(Data.MapNpc[mapNum].Npc[i].Dir);
             }
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
@@ -752,15 +752,15 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((int) ServerPackets.SMapNpcUpdate);
+            buffer.WriteInt32((int)ServerPackets.SMapNpcUpdate);
 
-            buffer.WriteInt32((int)MapNpcNum);
+            buffer.WriteInt32(MapNpcNum);
 
-            var withBlock = Data.MapNpc[mapNum].Npc[(int)MapNpcNum];
-            buffer.WriteInt32((int)withBlock.Num);
+            var withBlock = Data.MapNpc[mapNum].Npc[MapNpcNum];
+            buffer.WriteInt32(withBlock.Num);
             buffer.WriteInt32(withBlock.X);
             buffer.WriteInt32(withBlock.Y);
-            buffer.WriteInt32(withBlock.Dir);
+            buffer.WriteByte(withBlock.Dir);
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
@@ -778,7 +778,7 @@ namespace Server
 
             var loopTo = System.Enum.GetValues(typeof(Core.Vital)).Length;
             for (i = 0; i < (int)loopTo; i++)
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[(int)MapNpcNum].Vital[i]);
+                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[MapNpcNum].Vital[i]);
 
             NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 

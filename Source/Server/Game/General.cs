@@ -10,6 +10,7 @@ using Reoria.Engine.Container.Configuration.Interfaces;
 using Reoria.Engine.Container.Interfaces;
 using Reoria.Engine.Container.Logging;
 using Reoria.Engine.Container.Logging.Interfaces;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
@@ -560,7 +561,7 @@ namespace Server
             {
                 case "/teleport":
                     if (parts.Length == 3 && int.TryParse(parts[1], out int x) && int.TryParse(parts[2], out int y))
-                        await TeleportPlayerAsync(playerIndex, (byte)x, (byte)y);
+                        await TeleportPlayerAsync(playerIndex, x, y);
                     else
                         NetworkSend.PlayerMsg(playerIndex, "Usage: /teleport <x> <y>", (int)Core.Color.BrightRed);
                     break;
@@ -611,14 +612,15 @@ namespace Server
             }
         }
 
-        private static async System.Threading.Tasks.Task TeleportPlayerAsync(int playerIndex, byte x, byte y)
+        private static async System.Threading.Tasks.Task TeleportPlayerAsync(int playerIndex, int x, int y)
         {
             try
-            {
+            {               
                 ref var player = ref Core.Data.Player[playerIndex];
-                if (x < 0 || x >= 100 || y < 0 || y >= 100)
+
+                if (x < 0 || x >= Data.Map[player.Map].MaxX || y < 0 || y >= Data.Map[player.Map].MaxY)
                 {
-                    NetworkSend.PlayerMsg(playerIndex, "Coordinates out of bounds.", (int)Core.Color.BrightRed);
+                    NetworkSend.PlayerMsg(playerIndex, "Invalid coordinates for teleportation.", (int)Core.Color.BrightRed);
                     return;
                 }
 

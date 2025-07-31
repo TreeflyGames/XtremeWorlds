@@ -445,23 +445,23 @@ namespace Client
 
         private static void Packet_NpcMove(ref byte[] data)
         {
-            double MapNpcNum;
+            int mapNpcNum;
             int movement;
             int x;
             int y;
-            int dir;
+            byte dir;
             var buffer = new ByteStream(data);
 
-            MapNpcNum = buffer.ReadInt32();
+            mapNpcNum = buffer.ReadInt32();
             x = buffer.ReadInt32();
             y = buffer.ReadInt32();
-            dir = buffer.ReadInt32();
+            dir = buffer.ReadByte();
             movement = buffer.ReadInt32();
 
-            ref var withBlock = ref Data.MyMapNpc[(int)MapNpcNum];
-            withBlock.X = (byte)x;
-            withBlock.Y = (byte)y;
-            withBlock.Dir = (byte)dir;
+            ref var withBlock = ref Data.MyMapNpc[mapNpcNum];
+            withBlock.X = x;
+            withBlock.Y = y;
+            withBlock.Dir = dir;
             withBlock.Moving = (byte)movement;
 
             buffer.Dispose();
@@ -469,12 +469,12 @@ namespace Client
 
         private static void Packet_NpcDir(ref byte[] data)
         {
-            int dir;
+            byte dir;
             int i;
             var buffer = new ByteStream(data);
 
             i = buffer.ReadInt32();
-            dir = buffer.ReadInt32();
+            dir = buffer.ReadByte();
 
             {
                 ref var withBlock = ref Data.MyMapNpc[i];
@@ -591,9 +591,9 @@ namespace Client
 
             ref var withBlock = ref Data.MyMapNpc[i];
             withBlock.Num = buffer.ReadInt32();
-            withBlock.X = (byte)buffer.ReadInt32();
-            withBlock.Y = (byte)buffer.ReadInt32();
-            withBlock.Dir = buffer.ReadInt32();
+            withBlock.X = buffer.ReadInt32();
+            withBlock.Y = buffer.ReadInt32();
+            withBlock.Dir = buffer.ReadByte();
 
             for (i = 0; i < Enum.GetValues(typeof(Core.Vital)).Length; i++)
                 withBlock.Vital[i] = buffer.ReadInt32();

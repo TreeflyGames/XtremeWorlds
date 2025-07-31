@@ -680,7 +680,7 @@ public class Script
                                     {
                                         if (Server.Npc.CanNpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
                                         {
-                                            Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementState.Walking);
+                                            Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i, (int)MovementState.Walking);
                                         }
                                     }
                                     else
@@ -691,7 +691,7 @@ public class Script
                                             i = (int)Math.Round(new Random().NextDouble() * 3) + 1;
                                             if (Server.Npc.CanNpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
                                             {
-                                                Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementState.Walking);
+                                                Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i, (int)MovementState.Walking);
                                             }
                                         }
                                     }
@@ -709,7 +709,7 @@ public class Script
                                     i = (int)Math.Round(new Random().NextDouble() * 4);
                                     if (Server.Npc.CanNpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i))
                                     {
-                                        Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), i, (int)MovementState.Walking);
+                                        Server.Npc.NpcMove(mapNum, Core.Globals.Entity.Index(entity), (byte)i, (int)MovementState.Walking);
                                     }
                                 }
                             }

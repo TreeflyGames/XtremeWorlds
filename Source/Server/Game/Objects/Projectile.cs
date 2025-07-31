@@ -247,8 +247,8 @@ namespace Server
             buffer.WriteInt32(ProjectileNum);
             buffer.WriteInt32(withBlock.ProjectileNum);
             buffer.WriteInt32(withBlock.Owner);
-            buffer.WriteInt32(withBlock.OwnerType);
-            buffer.WriteInt32(withBlock.Dir);
+            buffer.WriteByte(withBlock.OwnerType);
+            buffer.WriteByte(withBlock.Dir);
             buffer.WriteInt32(withBlock.X);
             buffer.WriteInt32(withBlock.Y);          
 
@@ -299,7 +299,7 @@ namespace Server
                 withBlock.ProjectileNum = ProjectileNum;
                 withBlock.Owner = index;
                 withBlock.OwnerType = (byte)TargetType.Player;
-                withBlock.Dir = (byte)GetPlayerDir(index);
+                withBlock.Dir = GetPlayerDir(index);
                 withBlock.X = GetPlayerX(index);
                 withBlock.Y = GetPlayerY(index);
                 withBlock.Timer = General.GetTimeMs() + 60000;
