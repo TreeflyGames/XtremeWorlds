@@ -1398,7 +1398,7 @@ static void LoadFonts()
             RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height);
         }
 
-        public static void DrawNpc(int MapNpcNum)
+        public static void DrawNpc(int mapNpcNum)
         {
             byte anim;
             int x;
@@ -1409,12 +1409,12 @@ static void LoadFonts()
             int attackSpeed = 1000;
 
             // Check if Npc exists
-            if (Data.MyMapNpc[(int)MapNpcNum].Num < 0 ||
-                Data.MyMapNpc[(int)MapNpcNum].Num > Core.Constant.MAX_NPCS)
+            if (Data.MyMapNpc[(int)mapNpcNum].Num < 0 ||
+                Data.MyMapNpc[(int)mapNpcNum].Num > Core.Constant.MAX_NPCS)
                 return;
 
-            x = (int)Math.Floor((double)Data.MyMapNpc[(int)MapNpcNum].X / 32);
-            y = (int)Math.Floor((double)Data.MyMapNpc[(int)MapNpcNum].Y / 32);
+            x = (int)Math.Floor((double)Data.MyMapNpc[(int)mapNpcNum].X / 32);
+            y = (int)Math.Floor((double)Data.MyMapNpc[(int)mapNpcNum].Y / 32);
 
             // Ensure Npc is within the tile view range
             if (x < GameState.TileView.Left |
@@ -1426,10 +1426,10 @@ static void LoadFonts()
                 return;
 
             // Stream Npc if not yet loaded
-            Database.StreamNpc((int)Data.MyMapNpc[(int)MapNpcNum].Num);
+            Database.StreamNpc((int)Data.MyMapNpc[(int)mapNpcNum].Num);
 
             // Get the sprite of the Npc
-            sprite = Data.Npc[(int)Data.MyMapNpc[(int)MapNpcNum].Num].Sprite;
+            sprite = Data.Npc[(int)Data.MyMapNpc[(int)mapNpcNum].Num].Sprite;
 
             // Validate sprite
             if (sprite < 1 | sprite > GameState.NumCharacters)
@@ -1439,19 +1439,19 @@ static void LoadFonts()
             anim = 0;
 
             // Check for attacking animation
-            if (Data.MyMapNpc[(int)MapNpcNum].AttackTimer + attackSpeed / 2d > General.GetTickCount() &&
-                Data.MyMapNpc[(int)MapNpcNum].Attacking == 1)
+            if (Data.MyMapNpc[(int)mapNpcNum].AttackTimer + attackSpeed / 2d > General.GetTickCount() &&
+                Data.MyMapNpc[(int)mapNpcNum].Attacking == 1)
             {
                 anim = 3;
             }
             else
             {
-                anim = (byte)Data.MyMapNpc[(int)MapNpcNum].Steps;
+                anim = (byte)Data.MyMapNpc[(int)mapNpcNum].Steps;
             }
 
             // Reset attacking state if attack timer has passed
             {
-                ref var withBlock = ref Data.MyMapNpc[(int)MapNpcNum];
+                ref var withBlock = ref Data.MyMapNpc[(int)mapNpcNum];
                 if (withBlock.AttackTimer + attackSpeed < General.GetTickCount())
                 {
                     withBlock.Attacking = 0;
@@ -1460,7 +1460,7 @@ static void LoadFonts()
             }
 
             // Set sprite sheet position based on direction
-            switch (Data.MyMapNpc[(int)MapNpcNum].Dir)
+            switch (Data.MyMapNpc[(int)mapNpcNum].Dir)
             {
                 case (int)Direction.Up:
                 {
@@ -1497,7 +1497,7 @@ static void LoadFonts()
                                 4d));
 
             // Calculate X and Y coordinates for rendering
-            x = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].X -
+            x = (int)Math.Round(Data.MyMapNpc[(int)mapNpcNum].X -
                                 (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width /
                                  4d -
                                  32d) / 2d);
@@ -1505,7 +1505,7 @@ static void LoadFonts()
             if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d > 32d)
             {
                 // Larger sprites need an offset for height adjustment
-                y = (int)Math.Round(Data.MyMapNpc[(int)MapNpcNum].Y -
+                y = (int)Math.Round(Data.MyMapNpc[(int)mapNpcNum].Y -
                                     (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString()))
                                             .Height /
                                         4d - 32d));
@@ -1513,7 +1513,7 @@ static void LoadFonts()
             else
             {
                 // Normal sprite height
-                y = Data.MyMapNpc[(int)MapNpcNum].Y * GameState.SizeY;
+                y = Data.MyMapNpc[(int)mapNpcNum].Y * GameState.SizeY;
             }
 
             // Draw shadow and Npc sprite
