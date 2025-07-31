@@ -739,7 +739,7 @@ namespace Server
                 buffer.WriteInt32((int)Data.MapNpc[mapNum].Npc[i].Num);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].X);
                 buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Y);
-                buffer.WriteInt32(Data.MapNpc[mapNum].Npc[i].Dir);
+                buffer.WriteByte(Data.MapNpc[mapNum].Npc[i].Dir);
             }
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
