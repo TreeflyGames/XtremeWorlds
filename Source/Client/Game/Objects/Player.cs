@@ -653,50 +653,50 @@ namespace Client
             {
                 case (byte)Direction.Up:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex);
-                        y = GetPlayerRawY(GameState.MyIndex) - 1;
+                        x = GetPlayerX(GameState.MyIndex);
+                        y = GetPlayerY(GameState.MyIndex) - 1;
                         break;
                     }
                 case (byte)Direction.Down:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex);
-                        y = GetPlayerRawY(GameState.MyIndex) + 1;
+                        x = GetPlayerX(GameState.MyIndex);
+                        y = GetPlayerY(GameState.MyIndex) + 1;
                         break;
                     }
                 case (byte)Direction.Left:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex) - 1;
-                        y = GetPlayerRawY(GameState.MyIndex);
+                        x = GetPlayerX(GameState.MyIndex) - 1;
+                        y = GetPlayerY(GameState.MyIndex);
                         break;
                     }
                 case (byte)Direction.Right:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex) + 1;
-                        y = GetPlayerRawY(GameState.MyIndex);
+                        x = GetPlayerX(GameState.MyIndex) + 1;
+                        y = GetPlayerY(GameState.MyIndex);
                         break;
                     }
                 case (byte)Direction.UpLeft:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex) - 1;
-                        y = GetPlayerRawY(GameState.MyIndex) - 1;
+                        x = GetPlayerX(GameState.MyIndex) - 1;
+                        y = GetPlayerY(GameState.MyIndex) - 1;
                         break;
                     }
                 case (byte)Direction.UpRight:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex) + 1;
-                        y = GetPlayerRawY(GameState.MyIndex) - 1;
+                        x = GetPlayerX(GameState.MyIndex) + 1;
+                        y = GetPlayerY(GameState.MyIndex) - 1;
                         break;
                     }
                 case (byte)Direction.DownLeft:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex) - 1;
-                        y = GetPlayerRawY(GameState.MyIndex) + 1;
+                        x = GetPlayerX(GameState.MyIndex) - 1;
+                        y = GetPlayerY(GameState.MyIndex) + 1;
                         break;
                     }
                 case (byte)Direction.DownRight:
                     {
-                        x = GetPlayerRawX(GameState.MyIndex) + 1;
-                        y = GetPlayerRawY(GameState.MyIndex) + 1;
+                        x = GetPlayerX(GameState.MyIndex) + 1;
+                        y = GetPlayerY(GameState.MyIndex) + 1;
                         break;
                     }
             }
