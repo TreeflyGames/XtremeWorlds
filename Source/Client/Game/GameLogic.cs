@@ -1408,13 +1408,19 @@ namespace Client
                                         type = TileType.NoCrossing;
                                     }
 
-                                    if (frmEditor_Map.Instance.cmbAttribute.SelectedIndex == 1)
+                                    if (frmEditor_Map.Instance.cmbAttribute.InvokeRequired)
                                     {
-                                        Data.MyMap.Tile[x, y].Type = type;
-                                    }
-                                    else
-                                    {
-                                        Data.MyMap.Tile[x, y].Type2 = type;
+                                        int selectedIndex = (int)frmEditor_Map.Instance.cmbAttribute.Invoke(
+                                            new Func<int>(() => frmEditor_Map.Instance.cmbAttribute.SelectedIndex));
+
+                                        if (selectedIndex == 1)
+                                        {
+                                            Data.MyMap.Tile[x, y].Type = type;
+                                        }
+                                        else
+                                        {
+                                            Data.MyMap.Tile[x, y].Type2 = type;
+                                        }
                                     }
                                 }
                             }
