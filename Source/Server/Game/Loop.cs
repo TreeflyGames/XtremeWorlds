@@ -58,7 +58,7 @@ namespace Server
                 {
                     for (int index = 0; index < NetworkConfig.Socket.HighIndex; index++)
                     {
-                        if (Core.Data.Player[index].Moving > 0 && Core.Data.Player[index].IsMoving)
+                        if (Core.Data.Player[index].Moving > 0)
                         {
                             Player.PlayerMove(index, Core.Data.Player[index].Dir, Core.Data.Player[index].Moving, false);
                         }

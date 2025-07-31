@@ -217,14 +217,14 @@ namespace Core.Global
         public static int GetPlayerRawX(int index)
         {
             int GetPlayerXRet = default;
-            GetPlayerXRet = Data.Player[index].X / 32;
+            GetPlayerXRet = Data.Player[index].X;
             return GetPlayerXRet;
         }
 
         public static int GetPlayerRawY(int index)
         {
             int GetPlayerYRet = default;
-            GetPlayerYRet = Data.Player[index].Y / 32;
+            GetPlayerYRet = Data.Player[index].Y;
             return GetPlayerYRet;
         }
 

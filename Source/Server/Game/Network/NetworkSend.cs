@@ -859,6 +859,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerY(index));
             buffer.WriteByte(GetPlayerDir(index));
             buffer.WriteByte(Data.Player[index].Moving);
+            buffer.WriteBoolean(Data.Player[index].IsMoving);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -875,6 +876,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerY(playerNum));
             buffer.WriteByte(GetPlayerDir(playerNum));
             buffer.WriteByte(Data.Player[index].Moving);
+            buffer.WriteBoolean(Data.Player[index].IsMoving);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
@@ -891,22 +893,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerY(index));
             buffer.WriteByte(GetPlayerDir(index));
             buffer.WriteByte(Data.Player[index].Moving);
-
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
-
-            buffer.Dispose();
-        }
-
-        public static void SendPlayerMove(int index, int Movement)
-        {
-            var buffer = new ByteStream(4);
-
-            buffer.WriteInt32((int)ServerPackets.SPlayerMove);
-            buffer.WriteInt32(index);
-            buffer.WriteInt32(GetPlayerX(index));
-            buffer.WriteInt32(GetPlayerY(index));
-            buffer.WriteInt32(GetPlayerDir(index));
-            buffer.WriteInt32(Movement);
+            buffer.WriteBoolean(Data.Player[index].IsMoving);
 
             NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
