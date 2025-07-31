@@ -318,20 +318,21 @@ namespace Server
         public static bool IsOneBlockAway(int x1, int y1, int x2, int y2) =>
             (x1 == x2 && (y1 == y2 - 1 || y1 == y2 + 1)) || (y1 == y2 && (x1 == x2 - 1 || x1 == x2 + 1));
 
-        public static int GetNpcDir(int x, int y, int x1, int y1)
+        public static byte GetNpcDir(int x, int y, int x1, int y1)
         {
-            int direction = (int)Direction.Right, maxDistance = 0;
+            byte direction = (int)Direction.Right;
+            int maxDistance = 0;
             UpdateDirectionAndDistance(x - x1, (int)Direction.Right, (int)Direction.Left, ref direction, ref maxDistance);
             UpdateDirectionAndDistance(y - y1, (int)Direction.Down, (int)Direction.Up, ref direction, ref maxDistance);
             return direction;
         }
 
-        private static void UpdateDirectionAndDistance(int diff, int posDir, int negDir, ref int direction, ref int maxDistance)
+        private static void UpdateDirectionAndDistance(int diff, int posDir, int negDir, ref byte direction, ref int maxDistance)
         {
             int absDiff = Math.Abs(diff);
             if (absDiff > maxDistance)
             {
-                direction = diff > 0 ? posDir : negDir;
+                direction = (byte)(diff > 0 ? posDir : negDir);
                 maxDistance = absDiff;
             }
         }
@@ -508,7 +509,8 @@ namespace Server
         {
             if (!IsValidPlayerEvent(playerId, mapNum, eventId)) return (int)Direction.Right;
             var (px, py, ex, ey, _) = GetPlayerAndEventPositions(playerId, mapNum, eventId);
-            int direction = (int)Direction.Right, maxDistance = 0;
+            byte direction = (int)Direction.Right;
+            int maxDistance = 0;
             UpdateDirectionAndDistance(px - ex, (int)Direction.Left, (int)Direction.Right, ref direction, ref maxDistance);
             UpdateDirectionAndDistance(py - ey, (int)Direction.Up, (int)Direction.Down, ref direction, ref maxDistance);
             return direction;
