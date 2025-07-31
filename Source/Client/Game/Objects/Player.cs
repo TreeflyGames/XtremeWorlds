@@ -179,7 +179,7 @@ namespace Client
                     NetworkSend.SendPlayerMove();
                 }
 
-                if (Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == TileType.Warp | Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerRawY(GameState.MyIndex)].Type2 == TileType.Warp)
+                if (Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == TileType.Warp | Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type2 == TileType.Warp)
                 {
                     GameState.GettingMap = true;
                 }
