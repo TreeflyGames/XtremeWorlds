@@ -448,7 +448,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                 if (GetPlayerY(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Direction.Up))
+                    if (CheckPlayerDir((byte)Direction.Up))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.Up)
@@ -471,7 +471,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                 if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY - 1)
                 {
-                    if (CheckDirection((byte)Direction.Down))
+                    if (CheckPlayerDir((byte)Direction.Down))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.Down)
@@ -494,7 +494,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
                 if (GetPlayerX(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Direction.Left))
+                    if (CheckPlayerDir((byte)Direction.Left))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.Left)
@@ -517,7 +517,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
                 if (GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
-                    if (CheckDirection((byte)Direction.Right))
+                    if (CheckPlayerDir((byte)Direction.Right))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.Right)
@@ -541,7 +541,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.UpRight);
                 if (GetPlayerY(GameState.MyIndex) > 0 & GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
-                    if (CheckDirection((byte)Direction.UpRight))
+                    if (CheckPlayerDir((byte)Direction.UpRight))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.UpRight)
@@ -563,7 +563,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.UpLeft);
                 if (GetPlayerY(GameState.MyIndex) > 0 & GetPlayerX(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Direction.UpLeft))
+                    if (CheckPlayerDir((byte)Direction.UpLeft))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.UpLeft)
@@ -585,7 +585,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.DownRight);
                 if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
-                    if (CheckDirection((byte)Direction.DownRight))
+                    if (CheckPlayerDir((byte)Direction.DownRight))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.DownRight)
@@ -607,7 +607,7 @@ namespace Client
                 SetPlayerDir(GameState.MyIndex, (int)Direction.DownLeft);
                 if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) > 0)
                 {
-                    if (CheckDirection((byte)Direction.DownLeft))
+                    if (CheckPlayerDir((byte)Direction.DownLeft))
                     {
                         CanMoveRet = false;
                         if (d != (int)Direction.DownLeft)
@@ -629,24 +629,24 @@ namespace Client
 
         }
 
-        public static bool CheckDirection(byte direction)
+        public static bool CheckPlayerDir(byte direction)
         {
-            bool CheckDirectionRet = default;
+            bool CheckPlayerDirRet = default;
             var x = default(int);
             var y = default(int);
             int i;
 
             if (GetPlayerX(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxX || GetPlayerY(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxY)
             {
-                CheckDirectionRet = true;
-                return CheckDirectionRet;
+                CheckPlayerDirRet = true;
+                return CheckPlayerDirRet;
             }
 
             // check directional blocking
             if (GameLogic.IsDirBlocked(ref Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].DirBlock, ref direction))
             {
-                CheckDirectionRet = true;
-                return CheckDirectionRet;
+                CheckPlayerDirRet = true;
+                return CheckPlayerDirRet;
             }
 
             switch (direction)
@@ -703,22 +703,22 @@ namespace Client
 
             if (x < 0 || y < 0 || x >= Data.MyMap.MaxX || y >= Data.MyMap.MaxY)
             {
-                CheckDirectionRet = true;
-                return CheckDirectionRet;
+                CheckPlayerDirRet = true;
+                return CheckPlayerDirRet;
             }
 
             // Check to see if the map tile is blocked or not
             if (Data.MyMap.Tile[x, y].Type == TileType.Blocked | Data.MyMap.Tile[x, y].Type2 == TileType.Blocked)
             {
-                CheckDirectionRet = true;
-                return CheckDirectionRet;
+                CheckPlayerDirRet = true;
+                return CheckPlayerDirRet;
             }
 
             // Check to see if the map tile is tree or not
             if (Data.MyMap.Tile[x, y].Type == TileType.Resource | Data.MyMap.Tile[x, y].Type2 == TileType.Resource)
             {
-                CheckDirectionRet = true;
-                return CheckDirectionRet;
+                CheckPlayerDirRet = true;
+                return CheckPlayerDirRet;
             }
 
             // Check to see if a player is already on that tile
@@ -732,8 +732,8 @@ namespace Client
                         {
                             if (Core.Data.Player[i].X == x & Core.Data.Player[i].Y == y)
                             {
-                                CheckDirectionRet = true;
-                                return CheckDirectionRet;
+                                CheckPlayerDirRet = true;
+                                return CheckPlayerDirRet;
                             }
                         }
                     }
@@ -746,8 +746,8 @@ namespace Client
                     {
                         if (Data.MyMapNpc[i].Num >= 0 & Data.MyMapNpc[i].X == x & Data.MyMapNpc[i].Y == y)
                         {
-                            CheckDirectionRet = true;
-                            return CheckDirectionRet;
+                            CheckPlayerDirRet = true;
+                            return CheckPlayerDirRet;
                         }
                     }
                 }
@@ -762,14 +762,14 @@ namespace Client
                     {
                         if (Data.MapEvents[i].WalkThrough == 0)
                         {
-                            CheckDirectionRet = true;
-                            return CheckDirectionRet;
+                            CheckPlayerDirRet = true;
+                            return CheckPlayerDirRet;
                         }
                     }
                 }
             }
 
-            return CheckDirectionRet;
+            return CheckPlayerDirRet;
 
         }
 
