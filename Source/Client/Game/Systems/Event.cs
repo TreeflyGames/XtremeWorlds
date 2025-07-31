@@ -95,8 +95,6 @@ namespace Client
             withBlock.Moving = 0;
             withBlock.X = buffer.ReadInt32();
             withBlock.Y = buffer.ReadInt32();
-            withBlock.XOffset = 0;
-            withBlock.YOffset = 0;
             withBlock.Position = buffer.ReadByte();
             withBlock.Visible = buffer.ReadBoolean();
             withBlock.WalkAnim = buffer.ReadInt32();
@@ -134,36 +132,9 @@ namespace Client
                 withBlock.X = x;
                 withBlock.Y = y;
                 withBlock.Dir = dir;
-                withBlock.XOffset = 0;
-                withBlock.YOffset = 0;
                 withBlock.Moving = 1;
                 withBlock.ShowDir = showDir;
                 withBlock.MovementSpeed = movementSpeed;
-
-                switch (dir)
-                {
-                    case (int)Direction.Up:
-                        {
-                            withBlock.YOffset = GameState.PicY;
-                            break;
-                        }
-                    case (int)Direction.Down:
-                        {
-                            withBlock.YOffset = GameState.PicY * -1;
-                            break;
-                        }
-                    case (int)Direction.Left:
-                        {
-                            withBlock.XOffset = GameState.PicX;
-                            break;
-                        }
-                    case (int)Direction.Right:
-                        {
-                            withBlock.XOffset = GameState.PicX * -1;
-                            break;
-                        }
-                }
-
             }
 
         }
@@ -183,8 +154,6 @@ namespace Client
                 ref var withBlock = ref Data.MapEvents[i];
                 withBlock.Dir = dir;
                 withBlock.ShowDir = dir;
-                withBlock.XOffset = 0;
-                withBlock.YOffset = 0;
                 withBlock.Moving = 0;
             }
 
@@ -606,59 +575,34 @@ namespace Client
 
             if (Data.MapEvents[id].Moving == 1)
             {
-                switch (Data.MapEvents[id].Dir)
-                {
-                    case (int)Direction.Up:
-                        {
-                            Data.MapEvents[id].YOffset =- 1;
-                            break;
-                        }
-                    case (int)Direction.Down:
-                        {
-                            Data.MapEvents[id].YOffset += 1;
-                            break;
-                        }
-                    case (int)Direction.Left:
-                        {
-                            Data.MapEvents[id].XOffset =- -1;
-                            break;
-                        }
-                    case (int)Direction.Right:
-                        {
-                            Data.MapEvents[id].XOffset =+ 1;
-
-                            break;
-                        }
-                }
-
                 // Check if completed walking over to the next tile
                 if (Data.MapEvents[id].Moving > 0)
                 {
                     if (Data.MapEvents[id].Dir == (int)Direction.Right | Data.MapEvents[id].Dir == (int)Direction.Down)
                     {
-                        if (Data.MapEvents[id].XOffset >= 0 & Data.MapEvents[id].YOffset >= 0)
+                        switch (Data.MapEvents[(int)id].Dir)
                         {
-                            Data.MapEvents[id].Moving = 0;
-                            if (Data.MapEvents[id].Steps == 1)
-                            {
-                                Data.MapEvents[id].Steps = 3;
-                            }
-                            else
-                            {
-                                Data.MapEvents[id].Steps = 1;
-                            }
-                        }
-                    }
-                    else if (Data.MapEvents[id].XOffset <= 0 & Data.MapEvents[id].YOffset <= 0)
-                    {
-                        Data.MapEvents[id].Moving = 0;
-                        if (Data.MapEvents[id].Steps == 1)
-                        {
-                            Data.MapEvents[id].Steps = 3;
-                        }
-                        else
-                        {
-                            Data.MapEvents[id].Steps = 1;
+                            case (int)Direction.Up:
+                                {
+                                    Core.Data.MapEvents[(int)id].Y = (byte)(Core.Data.MapEvents[(int)id].Y - 1);
+
+                                    break;
+                                }
+                            case (int)Direction.Down:
+                                {
+                                    Core.Data.MapEvents[(int)id].Y = (byte)(Core.Data.MapEvents[(int)id].Y + 1);
+                                    break;
+                                }
+                            case (int)Direction.Left:
+                                {
+                                    Core.Data.MapEvents[(int)id].X = (byte)(Core.Data.MapEvents[(int)id].X - 1);
+                                    break;
+                                }
+                            case (int)Direction.Right:
+                                {
+                                    Core.Data.MyMapNpc[(int)id].X = (byte)(Core.Data.MyMapNpc[(int)id].X + 1);
+                                    break;
+                                }
                         }
                     }
                 }

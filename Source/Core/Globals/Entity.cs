@@ -52,7 +52,7 @@ namespace Core.Globals
         public EntityType Type { get; }
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool PK { get; set; }
+        public bool Pk { get; set; }
         public byte Sex { get; set; } 
         public byte Job { get; set; } 
         public byte Level { get; set; }
@@ -120,7 +120,7 @@ namespace Core.Globals
             return new Entity(EntityType.Player, id, player)
             {
                 Name = player.Name,
-                PK = player.PK,
+                Pk = player.Pk,
                 Sex = player.Sex,
                 Job = player.Job,
                 Sprite = player.Sprite,
@@ -226,7 +226,7 @@ namespace Core.Globals
                 Level = entity.Level,
                 Exp = entity.Exp,
                 Access = entity.Access,
-                PK = entity.PK,
+                Pk = entity.Pk,
                 Vital = entity.Vital != null ? (int[])entity.Vital.Clone() : new int[0],
                 Stat = entity.Stat != null ? (byte[])entity.Stat.Clone() : new byte[0],
                 Points = entity.Points,

@@ -179,8 +179,8 @@ namespace Client
             rec.Width = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Width;
 
             // Set base x + y, then the offset due to size
-            x = (int)Math.Round(Data.MyMapResource[resourceNum].X * GameState.PicX - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Width / 2d + 16d);
-            y = Data.MyMapResource[resourceNum].Y * GameState.PicY - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Height + 32;
+            x = (int)Math.Round(Data.MyMapResource[resourceNum].X * GameState.SizeX - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Width / 2d + 16d);
+            y = Data.MyMapResource[resourceNum].Y * GameState.SizeY - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite.ToString())).Height + 32;
 
             DrawResource(resourceSprite, x, y, rec);
         }

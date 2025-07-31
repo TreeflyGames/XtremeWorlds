@@ -16,6 +16,11 @@ namespace Client
     {
         public static void ProcessNpcMovement(double MapNpcNum)
         {        
+            if (MapNpcNum < 0 || MapNpcNum > Constant.MAX_MAP_NPCS)
+            {
+                return;
+            }
+
             // Check if Npc is walking, and if so process moving them over
             if (Data.MyMapNpc[(int)MapNpcNum].Moving == (byte)MovementState.Walking)
             {
@@ -23,23 +28,23 @@ namespace Client
                 {
                     case (int)Direction.Up:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].Y = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].Y - 1);
+                            Core.Data.MyMapNpc[(int)MapNpcNum].Y -= 1;
 
                             break;
                         }
                     case (int)Direction.Down:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].Y = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].Y + 1);
+                            Core.Data.MyMapNpc[(int)MapNpcNum].Y += 1;
                             break;
                         }
                     case (int)Direction.Left:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].X = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].X - 1);
+                            Core.Data.MyMapNpc[(int)MapNpcNum].X -= 1;
                             break;
                         }
                     case (int)Direction.Right:
                         {
-                            Core.Data.MyMapNpc[(int)MapNpcNum].X = (byte)(Core.Data.MyMapNpc[(int)MapNpcNum].X + 1);
+                            Core.Data.MyMapNpc[(int)MapNpcNum].X += 1;
                             break;
                         }
                 }
@@ -1509,8 +1514,8 @@ namespace Client
             {
                 tempRec.Top = (int)(StartY + GameState.HotbarTop);
                 tempRec.Left = (int)(StartX + i * GameState.HotbarOffsetX);
-                tempRec.Right = tempRec.Left + GameState.PicX;
-                tempRec.Bottom = tempRec.Top + GameState.PicY;
+                tempRec.Right = tempRec.Left + GameState.SizeX;
+                tempRec.Bottom = tempRec.Top + GameState.SizeY;
 
                 if (Core.Data.Player[GameState.MyIndex].Hotbar[(int)i].Slot >= 0)
                 {
@@ -2273,14 +2278,14 @@ namespace Client
         public static int ConvertMapX(int x)
         {
             int ConvertMapXRet = default;
-            ConvertMapXRet = (int)Math.Round(x - GameState.TileView.Left * GameState.PicX - GameState.Camera.Left);
+            ConvertMapXRet = (int)Math.Round(x - GameState.TileView.Left - GameState.Camera.Left);
             return ConvertMapXRet;
         }
 
         public static int ConvertMapY(int y)
         {
             int ConvertMapYRet = default;
-            ConvertMapYRet = (int)Math.Round(y - GameState.TileView.Top * GameState.PicY - GameState.Camera.Top);
+            ConvertMapYRet = (int)Math.Round(y - GameState.TileView.Top - GameState.Camera.Top);
             return ConvertMapYRet;
         }
 
@@ -2502,29 +2507,26 @@ namespace Client
             float targetCameraX;
             float targetCameraY;
 
-            // Calculate the target camera position based on the player's position  
-            targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2);
-            targetCameraY = GetPlayerY(GameState.MyIndex) * GameState.PicY - (GameState.ResolutionHeight / 2);
+            // Calculate the target camera position based on the player's pixel position  
+            targetCameraX = GetPlayerRawX(GameState.MyIndex) - (GameState.ResolutionWidth / 2f);
+            targetCameraY = GetPlayerRawY(GameState.MyIndex) - (GameState.ResolutionHeight / 2f);
 
             // Directly set the camera position to match the player's position for better sync  
             GameState.Camera.Left = (long)Math.Round(targetCameraX);
             GameState.Camera.Top = (long)Math.Round(targetCameraY);
 
-            // Clamp the camera position to the map edges  
-            long mapWidth = Data.MyMap.MaxX * GameState.PicX;
-            long mapHeight = Data.MyMap.MaxY * GameState.PicY;
+            // Clamp the camera position to the map edges (in pixels)  
+            long mapWidth = Data.MyMap.MaxX;
+            long mapHeight = Data.MyMap.MaxY;
 
             GameState.Camera.Left = Math.Max(0, Math.Min(GameState.Camera.Left, mapWidth - GameState.ResolutionWidth));
             GameState.Camera.Top = Math.Max(0, Math.Min(GameState.Camera.Top, mapHeight - GameState.ResolutionHeight));
 
-            // Calculate the visible tile range  
-            long tileWidth = (long)Math.Round(GameState.ResolutionWidth / 32d);
-            long tileHeight = (long)Math.Round(GameState.ResolutionHeight / 32d);
-
-            long StartX = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Left / (double)GameState.PicX), Data.MyMap.MaxX - 1) / 32);
-            long StartY = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Top / (double)GameState.PicY), Data.MyMap.MaxY - 1) / 32);
-            long EndX = Data.MyMap.MaxX;
-            long EndY = Data.MyMap.MaxY;
+            // Calculate the visible tile range (in tiles)  
+            long StartX = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Left), Data.MyMap.MaxX - 1));
+            long StartY = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Top), Data.MyMap.MaxY - 1));
+            long EndX = Math.Min(Data.MyMap.MaxX, StartX + (long)(GameState.ResolutionWidth) + 1);
+            long EndY = Math.Min(Data.MyMap.MaxY, StartY + (long)(GameState.ResolutionHeight) + 1);
 
             // Update the tile view  
             ref var withBlock = ref GameState.TileView;

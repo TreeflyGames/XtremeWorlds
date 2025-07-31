@@ -324,10 +324,6 @@ namespace Client
         public static int TileHistoryHighIndex;
         public static bool HideLayers;
 
-        // Tile size constants
-        public const int PicX = 32;
-        public const int PicY = 32;
-
         // Sprite, item, skill size constants
         public const int SizeX = 32;
         public const int SizeY = 32;

@@ -50,7 +50,7 @@ namespace Client
             Core.Data.Player[index].Map = 0;
             Core.Data.Player[index].MapGetTimer = 0;
             Core.Data.Player[index].Moving = 0;
-            Core.Data.Player[index].PK = false;
+            Core.Data.Player[index].Pk = false;
             Core.Data.Player[index].Points = 0;
             Core.Data.Player[index].Sprite = 0;
 
@@ -179,7 +179,7 @@ namespace Client
                     NetworkSend.SendPlayerMove();
                 }
 
-                if (Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == TileType.Warp | Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type2 == TileType.Warp)
+                if (Data.MyMap.Tile[GetPlayerRawX(GameState.MyIndex), GetPlayerRawY(GameState.MyIndex)].Type == TileType.Warp | Data.MyMap.Tile[GetPlayerRawX(GameState.MyIndex), GetPlayerRawY(GameState.MyIndex)].Type2 == TileType.Warp)
                 {
                     GameState.GettingMap = true;
                 }
@@ -275,7 +275,7 @@ namespace Client
                 case (int)Direction.Up:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerRawY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
@@ -288,7 +288,7 @@ namespace Client
                 case (int)Direction.Down:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerRawY(GameState.MyIndex) >= Data.MyMap.MaxY)
                         {
                             GameState.DirDown = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
@@ -301,7 +301,7 @@ namespace Client
                 case (int)Direction.Left:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerRawX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
@@ -314,7 +314,7 @@ namespace Client
                 case (int)Direction.Right:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirRight = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
@@ -327,7 +327,7 @@ namespace Client
                 case (int)Direction.UpLeft:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerY(GameState.MyIndex) <= 0 & GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerRawY(GameState.MyIndex) <= 0 & GetPlayerRawX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
                             GameState.DirDown = true;
@@ -338,14 +338,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerRawY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
@@ -358,7 +358,7 @@ namespace Client
                 case (int)Direction.UpRight:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerRawX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirUp = false;
                             GameState.DirDown = true;
@@ -369,14 +369,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerRawY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
@@ -389,7 +389,7 @@ namespace Client
                 case (int)Direction.DownLeft:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerRawX(GameState.MyIndex) < 0)
                         {
                             GameState.DirDown = false;
                             GameState.DirUp = true;
@@ -400,14 +400,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerRawY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirDown = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
@@ -420,7 +420,7 @@ namespace Client
                 case (int)Direction.DownRight:
                     {
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawY(GameState.MyIndex) >= Data.MyMap.MaxY & GetPlayerRawX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirDown = false;
                             GameState.DirUp = true;
@@ -431,14 +431,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Data.MyMap.MaxY)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerRawY(GameState.MyIndex) >= Data.MyMap.MaxY)
                         {
                             GameState.DirDown = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
                             return CanMoveRet;
                         }
 
-                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Data.MyMap.MaxX)
+                        if (Data.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerRawX(GameState.MyIndex) >= Data.MyMap.MaxX)
                         {
                             GameState.DirRight = false;
                             SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
@@ -454,7 +454,7 @@ namespace Client
             if (GameState.DirUp)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Up);
-                if (GetPlayerY(GameState.MyIndex) > 0)
+                if (GetPlayerRawY(GameState.MyIndex) > 0)
                 {
                     if (CheckDirection((byte)Direction.Up))
                     {
@@ -477,7 +477,7 @@ namespace Client
             if (GameState.DirDown)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Down);
-                if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY - 1)
+                if (GetPlayerRawY(GameState.MyIndex) < Data.MyMap.MaxY - 1)
                 {
                     if (CheckDirection((byte)Direction.Down))
                     {
@@ -500,7 +500,7 @@ namespace Client
             if (GameState.DirLeft)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Left);
-                if (GetPlayerX(GameState.MyIndex) > 0)
+                if (GetPlayerRawX(GameState.MyIndex) > 0)
                 {
                     if (CheckDirection((byte)Direction.Left))
                     {
@@ -523,7 +523,7 @@ namespace Client
             if (GameState.DirRight)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.Right);
-                if (GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
+                if (GetPlayerRawX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
                     if (CheckDirection((byte)Direction.Right))
                     {
@@ -547,7 +547,7 @@ namespace Client
             if (GameState.DirUp & GameState.DirRight)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.UpRight);
-                if (GetPlayerY(GameState.MyIndex) > 0 & GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
+                if (GetPlayerRawY(GameState.MyIndex) > 0 & GetPlayerRawX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
                     if (CheckDirection((byte)Direction.UpRight))
                     {
@@ -569,7 +569,7 @@ namespace Client
             else if (GameState.DirUp & GameState.DirLeft)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.UpLeft);
-                if (GetPlayerY(GameState.MyIndex) > 0 & GetPlayerX(GameState.MyIndex) > 0)
+                if (GetPlayerRawY(GameState.MyIndex) > 0 & GetPlayerRawX(GameState.MyIndex) > 0)
                 {
                     if (CheckDirection((byte)Direction.UpLeft))
                     {
@@ -591,7 +591,7 @@ namespace Client
             else if (GameState.DirDown & GameState.DirRight)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.DownRight);
-                if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < Data.MyMap.MaxX)
+                if (GetPlayerRawY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerRawX(GameState.MyIndex) < Data.MyMap.MaxX)
                 {
                     if (CheckDirection((byte)Direction.DownRight))
                     {
@@ -613,7 +613,7 @@ namespace Client
             else if (GameState.DirDown & GameState.DirLeft)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Direction.DownLeft);
-                if (GetPlayerY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerX(GameState.MyIndex) > 0)
+                if (GetPlayerRawY(GameState.MyIndex) < Data.MyMap.MaxY & GetPlayerRawX(GameState.MyIndex) > 0)
                 {
                     if (CheckDirection((byte)Direction.DownLeft))
                     {
@@ -644,14 +644,14 @@ namespace Client
             var y = default(int);
             int i;
 
-            if (GetPlayerX(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxX || GetPlayerY(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxY)
+            if (GetPlayerRawX(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxX || GetPlayerRawY(GameState.MyIndex) >= Data.Map[GetPlayerMap(GameState.MyIndex)].MaxY)
             {
                 CheckDirectionRet = true;
                 return CheckDirectionRet;
             }
 
             // check directional blocking
-            if (GameLogic.IsDirBlocked(ref Data.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].DirBlock, ref direction))
+            if (GameLogic.IsDirBlocked(ref Data.MyMap.Tile[GetPlayerRawX(GameState.MyIndex), GetPlayerRawY(GameState.MyIndex)].DirBlock, ref direction))
             {
                 CheckDirectionRet = true;
                 return CheckDirectionRet;
@@ -661,50 +661,50 @@ namespace Client
             {
                 case (byte)Direction.Up:
                     {
-                        x = GetPlayerX(GameState.MyIndex);
-                        y = GetPlayerY(GameState.MyIndex) - 1;
+                        x = GetPlayerRawX(GameState.MyIndex);
+                        y = GetPlayerRawY(GameState.MyIndex) - 1;
                         break;
                     }
                 case (byte)Direction.Down:
                     {
-                        x = GetPlayerX(GameState.MyIndex);
-                        y = GetPlayerY(GameState.MyIndex) + 1;
+                        x = GetPlayerRawX(GameState.MyIndex);
+                        y = GetPlayerRawY(GameState.MyIndex) + 1;
                         break;
                     }
                 case (byte)Direction.Left:
                     {
-                        x = GetPlayerX(GameState.MyIndex) - 1;
-                        y = GetPlayerY(GameState.MyIndex);
+                        x = GetPlayerRawX(GameState.MyIndex) - 1;
+                        y = GetPlayerRawY(GameState.MyIndex);
                         break;
                     }
                 case (byte)Direction.Right:
                     {
-                        x = GetPlayerX(GameState.MyIndex) + 1;
-                        y = GetPlayerY(GameState.MyIndex);
+                        x = GetPlayerRawX(GameState.MyIndex) + 1;
+                        y = GetPlayerRawY(GameState.MyIndex);
                         break;
                     }
                 case (byte)Direction.UpLeft:
                     {
-                        x = GetPlayerX(GameState.MyIndex) - 1;
-                        y = GetPlayerY(GameState.MyIndex) - 1;
+                        x = GetPlayerRawX(GameState.MyIndex) - 1;
+                        y = GetPlayerRawY(GameState.MyIndex) - 1;
                         break;
                     }
                 case (byte)Direction.UpRight:
                     {
-                        x = GetPlayerX(GameState.MyIndex) + 1;
-                        y = GetPlayerY(GameState.MyIndex) - 1;
+                        x = GetPlayerRawX(GameState.MyIndex) + 1;
+                        y = GetPlayerRawY(GameState.MyIndex) - 1;
                         break;
                     }
                 case (byte)Direction.DownLeft:
                     {
-                        x = GetPlayerX(GameState.MyIndex) - 1;
-                        y = GetPlayerY(GameState.MyIndex) + 1;
+                        x = GetPlayerRawX(GameState.MyIndex) - 1;
+                        y = GetPlayerRawY(GameState.MyIndex) + 1;
                         break;
                     }
                 case (byte)Direction.DownRight:
                     {
-                        x = GetPlayerX(GameState.MyIndex) + 1;
-                        y = GetPlayerY(GameState.MyIndex) + 1;
+                        x = GetPlayerRawX(GameState.MyIndex) + 1;
+                        y = GetPlayerRawY(GameState.MyIndex) + 1;
                         break;
                     }
             }
@@ -783,56 +783,58 @@ namespace Client
 
         public static void ProcessPlayerMovement(int index)
         {
-            // Update player offsets based on direction
-            switch (GetPlayerDir(index))
+            if (Data.Player[GameState.MyIndex].IsMoving)
             {
-                case (int)Direction.Up:
+                // Update player offsets based on direction
+                switch (GetPlayerDir(index))
                 {
-                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y - 1);
+                    case (int)Direction.Up:
+                        {
+                            Core.Data.Player[index].Y -= 1;
 
-                        break;
-                    }
-                case (int)Direction.Down:
-                    {
-                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y + 1);
-                        break;
-                    }
-                case (int)Direction.Left:
-                    {
-                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X - 1);
-                        break;
-                    }
-                case (int)Direction.Right:
-                    {
-                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X + 1);
-                        break;
-                    }
-                case (int)Direction.UpRight:
-                    {
-                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X + 1);
-                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y - 1);
-                        break;
-                    }
-                case (int)Direction.UpLeft:
-                    {
-                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X - 1);
-                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y - 1);
-                        break;
-                    }
-                case (int)Direction.DownRight:
-                    {
-                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X + 1);
-                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y + 1);
-                        break;
-                    }
-                case (int)Direction.DownLeft:
-                    {
-                        Core.Data.Player[index].X = (byte)(Core.Data.Player[index].X - 1);
-                        Core.Data.Player[index].Y = (byte)(Core.Data.Player[index].Y + 1);
-                        break;
-                    }
+                            break;
+                        }
+                    case (int)Direction.Down:
+                        {
+                            Core.Data.Player[index].Y = +1;
+                            break;
+                        }
+                    case (int)Direction.Left:
+                        {
+                            Core.Data.Player[index].X -= 1;
+                            break;
+                        }
+                    case (int)Direction.Right:
+                        {
+                            Core.Data.Player[index].X -= 1;
+                            break;
+                        }
+                    case (int)Direction.UpRight:
+                        {
+                            Core.Data.Player[index].X -= 1;
+                            Core.Data.Player[index].Y -= 1;
+                            break;
+                        }
+                    case (int)Direction.UpLeft:
+                        {
+                            Core.Data.Player[index].X -= 1;
+                            Core.Data.Player[index].Y -= 1;
+                            break;
+                        }
+                    case (int)Direction.DownRight:
+                        {
+                            Core.Data.Player[index].X -= 1;
+                            Core.Data.Player[index].Y -= 1;
+                            break;
+                        }
+                    case (int)Direction.DownLeft:
+                        {
+                            Core.Data.Player[index].X -= 1;
+                            Core.Data.Player[index].Y -= 1;
+                            break;
+                        }
+                }
             }
-
         }
 
 
@@ -888,56 +890,56 @@ namespace Client
                 {
                     case (byte)Direction.Up:
                         {
-                            x = GetPlayerX(GameState.MyIndex);
-                            y = GetPlayerY(GameState.MyIndex) - 1;
+                            x = GetPlayerRawX(GameState.MyIndex);
+                            y = GetPlayerRawY(GameState.MyIndex) - 1;
                             break;
                         }
 
                     case (byte)Direction.Down:
                         {
-                            x = GetPlayerX(GameState.MyIndex);
-                            y = GetPlayerY(GameState.MyIndex) + 1;
+                            x = GetPlayerRawX(GameState.MyIndex);
+                            y = GetPlayerRawY(GameState.MyIndex) + 1;
                             break;
                         }
 
                     case (byte)Direction.Left:
                         {
-                            x = GetPlayerX(GameState.MyIndex) - 1;
-                            y = GetPlayerY(GameState.MyIndex);
+                            x = GetPlayerRawX(GameState.MyIndex) - 1;
+                            y = GetPlayerRawY(GameState.MyIndex);
                             break;
                         }
                     case (byte)Direction.Right:
                         {
-                            x = GetPlayerX(GameState.MyIndex) + 1;
-                            y = GetPlayerY(GameState.MyIndex);
+                            x = GetPlayerRawX(GameState.MyIndex) + 1;
+                            y = GetPlayerRawY(GameState.MyIndex);
                             break;
                         }
 
                     case (byte)Direction.UpRight:
                         {
-                            x = GetPlayerX(GameState.MyIndex) + 1;
-                            y = GetPlayerY(GameState.MyIndex) - 1;
+                            x = GetPlayerRawX(GameState.MyIndex) + 1;
+                            y = GetPlayerRawY(GameState.MyIndex) - 1;
                             break;
                         }
 
                     case (byte)Direction.UpLeft:
                         {
-                            x = GetPlayerX(GameState.MyIndex) - 1;
-                            y = GetPlayerY(GameState.MyIndex) - 1;
+                            x = GetPlayerRawX(GameState.MyIndex) - 1;
+                            y = GetPlayerRawY(GameState.MyIndex) - 1;
                             break;
                         }
 
                     case (byte)Direction.DownRight:
                         {
-                            x = GetPlayerX(GameState.MyIndex) + 1;
-                            y = GetPlayerY(GameState.MyIndex) + 1;
+                            x = GetPlayerRawX(GameState.MyIndex) + 1;
+                            y = GetPlayerRawY(GameState.MyIndex) + 1;
                             break;
                         }
 
                     case (byte)Direction.DownLeft:
                         {
-                            x = GetPlayerX(GameState.MyIndex) - 1;
-                            y = GetPlayerY(GameState.MyIndex) + 1;
+                            x = GetPlayerRawX(GameState.MyIndex) - 1;
+                            y = GetPlayerRawY(GameState.MyIndex) + 1;
                             break;
                         }
                 }
@@ -1229,7 +1231,6 @@ namespace Client
             SetPlayerY(i, y);
             SetPlayerDir(i, dir);
             Core.Data.Player[i].Moving = n;
-
             
             buffer.Dispose();
         }
@@ -1264,23 +1265,6 @@ namespace Client
 
             ref var withBlock = ref Core.Data.Player[i];
             withBlock.Moving = 0;
-
-            buffer.Dispose();
-        }
-
-        public static void Packet_PlayerXYOffset(ref byte[] data)
-        {
-            int dir;
-            int i;
-            var buffer = new ByteStream(data);
-
-            i = buffer.ReadInt32();
-            dir = buffer.ReadByte();
-
-            SetPlayerDir(i, dir);
-
-            ref var withBlock = ref Core.Data.Player[i];
-            withBlock.Moving = buffer.ReadByte();
 
             buffer.Dispose();
         }
@@ -1326,19 +1310,30 @@ namespace Client
             int y;
             int dir;
             int index;
+            byte moving;
             var buffer = new ByteStream(data);
 
             index = buffer.ReadInt32();
             x = buffer.ReadInt32();
             y = buffer.ReadInt32();
             dir = buffer.ReadByte();
+            moving = buffer.ReadByte();
 
             SetPlayerX(index, x);
             SetPlayerY(index, y);
             SetPlayerDir(index, dir);
 
-            // Make sure they aren't walking
-            Core.Data.Player[index].Moving = 0;
+            if (moving > 0)
+            {
+                Data.Player[GameState.MyIndex].IsMoving = true;
+            }
+            else
+            {
+                Data.Player[GameState.MyIndex].IsMoving = false;
+            }
+
+            Core.Data.Player[index].Moving = moving;
+
 
             buffer.Dispose();
         }

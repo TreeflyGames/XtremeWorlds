@@ -87,7 +87,9 @@ namespace Client
                 }
 
                 for (i = 0; i < byte.MaxValue; i++)
+                {
                     Animation.CheckAnimInstance(i);
+                }
 
                 // screenshake
                 if (GameState.ShakeTimerEnabled)
@@ -159,25 +161,22 @@ namespace Client
                     {
                         if (IsPlaying(i))
                         {
-                            if (Data.Player[GameState.MyIndex].IsMoving)
-                            {
-                                Player.ProcessPlayerMovement(i);
-                            }
+                            Player.ProcessPlayerMovement(i);                            
                         }
                     }
 
                     // Process npc movements
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Data.MyMap.Npc[i] >= 0)
-                        {
-                            GameLogic.ProcessNpcMovement(i);
-                        }
+                        GameLogic.ProcessNpcMovement(i);
+                        
                     }
 
                     var loopTo2 = GameState.CurrentEvents;
                     for (i = 0; i < loopTo2; i++)
+                    {
                         Event.ProcessEventMovement(i);
+                    }
 
                     walkTimer = tick + 25; // edit this value to change WalkTimer
                 }
@@ -326,6 +325,23 @@ namespace Client
                     for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
                         if (Data.MyMapNpc[i].Num >= 0)
+                        {
+                            // Check if completed walking over to the next tile
+                            if (Data.MyMapNpc[i].Steps == 3)
+                            {
+                                Data.MyMapNpc[i].Steps = 0;
+                            }
+                            else
+                            {
+                                Data.MyMapNpc[i].Steps++;
+                            }
+                        }
+                    }
+
+                    var loopTo = GameState.CurrentEvents;
+                    for (i = 0; i < loopTo; i++)
+                    {
+                        if (Data.MapEvents[i].WalkAnim == 1)
                         {
                             // Check if completed walking over to the next tile
                             if (Data.MyMapNpc[i].Steps == 3)

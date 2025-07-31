@@ -589,17 +589,6 @@ namespace Server
 
             SetPlayerDir(index, Dir);
             Core.Data.Player[index].Moving = movement;
-            Core.Data.Player[index].IsMoving = true;
-
-            // Set movement offset directly to 32 or -32 based on direction
-            int offset = Core.Constant.TILE_SIZE;
-
-            buffer = new ByteStream(4);
-            buffer.WriteInt32((int)ServerPackets.SPlayerXYOffset);
-            buffer.WriteInt32(index);
-            buffer.WriteByte(GetPlayerDir(index));
-            buffer.WriteByte(Core.Data.Player[index].Moving);
-            NetworkConfig.SendDataToMap( GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }

@@ -1858,7 +1858,7 @@ namespace Server
             Core.Data.Player[index].Level = 0;
             Core.Data.Player[index].Map = 0;
             Core.Data.Player[index].Name = "";
-            Core.Data.Player[index].PK = false;
+            Core.Data.Player[index].Pk = false;
             Core.Data.Player[index].Points = 0;
             Core.Data.Player[index].Sex = 0;
 

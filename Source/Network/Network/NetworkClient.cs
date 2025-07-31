@@ -250,7 +250,7 @@ namespace Mirage.Sharp.Asfw.Network
             {
                 NetworkClient.CrashReportArgs crashReport = this.CrashReport;
                 if (crashReport != null)
-                    crashReport("ConnectionForciblyClosedException");
+                    crashReport(e.Message);
                 this.Disconnect();
                 return;
             }
@@ -489,7 +489,7 @@ namespace Mirage.Sharp.Asfw.Network
                 NetworkClient.CrashReportArgs crashReport = CrashReport;
                 if (crashReport != null)
                 {
-                    crashReport("SocketException occurred during send operation: " + ex.Message);
+                    crashReport(ex.Message);
                 }
 
                 // Disconnect the client
