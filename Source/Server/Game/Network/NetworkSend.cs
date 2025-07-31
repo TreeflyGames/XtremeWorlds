@@ -855,8 +855,8 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SPlayerXY);
             buffer.WriteInt32(index);
-            buffer.WriteInt32(GetPlayerX(index));
-            buffer.WriteInt32(GetPlayerY(index));
+            buffer.WriteInt32(GetPlayerRawX(index));
+            buffer.WriteInt32(GetPlayerRawY(index));
             buffer.WriteByte(GetPlayerDir(index));
             buffer.WriteByte(Data.Player[index].Moving);
             buffer.WriteBoolean(Data.Player[index].IsMoving);
@@ -872,8 +872,8 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SPlayerXY);
             buffer.WriteInt32(playerNum);
-            buffer.WriteInt32(GetPlayerX(playerNum));
-            buffer.WriteInt32(GetPlayerY(playerNum));
+            buffer.WriteInt32(GetPlayerRawX(playerNum));
+            buffer.WriteInt32(GetPlayerRawY(playerNum));
             buffer.WriteByte(GetPlayerDir(playerNum));
             buffer.WriteByte(Data.Player[index].Moving);
             buffer.WriteBoolean(Data.Player[index].IsMoving);
@@ -889,8 +889,8 @@ namespace Server
 
             buffer.WriteInt32((int)ServerPackets.SPlayerXY);
             buffer.WriteInt32(index);
-            buffer.WriteInt32(GetPlayerX(index));
-            buffer.WriteInt32(GetPlayerY(index));
+            buffer.WriteInt32(GetPlayerRawX(index));
+            buffer.WriteInt32(GetPlayerRawY(index));
             buffer.WriteByte(GetPlayerDir(index));
             buffer.WriteByte(Data.Player[index].Moving);
             buffer.WriteBoolean(Data.Player[index].IsMoving);
