@@ -87,6 +87,9 @@ namespace Server
             if (y > Data.Map[mapNum].MaxY)
                 y = Data.Map[mapNum].MaxY;
 
+            x *= 32;
+            y *= 32;
+
             Core.Data.TempPlayer[index].EventProcessingCount = 0;
             Core.Data.TempPlayer[index].EventMap.CurrentEvents = 0;
 
@@ -173,7 +176,7 @@ namespace Server
             int mapNum;
             int x;
             int y;
-            bool begineventprocessing;
+            bool beginEvent;
             bool Moved;
             var DidWarp = default(bool);
             byte NewMapX;
@@ -224,16 +227,15 @@ namespace Server
                 case Direction.Up:
                     if (GetPlayerY(index) > 0)
                     {
-                        x = GetPlayerX(index);
-                        y = GetPlayerY(index) - 1;
+                        x = GetPlayerRawX(index);
+                        y = GetPlayerRawY(index) - 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.Up))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.Up))
                         {
                             break;
                         }
 
-                        SetPlayerY(index, GetPlayerY(index) - 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
+                        SetPlayerY(index, GetPlayerRawY(index) - 1);
                         Moved = true;
 
                         for (int i = 0, loopTo2 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
@@ -254,16 +256,15 @@ namespace Server
                 case Direction.Down:
                     if (GetPlayerY(index) < Data.Map[mapNum].MaxY - 1)
                     {
-                        x = GetPlayerX(index);
-                        y = GetPlayerY(index) + 1;
+                        x = GetPlayerRawX(index);
+                        y = GetPlayerRawY(index) + 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.Down))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.Down))
                         {
                             break;
                         }
 
-                        SetPlayerY(index, GetPlayerY(index) + 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
+                        SetPlayerY(index, GetPlayerRawY(index) + 1);
                         Moved = true;
 
                         for (int i = 0, loopTo1 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo1; i++)
@@ -283,16 +284,15 @@ namespace Server
                 case Direction.Left:
                     if (GetPlayerX(index) > 0)
                     {
-                        x = GetPlayerX(index) - 1;
-                        y = GetPlayerY(index);
+                        x = GetPlayerRawX(index) - 1;
+                        y = GetPlayerRawY(index);
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.Left))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.Left))
                         {
                             break;
                         }
 
-                        SetPlayerX(index, GetPlayerX(index) - 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
+                        SetPlayerX(index, GetPlayerRawX(index) - 1);
                         Moved = true;
 
                         for (int i = 0, loopTo2 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
@@ -313,16 +313,15 @@ namespace Server
                 case Direction.Right:
                     if (GetPlayerX(index) < Data.Map[mapNum].MaxX - 1)
                     {
-                        x = GetPlayerX(index) + 1;
-                        y = GetPlayerY(index);
+                        x = GetPlayerRawX(index) + 1;
+                        y = GetPlayerRawY(index);
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.Right))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.Right))
                         {
                             break;
                         }
 
-                        SetPlayerX(index, GetPlayerX(index) + 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
+                        SetPlayerX(index, GetPlayerRawX(index) + 1);
                         Moved = true;
 
                         for (int i = 0, loopTo3 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo3; i++)
@@ -342,17 +341,16 @@ namespace Server
                 case Direction.UpRight:
                     if (GetPlayerY(index) > 0 && GetPlayerX(index) < Data.Map[mapNum].MaxX - 1)
                     {
-                        x = GetPlayerX(index) + 1;
-                        y = GetPlayerY(index) - 1;
+                        x = GetPlayerRawX(index) + 1;
+                        y = GetPlayerRawY(index) - 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.UpRight))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.UpRight))
                         {
                             break;
                         }
 
-                        SetPlayerX(index, GetPlayerX(index) + 1);
-                        SetPlayerY(index, GetPlayerY(index) - 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
+                        SetPlayerX(index, GetPlayerRawX(index) + 1);
+                        SetPlayerY(index, GetPlayerRawY(index) - 1);
                         Moved = true;
 
                         for (int i = 0, loopTo4 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo4; i++)
@@ -366,14 +364,13 @@ namespace Server
                         x = GetPlayerX(index) - 1;
                         y = GetPlayerY(index) - 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.UpLeft))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.UpLeft))
                         {
                             break;
                         }
 
                         SetPlayerX(index, GetPlayerX(index) - 1);
                         SetPlayerY(index, GetPlayerY(index) - 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
                         for (int i = 0, loopTo5 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo5; i++)
@@ -387,14 +384,13 @@ namespace Server
                         x = GetPlayerX(index) + 1;
                         y = GetPlayerY(index) + 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.DownRight))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.DownRight))
                         {
                             break;
                         }
 
                         SetPlayerX(index, GetPlayerX(index) + 1);
                         SetPlayerY(index, GetPlayerY(index) + 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
                         Moved = true;
 
                         for (int i = 0, loopTo6 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo6; i++)
@@ -408,14 +404,13 @@ namespace Server
                         x = GetPlayerX(index) - 1;
                         y = GetPlayerY(index) + 1;
 
-                        if (IsTileBlocked(index, mapNum, x, y, Direction.DownLeft))
+                        if (IsTileBlocked(index, mapNum, GetPlayerX(index), GetPlayerY(index), Direction.DownLeft))
                         {
                             break;
                         }
 
-                        SetPlayerX(index, GetPlayerX(index) - 1);
-                        SetPlayerY(index, GetPlayerY(index) + 1);
-                        NetworkSend.SendPlayerMove(index, Movement);
+                        SetPlayerX(index, GetPlayerRawX(index) - 1);
+                        SetPlayerY(index, GetPlayerRawY(index) + 1);
                         Moved = true;
 
                         for (int i = 0, loopTo7 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo7; i++)
@@ -435,8 +430,8 @@ namespace Server
                 if (withBlock.Type == TileType.Warp)
                 {
                     mapNum = withBlock.Data1;
-                    x = withBlock.Data2;
-                    y = withBlock.Data3;
+                    x = withBlock.Data2 * 32;
+                    y = withBlock.Data3 * 32;
                 }
 
                 if (withBlock.Type2 == TileType.Warp)
@@ -561,6 +556,7 @@ namespace Server
             if (Moved)
             {
                 Data.Player[index].IsMoving = true;
+                NetworkSend.SendPlayerXYToMap(index);
 
                 try
                 {
@@ -575,19 +571,19 @@ namespace Server
                 {
                     for (int i = 0, loopTo8 = Core.Data.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
-                        begineventprocessing = false;
+                        beginEvent = false;
 
                         if (Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
                         {
                             if ((int)Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
                             {
                                 if (Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].X == x & Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Y == y & (int)Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Data.TempPlayer[index].EventMap.EventPages[i].Visible == true)
-                                    begineventprocessing = true;
+                                    beginEvent = true;
                             }
                             else if (Core.Data.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Data.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Data.TempPlayer[index].EventMap.EventPages[i].Visible == true)
-                                begineventprocessing = true;
+                                beginEvent = true;
                           
-                            if (Conversions.ToInteger(begineventprocessing) == 1)
+                            if (beginEvent)
                             {
                                 // Process this event, it is on-touch and everything checks out.
                                 if (Data.Map[GetPlayerMap(index)].Event[Core.Data.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Data.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount > 0)
@@ -606,7 +602,7 @@ namespace Server
 
                                     Array.Resize(ref Core.Data.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
                                 }
-                                begineventprocessing = false;
+                                beginEvent = false;
                             }
                         }
                     }

@@ -2187,8 +2187,7 @@ namespace Server
                 SetPlayerX(index, x);
                 SetPlayerY(index, y);
                 SetPlayerDir(index, (byte)Direction.Down);
-
-                NetworkSend.SendPlayerMove(index, 0);
+                NetworkSend.SendPlayerXYToMap(index);
             }
 
             buffer.Dispose();
