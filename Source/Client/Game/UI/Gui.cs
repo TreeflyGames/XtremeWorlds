@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using CSScriptLib;
 using static Core.Global.Command;
 using Color = Microsoft.Xna.Framework.Color;
 using Path = Core.Path;
@@ -140,8 +141,8 @@ namespace Client
                 Top = top,
                 OrigLeft = left,
                 OrigTop = top,
-                Width = width,
-                Height = height,
+                Width = (long)(width * SettingsManager.Instance.Scale),
+                Height = (long)(height * SettingsManager.Instance.Scale),
                 Visible = visible,
                 CanDrag = canDrag,
                 Max = Max,
@@ -281,8 +282,8 @@ namespace Client
                 Top = top,
                 OrigLeft = left,
                 OrigTop = top,
-                Width = width,
-                Height = height,
+                Width = (long)(width * SettingsManager.Instance.Scale),
+                Height = (long)(height * SettingsManager.Instance.Scale),
                 Visible = visible,
                 CanDrag = canDrag,
                 Font = font,
