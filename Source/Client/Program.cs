@@ -1131,11 +1131,14 @@ static void LoadFonts()
                 // Create the four sides of the outline
                 var left = new Rectangle(position.ToPoint(),
                     new Point((int)Math.Round(outlineThickness), (int)Math.Round(size.Y)));
+
                 var top = new Rectangle(position.ToPoint(),
                     new Point((int)Math.Round(size.X), (int)Math.Round(outlineThickness)));
+
                 var right = new Rectangle(
                     new Point((int)Math.Round(position.X + size.X - outlineThickness), (int)Math.Round(position.Y)),
                     new Point((int)Math.Round(outlineThickness), (int)Math.Round(size.Y)));
+
                 var bottom =
                     new Rectangle(
                         new Point((int)Math.Round(position.X), (int)Math.Round(position.Y + size.Y - outlineThickness)),

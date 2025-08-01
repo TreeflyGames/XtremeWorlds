@@ -1,4 +1,5 @@
 ﻿using Core;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using System;
 using static Core.Global.Command;
@@ -349,19 +350,22 @@ namespace Client
                         }
                     }
 
-                    var loopTo = GameState.CurrentEvents;
-                    for (i = 0; i < loopTo; i++)
+                    if (Data.MapEvents != null)
                     {
-                        if (Data.MapEvents[i].WalkAnim == 1)
+                        var loopTo = Information.UBound(Data.MapEvents);
+                        for (i = 0; i < loopTo; i++)
                         {
-                            // Check if completed walking over to the next tile
-                            if (Data.MyMapNpc[i].Steps == 3)
+                            if (Data.MapEvents[i].WalkAnim == 1)
                             {
-                                Data.MyMapNpc[i].Steps = 0;
-                            }
-                            else
-                            {
-                                Data.MyMapNpc[i].Steps++;
+                                // Check if completed walking over to the next tile
+                                if (Data.MyMapNpc[i].Steps == 3)
+                                {
+                                    Data.MyMapNpc[i].Steps = 0;
+                                }
+                                else
+                                {
+                                    Data.MyMapNpc[i].Steps++;
+                                }
                             }
                         }
                     }
