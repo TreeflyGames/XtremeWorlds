@@ -14,17 +14,15 @@ namespace Core
         public string Language { get; set; } = "English";
         public string Username { get; set; } = "";
         public bool SaveUsername { get; set; } = true;
-
         public string MenuMusic { get; set; } = "menu.mid";
         public bool Music { get; set; } = true;
         public bool Sound { get; set; } = true;
         public float MusicVolume { get; set; } = 100.0f;
         public float SoundVolume { get; set; } = 100.0f;
-
         public string MusicExt { get; set; } = ".mid";
         public string SoundExt { get; set; } = ".ogg";
-
         public byte Resolution { get; set; } = 1;
+        public double Scale { get; set; } = 1.0;
         public bool Vsync { get; set; } = true;
         public bool Fullscreen { get; set; } = false;
         public byte CameraWidth { get; set; } = 32;
