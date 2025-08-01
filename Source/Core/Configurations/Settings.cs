@@ -25,7 +25,7 @@ namespace Core
         public string SoundExt { get; set; } = ".ogg";
 
         public byte Resolution { get; set; } = 13;
-        public bool Vsync { get; set; } = false;
+        public bool Vsync { get; set; } = true;
         public bool Fullscreen { get; set; } = false;
         public byte CameraWidth { get; set; } = 32;
         public byte CameraHeight { get; set; } = 24;
