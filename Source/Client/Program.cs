@@ -2203,7 +2203,7 @@ static void LoadFonts()
             if (Data.MyMap.EventCount <= 0)
                 return; // Exit early if no events
 
-            for (int i = 0, loopTo = Data.MyMap.EventCount; i < loopTo; i++)
+            for (int i = 0, loopTo = Information.UBound(Data.MyMap.Event); i < loopTo; i++)
             {
                 int x = GameLogic.ConvertMapX(Data.MyMap.Event[i].X);
                 int y = GameLogic.ConvertMapY(Data.MyMap.Event[i].Y);
