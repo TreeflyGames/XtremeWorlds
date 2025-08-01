@@ -1517,7 +1517,7 @@ static void LoadFonts()
             else
             {
                 // Normal sprite height
-                y = Data.MyMapNpc[(int)mapNpcNum].Y * GameState.SizeY;
+                y = Data.MyMapNpc[(int)mapNpcNum].Y;
             }
 
             // Draw shadow and Npc sprite
@@ -2149,7 +2149,7 @@ static void LoadFonts()
             x = (int)Math.Round(Core.Data.Player[index].X - (gfxInfo.Width / 4d - 32d) / 2d);
 
             // Is the player's height more than 32..?
-            if (gfxInfo.Height > 32)
+            if ((gfxInfo.Height / 4) > 32)
             {
                 // Create a 32 pixel offset for larger sprites
                 y = (int)Math.Round(GetPlayerRawY(index) - (gfxInfo.Height / 4d - 32d));
@@ -2389,7 +2389,7 @@ static void LoadFonts()
                                             (width - 32d) / 2d);
 
                         // Is the player's height more than 32..?
-                        if (gfxInfo.Height * 4 > 32)
+                        if ((gfxInfo.Height / 4) > 32)
                         {
                             // Create a 32 pixel offset for larger sprites
                             y = (int)Math.Round(Data.MapEvents[id].Y - (height - 32d));
@@ -2397,7 +2397,7 @@ static void LoadFonts()
                         else
                         {
                             // Proceed as normal
-                            y = Data.MapEvents[id].Y * GameState.SizeY;
+                            y = Data.MapEvents[id].Y;
                         }
 
                         // render the actual sprite

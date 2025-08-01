@@ -668,7 +668,7 @@ namespace Server
 
         public static void SendMapEventData(int index)
         {
-            var buffer = new ByteStream(4096); // Increased size for larger event data
+            var buffer = new ByteStream(4);
             int mapNum = GetPlayerMap(index);
             buffer.WriteInt32((int)ServerPackets.SMapEventData);
             buffer.WriteInt32(Data.Map[mapNum].EventCount);

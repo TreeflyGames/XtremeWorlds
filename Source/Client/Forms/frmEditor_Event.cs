@@ -1651,6 +1651,9 @@ namespace Client
 
         private void CmbPositioning_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (Event.TmpEvent.Pages == null)
+                return;
+
             if (cmbPositioning.SelectedIndex == -1)
                 return;
             Event.TmpEvent.Pages[Event.CurPageNum].Position = (byte)cmbPositioning.SelectedIndex;

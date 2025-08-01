@@ -356,6 +356,9 @@ namespace Client
             int[] listleftoff;
             int[] conditionalstage;
 
+            if (TmpEvent.Pages == null)
+                return;
+
             frmEditor_Event.Instance.lstCommands.Items.Clear();
 
             if (TmpEvent.Pages[CurPageNum].CommandListCount > 0)
