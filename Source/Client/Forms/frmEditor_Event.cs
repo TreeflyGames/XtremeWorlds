@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Core;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Core;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using static Core.Type;
 
 namespace Client
 {
@@ -330,8 +331,8 @@ namespace Client
 
                                 g = Graphics.FromImage(targetBitmap);
 
-                                var sourceRect = new Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height);  // This is the section we are pulling from the source graphic
-                                var destRect = new Rectangle(0, 0, targetBitmap.Width, targetBitmap.Height);     // This is the rectangle in the target graphic we want to render to
+                                var sourceRect = new Microsoft.Xna.Framework.Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height);  // This is the section we are pulling from the source graphic
+                                var destRect = new Microsoft.Xna.Framework.Rectangle(0, 0, targetBitmap.Width, targetBitmap.Height);     // This is the rectangle in the target graphic we want to render to
 
                                 // Ensure destRect and sourceRect are RectangleF
                                 var destRectF = new RectangleF(destRect.X, destRect.Y, destRect.Width, destRect.Height);
@@ -380,8 +381,8 @@ namespace Client
 
                                 g = Graphics.FromImage(targetBitmap);
 
-                                var sourceRect = new Rectangle(0, 0, (int)Math.Round(sourceBitmap.Width / 4d), (int)Math.Round(sourceBitmap.Height / 4d));  // This is the section we are pulling from the source graphic
-                                var destRect = new Rectangle(0, 0, (int)Math.Round(targetBitmap.Width / 4d), (int)Math.Round(targetBitmap.Height / 4d));     // This is the rectangle in the target graphic we want to render to
+                                var sourceRect = new System.Drawing.Rectangle(0, 0, (int)Math.Round(sourceBitmap.Width / 4d), (int)Math.Round(sourceBitmap.Height / 4d));  // This is the section we are pulling from the source graphic
+                                var destRect = new System.Drawing.Rectangle(0, 0, (int)Math.Round(targetBitmap.Width / 4d), (int)Math.Round(targetBitmap.Height / 4d));     // This is the rectangle in the target graphic we want to render to
 
                                 g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
                                 g.Dispose();
@@ -432,8 +433,8 @@ namespace Client
 
                                 g = Graphics.FromImage(targetBitmap);
 
-                                var sourceRect = new Rectangle((int)Math.Round(sRect.Left), (int)Math.Round(sRect.Top), (int)Math.Round(sRect.Right), (int)Math.Round(sRect.Bottom));  // This is the section we are pulling from the source graphic
-                                var destRect = new Rectangle((int)Math.Round(dRect.Left), (int)Math.Round(dRect.Top), (int)Math.Round(dRect.Right), (int)Math.Round(dRect.Bottom));     // This is the rectangle in the target graphic we want to render to
+                                var sourceRect = new System.Drawing.Rectangle((int)Math.Round(sRect.Left), (int)Math.Round(sRect.Top), (int)Math.Round(sRect.Right), (int)Math.Round(sRect.Bottom));  // This is the section we are pulling from the source graphic
+                                var destRect = new System.Drawing.Rectangle((int)Math.Round(dRect.Left), (int)Math.Round(dRect.Top), (int)Math.Round(dRect.Right), (int)Math.Round(dRect.Bottom));     // This is the rectangle in the target graphic we want to render to
 
                                 g.DrawImage(sourceBitmap, destRect, sourceRect, GraphicsUnit.Pixel);
                                 g.Dispose();
@@ -1661,6 +1662,9 @@ namespace Client
 
         private void CmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (Event.TmpEvent.Pages == null)
+                return;
+
             if (cmbTrigger.SelectedIndex == -1)
                 return;
             Event.TmpEvent.Pages[Event.CurPageNum].Trigger = (byte)cmbTrigger.SelectedIndex;

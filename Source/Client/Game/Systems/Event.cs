@@ -129,6 +129,7 @@ namespace Client
         public static void DeleteEvent(int X, int Y)
         {
             int i;
+            int lowIndex = -1;
 
             if (GameState.MyEditorType != (int)EditorType.Map)
                 return;
@@ -144,43 +145,31 @@ namespace Client
                 {
                     // Clear the event
                     ClearEvent(i);
+                    lowIndex = i;
                     break;
                 }
             }
 
-            // Set the new count
-            Data.MyMap.EventCount--;
-
-            var newEvents = new Core.Type.Event[Data.MyMap.EventCount];
-            for (i = 0; i < Data.MyMap.EventCount; i++)
+            if (lowIndex != -1)
             {
-                if (Information.UBound(Data.MyMap.Event) > 2)
+                for (i = lowIndex; i < Data.MyMap.EventCount; i++)
                 {
-                    newEvents[i] = Data.MyMap.Event[i + 1];
+                    if (Information.UBound(Data.MyMap.Event) > 2)
+                    {
+                        Data.MyMap.Event[i] = Data.MyMap.Event[i + 1];
+                    }
                 }
-                else
+
+                for (i = lowIndex; i < Data.MyMap.EventCount; i++)
                 {
-                    newEvents[i] = Data.MyMap.Event[i];
+                    if (Information.UBound(Data.MapEvents) > 2)
+                    {
+                        Data.MapEvents[i] = Data.MapEvents[i + 1];
+                    }
                 }
+
+                TmpEvent = default;
             }
-
-            Data.MyMap.Event = newEvents;
-
-            var newMapEvents = new Core.Type.MapEvent[Data.MyMap.EventCount];
-            for (i = 0; i < Data.MyMap.EventCount; i++)
-            {
-                if (Information.UBound(Data.MapEvents) > 2)
-                {
-                    newMapEvents[i] = Data.MapEvents[i + 1];
-                }
-                else
-                {
-                    newMapEvents[i] = Data.MapEvents[i];
-                }
-                }
-            Data.MapEvents = newMapEvents;
-
-            TmpEvent = default;
         }
         
 
@@ -212,16 +201,17 @@ namespace Client
             // increment count
             if (count == 0)
             {
-                count = 1;
+                count = 1;           
             }
             else
             {
-                count += 1;
+                count++;
             }
 
-            ClearEvent(count);
             Data.MyMap.EventCount = count;
-            Array.Resize(ref Data.MyMap.Event, count);
+            Array.Resize(ref Data.MyMap.Event, count + 1);
+            Array.Resize(ref Data.MapEvents, count + 1);
+            ClearEvent(count);
             // set the new event
             Data.MyMap.Event[count - 1].X = X;
             Data.MyMap.Event[count - 1].Y = Y;
@@ -234,11 +224,9 @@ namespace Client
                 EventEditorInit(count - 1);
         }
 
-        public static void ClearEvent(int EventNum)
+        public static void ClearEvent(int eventNum)
         {
-            Array.Resize(ref Data.MyMap.Event, EventNum + 1);
-            Array.Resize(ref Data.MapEvents, EventNum + 1);
-            ref var withBlock = ref Data.MyMap.Event[EventNum];
+            ref var withBlock = ref Data.MyMap.Event[eventNum];
             withBlock.Name = "";
             withBlock.PageCount = 1;
             withBlock.Pages = new Core.Type.EventPage[1];
