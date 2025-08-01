@@ -1149,15 +1149,6 @@ namespace Client
             GameState.diaData5 = Data5;
             GameState.diaStyle = style;
 
-            try
-            {
-                General.SetWindowFocus(General.Client.Window.Handle);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
             // make the Gui.Windows visible
             Gui.ShowWindow(Gui.GetWindowIndex("winDialogue"), true);
         }
@@ -1329,96 +1320,6 @@ namespace Client
 
                     case (long)DialogueType.FillAttributes:
                         {
-                            TileType type = TileType.None;
-                            var loopTo6 = (int)Data.MyMap.MaxX;
-                            for (x = 0; x < loopTo6; x++)
-                            {
-                                var loopTo7 = (int)Data.MyMap.MaxY;
-                                for (y = 0; y < loopTo7; y++)
-                                {
-                                    // blocked tile
-                                    if (frmEditor_Map.Instance.optBlocked.Checked == true)
-                                    {
-                                        type = TileType.Blocked;
-                                    }
-
-                                    // warp tile
-                                    if (frmEditor_Map.Instance.optWarp.Checked == true)
-                                    {
-                                        type = TileType.Warp;
-                                    }
-
-                                    // item spawn
-                                    if (frmEditor_Map.Instance.optItem.Checked == true)
-                                    {
-                                        type = TileType.Item;
-                                    }
-
-                                    // Npc avoid
-                                    if (frmEditor_Map.Instance.optNpcAvoid.Checked == true)
-                                    {
-                                        type = TileType.NpcAvoid;
-                                    }
-
-                                    // resource
-                                    if (frmEditor_Map.Instance.optResource.Checked == true)
-                                    {
-                                        type = TileType.Resource;
-                                    }
-
-                                    // Npc spawn
-                                    if (frmEditor_Map.Instance.optNpcSpawn.Checked == true)
-                                    {
-                                        type = TileType.NpcSpawn;
-                                    }
-
-                                    // shop
-                                    if (frmEditor_Map.Instance.optShop.Checked == true)
-                                    {
-                                        type = TileType.Shop;
-                                    }
-
-                                    // bank
-                                    if (frmEditor_Map.Instance.optBank.Checked == true)
-                                    {
-                                        type = TileType.Bank;
-                                    }
-
-                                    // heal
-                                    if (frmEditor_Map.Instance.optHeal.Checked == true)
-                                    {
-                                        type = TileType.Heal;
-                                    }
-
-                                    // trap
-                                    if (frmEditor_Map.Instance.optTrap.Checked == true)
-                                    {
-                                        type = TileType.Trap;
-                                    }
-
-                                    // Animation
-                                    if (frmEditor_Map.Instance.optAnimation.Checked == true)
-                                    {
-                                        type = TileType.Animation;
-                                    }
-
-                                    // No Xing
-                                    if (frmEditor_Map.Instance.optNoCrossing.Checked == true)
-                                    {
-                                        type = TileType.NoCrossing;
-                                    }
-
-                                    if (frmEditor_Map.Instance.cmbAttribute.SelectedIndex == 1)
-                                    {
-                                        Data.MyMap.Tile[x, y].Type = type;
-                                    }
-                                    else
-                                    {
-                                        Data.MyMap.Tile[x, y].Type2 = type;
-                                    }
-                                }
-                            }
-
                             break;
                         }
 
