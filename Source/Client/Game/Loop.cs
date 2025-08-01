@@ -96,7 +96,7 @@ namespace Client
                 {
                     if (string.IsNullOrEmpty(Event.EventText))
                     {
-                        if (Conversions.ToInteger(Event.EventChat) == 1)
+                        if (Event.EventChat)
                         {
                             Event.EventChat = false;
                         }
