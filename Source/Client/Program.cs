@@ -15,6 +15,7 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using System;
 using System.Reflection;
 using Client.Game.Objects;
+using SDL2;
 
 namespace Client
 {
@@ -69,6 +70,8 @@ namespace Client
         // Minimum interval (in milliseconds) between repeated key inputs
         private const byte KeyRepeatInterval = 200;
 
+        static float DPIScale = 96;
+
         // Lock object to ensure thread safety
         public static readonly object InputLock = new object();
 
@@ -118,6 +121,19 @@ namespace Client
 
             return result;
         }
+        // Get DPI scale factor using SDL2
+        private float GetDpiScale()
+        {
+            float dpi = 96.0f; // Default DPI (standard for Windows)
+            int display = SDL.SDL_GetWindowDisplayIndex(Window.Handle);
+            if (SDL.SDL_GetDisplayDPI(display, out float ddpi, out float hdpi, out float vdpi) == 0)
+            {
+                // Use diagonal DPI for scaling
+                dpi = ddpi;
+            }
+            // Calculate scale factor (96 is standard DPI)
+            return dpi / 96.0f;
+        }
 
         public GameClient()
         {
@@ -125,13 +141,15 @@ namespace Client
                 ref GameState.ResolutionHeight);
 
             Graphics = new GraphicsDeviceManager(this);
+            
+            DPIScale = GetDpiScale();
 
             // Set basic properties for GraphicsDeviceManager
             ref var withBlock = ref Graphics;
             withBlock.GraphicsProfile = GraphicsProfile.Reach;
             withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
-            withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
-            withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
+            withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth * (int)DPIScale;
+            withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight * (int)DPIScale;
             withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
             IsFixedTimeStep = false;
             withBlock.PreferHalfPixelOffset = true;
@@ -293,7 +311,7 @@ static void LoadFonts()
             General.GetResolutionSize(SettingsManager.Instance.Resolution, ref targetWidth, ref targetHeight);
             var targetAspect = (float)targetWidth / targetHeight;
             
-            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, dW, dH, targetAspect);
+            var destRect = GetAspectRatio(dX, dY, Graphics.PreferredBackBufferWidth * (int)DPIScale, Graphics.PreferredBackBufferHeight * (int)DPIScale, dW, dH, targetAspect);
             var srcRect = new Rectangle(sX, sY, sW, sH);
             var color = new Color(red, green, blue, (byte)255) * alpha;
             
