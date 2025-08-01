@@ -80,9 +80,7 @@ namespace Client
         public static RenderTarget2D RenderTarget;
         public static Texture2D TransparentTexture;
         public static Texture2D PixelTexture;
-
-        public static bool IsLoaded;
-
+        
         // Add a timer to prevent spam
         private static DateTime lastInputTime = DateTime.MinValue;
         private const int inputCooldown = 250;
@@ -121,7 +119,7 @@ namespace Client
             return result;
         }
 
-        public GameClient()
+        public GameClient(int width, int height)
         {
             General.GetResolutionSize(SettingsManager.Instance.Resolution, ref GameState.ResolutionWidth,
                 ref GameState.ResolutionHeight);
@@ -131,9 +129,9 @@ namespace Client
             // Set basic properties for GraphicsDeviceManager
             ref var withBlock = ref Graphics;
             withBlock.GraphicsProfile = GraphicsProfile.Reach;
-            withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
-            withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
-            withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
+            withBlock.IsFullScreen = true;
+            withBlock.PreferredBackBufferWidth = width;
+            withBlock.PreferredBackBufferHeight = height;
             withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
             IsFixedTimeStep = false;
             withBlock.PreferHalfPixelOffset = true;
@@ -180,6 +178,7 @@ namespace Client
 
             base.Initialize();
         }
+        
 
         static void LoadFonts()
         {
@@ -200,12 +199,11 @@ namespace Client
 
             LoadFonts();
             General.Startup();
-            IsLoaded = true;
         }
 
         public static SpriteFont LoadFont(string path, Core.Font font)
         {
-            return General.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
+            return MainActivity.Client.Content.Load<SpriteFont>(System.IO.Path.Combine(path, ((int)font).ToString()));
         }
 
         public static Color ToXnaColor(System.Drawing.Color drawingColor)
@@ -323,27 +321,28 @@ namespace Client
                     path += GameState.GfxExt;
                 }
 
-                // Open the file stream with FileShare.Read to allow other processes to read the file  
-                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+#if ANDROID
+                var stream = TitleContainer.OpenStream(path);
+#else
+                var stream = new FileStream(path, FileMode.Open);
+#endif
+                var texture = Texture2D.FromStream(Graphics.GraphicsDevice, stream);
+
+                // Cache graphics information
+                var gfxInfo = new GfxInfo()
                 {
-                    var texture = Texture2D.FromStream(Graphics.GraphicsDevice, stream);
+                    Width = texture.Width,
+                    Height = texture.Height
+                };
+                GfxInfoCache.TryAdd(path, gfxInfo);
 
-                    // Cache graphics information  
-                    var gfxInfo = new GfxInfo()
-                    {
-                        Width = texture.Width,
-                        Height = texture.Height
-                    };
-                    GfxInfoCache.TryAdd(path, gfxInfo);
+                TextureCache[path] = texture;
 
-                    TextureCache[path] = texture;
-
-                    return texture;
-                }
+                return texture;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading texture from {path}: {ex.Message}");
+                System.Console.WriteLine($"Error loading texture from {path}: {ex.Message}");
                 return null;
             }
         }
@@ -394,7 +393,7 @@ namespace Client
 
             if (elapsedTime.TotalSeconds >= 1d)
             {
-                Console.WriteLine("FPS: " + GetFps());
+                System.Console.WriteLine("FPS: " + GetFps());
                 SetFps(0);
                 elapsedTime = TimeSpan.Zero;
             }
@@ -901,42 +900,6 @@ namespace Client
             {
                 GameLogic.ScrollChatBox(0); // Scroll up
 
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    if (GameClient.CurrentKeyboardState.IsKeyDown(Keys.LeftShift))
-                    {
-                        if (GameState.CurLayer > 0)
-                        {
-                            GameState.CurLayer -= 1;
-                        }
-                    }
-
-                    else if (GameState.CurTileset > 0)
-                    {
-                        GameState.CurTileset -= 1;
-                    }
-
-                }
-            }
-            else if (scrollValue < 0)
-            {
-                GameLogic.ScrollChatBox(1); // Scroll down
-
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    if (GameClient.CurrentKeyboardState.IsKeyDown(Keys.LeftShift))
-                    {
-                        if (GameState.CurLayer < Enum.GetValues(typeof(MapLayer)).Length)
-                        {
-                            GameState.CurLayer += 1;
-                        }
-                    }
-                    else if (GameState.CurTileset < GameState.NumTileSets)
-                    {
-                        GameState.CurTileset += 1;
-                    }
-                }
-
                 if (scrollValue != 0)
                 {
                     Gui.HandleInterfaceEvents(ControlState.MouseScroll);
@@ -1010,12 +973,8 @@ namespace Client
             {
                 if (IsSeartchCooldownElapsed())
                 {
-                    if (IsMouseButtonDown(MouseButton.Left))
-                    {
-                        Player.CheckAttack(true);
-                        NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
-                        lastSearchTime = DateTime.Now;
-                    }
+                    Player.CheckAttack(true);
+                    NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
                 }
 
                 // Right-click interactions
@@ -1028,7 +987,7 @@ namespace Client
                     {
                         NetworkSend.SendDeleteHotbar(slotNum);
                     }
-
+                    
                     if (GameState.VbKeyShift == true)
                     {
                         // Admin warp if Shift is held and the player has moderator access
@@ -1072,7 +1031,7 @@ namespace Client
 
         private static void OnDeviceReset()
         {
-            Console.WriteLine("Device Reset");
+            System.Console.WriteLine("Device Reset");
         }
 
         public static void TakeScreenshot()
@@ -1084,7 +1043,7 @@ namespace Client
             Graphics.GraphicsDevice.Clear(Color.Transparent);
 
             // Draw everything to the render target
-            General.Client.Draw(new GameTime()); // Assuming Draw handles your game rendering
+            MainActivity.Client.Draw(new GameTime()); // Assuming Draw handles your game rendering
 
             // Reset the render target to the back buffer (main display)
             Graphics.GraphicsDevice.SetRenderTarget(null);
@@ -2492,7 +2451,7 @@ namespace Client
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                System.Console.WriteLine(e.Message);
             }
         }
 
@@ -2818,14 +2777,7 @@ namespace Client
 
             for (i = 0; i < byte.MaxValue; i++)
                 Text.DrawActionMsg(i);
-
-            if (GameState.MyEditorType == (int)EditorType.Map)
-            {
-                UpdateDirBlock();
-                UpdateMapAttributes();
-
-            }
-
+            
             for (i = 0; i < byte.MaxValue; i++)
             {
                 if (Data.ChatBubble[i].Active)
@@ -2857,16 +2809,7 @@ namespace Client
             }
 
             Text.DrawMapName();
-
-            if (GameState.MyEditorType == (int)EditorType.Map)
-            {
-                if (GameState.MapEditorTab == (int)MapEditorTab.Events)
-                {
-                    DrawEvents();
-                }
-                
-            }
-
+            
             DrawBars();
             Map.DrawMapFade();
             Gui.Render();

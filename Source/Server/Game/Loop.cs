@@ -92,7 +92,6 @@ namespace Server
                     {
                         Console.WriteLine(e.Message);
                     }
-
                     Clock.Instance.Tick();
 
                     // Move the timer up 1000ms.

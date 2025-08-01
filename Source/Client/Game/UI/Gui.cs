@@ -4028,6 +4028,7 @@ namespace Client
 
         public static void ResizeGUI()
         {
+            return;
             long Top;
 
             // move Hotbar
