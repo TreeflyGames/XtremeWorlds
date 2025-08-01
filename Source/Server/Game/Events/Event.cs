@@ -354,7 +354,7 @@ namespace Server
         private static bool IsValidPlayerEvent(int playerId, int mapNum, int eventId) =>
             playerId >= 0 && playerId < Core.Constant.MAX_PLAYERS &&
             mapNum >= 0 && mapNum <= Core.Constant.MAX_MAPS &&
-            eventId >= 0 && eventId <= Core.Data.TempPlayer[playerId].EventMap.CurrentEvents;
+            eventId >= 0 && eventId < Core.Data.TempPlayer[playerId].EventMap.CurrentEvents;
 
         private static (int px, int py, int ex, int ey, int walkThrough) GetPlayerAndEventPositions(int playerId, int mapNum, int eventId)
         {

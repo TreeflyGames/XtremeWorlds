@@ -1542,15 +1542,14 @@ static void LoadFonts()
 
             if (picNum < 1 | picNum > GameState.NumItems)
                 return;
+          
+            ref var withBlock = ref Data.MyMapItem[itemNum];
 
-            {
-                ref var withBlock = ref Data.MyMapItem[itemNum];
-                if (withBlock.X < GameState.TileView.Left | withBlock.X > GameState.TileView.Right)
-                    return;
+            if (Math.Floor((double)withBlock.X / 32) < GameState.TileView.Left | Math.Floor((double)withBlock.X / 32) > GameState.TileView.Right)
+                return;
 
-                if (withBlock.Y < GameState.TileView.Top | withBlock.Y > GameState.TileView.Bottom)
-                    return;
-            }
+            if (withBlock.Y < GameState.TileView.Top | withBlock.Y > GameState.TileView.Bottom)
+                return;           
 
             srcrec = new Rectangle(0, 0, GameState.SizeX, GameState.SizeY);
             destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X),
@@ -2504,16 +2503,14 @@ static void LoadFonts()
             {
                 if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Data.MyMap.EventCount)
                 {
-                    var loopTo2 = GameState.CurrentEvents;
-                    for (i = 0; i < loopTo2; i++)
+                    var loopTo2 = Information.UBound(Data.MapEvents);
+                    for (i = 0; i <= loopTo2; i++)
                     {
-                        if (i < Data.MapEvents.Length)
+                        if (Data.MapEvents[i].Position == 0)
                         {
-                            if (Data.MapEvents[i].Position == 0)
-                            {
-                                DrawEvent(i);
-                            }
+                            DrawEvent(i);
                         }
+                       
                     }
                 }
             }
@@ -2527,10 +2524,7 @@ static void LoadFonts()
             {
                 for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
                 {
-                    if (Data.MyMapItem[i].Num >= 0)
-                    {
-                        DrawMapItem(i);
-                    }
+                    DrawMapItem(i);                
                 }
             }
 
@@ -2580,8 +2574,8 @@ static void LoadFonts()
                     {
                         if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Data.MyMap.EventCount)
                         {
-                            var loopTo4 = GameState.CurrentEvents;
-                            for (i = 0; i < loopTo4; i++)
+                            var loopTo4 = Information.UBound(Data.MapEvents);
+                            for (i = 0; i <= loopTo4; i++)
                             {
                                 if (Data.MapEvents[i].Position == 1)
                                 {

@@ -969,8 +969,8 @@ namespace Client
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
                 Data.MyMapNpc[i].Num = buffer.ReadInt32();
-                Data.MyMapNpc[i].X = (byte)buffer.ReadInt32();
-                Data.MyMapNpc[i].Y = (byte)buffer.ReadInt32();
+                Data.MyMapNpc[i].X = buffer.ReadInt32();
+                Data.MyMapNpc[i].Y = buffer.ReadInt32();
                 Data.MyMapNpc[i].Dir = buffer.ReadByte();
                 for (int n = 0; n < vitalCount; n++)
                     Data.MyMapNpc[i].Vital[n] = buffer.ReadInt32();

@@ -235,13 +235,13 @@ namespace Server
                         // Iterate through event pages to find the highest-priority page that meets conditions
                         for (int z = 0; z < Core.Data.Map[mapNum].Event[id].PageCount; z++)
                         {
-                            bool spawnevent = true;
+                            bool spawnEvent = true;
                             Core.Type.EventPage page = Core.Data.Map[mapNum].Event[id].Pages[z];
 
                             // Check conditions (Item, Self Switch, Variable, Switch).
                             if (page.ChkHasItem == 1 && Player.HasItem(i, page.HasItemIndex) == 0)
                             {
-                                spawnevent = false;
+                                spawnEvent = false;
                             }
 
                             if (page.ChkSelfSwitch == 1)
@@ -255,7 +255,7 @@ namespace Server
                                     selfSwitchStatus = Core.Data.TempPlayer[i].EventMap.EventPages[id].SelfSwitches[page.SelfSwitchIndex] == compare;
 
                                 if (!selfSwitchStatus)
-                                    spawnevent = false;
+                                    spawnEvent = false;
                             }
 
 
@@ -273,7 +273,7 @@ namespace Server
                                     case 5: conditionMet = playerVar != page.VariableCondition; break;
                                 }
                                 if (!conditionMet)
-                                    spawnevent = false;
+                                    spawnEvent = false;
                             }
 
 
@@ -282,12 +282,12 @@ namespace Server
                                 // Using XOR for concise switch check.
                                 if ((page.SwitchCompare == 0) ^ (Core.Data.Player[i].Switches[page.SwitchIndex] == 0)) //we want false
                                 {
-                                    spawnevent = false; //and switch is true, don't spawn.
+                                    spawnEvent = false; //and switch is true, don't spawn.
                                 }
                             }
 
 
-                            if (spawnevent)
+                            if (spawnEvent)
                             {
                                 p = z; // Store the highest-priority valid page index
                             }
@@ -385,6 +385,9 @@ namespace Server
                             // Send the spawn event packet.
                             using (var buffer = new ByteStream(4))
                             {
+                                if (id <= 0)
+                                    continue;
+
                                 buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
                                 buffer.WriteInt32(id); // Event ID
 
@@ -2751,7 +2754,7 @@ namespace Server
                 // Find the highest-priority page that meets conditions.
                 for (int z = 0; z < Data.Map[mapNum].Event[i].PageCount; z++)
                 {
-                    bool spawncurrentevent = true;
+                    bool spawnCurrentEvent = true;
                     ref var page = ref Data.Map[mapNum].Event[i].Pages[z]; // Use ref for direct modification.
                     bool variableConditionMet = false;
 
@@ -2770,19 +2773,19 @@ namespace Server
                         }
 
                         if (!variableConditionMet)
-                            spawncurrentevent = false;
+                            spawnCurrentEvent = false;
                     }
 
                     if (page.ChkSwitch == 1)
                     {
                         // Using XOR for switch check, handles both expecting true and false efficiently
                         if (!((page.SwitchCompare == 1) ^ (Core.Data.Player[index].Switches[page.SwitchIndex] == 0))) //we want true
-                            spawncurrentevent = false;
+                            spawnCurrentEvent = false;
                     }
 
                     if (page.ChkHasItem == 1 && Player.HasItem(index, page.HasItemIndex) == 0)
                     {
-                        spawncurrentevent = false;
+                        spawnCurrentEvent = false;
                     }
 
                     if (page.ChkSelfSwitch == 1)
@@ -2796,11 +2799,11 @@ namespace Server
                             selfSwitchState = false; // Local self switches are not checked when spawning.
 
                         if (!selfSwitchState)
-                            spawncurrentevent = false;
+                            spawnCurrentEvent = false;
                     }
 
 
-                    if (spawncurrentevent)
+                    if (spawnCurrentEvent)
                     {
                         p = z; // Store the valid page index.
                     }
@@ -2847,16 +2850,16 @@ namespace Server
                     if (Data.Map[mapNum].Event[i].Globals == 1)
                     {
                         // Use global event's position and direction.
-                        withBlock1.X = Event.TempEventMap[mapNum].Event[i].X;
-                        withBlock1.Y = Event.TempEventMap[mapNum].Event[i].Y;
+                        withBlock1.X = Event.TempEventMap[mapNum].Event[i].X * 32;
+                        withBlock1.Y = Event.TempEventMap[mapNum].Event[i].Y * 32;
                         withBlock1.Dir = Event.TempEventMap[mapNum].Event[i].Dir;
                         withBlock1.MoveRouteStep = Event.TempEventMap[mapNum].Event[i].MoveRouteStep;
                     }
                     else
                     {
                         // Use the event's initial position.
-                        withBlock1.X = Data.Map[mapNum].Event[i].X;
-                        withBlock1.Y = Data.Map[mapNum].Event[i].Y;
+                        withBlock1.X = Data.Map[mapNum].Event[i].X * 32;
+                        withBlock1.Y = Data.Map[mapNum].Event[i].Y * 32;
                         withBlock1.MoveRouteStep = 0;
                     }
 
@@ -2899,12 +2902,13 @@ namespace Server
             // Send spawn event packets to the player.
             using (var buffer = new ByteStream(4))
             {
-                for (int i = 1; i <= Core.Data.TempPlayer[index].EventMap.CurrentEvents; i++) // Changed to start from 1, since we resized array + 1
+                for (int i = 0; i <= Core.Data.TempPlayer[index].EventMap.CurrentEvents; i++)
                 {
                     ref var eventPage = ref Core.Data.TempPlayer[index].EventMap.EventPages[i];
-                    if (eventPage.EventId < 0) continue; //should never hit here, but just in case
+                    if (eventPage.EventId <= 0) continue; //should never hit here, but just in case
 
                     buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                    
                     buffer.WriteInt32(eventPage.EventId); // Map event ID.
 
                     buffer.WriteString(Data.Map[mapNum].Event[eventPage.EventId].Name); // Map event ID
@@ -2925,9 +2929,9 @@ namespace Server
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough);
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].ShowName);
                     NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
-
-                    buffer.Reset();
                 }
+
+                
             }
         }
 

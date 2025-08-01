@@ -252,89 +252,92 @@ namespace Client
             }
         }
 
-        public static void EventEditorLoadPage(int PageNum)
+        public static void EventEditorLoadPage(int pageNum)
         {
+            if (pageNum < 0 || pageNum >= TmpEvent.Pages.Length || TmpEvent.Pages == null)
             {
-                ref var withBlock = ref TmpEvent.Pages[PageNum];
-                GraphicSelX = withBlock.GraphicX;
-                GraphicSelY = withBlock.GraphicY;
-                GraphicSelX2 = withBlock.GraphicX2;
-                GraphicSelY2 = withBlock.GraphicY2;
-                frmEditor_Event.Instance.cmbGraphic.SelectedIndex = withBlock.GraphicType;
-                frmEditor_Event.Instance.cmbHasItem.SelectedIndex = withBlock.HasItemIndex;
-                if (withBlock.HasItemAmount == 0)
-                {
-                    frmEditor_Event.Instance.nudCondition_HasItem.Value = 1m;
-                }
-                else
-                {
-                    frmEditor_Event.Instance.nudCondition_HasItem.Value = withBlock.HasItemAmount;
-                }
-                frmEditor_Event.Instance.cmbMoveFreq.SelectedIndex = withBlock.MoveFreq;
-                frmEditor_Event.Instance.cmbMoveSpeed.SelectedIndex = withBlock.MoveSpeed;
-                frmEditor_Event.Instance.cmbMoveType.SelectedIndex = withBlock.MoveType;
-                frmEditor_Event.Instance.cmbPlayerVar.SelectedIndex = withBlock.VariableIndex;
-                frmEditor_Event.Instance.cmbPlayerSwitch.SelectedIndex = withBlock.SwitchIndex;
-                frmEditor_Event.Instance.cmbSelfSwitchCompare.SelectedIndex = withBlock.SelfSwitchCompare;
-                frmEditor_Event.Instance.cmbPlayerSwitchCompare.SelectedIndex = withBlock.SwitchCompare;
-                frmEditor_Event.Instance.cmbPlayervarCompare.SelectedIndex = withBlock.VariableCompare;
-                frmEditor_Event.Instance.chkGlobal.Checked = Conversions.ToBoolean(TmpEvent.Globals);
-                frmEditor_Event.Instance.cmbTrigger.SelectedIndex = withBlock.Trigger;
-                frmEditor_Event.Instance.chkDirFix.Checked = Conversions.ToBoolean(withBlock.DirFix);
-                frmEditor_Event.Instance.chkHasItem.Checked = Conversions.ToBoolean(withBlock.ChkHasItem);
-                frmEditor_Event.Instance.chkPlayerVar.Checked = Conversions.ToBoolean(withBlock.ChkVariable);
-                frmEditor_Event.Instance.chkPlayerSwitch.Checked = Conversions.ToBoolean(withBlock.ChkSwitch);
-                frmEditor_Event.Instance.chkSelfSwitch.Checked = Conversions.ToBoolean(withBlock.ChkSelfSwitch);
-                frmEditor_Event.Instance.chkWalkAnim.Checked = Conversions.ToBoolean(withBlock.WalkAnim);
-                frmEditor_Event.Instance.chkWalkThrough.Checked = Conversions.ToBoolean(withBlock.WalkThrough);
-                frmEditor_Event.Instance.chkShowName.Checked = Conversions.ToBoolean(withBlock.ShowName);
-                frmEditor_Event.Instance.nudPlayerVariable.Value = withBlock.VariableCondition;
-                frmEditor_Event.Instance.nudGraphic.Value = withBlock.Graphic;
-
-                if (withBlock.ChkSelfSwitch == 0)
-                {
-                    frmEditor_Event.Instance.cmbSelfSwitch.Enabled = false;
-                    frmEditor_Event.Instance.cmbSelfSwitchCompare.Enabled = false;
-                }
-                else
-                {
-                    frmEditor_Event.Instance.cmbSelfSwitch.Enabled = true;
-                    frmEditor_Event.Instance.cmbSelfSwitchCompare.Enabled = true;
-                }
-                if (withBlock.ChkSwitch == 0)
-                {
-                    frmEditor_Event.Instance.cmbPlayerSwitch.Enabled = false;
-                    frmEditor_Event.Instance.cmbPlayerSwitchCompare.Enabled = false;
-                }
-                else
-                {
-                    frmEditor_Event.Instance.cmbPlayerSwitch.Enabled = true;
-                    frmEditor_Event.Instance.cmbPlayerSwitchCompare.Enabled = true;
-                }
-                if (withBlock.ChkVariable == 0)
-                {
-                    frmEditor_Event.Instance.cmbPlayerVar.Enabled = false;
-                    frmEditor_Event.Instance.nudPlayerVariable.Enabled = false;
-                    frmEditor_Event.Instance.cmbPlayervarCompare.Enabled = false;
-                }
-                else
-                {
-                    frmEditor_Event.Instance.cmbPlayerVar.Enabled = true;
-                    frmEditor_Event.Instance.nudPlayerVariable.Enabled = true;
-                    frmEditor_Event.Instance.cmbPlayervarCompare.Enabled = true;
-                }
-                if (frmEditor_Event.Instance.cmbMoveType.SelectedIndex == 2)
-                {
-                    frmEditor_Event.Instance.btnMoveRoute.Enabled = true;
-                }
-                else
-                {
-                    frmEditor_Event.Instance.btnMoveRoute.Enabled = false;
-                }
-                frmEditor_Event.Instance.cmbPositioning.SelectedIndex = int.Parse(withBlock.Position.ToString());
-                EventListCommands();
+                // Invalid page number, return or throw an exception
+                return;
             }
 
+            ref var withBlock = ref TmpEvent.Pages[pageNum];
+            GraphicSelX = withBlock.GraphicX;
+            GraphicSelY = withBlock.GraphicY;
+            GraphicSelX2 = withBlock.GraphicX2;
+            GraphicSelY2 = withBlock.GraphicY2;
+            frmEditor_Event.Instance.cmbGraphic.SelectedIndex = withBlock.GraphicType;
+            frmEditor_Event.Instance.cmbHasItem.SelectedIndex = withBlock.HasItemIndex;
+            if (withBlock.HasItemAmount == 0)
+            {
+                frmEditor_Event.Instance.nudCondition_HasItem.Value = 1m;
+            }
+            else
+            {
+                frmEditor_Event.Instance.nudCondition_HasItem.Value = withBlock.HasItemAmount;
+            }
+            frmEditor_Event.Instance.cmbMoveFreq.SelectedIndex = withBlock.MoveFreq;
+            frmEditor_Event.Instance.cmbMoveSpeed.SelectedIndex = withBlock.MoveSpeed;
+            frmEditor_Event.Instance.cmbMoveType.SelectedIndex = withBlock.MoveType;
+            frmEditor_Event.Instance.cmbPlayerVar.SelectedIndex = withBlock.VariableIndex;
+            frmEditor_Event.Instance.cmbPlayerSwitch.SelectedIndex = withBlock.SwitchIndex;
+            frmEditor_Event.Instance.cmbSelfSwitchCompare.SelectedIndex = withBlock.SelfSwitchCompare;
+            frmEditor_Event.Instance.cmbPlayerSwitchCompare.SelectedIndex = withBlock.SwitchCompare;
+            frmEditor_Event.Instance.cmbPlayervarCompare.SelectedIndex = withBlock.VariableCompare;
+            frmEditor_Event.Instance.chkGlobal.Checked = Conversions.ToBoolean(TmpEvent.Globals);
+            frmEditor_Event.Instance.cmbTrigger.SelectedIndex = withBlock.Trigger;
+            frmEditor_Event.Instance.chkDirFix.Checked = Conversions.ToBoolean(withBlock.DirFix);
+            frmEditor_Event.Instance.chkHasItem.Checked = Conversions.ToBoolean(withBlock.ChkHasItem);
+            frmEditor_Event.Instance.chkPlayerVar.Checked = Conversions.ToBoolean(withBlock.ChkVariable);
+            frmEditor_Event.Instance.chkPlayerSwitch.Checked = Conversions.ToBoolean(withBlock.ChkSwitch);
+            frmEditor_Event.Instance.chkSelfSwitch.Checked = Conversions.ToBoolean(withBlock.ChkSelfSwitch);
+            frmEditor_Event.Instance.chkWalkAnim.Checked = Conversions.ToBoolean(withBlock.WalkAnim);
+            frmEditor_Event.Instance.chkWalkThrough.Checked = Conversions.ToBoolean(withBlock.WalkThrough);
+            frmEditor_Event.Instance.chkShowName.Checked = Conversions.ToBoolean(withBlock.ShowName);
+            frmEditor_Event.Instance.nudPlayerVariable.Value = withBlock.VariableCondition;
+            frmEditor_Event.Instance.nudGraphic.Value = withBlock.Graphic;
+
+            if (withBlock.ChkSelfSwitch == 0)
+            {
+                frmEditor_Event.Instance.cmbSelfSwitch.Enabled = false;
+                frmEditor_Event.Instance.cmbSelfSwitchCompare.Enabled = false;
+            }
+            else
+            {
+                frmEditor_Event.Instance.cmbSelfSwitch.Enabled = true;
+                frmEditor_Event.Instance.cmbSelfSwitchCompare.Enabled = true;
+            }
+            if (withBlock.ChkSwitch == 0)
+            {
+                frmEditor_Event.Instance.cmbPlayerSwitch.Enabled = false;
+                frmEditor_Event.Instance.cmbPlayerSwitchCompare.Enabled = false;
+            }
+            else
+            {
+                frmEditor_Event.Instance.cmbPlayerSwitch.Enabled = true;
+                frmEditor_Event.Instance.cmbPlayerSwitchCompare.Enabled = true;
+            }
+            if (withBlock.ChkVariable == 0)
+            {
+                frmEditor_Event.Instance.cmbPlayerVar.Enabled = false;
+                frmEditor_Event.Instance.nudPlayerVariable.Enabled = false;
+                frmEditor_Event.Instance.cmbPlayervarCompare.Enabled = false;
+            }
+            else
+            {
+                frmEditor_Event.Instance.cmbPlayerVar.Enabled = true;
+                frmEditor_Event.Instance.nudPlayerVariable.Enabled = true;
+                frmEditor_Event.Instance.cmbPlayervarCompare.Enabled = true;
+            }
+            if (frmEditor_Event.Instance.cmbMoveType.SelectedIndex == 2)
+            {
+                frmEditor_Event.Instance.btnMoveRoute.Enabled = true;
+            }
+            else
+            {
+                frmEditor_Event.Instance.btnMoveRoute.Enabled = false;
+            }
+            frmEditor_Event.Instance.cmbPositioning.SelectedIndex = int.Parse(withBlock.Position.ToString());
+            EventListCommands();
         }
 
         public static void EventEditorOK()
