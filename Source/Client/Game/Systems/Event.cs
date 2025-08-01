@@ -129,8 +129,6 @@ namespace Client
         public static void DeleteEvent(int X, int Y)
         {
             int i;
-            int lowIndex = -1;
-            bool shifted = false;
 
             if (GameState.MyEditorType != (int)EditorType.Map)
                 return;
@@ -146,40 +144,45 @@ namespace Client
                 {
                     // Clear the event
                     ClearEvent(i);
-                    lowIndex = i;
-                    shifted = true;
-                }
-                else if (shifted)
-                {
-                    // Shift this event down to fill the gap
-                    Data.MyMap.Event[lowIndex] = Data.MyMap.Event[i];
-                    lowIndex = lowIndex + 1;
+                    break;
                 }
             }
 
-            // Adjust the event count if anything was deleted
-            if (lowIndex != -1)
-            {
-                // Set the new count
-                Data.MyMap.EventCount = lowIndex;
+            // Set the new count
+            Data.MyMap.EventCount--;
 
-                var newEvents = new Core.Type.Event[Data.MyMap.EventCount];
-                for (i = 0; i < Data.MyMap.EventCount; i++)
+            var newEvents = new Core.Type.Event[Data.MyMap.EventCount];
+            for (i = 0; i < Data.MyMap.EventCount; i++)
+            {
+                if (Information.UBound(Data.MyMap.Event) > 2)
+                {
+                    newEvents[i] = Data.MyMap.Event[i + 1];
+                }
+                else
                 {
                     newEvents[i] = Data.MyMap.Event[i];
                 }
-                Data.MyMap.Event = newEvents;
+            }
 
-                var newMapEvents = new Core.Type.MapEvent[Data.MyMap.EventCount];
-                for (i = 0; i < Data.MyMap.EventCount; i++)
+            Data.MyMap.Event = newEvents;
+
+            var newMapEvents = new Core.Type.MapEvent[Data.MyMap.EventCount];
+            for (i = 0; i < Data.MyMap.EventCount; i++)
+            {
+                if (Information.UBound(Data.MapEvents) > 2)
+                {
+                    newMapEvents[i] = Data.MapEvents[i + 1];
+                }
+                else
                 {
                     newMapEvents[i] = Data.MapEvents[i];
                 }
-                Data.MapEvents = newMapEvents;
+                }
+            Data.MapEvents = newMapEvents;
 
-                TmpEvent = default;
-            }
+            TmpEvent = default;
         }
+        
 
 
         public static void AddEvent(int X, int Y, bool cancelLoad = false)
