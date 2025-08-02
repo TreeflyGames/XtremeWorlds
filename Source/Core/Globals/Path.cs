@@ -32,7 +32,10 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Content");
+                string assemblyPath = Assembly.GetEntryAssembly().Location;
+                string assetPath = Directory.GetParent(assemblyPath).FullName;
+                
+                return System.IO.Path.Combine(assetPath, "Content");
             }
         }
 
