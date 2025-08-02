@@ -178,7 +178,7 @@ namespace Client
                         Event.ProcessEventMovement(i);
                     }
 
-                    walkTimer = tick + 25; // edit this value to change WalkTimer
+                    walkTimer = tick + 10;
                 }
 
                 // chat timer
