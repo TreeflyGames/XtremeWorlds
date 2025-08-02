@@ -369,6 +369,7 @@ static void LoadFonts()
             Graphics.GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
             if (GameState.InGame == true)
             {
                 Render_Game();
