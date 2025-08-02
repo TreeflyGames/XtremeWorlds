@@ -65,7 +65,7 @@ namespace Server
                     }
 
                     // Move the timer up 250ms.
-                    tmrWalk = General.GetTimeMs() + 30;
+                    tmrWalk = General.GetTimeMs() + 10;
                 }
 
                 if (tick > tmr60000)
