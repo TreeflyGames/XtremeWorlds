@@ -181,22 +181,22 @@ namespace Client
                 {
                     case (byte)Direction.Up:
                         {
-                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Y = Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Y - 1;
+                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Y -= 1;
                             break;
                         }
                     case (byte)Direction.Down:
                         {
-                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Y = Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Y + 1;
+                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].Y += 1;
                             break;
                         }
                     case (byte)Direction.Left:
                         {
-                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].X = Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].X - 1;
+                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].X -= 1;
                             break;
                         }
                     case (byte)Direction.Right:
                         {
-                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].X = Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].X + 1;
+                            Data.MapProjectile[Core.Data.Player[GameState.MyIndex].Map, projectileNum].X += 1;
                             break;
                         }
                 }
@@ -218,7 +218,7 @@ namespace Client
                 canClearProjectile = true;
 
             // Check for blocked wall collision
-            if (Conversions.ToInteger(canClearProjectile) == 0) // Add a check to prevent crashing
+            if (canClearProjectile == false) // Add a check to prevent crashing
             {
                 if (Data.MyMap.Tile[x, y].Type == TileType.Blocked | Data.MyMap.Tile[x, y].Type2 == TileType.Blocked)
                 {
@@ -319,8 +319,8 @@ namespace Client
             }
 
             // Convert coordinates
-            x = GameLogic.ConvertMapX(x);
-            y = GameLogic.ConvertMapY(y);
+            x = GameLogic.ConvertMapX(x * 32);
+            y = GameLogic.ConvertMapY(y * 32);
 
             // Render texture
             string argpath = System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString());
