@@ -169,6 +169,7 @@ namespace Server
                                     using (var buffer = new ByteStream(4))
                                     {
                                         buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                        buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                         buffer.WriteInt32(id);
                                         ref var withBlock = ref Core.Data.TempPlayer[i].EventMap.EventPages[pageNum]; //find actual index of eventpage  
                                         buffer.WriteString(Core.Data.Map[GetPlayerMap(i)].Event[withBlock.EventId].Name);
@@ -235,13 +236,13 @@ namespace Server
                         // Iterate through event pages to find the highest-priority page that meets conditions
                         for (int z = 0; z < Core.Data.Map[mapNum].Event[id].PageCount; z++)
                         {
-                            bool spawnevent = true;
+                            bool spawnEvent = true;
                             Core.Type.EventPage page = Core.Data.Map[mapNum].Event[id].Pages[z];
 
                             // Check conditions (Item, Self Switch, Variable, Switch).
                             if (page.ChkHasItem == 1 && Player.HasItem(i, page.HasItemIndex) == 0)
                             {
-                                spawnevent = false;
+                                spawnEvent = false;
                             }
 
                             if (page.ChkSelfSwitch == 1)
@@ -255,7 +256,7 @@ namespace Server
                                     selfSwitchStatus = Core.Data.TempPlayer[i].EventMap.EventPages[id].SelfSwitches[page.SelfSwitchIndex] == compare;
 
                                 if (!selfSwitchStatus)
-                                    spawnevent = false;
+                                    spawnEvent = false;
                             }
 
 
@@ -273,7 +274,7 @@ namespace Server
                                     case 5: conditionMet = playerVar != page.VariableCondition; break;
                                 }
                                 if (!conditionMet)
-                                    spawnevent = false;
+                                    spawnEvent = false;
                             }
 
 
@@ -282,12 +283,12 @@ namespace Server
                                 // Using XOR for concise switch check.
                                 if ((page.SwitchCompare == 0) ^ (Core.Data.Player[i].Switches[page.SwitchIndex] == 0)) //we want false
                                 {
-                                    spawnevent = false; //and switch is true, don't spawn.
+                                    spawnEvent = false; //and switch is true, don't spawn.
                                 }
                             }
 
 
-                            if (spawnevent)
+                            if (spawnEvent)
                             {
                                 p = z; // Store the highest-priority valid page index
                             }
@@ -385,7 +386,11 @@ namespace Server
                             // Send the spawn event packet.
                             using (var buffer = new ByteStream(4))
                             {
+                                if (id <= 0)
+                                    continue;
+
                                 buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                 buffer.WriteInt32(id); // Event ID
 
                                 ref var withBlock1 = ref Core.Data.TempPlayer[i].EventMap.EventPages[x];
@@ -513,7 +518,7 @@ namespace Server
                                         var nextMove = withBlock.MoveRoute[withBlock.MoveRouteStep];
 
 
-                                        bool sendupdate = false;
+                                        bool sendUpdate = false;
                                         switch (nextMove.Index)
                                         {
                                             case 1: // Move Up
@@ -750,20 +755,20 @@ namespace Server
 
                                             case 34: // Turn On Walking Animation
                                                 withBlock.WalkingAnim = 1;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 35: // Turn Off Walking Animation
                                                 withBlock.WalkingAnim = 0;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
 
                                             case 36: // Turn On Direction Fix
                                                 withBlock.FixedDir = 1;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 37: // Turn Off Direction Fix
                                                 withBlock.FixedDir = 0;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
 
                                             case 38: // Turn On Through
@@ -774,15 +779,15 @@ namespace Server
                                                 break;
                                             case 40: //Turn on Fix Position
                                                 withBlock.Position = 1;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 41://Turn off Fix Position
                                                 withBlock.Position = 0;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
                                             case 42://Turn on Below Player
                                                 withBlock.Position = 2;
-                                                sendupdate = true;
+                                                sendUpdate = true;
                                                 break;
 
                                             case 43: // Change Graphic
@@ -806,17 +811,18 @@ namespace Server
                                                             _ => withBlock.Dir
                                                         };
                                                     }
-                                                    sendupdate = true;
+                                                    sendUpdate = true;
                                                     break;
                                                 }
                                         }
 
 
-                                        if (sendupdate)
+                                        if (sendUpdate)
                                         {
                                             using (var buffer = new ByteStream(4))
                                             {
                                                 buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                                buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                                 buffer.WriteInt32(EventId); // Event ID.
 
                                                 ref var withBlock1 = ref Event.TempEventMap[i].Event[x];
@@ -925,7 +931,7 @@ namespace Server
                             {
                                 ref var withBlock = ref Core.Data.TempPlayer[i].EventMap.EventPages[x];
                                 bool IsGlobal = false;
-                                bool sendupdate = false;
+                                bool sendUpdate = false;
                                 int EventId = x;
                                 int WalkThrough = withBlock.WalkThrough;
                                 bool doNotProcessMoveRoute = false;
@@ -1220,15 +1226,15 @@ namespace Server
                                             case 32: withBlock.MoveFreq = 3; break;
                                             case 33: withBlock.MoveFreq = 4; break;
 
-                                            case 34: withBlock.WalkingAnim = 1; sendupdate = true; break; // Turn On Walking Animation
-                                            case 35: withBlock.WalkingAnim = 0; sendupdate = true; break; // Turn Off Walking Animation
-                                            case 36: withBlock.FixedDir = 1; sendupdate = true; break; // Turn On Direction Fix
-                                            case 37: withBlock.FixedDir = 0; sendupdate = true; break; // Turn Off Direction Fix
+                                            case 34: withBlock.WalkingAnim = 1; sendUpdate = true; break; // Turn On Walking Animation
+                                            case 35: withBlock.WalkingAnim = 0; sendUpdate = true; break; // Turn Off Walking Animation
+                                            case 36: withBlock.FixedDir = 1; sendUpdate = true; break; // Turn On Direction Fix
+                                            case 37: withBlock.FixedDir = 0; sendUpdate = true; break; // Turn Off Direction Fix
                                             case 38: withBlock.WalkThrough = 1; break; // Turn On Through
                                             case 39: withBlock.WalkThrough = 0; break; // Turn Off Through
-                                            case 40: withBlock.Position = 1; sendupdate = true; break; // Turn On Fixed
-                                            case 41: withBlock.Position = 0; sendupdate = true; break; // Turn Off Fixed
-                                            case 42: withBlock.Position = 2; sendupdate = true; break; //Turn on Below player
+                                            case 40: withBlock.Position = 1; sendUpdate = true; break; // Turn On Fixed
+                                            case 41: withBlock.Position = 0; sendUpdate = true; break; // Turn Off Fixed
+                                            case 42: withBlock.Position = 2; sendUpdate = true; break; //Turn on Below player
 
                                             case 43: // Change Graphic
                                                 {
@@ -1251,18 +1257,19 @@ namespace Server
                                                             _ => withBlock.Dir
                                                         };
                                                     }
-                                                    sendupdate = true;
+                                                    sendUpdate = true;
                                                     break;
                                                 }
 
                                         }
 
                                         // Send update if necessary.
-                                        if (sendupdate && Core.Data.TempPlayer[i].EventMap.EventPages[EventId].EventId >= 0)
+                                        if (sendUpdate && Core.Data.TempPlayer[i].EventMap.EventPages[EventId].EventId >= 0)
                                         {
                                             using (var buffer = new ByteStream(4))
                                             {
                                                 buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                                buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                                 buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.EventPages[EventId].EventId); // Use map event ID
 
                                                 ref var withBlock1 = ref Core.Data.TempPlayer[i].EventMap.EventPages[EventId];
@@ -2751,7 +2758,7 @@ namespace Server
                 // Find the highest-priority page that meets conditions.
                 for (int z = 0; z < Data.Map[mapNum].Event[i].PageCount; z++)
                 {
-                    bool spawncurrentevent = true;
+                    bool spawnCurrentEvent = true;
                     ref var page = ref Data.Map[mapNum].Event[i].Pages[z]; // Use ref for direct modification.
                     bool variableConditionMet = false;
 
@@ -2770,19 +2777,19 @@ namespace Server
                         }
 
                         if (!variableConditionMet)
-                            spawncurrentevent = false;
+                            spawnCurrentEvent = false;
                     }
 
                     if (page.ChkSwitch == 1)
                     {
                         // Using XOR for switch check, handles both expecting true and false efficiently
                         if (!((page.SwitchCompare == 1) ^ (Core.Data.Player[index].Switches[page.SwitchIndex] == 0))) //we want true
-                            spawncurrentevent = false;
+                            spawnCurrentEvent = false;
                     }
 
                     if (page.ChkHasItem == 1 && Player.HasItem(index, page.HasItemIndex) == 0)
                     {
-                        spawncurrentevent = false;
+                        spawnCurrentEvent = false;
                     }
 
                     if (page.ChkSelfSwitch == 1)
@@ -2796,11 +2803,11 @@ namespace Server
                             selfSwitchState = false; // Local self switches are not checked when spawning.
 
                         if (!selfSwitchState)
-                            spawncurrentevent = false;
+                            spawnCurrentEvent = false;
                     }
 
 
-                    if (spawncurrentevent)
+                    if (spawnCurrentEvent)
                     {
                         p = z; // Store the valid page index.
                     }
@@ -2847,16 +2854,16 @@ namespace Server
                     if (Data.Map[mapNum].Event[i].Globals == 1)
                     {
                         // Use global event's position and direction.
-                        withBlock1.X = Event.TempEventMap[mapNum].Event[i].X;
-                        withBlock1.Y = Event.TempEventMap[mapNum].Event[i].Y;
+                        withBlock1.X = Event.TempEventMap[mapNum].Event[i].X * 32;
+                        withBlock1.Y = Event.TempEventMap[mapNum].Event[i].Y * 32;
                         withBlock1.Dir = Event.TempEventMap[mapNum].Event[i].Dir;
                         withBlock1.MoveRouteStep = Event.TempEventMap[mapNum].Event[i].MoveRouteStep;
                     }
                     else
                     {
                         // Use the event's initial position.
-                        withBlock1.X = Data.Map[mapNum].Event[i].X;
-                        withBlock1.Y = Data.Map[mapNum].Event[i].Y;
+                        withBlock1.X = Data.Map[mapNum].Event[i].X * 32;
+                        withBlock1.Y = Data.Map[mapNum].Event[i].Y * 32;
                         withBlock1.MoveRouteStep = 0;
                     }
 
@@ -2899,12 +2906,13 @@ namespace Server
             // Send spawn event packets to the player.
             using (var buffer = new ByteStream(4))
             {
-                for (int i = 1; i <= Core.Data.TempPlayer[index].EventMap.CurrentEvents; i++) // Changed to start from 1, since we resized array + 1
+                buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                buffer.WriteInt32(Core.Data.TempPlayer[index].EventMap.CurrentEvents);
+
+                for (int i = 0; i < Core.Data.TempPlayer[index].EventMap.CurrentEvents; i++)
                 {
                     ref var eventPage = ref Core.Data.TempPlayer[index].EventMap.EventPages[i];
-                    if (eventPage.EventId < 0) continue; //should never hit here, but just in case
 
-                    buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
                     buffer.WriteInt32(eventPage.EventId); // Map event ID.
 
                     buffer.WriteString(Data.Map[mapNum].Event[eventPage.EventId].Name); // Map event ID
@@ -2924,10 +2932,9 @@ namespace Server
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].DirFix);
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough);
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].ShowName);
-                    NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
-
-                    buffer.Reset();
                 }
+
+                NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             }
         }
 
