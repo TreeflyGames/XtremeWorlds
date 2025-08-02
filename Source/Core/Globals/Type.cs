@@ -381,8 +381,8 @@ namespace Core
         {
             public int Num;
             public int Value;
-            public byte X;
-            public byte Y;
+            public int X;
+            public int Y;
             public string PlayerName;
             public long PlayerTimer;
             public bool CanDespawn;

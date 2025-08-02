@@ -401,19 +401,6 @@ static void LoadFonts()
                 ProcessInputs();
             }
 
-            if (GameState.MyEditorType == (int)EditorType.Map)
-            {
-                if (IsKeyStateActive(Keys.Z))
-                {
-                    frmEditor_Map.MapEditorUndo();
-                }
-
-                if (IsKeyStateActive(Keys.Y))
-                {
-                    frmEditor_Map.MapEditorRedo();
-                }
-            }
-
             if (IsKeyStateActive(Keys.F12))
             {
                 TakeScreenshot();
@@ -1038,11 +1025,6 @@ static void LoadFonts()
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                }             
-                
                 if (IsSeartchCooldownElapsed())
                 {
                     if (IsMouseButtonDown(MouseButton.Left))
