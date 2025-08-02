@@ -1566,15 +1566,15 @@ static void LoadFonts()
             if (Math.Floor((double)withBlock.X / 32) < GameState.TileView.Left | Math.Floor((double)withBlock.X / 32) > GameState.TileView.Right)
                 return;
 
-            if (withBlock.Y < GameState.TileView.Top | withBlock.Y > GameState.TileView.Bottom)
+            if (Math.Floor((double)withBlock.Y / 32) < GameState.TileView.Top | Math.Floor((double)withBlock.Y / 32) > GameState.TileView.Bottom)
                 return;           
 
             srcrec = new Rectangle(0, 0, GameState.SizeX, GameState.SizeY);
-            destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X),
-                GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y), GameState.SizeX, GameState.SizeY);
+            destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.SizeX),
+                GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.SizeY), GameState.SizeX, GameState.SizeY);
 
-            x = GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X);
-            y = GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y);
+            x = GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.SizeX);
+            y = GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.SizeY);
 
             string argpath = System.IO.Path.Combine(Core.Path.Items, picNum.ToString());
             RenderTexture(ref argpath, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width,
