@@ -575,8 +575,8 @@ namespace Client
                 ref var withBlock = ref Data.MyMapItem[i];
                 withBlock.Num = buffer.ReadInt32();
                 withBlock.Value = buffer.ReadInt32();
-                withBlock.X = (byte)buffer.ReadInt32();
-                withBlock.Y = (byte)buffer.ReadInt32();
+                withBlock.X = buffer.ReadInt32();
+                withBlock.Y = buffer.ReadInt32();
             }
 
             buffer.Dispose();

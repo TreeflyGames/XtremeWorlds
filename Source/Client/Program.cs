@@ -83,9 +83,7 @@ namespace Client
         public static RenderTarget2D RenderTarget;
         public static Texture2D TransparentTexture;
         public static Texture2D PixelTexture;
-
-        public static bool IsLoaded;
-
+        
         // Add a timer to prevent spam
         private static DateTime lastInputTime = DateTime.MinValue;
         private const int inputCooldown = 250;
@@ -198,8 +196,9 @@ namespace Client
 
             base.Initialize();
         }
+        
 
-        static void LoadFonts()
+static void LoadFonts()
         {
             // Get all defined font enum values except None (assumed to be 0)
             var fontValues = Enum.GetValues(typeof(Core.Font));
@@ -218,7 +217,6 @@ namespace Client
 
             LoadFonts();
             General.Startup();
-            IsLoaded = true;
         }
 
         public static SpriteFont LoadFont(string path, Core.Font font)
@@ -400,6 +398,19 @@ namespace Client
                 UpdateMouseCache();
                 UpdateKeyCache();
                 ProcessInputs();
+            }
+
+            if (GameState.MyEditorType == (int)EditorType.Map)
+            {
+                if (IsKeyStateActive(Keys.Z))
+                {
+                    frmEditor_Map.MapEditorUndo();
+                }
+
+                if (IsKeyStateActive(Keys.Y))
+                {
+                    frmEditor_Map.MapEditorRedo();
+                }
             }
 
             if (IsKeyStateActive(Keys.F12))
@@ -1026,6 +1037,11 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
+                if (GameState.MyEditorType == (int)EditorType.Map)
+                {
+                    frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                }             
+                
                 if (IsSeartchCooldownElapsed())
                 {
                     if (IsMouseButtonDown(MouseButton.Left))
@@ -1133,11 +1149,14 @@ namespace Client
                 // Create the four sides of the outline
                 var left = new Rectangle(position.ToPoint(),
                     new Point((int)Math.Round(outlineThickness), (int)Math.Round(size.Y)));
+
                 var top = new Rectangle(position.ToPoint(),
                     new Point((int)Math.Round(size.X), (int)Math.Round(outlineThickness)));
+
                 var right = new Rectangle(
                     new Point((int)Math.Round(position.X + size.X - outlineThickness), (int)Math.Round(position.Y)),
                     new Point((int)Math.Round(outlineThickness), (int)Math.Round(size.Y)));
+
                 var bottom =
                     new Rectangle(
                         new Point((int)Math.Round(position.X), (int)Math.Round(position.Y + size.Y - outlineThickness)),
@@ -1516,7 +1535,7 @@ namespace Client
             else
             {
                 // Normal sprite height
-                y = Data.MyMapNpc[(int)mapNpcNum].Y * GameState.SizeY;
+                y = Data.MyMapNpc[(int)mapNpcNum].Y;
             }
 
             // Draw shadow and Npc sprite
@@ -1541,22 +1560,21 @@ namespace Client
 
             if (picNum < 1 | picNum > GameState.NumItems)
                 return;
+          
+            ref var withBlock = ref Data.MyMapItem[itemNum];
 
-            {
-                ref var withBlock = ref Data.MyMapItem[itemNum];
-                if (withBlock.X < GameState.TileView.Left | withBlock.X > GameState.TileView.Right)
-                    return;
+            if (Math.Floor((double)withBlock.X / 32) < GameState.TileView.Left | Math.Floor((double)withBlock.X / 32) > GameState.TileView.Right)
+                return;
 
-                if (withBlock.Y < GameState.TileView.Top | withBlock.Y > GameState.TileView.Bottom)
-                    return;
-            }
+            if (Math.Floor((double)withBlock.Y / 32) < GameState.TileView.Top | Math.Floor((double)withBlock.Y / 32) > GameState.TileView.Bottom)
+                return;           
 
             srcrec = new Rectangle(0, 0, GameState.SizeX, GameState.SizeY);
-            destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X),
-                GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y), GameState.SizeX, GameState.SizeY);
+            destrec = new Rectangle(GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.SizeX),
+                GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.SizeY), GameState.SizeX, GameState.SizeY);
 
-            x = GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X);
-            y = GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y);
+            x = GameLogic.ConvertMapX(Data.MyMapItem[itemNum].X * GameState.SizeX);
+            y = GameLogic.ConvertMapY(Data.MyMapItem[itemNum].Y * GameState.SizeY);
 
             string argpath = System.IO.Path.Combine(Core.Path.Items, picNum.ToString());
             RenderTexture(ref argpath, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width,
@@ -2148,7 +2166,7 @@ namespace Client
             x = (int)Math.Round(Core.Data.Player[index].X - (gfxInfo.Width / 4d - 32d) / 2d);
 
             // Is the player's height more than 32..?
-            if (gfxInfo.Height > 32)
+            if ((gfxInfo.Height / 4) > 32)
             {
                 // Create a 32 pixel offset for larger sprites
                 y = (int)Math.Round(GetPlayerRawY(index) - (gfxInfo.Height / 4d - 32d));
@@ -2202,7 +2220,7 @@ namespace Client
             if (Data.MyMap.EventCount <= 0)
                 return; // Exit early if no events
 
-            for (int i = 0, loopTo = Data.MyMap.EventCount; i < loopTo; i++)
+            for (int i = 0, loopTo = Information.UBound(Data.MyMap.Event); i < loopTo; i++)
             {
                 int x = GameLogic.ConvertMapX(Data.MyMap.Event[i].X);
                 int y = GameLogic.ConvertMapY(Data.MyMap.Event[i].Y);
@@ -2219,15 +2237,15 @@ namespace Client
                 {
                     case 0: // Text Event
                     {
-                        int tX = x + GameState.SizeX / 2 - 4;
-                        int tY = y + GameState.SizeY / 2 - 7;
+                        int tX = x * GameState.SizeX;
+                        int tY = y * GameState.SizeY;
                         Text.RenderText("E", tX, tY, Color.Green, Color.Black);
                         break;
                     }
 
                     case 1: // Character Graphic
                     {
-                        RenderCharacterGraphic(Core.Data.MyMap.Event[i], x, y);
+                        RenderCharacterGraphic(Core.Data.MyMap.Event[i], x * GameState.SizeX, y * GameState.SizeY);
                         break;
                     }
 
@@ -2388,7 +2406,7 @@ namespace Client
                                             (width - 32d) / 2d);
 
                         // Is the player's height more than 32..?
-                        if (gfxInfo.Height * 4 > 32)
+                        if ((gfxInfo.Height / 4) > 32)
                         {
                             // Create a 32 pixel offset for larger sprites
                             y = (int)Math.Round(Data.MapEvents[id].Y - (height - 32d));
@@ -2396,7 +2414,7 @@ namespace Client
                         else
                         {
                             // Proceed as normal
-                            y = Data.MapEvents[id].Y * GameState.SizeY;
+                            y = Data.MapEvents[id].Y;
                         }
 
                         // render the actual sprite
@@ -2503,16 +2521,14 @@ namespace Client
             {
                 if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Data.MyMap.EventCount)
                 {
-                    var loopTo2 = GameState.CurrentEvents;
-                    for (i = 0; i < loopTo2; i++)
+                    var loopTo2 = Information.UBound(Data.MapEvents);
+                    for (i = 0; i <= loopTo2; i++)
                     {
-                        if (i < Data.MapEvents.Length)
+                        if (Data.MapEvents[i].Position == 0)
                         {
-                            if (Data.MapEvents[i].Position == 0)
-                            {
-                                DrawEvent(i);
-                            }
+                            DrawEvent(i);
                         }
+                       
                     }
                 }
             }
@@ -2526,10 +2542,7 @@ namespace Client
             {
                 for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
                 {
-                    if (Data.MyMapItem[i].Num >= 0)
-                    {
-                        DrawMapItem(i);
-                    }
+                    DrawMapItem(i);                
                 }
             }
 
@@ -2579,8 +2592,8 @@ namespace Client
                     {
                         if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Data.MyMap.EventCount)
                         {
-                            var loopTo4 = GameState.CurrentEvents;
-                            for (i = 0; i < loopTo4; i++)
+                            var loopTo4 = Information.UBound(Data.MapEvents);
+                            for (i = 0; i <= loopTo4; i++)
                             {
                                 if (Data.MapEvents[i].Position == 1)
                                 {
