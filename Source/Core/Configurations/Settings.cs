@@ -54,7 +54,7 @@ namespace Core
         // Methods to load and save settings
         public static void Load()
         {
-            string configPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
+            string configPath = System.IO.Path.Combine(Core.Path.Local, "Config");
             string configFile = System.IO.Path.Combine(configPath, "Settings.xml");
 
             if (File.Exists(configFile))
