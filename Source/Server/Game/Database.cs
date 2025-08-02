@@ -881,16 +881,28 @@ namespace Server
 
             // Construct the path to the "maps" directory
             string mapsDir = Path.Combine(baseDir, "maps");
-            Directory.CreateDirectory(mapsDir);
+            if (!Directory.Exists(mapsDir))
+            {
+                Directory.CreateDirectory(mapsDir);
+            }
             
             string xwMapsDir = Path.Combine(mapsDir, "xw");
-            Directory.CreateDirectory(xwMapsDir);
+            if (!Directory.Exists(xwMapsDir))
+            {
+                Directory.CreateDirectory(xwMapsDir);
+            }
             
             string csMapsDir = Path.Combine(mapsDir, "cs");
-            Directory.CreateDirectory(csMapsDir);
+            if (!Directory.Exists(csMapsDir))
+            {
+                Directory.CreateDirectory(csMapsDir);
+            }
             
             string sdMapDir = Path.Combine(mapsDir, "sd");
-            Directory.CreateDirectory(sdMapDir);
+            if (!Directory.Exists(sdMapDir))
+            {
+                Directory.CreateDirectory(sdMapDir);
+            }
 
             if (System.IO.File.Exists(xwMapsDir + @"\map" + mapNum + ".dat"))
             {
