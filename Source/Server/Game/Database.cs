@@ -876,16 +876,18 @@ namespace Server
 
         public static async System.Threading.Tasks.Task LoadMapAsync(int mapNum)
         {
+            string baseDir;
+            
             // Get the base directory of the application
             if (OperatingSystem.IsMacOS())
             {
-                string baseDir = System.IO.Path.Combine(
+                baseDir = System.IO.Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     "XtremeWorlds");
             }
             else
             {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                baseDir = AppDomain.CurrentDomain.BaseDirectory;
             }
 
             // Construct the path to the "maps" directory
