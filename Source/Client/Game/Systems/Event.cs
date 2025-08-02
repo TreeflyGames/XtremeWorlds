@@ -84,7 +84,7 @@ namespace Client
                 id = buffer.ReadInt32();
 
                 if (id >= GameState.CurrentEvents)
-                    break;''
+                    break;
 
                 ref var withBlock = ref Data.MapEvents[id];
                 withBlock.Name = buffer.ReadString();
