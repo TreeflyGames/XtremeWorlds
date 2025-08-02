@@ -2217,9 +2217,6 @@ static void LoadFonts()
 
         public static void DrawEvents()
         {
-            if (Data.MyMap.EventCount <= 0)
-                return; // Exit early if no events
-
             for (int i = 0, loopTo = Information.UBound(Data.MyMap.Event); i < loopTo; i++)
             {
                 int x = GameLogic.ConvertMapX(Data.MyMap.Event[i].X);
