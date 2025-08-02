@@ -44,19 +44,7 @@ namespace Core
         {
             get
             {
-                if (OperatingSystem.IsMacOS())
-                {
-                    var appData = System.IO.Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        "XtremeWorlds"
-                    );
-                    Directory.CreateDirectory(appData); // Ensure it exists
-                    return System.IO.Path.Combine(appData, "Config");
-                }
-                else
-                {
-                    return System.IO.Path.Combine(Local, "Config");
-                }
+                return System.IO.Path.Combine(Local, "Config");
             }
         }
 
