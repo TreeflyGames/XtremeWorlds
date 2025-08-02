@@ -14,8 +14,16 @@ namespace Core
         {
             get
             {
-                string assemblyPath = Assembly.GetEntryAssembly().Location;
-                return Directory.GetParent(assemblyPath).FullName;
+                if (OperatingSystem.IsMacOS())
+                {
+                    return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "XtremeWorlds");
+                }
+                else
+                {
+                    string assemblyPath = Assembly.GetEntryAssembly().Location;
+                    return Directory.GetParent(assemblyPath).FullName;
+                }
             }
         }
 
