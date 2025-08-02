@@ -3283,31 +3283,37 @@ namespace Client
             int id;
             var buffer = new ByteStream(data);
 
-            id = buffer.ReadInt32();
-
-            GameState.CurrentEvents = id + 1;
+            GameState.CurrentEvents = buffer.ReadInt32();
             Array.Resize(ref Data.MapEvents, GameState.CurrentEvents);
 
-            ref var withBlock = ref Data.MapEvents[id];
-            withBlock.Name = buffer.ReadString();
-            withBlock.Dir = buffer.ReadInt32();
-            withBlock.ShowDir = withBlock.Dir;
-            withBlock.GraphicType = buffer.ReadByte();
-            withBlock.Graphic = buffer.ReadInt32();
-            withBlock.GraphicX = buffer.ReadInt32();
-            withBlock.GraphicX2 = buffer.ReadInt32();
-            withBlock.GraphicY = buffer.ReadInt32();
-            withBlock.GraphicY2 = buffer.ReadInt32();
-            withBlock.MovementSpeed = buffer.ReadInt32();
-            withBlock.Moving = 0;
-            withBlock.X = buffer.ReadInt32();
-            withBlock.Y = buffer.ReadInt32();
-            withBlock.Position = buffer.ReadByte();
-            withBlock.Visible = buffer.ReadBoolean();
-            withBlock.WalkAnim = buffer.ReadInt32();
-            withBlock.DirFix = buffer.ReadInt32();
-            withBlock.WalkThrough = buffer.ReadInt32();
-            withBlock.ShowName = buffer.ReadInt32();
+            for (int i = 0; i < GameState.CurrentEvents; i++)
+            {
+                id = buffer.ReadInt32();
+
+                if (id >= GameState.CurrentEvents)
+                    break;''
+
+                ref var withBlock = ref Data.MapEvents[id];
+                withBlock.Name = buffer.ReadString();
+                withBlock.Dir = buffer.ReadInt32();
+                withBlock.ShowDir = withBlock.Dir;
+                withBlock.GraphicType = buffer.ReadByte();
+                withBlock.Graphic = buffer.ReadInt32();
+                withBlock.GraphicX = buffer.ReadInt32();
+                withBlock.GraphicX2 = buffer.ReadInt32();
+                withBlock.GraphicY = buffer.ReadInt32();
+                withBlock.GraphicY2 = buffer.ReadInt32();
+                withBlock.MovementSpeed = buffer.ReadInt32();
+                withBlock.Moving = 0;
+                withBlock.X = buffer.ReadInt32();
+                withBlock.Y = buffer.ReadInt32();
+                withBlock.Position = buffer.ReadByte();
+                withBlock.Visible = buffer.ReadBoolean();
+                withBlock.WalkAnim = buffer.ReadInt32();
+                withBlock.DirFix = buffer.ReadInt32();
+                withBlock.WalkThrough = buffer.ReadInt32();
+                withBlock.ShowName = buffer.ReadInt32();
+            }
             
             buffer.Dispose();
 

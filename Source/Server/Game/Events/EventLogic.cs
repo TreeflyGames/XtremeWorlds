@@ -169,6 +169,7 @@ namespace Server
                                     using (var buffer = new ByteStream(4))
                                     {
                                         buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                        buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                         buffer.WriteInt32(id);
                                         ref var withBlock = ref Core.Data.TempPlayer[i].EventMap.EventPages[pageNum]; //find actual index of eventpage  
                                         buffer.WriteString(Core.Data.Map[GetPlayerMap(i)].Event[withBlock.EventId].Name);
@@ -389,6 +390,7 @@ namespace Server
                                     continue;
 
                                 buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                 buffer.WriteInt32(id); // Event ID
 
                                 ref var withBlock1 = ref Core.Data.TempPlayer[i].EventMap.EventPages[x];
@@ -820,6 +822,7 @@ namespace Server
                                             using (var buffer = new ByteStream(4))
                                             {
                                                 buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                                buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                                 buffer.WriteInt32(EventId); // Event ID.
 
                                                 ref var withBlock1 = ref Event.TempEventMap[i].Event[x];
@@ -1266,6 +1269,7 @@ namespace Server
                                             using (var buffer = new ByteStream(4))
                                             {
                                                 buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                                buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.CurrentEvents);
                                                 buffer.WriteInt32(Core.Data.TempPlayer[i].EventMap.EventPages[EventId].EventId); // Use map event ID
 
                                                 ref var withBlock1 = ref Core.Data.TempPlayer[i].EventMap.EventPages[EventId];
@@ -2902,13 +2906,13 @@ namespace Server
             // Send spawn event packets to the player.
             using (var buffer = new ByteStream(4))
             {
-                for (int i = 0; i <= Core.Data.TempPlayer[index].EventMap.CurrentEvents; i++)
+                buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                buffer.WriteInt32(Core.Data.TempPlayer[index].EventMap.CurrentEvents);
+
+                for (int i = 0; i < Core.Data.TempPlayer[index].EventMap.CurrentEvents; i++)
                 {
                     ref var eventPage = ref Core.Data.TempPlayer[index].EventMap.EventPages[i];
-                    if (eventPage.EventId <= 0) continue; //should never hit here, but just in case
 
-                    buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
-                    
                     buffer.WriteInt32(eventPage.EventId); // Map event ID.
 
                     buffer.WriteString(Data.Map[mapNum].Event[eventPage.EventId].Name); // Map event ID
@@ -2928,10 +2932,9 @@ namespace Server
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].DirFix);
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough);
                     buffer.WriteInt32(Data.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].ShowName);
-                    NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
                 }
 
-                
+                NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             }
         }
 
