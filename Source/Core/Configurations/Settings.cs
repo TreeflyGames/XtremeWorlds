@@ -52,10 +52,8 @@ namespace Core
 
 
         // Methods to load and save settings
-        public static void Load()
-        {
-            string configPath = System.IO.Path.Combine(Core.Path.Local, "Config");
-            string configFile = System.IO.Path.Combine(configPath, "Settings.xml");
+        public static void Load() {
+            string configFile = System.IO.Path.Combine(Core.Path.Config, "Settings.xml");
 
             if (File.Exists(configFile))
             {
@@ -79,11 +77,8 @@ namespace Core
 
         public static void Save()
         {
-            string configPath = System.IO.Path.Combine(Core.Path.Config, "Config");
-            string configFile = System.IO.Path.Combine(configPath, "Settings.xml");
-
-            Directory.CreateDirectory(configPath);
-
+            string configFile = System.IO.Path.Combine(Core.Path.Config, "Settings.xml");
+            
             try
             {
                 using var writer = new StreamWriter(configFile);
