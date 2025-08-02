@@ -44,10 +44,7 @@ namespace Core
         {
             get
             {
-                string assemblyPath = Assembly.GetEntryAssembly().Location;
-                string configPath = Directory.GetParent(assemblyPath).FullName;
-
-                return System.IO.Path.Combine(configPath, "Config");
+                return System.IO.Path.Combine(Local, "Config");
             }
         }
 
