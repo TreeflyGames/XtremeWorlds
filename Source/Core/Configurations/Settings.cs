@@ -79,7 +79,7 @@ namespace Core
 
         public static void Save()
         {
-            string configPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
+            string configPath = System.IO.Path.Combine(Core.Path.Config, "Config");
             string configFile = System.IO.Path.Combine(configPath, "Settings.xml");
 
             Directory.CreateDirectory(configPath);
