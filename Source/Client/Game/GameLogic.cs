@@ -11,7 +11,6 @@ using Color = Core.Color;
 
 namespace Client
 {
-
     public class GameLogic
     {
         public static void ProcessNpcMovement(double MapNpcNum)
